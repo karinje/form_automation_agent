@@ -1,0 +1,74 @@
+{
+  "fields": [
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlPurposeOfTrip",
+      "type": "dropdown",
+      "value": [
+        "FOREIGN GOVERNMENT OFFICIAL (A)",
+        "TEMP. BUSINESS OR PLEASURE VISITOR (B)", 
+        "ALIEN IN TRANSIT (C)",
+        "CNMI WORKER OR INVESTOR (CW/E2C)",
+        "CREWMEMBER (D)",
+        "TREATY TRADER OR INVESTOR (E)",
+        "ACADEMIC OR LANGUAGE STUDENT (F)",
+        "INTERNATIONAL ORGANIZATION REP./EMP. (G)",
+        "TEMPORARY WORKER (H)",
+        "FOREIGN MEDIA REPRESENTATIVE (I)", 
+        "EXCHANGE VISITOR (J)",
+        "FIANCÉ(E) OR SPOUSE OF A U.S. CITIZEN (K)",
+        "INTRACOMPANY TRANSFEREE (L)",
+        "VOCATIONAL/NONACADEMIC STUDENT (M)",
+        "OTHER (N)",
+        "NATO STAFF (NATO)",
+        "ALIEN WITH EXTRAORDINARY ABILITY (O)",
+        "INTERNATIONALLY RECOGNIZED ALIEN (P)",
+        "CULTURAL EXCHANGE VISITOR (Q)",
+        "RELIGIOUS WORKER (R)",
+        "INFORMANT OR WITNESS (S)",
+        "VICTIM OF TRAFFICKING (T)",
+        "NAFTA PROFESSIONAL (TD/TN)",
+        "VICTIM OF CRIMINAL ACTIVITY (U)",
+        "PAROLE BENEFICIARY (PARCIS)"
+      ]
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblSpecificTravel",
+      "type": "radio",
+      "value": ["Y", "N"],
+      "labels": ["Yes", "No"],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblSpecificTravel_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblSpecificTravel_1"
+      }
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlWhoIsPaying",
+      "type": "dropdown", 
+      "value": [
+        "Self",
+        "U.S. Petitioner",
+        "Other Person",
+        "Present Employer",
+        "Employer in the U.S.",
+        "Other Company/Organization"
+      ]
+    }
+  ],
+  "final_buttons": [
+    {
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "value": "Back: Personal",
+      "type": "submit"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2", 
+      "value": "Save",
+      "type": "submit"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
+      "value": "Next: Travel Companions",
+      "type": "submit"
+    }
+  ]
+} 

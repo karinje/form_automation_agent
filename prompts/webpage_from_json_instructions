@@ -1,0 +1,223 @@
+Here's how reach of pages that are created from the json files in @form_definitions folder should behave in terms of responding to user selection
+
+1. All the fields in the "fields" list of cooresponding json file should be visible to the user when the page is loaded.
+Example:
+Here's an example of how these instuctions map to @form_definitions/p5_previoustravel_definition.json
+When the page is loaded the fields list is rendered.
+["name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_TRAVEL_IND",
+ "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_IND",
+ "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_REFUSED_IND",
+ "name": "ctl00$SiteContentPlaceHolder$FormView1$rblVWP_DENIAL_IND",
+ "name": "ctl00$SiteContentPlaceHolder$FormView1$rblIV_PETITION_IND",
+ ]
+ 
+2. The attributes of each element in the "fields" list should be used to determine the behaviour of the element in the webpage.
+3. The values of the fields should be used to populate the fields in the webpage. For radio buttons, the values are usually Y and N as per the json file.For dropdowns, the values are specified in the "options" list.The maxlength attribute should be used to limit the number of characters that can be entered in the field. The maxlenght and has_na shoudl also be taken into account when populating the fields.
+4. Next, the "dependencies" list should be used to determine which fields should be shown to the user based on the user's selection. The "shows" list should be used to show the fields that should be shown to the user. The "hides" list should be used to hide the fields that should not be shown to the user.
+5. For radio buttons, the "button_ids" list should be used to determine the name of the radio button option that should be selected.This should should be appended to the name of the option chosen to form the key for the field in the dependencies list.
+6. For dropdowns, the key is created by appending the name of the option chosen to the name of the dropdown 
+7. Next, when a user selection is made, the key needs to be constructed and dependencies should be parsed to render every element in the shows list and hide every element in the hides list.
+Example:
+Here's an example of how these instuctions map to @form_definitions/p5_previoustravel_definition.json
+WHen user selected "Y" for "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_TRAVEL_IND", the cooresponding button_ids is parsed to select the button id which is
+"ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_TRAVEL_IND_0" then the value "Y" is appended to find the key. 
+The correponding dependencies for this key are parsed which are:
+"shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_tbxPREV_US_VISIT_DTEYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Date Arrived - Year",
+          "parent_text_phrase": "Date Arrived",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_ddlPREV_US_VISIT_DTEMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Date Arrived - Month",
+          "parent_text_phrase": "Date Arrived"
+        },
+        {
+          "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_DRIVER_LIC_IND",
+          "type": "radio",
+          "value": [
+            "Y",
+            "N"
+          ],
+          "labels": [
+            "Yes",
+            "No"
+          ],
+          "button_ids": {
+            "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_DRIVER_LIC_IND_0",
+            "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_DRIVER_LIC_IND_1"
+          },
+          "text_phrase": "Do you or did you ever hold a U.S. Driver’s License?"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_tbxPREV_US_VISIT_LOS",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Length of Stay",
+          "parent_text_phrase": "Length of Stay - Number",
+          "maxlength": "3",
+          "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_ddlPREV_US_VISIT_DTEDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Date Arrived - Day",
+          "parent_text_phrase": "Date Arrived"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_ddlPREV_US_VISIT_LOS_CD",
+          "type": "dropdown",
+          "value": [
+            "Year(s)",
+            "Month(s)",
+            "Week(s)",
+            "Day(s)",
+            "Less Than 24 Hours"
+          ],
+          "text_phrase": "Length of Stay - Period",
+          "parent_text_phrase": "Length of Stay"
+        }
+
+8. These new fields need to be rendered just below the parent that was selected and elements that existed before need to be pushed down. 
+9. When the selection is toggled by changing the value of a field, the key needs to be constructed its dependencies should be parsed and previously shown dependencies for the other value should be hidden.
+When I toggle back to "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_TRAVEL_IND_0.N" the elements for this key need to shown and previous shows from "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_TRAVEL_IND_0.Y" need to go away.
+
+10. When a user makes a selection on newly shown fields from dependencies shows, the key needs to be constructed that fields depenencies list needs to be parsed an rendered similar to how we did it for earlier level. The dependencies list from the same level should be parsed and rendered.
+Now from the newly shown fields, I make the selection "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_DRIVER_LIC_IND" = Y in which case the shows for key "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_DRIVER_LIC_IND_0.Y" needs to be parsed which and these two fields need to be come visible:
+"shows": [
+            {
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlUS_DRIVER_LICENSE_ctl00_tbxUS_DRIVER_LICENSE",
+              "type": "text",
+              "value": "",
+              "text_phrase": "Driver's License Number",
+              "parent_text_phrase": "Driver's License Details",
+              "maxlength": "20",
+              "has_na_checkbox": false
+            },
+            {
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlUS_DRIVER_LICENSE_ctl00_ddlUS_DRIVER_LICENSE_STATE",
+              "type": "dropdown",
+              "value": [
+                "ALABAMA",
+                "ALASKA",
+                "AMERICAN SAMOA",
+                "ARIZONA",
+                "ARKANSAS",
+                "CALIFORNIA",
+                "COLORADO",
+                "CONNECTICUT",
+                "DELAWARE",
+                "DISTRICT OF COLUMBIA",
+                "FLORIDA",
+                "GEORGIA",
+                "GUAM",
+                "HAWAII",
+                "IDAHO",
+                "ILLINOIS",
+                "INDIANA",
+                "IOWA",
+                "KANSAS",
+                "KENTUCKY",
+                "LOUISIANA",
+                "MAINE",
+                "MARYLAND",
+                "MASSACHUSETTS",
+                "MICHIGAN",
+                "MINNESOTA",
+                "MISSISSIPPI",
+                "MISSOURI",
+                "MONTANA",
+                "NEBRASKA",
+                "NEVADA",
+                "NEW HAMPSHIRE",
+                "NEW JERSEY",
+                "NEW MEXICO",
+                "NEW YORK",
+                "NORTH CAROLINA",
+                "NORTH DAKOTA",
+                "NORTHERN MARIANA ISLANDS",
+                "OHIO",
+                "OKLAHOMA",
+                "OREGON",
+                "PENNSYLVANIA",
+                "PUERTO RICO",
+                "RHODE ISLAND",
+                "SOUTH CAROLINA",
+                "SOUTH DAKOTA",
+                "TENNESSEE",
+                "TEXAS",
+                "UTAH",
+                "VERMONT",
+                "VIRGIN ISLANDS",
+                "VIRGINIA",
+                "WASHINGTON",
+                "WEST VIRGINIA",
+                "WISCONSIN",
+                "WYOMING"
+              ],
+              "text_phrase": "State of Driver's License",
+              "parent_text_phrase": "Driver's License Details"
+            }
+
+
+11. So we need to recursively parse the dependencies list and render the fields.
+The above logic of parsing dependencies and rendering fields needs to be done for each level of the dependencies list.
+
+12. When a parent field value is toggled such that a child field becomes hidden, all the children of that child field should be hidden.
+Now if I select "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_TRAVEL_IND_0.N" all its child dependencies and their children should be hidden. 
+In this case, first level child such as "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_DRIVER_LIC_IND" and its children such as "ctl00_SiteContentPlaceHolder_FormView1_dtlUS_DRIVER_LICENSE_ctl00_tbxUS_DRIVER_LICENSE" should be hidden.
+
+

@@ -1,0 +1,197 @@
+{
+  "fields": [
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SURNAME",
+      "type": "text",
+      "value": "",
+      "maxlength": "33"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_GIVEN_NAME",
+      "type": "text",
+      "value": "",
+      "maxlength": "33"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_FULL_NAME_NATIVE",
+      "type": "text",
+      "value": "",
+      "maxlength": "100"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_FULL_NAME_NATIVE_NA",
+      "type": "checkbox",
+      "value": ["true", "false"],
+      "labels": ["Does Not Apply/Technology Not Available"]
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames",
+      "type": "radio",
+      "value": ["Y", "N"],
+      "labels": ["Yes", "No"],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames_1"
+      }
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTelecodeQuestion",
+      "type": "radio",
+      "value": ["Y", "N"],
+      "labels": ["Yes", "No"],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblTelecodeQuestion_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTelecodeQuestion_1"
+      }
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_GENDER",
+      "type": "dropdown",
+      "value": ["MALE", "FEMALE"]
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_MARITAL_STATUS",
+      "type": "dropdown",
+      "value": [
+        "MARRIED",
+        "COMMON LAW MARRIAGE",
+        "CIVIL UNION/DOMESTIC PARTNERSHIP",
+        "SINGLE",
+        "WIDOWED",
+        "DIVORCED",
+        "LEGALLY SEPARATED",
+        "OTHER"
+      ]
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlDOBDay",
+      "type": "dropdown",
+      "value": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlDOBMonth",
+      "type": "dropdown",
+      "value": ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDOBYear",
+      "type": "text",
+      "value": "",
+      "maxlength": "4"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_POB_CITY",
+      "type": "text",
+      "value": "",
+      "maxlength": "20"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_POB_ST_PROVINCE",
+      "type": "text",
+      "value": "",
+      "maxlength": "20"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_POB_ST_PROVINCE_NA",
+      "type": "checkbox",
+      "value": ["true", "false"],
+      "labels": ["Does Not Apply"]
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_POB_CNTRY",
+      "type": "dropdown",
+      "value": [
+        "AFGHANISTAN",
+        "ALBANIA",
+        "ALGERIA", 
+        "AMERICAN SAMOA",
+        "ANDORRA",
+        "ANGOLA",
+        "ANGUILLA",
+        "ANTIGUA AND BARBUDA",
+        "ARGENTINA",
+        "ARMENIA",
+        "ARUBA",
+        "AT SEA",
+        "AUSTRALIA",
+        "AUSTRIA",
+        "AZERBAIJAN",
+        "BAHAMAS",
+        "BAHRAIN",
+        "BANGLADESH",
+        "BARBADOS",
+        "BELARUS",
+        "BELGIUM",
+        "BELIZE",
+        "BENIN",
+        "BERMUDA",
+        "BHUTAN",
+        "BOLIVIA",
+        "BOSNIA-HERZEGOVINA",
+        "BOTSWANA",
+        "BRAZIL",
+        "BRITISH INDIAN OCEAN TERRITORY",
+        "BRUNEI",
+        "BULGARIA",
+        "BURKINA FASO",
+        "BURMA",
+        "BURUNDI",
+        "CAMBODIA",
+        "CAMEROON",
+        "CANADA",
+        "CABO VERDE",
+        "CAYMAN ISLANDS",
+        "CENTRAL AFRICAN REPUBLIC",
+        "CHAD",
+        "CHILE",
+        "CHINA",
+        "CHRISTMAS ISLAND",
+        "COCOS KEELING ISLANDS",
+        "COLOMBIA",
+        "COMOROS",
+        "CONGO, DEMOCRATIC REPUBLIC OF THE",
+        "CONGO, REPUBLIC OF THE",
+        "COOK ISLANDS",
+        "COSTA RICA",
+        "COTE D'IVOIRE",
+        "CROATIA",
+        "CUBA",
+        "CURACAO",
+        "CYPRUS",
+        "CZECH REPUBLIC",
+        "DENMARK",
+        "DJIBOUTI",
+        "DOMINICA",
+        "DOMINICAN REPUBLIC",
+        "ECUADOR",
+        "EGYPT",
+        "EL SALVADOR",
+        "EQUATORIAL GUINEA",
+        "ERITREA",
+        "ESTONIA",
+        "ESWATINI",
+        "ETHIOPIA",
+        "UNITED STATES OF AMERICA",
+        "UNITED KINGDOM",
+        "ZIMBABWE"
+      ]
+    }
+  ],
+  "final_buttons": [
+    {
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "type": "submit",
+      "value": "Back: Getting Started"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
+      "type": "submit",
+      "value": "Save"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3", 
+      "type": "submit",
+      "value": "Next: Personal 2"
+    }
+  ]
+} 

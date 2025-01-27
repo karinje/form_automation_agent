@@ -1,0 +1,71 @@
+{
+  "fields": [
+    {
+      "name": "ctl00_ddlLanguage",
+      "type": "dropdown",
+      "value": [
+        "English",
+        "العربية (Arabic)",
+        "বাংলা (Bangla)", 
+        "中文(简体）(Chinese-Simplified)",
+        "中文(繁體）(Chinese-Traditional)",
+        "Français (French)",
+        "Deutsch (German)", 
+        "עברית (Hebrew)",
+        "हिन्दी (Hindi)",
+        "Indonesia (Indonesian)",
+        "Italiano (Italian)",
+        "日本語 (Japanese)",
+        "한국어 (Korean)",
+        "Crnogorski (Montenegrin(Latin))",
+        "فارسی (Persian(Farsi))",
+        "Polski (Polish)",
+        "Português (Portuguese)",
+        "Română (Romanian)",
+        "Русский (Russian)", 
+        "Español (Spanish)",
+        "ภาษาไทย (Thai)",
+        "Türkçe (Turkish)",
+        "اردو (Urdu)",
+        "Việt (Vietnamese)"
+      ]
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_tbxApplicationID",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_txbSurname",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_txbDOBYear",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_txbAnswer",
+      "type": "text",
+      "value": ""
+    }
+  ],
+  "final_buttons": [
+    {
+      "name": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_btnBarcodeSubmit",
+      "type": "submit",
+      "value": "Retrieve Application"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_btnRetrieve",
+      "type": "submit",
+      "value": "Retrieve Application"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_btnContinueApp",
+      "type": "submit",
+      "value": "Continue"
+    }
+  ]
+} 

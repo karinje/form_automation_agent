@@ -1,0 +1,57 @@
+configs:
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_personal.aspx?node=Personal1
+    exclude_patterns: Day, Month, Year, State, Country, Cntry, Socialmedia
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_personalcont.aspx?node=Personal2
+    exclude_patterns: Day, Month, Year, State, OthPermResCntry, App_natl, Other_natl, Socialmedia
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_travel.aspx?node=Travel
+    exclude_patterns: Day, Month, Year, State, Country, Cntry, Natl, Language, Purpose, Los_cd
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_travelcompanions.aspx?node=TravelCompanions
+    exclude_patterns: Day, Month, Year, State, Country, Cntry, Natl, Language, Purpose
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_previousustravel.aspx?node=PreviousUSTravel
+    exclude_patterns: Day, Month, Year, State, Los_cd, Natl
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_contact.aspx?node=AddressPhone
+    exclude_patterns: Day, Month, Year, State, Los, Country, Socialmedia
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/Passport_Visa_Info.aspx?node=PptVisa
+    exclude_patterns: Day, Month, Year, State, Country, Cntry, Natl, Language, Purpose
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_uscontact.aspx?node=USContact
+    exclude_patterns: Day, Month, Year, State, Country, Cntry, Natl, Language, Purpose
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_family1.aspx?node=Relatives
+    exclude_patterns: Day, Month, Year, State, Country, Language, Cntry, dlUSRelatives
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_workeducation1.aspx?node=WorkEducation1
+    exclude_patterns: Day, Month, Year, State, Country, Language
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_workeducation2.aspx?node=WorkEducation2
+    exclude_patterns: Day, Month, Year, State, Country, Cntry, Natl, Language, dropdownlist2
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_workeducation3.aspx?node=WorkEducation3
+    exclude_patterns: Day, Month, Year, State, ddlCountries, Cntry, Natl, Language
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_securityandbackground1.aspx?node=SecurityandBackground1
+    exclude_patterns: Day, Month, Year, State, Country, Language
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_securityandbackground2.aspx?node=SecurityandBackground2    
+    exclude_patterns: Day, Month, Year, State, Country, Language
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_securityandbackground3.aspx?node=SecurityandBackground3
+    exclude_patterns: Day, Month, Year, State, Country, Language
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_securityandbackground4.aspx?node=SecurityandBackground4
+    exclude_patterns: Day, Month, Year, State, Country, Language
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_securityandbackground5.aspx?node=SecurityandBackground5
+    exclude_patterns: Day, Month, Year, State, Country, Language
+
+  - target_page_url: https://ceac.state.gov/GenNIV/General/complete/complete_family2.aspx?node=Spouse
+    exclude_patterns: Day, Month, Year, State, Country, Language, Cntry, SpouseNat
+
+  - target_page_url: https://ceac.state.gov/GenNIV/Common/SessionTimedOut.aspx
+    exclude_patterns: Day, Month, Year, State, Country, Language, Cntry, SpouseNat

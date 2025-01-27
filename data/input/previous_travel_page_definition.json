@@ -1,0 +1,457 @@
+{
+  "fields": {
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_TRAVEL_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_TRAVEL_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_TRAVEL_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_TRAVEL_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_helppopPREV_US_VISIT_DTEMonth": {
+      "type": "image",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$dtlPREV_US_VISIT$ctl00$helppopPREV_US_VISIT_DTEMonth",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_tbxPREV_US_VISIT_DTEYear": {
+      "type": "text",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$dtlPREV_US_VISIT$ctl00$tbxPREV_US_VISIT_DTEYear",
+      "label": "Date Arrived",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_helppopPREV_US_VISIT_LOS": {
+      "type": "image",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$dtlPREV_US_VISIT$ctl00$helppopPREV_US_VISIT_LOS",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_tbxPREV_US_VISIT_LOS": {
+      "type": "text",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$dtlPREV_US_VISIT$ctl00$tbxPREV_US_VISIT_LOS",
+      "label": "Length of Stay",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_DRIVER_LIC_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_DRIVER_LIC_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_DRIVER_LIC_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_DRIVER_LIC_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_dtlUS_DRIVER_LICENSE_ctl00_tbxUS_DRIVER_LICENSE": {
+      "type": "text",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$dtlUS_DRIVER_LICENSE$ctl00$tbxUS_DRIVER_LICENSE",
+      "label": "Driver's License Number",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_dtlUS_DRIVER_LICENSE_ctl00_cbxUS_DRIVER_LICENSE_NA": {
+      "type": "checkbox",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$dtlUS_DRIVER_LICENSE$ctl00$cbxUS_DRIVER_LICENSE_NA",
+      "label": "Do Not Know",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_helppopPREV_VISA_ISSUED_DTEMonth": {
+      "type": "image",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$helppopPREV_VISA_ISSUED_DTEMonth",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_ISSUED_DTEYear": {
+      "type": "text",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$tbxPREV_VISA_ISSUED_DTEYear",
+      "label": null,
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_FOIL_NUMBER": {
+      "type": "text",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$tbxPREV_VISA_FOIL_NUMBER",
+      "label": "Visa Number",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_cbxPREV_VISA_FOIL_NUMBER_NA": {
+      "type": "checkbox",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$cbxPREV_VISA_FOIL_NUMBER_NA",
+      "label": "Do Not Know",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_TYPE_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_SAME_TYPE_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_TYPE_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_SAME_TYPE_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_CNTRY_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_SAME_CNTRY_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_CNTRY_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_SAME_CNTRY_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_TEN_PRINT_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_TEN_PRINT_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_TEN_PRINT_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_TEN_PRINT_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_LOST_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_LOST_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_LOST_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_LOST_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_LOST_YEAR": {
+      "type": "text",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$tbxPREV_VISA_LOST_YEAR",
+      "label": "Year",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_LOST_EXPL": {
+      "type": "textarea",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$tbxPREV_VISA_LOST_EXPL",
+      "label": "Explain",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_CANCELLED_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_CANCELLED_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_CANCELLED_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_CANCELLED_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_CANCELLED_EXPL": {
+      "type": "textarea",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$tbxPREV_VISA_CANCELLED_EXPL",
+      "label": "Explain",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_REFUSED_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_REFUSED_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_REFUSED_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_REFUSED_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_REFUSED_EXPL": {
+      "type": "textarea",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$tbxPREV_VISA_REFUSED_EXPL",
+      "label": "Explain",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblVWP_DENIAL_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblVWP_DENIAL_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblVWP_DENIAL_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblVWP_DENIAL_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_tbxVWP_DENIAL_EXPL": {
+      "type": "textarea",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$tbxVWP_DENIAL_EXPL",
+      "label": "Explain",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblIV_PETITION_IND_0": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblIV_PETITION_IND",
+      "label": "Yes",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblIV_PETITION_IND_1": {
+      "type": "radio",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblIV_PETITION_IND",
+      "label": "No",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_tbxIV_PETITION_EXPL": {
+      "type": "textarea",
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$tbxIV_PETITION_EXPL",
+      "label": "Explain",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_UpdateButton1": {
+      "type": "submit",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_UpdateButton2": {
+      "type": "submit",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_SiteContentPlaceHolder_UpdateButton3": {
+      "type": "submit",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": true
+    },
+    "ctl00_btnModalHolder": {
+      "type": "submit",
+      "name": "ctl00$btnModalHolder",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": false
+    },
+    "ctl00_btnWarning": {
+      "type": "submit",
+      "name": "ctl00$btnWarning",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": false
+    },
+    "ctl00_btnRecover": {
+      "type": "submit",
+      "name": "ctl00$btnRecover",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": false
+    },
+    "ctl00_btnOkWarning": {
+      "type": "submit",
+      "name": "ctl00$btnOkWarning",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": false
+    },
+    "": {
+      "type": "button",
+      "name": "",
+      "label": null,
+      "required": false,
+      "options": null,
+      "visible": false
+    },
+    "ctl00_btnCancelWarning": {
+      "type": "submit",
+      "name": "ctl00$btnCancelWarning",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": false
+    },
+    "ctl00_btnClientExit": {
+      "type": "button",
+      "name": "ctl00$btnClientExit",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": false
+    },
+    "ctl00_btnCancelExitWarning": {
+      "type": "submit",
+      "name": "ctl00$btnCancelExitWarning",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": false
+    },
+    "ctl00_ucNavigateOption_ucNavPanel_ctl01_btnReviewPage": {
+      "type": "submit",
+      "name": "ctl00$ucNavigateOption$ucNavPanel$ctl01$btnReviewPage",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": false
+    },
+    "ctl00_ucNavigateOption_ucNavPanel_ctl01_btnNextPageComplete": {
+      "type": "submit",
+      "name": "ctl00$ucNavigateOption$ucNavPanel$ctl01$btnNextPageComplete",
+      "label": "",
+      "required": false,
+      "options": null,
+      "visible": false
+    }
+  },
+  "dependencies": {
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_IND_1.N": {
+      "shows": [],
+      "hides": [
+        "ctl00_SiteContentPlaceHolder_FormView1_cbxPREV_VISA_FOIL_NUMBER_NA",
+        "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_CANCELLED_EXPL",
+        "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_LOST_IND_0",
+        "ctl00_SiteContentPlaceHolder_FormView1_helppopPREV_VISA_ISSUED_DTEMonth",
+        "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_TYPE_IND_0",
+        "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_LOST_YEAR",
+        "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_TEN_PRINT_IND_0",
+        "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_CNTRY_IND_1",
+        "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_CANCELLED_IND_1",
+        "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_FOIL_NUMBER",
+        "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_LOST_EXPL",
+        "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_ISSUED_DTEYear",
+        "ctl00_SiteContentPlaceHolder_FormView1_ddlPREV_VISA_ISSUED_DTEDay",
+        "ctl00_SiteContentPlaceHolder_FormView1_ddlPREV_VISA_ISSUED_DTEMonth",
+        "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_TEN_PRINT_IND_1",
+        "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_CNTRY_IND_0",
+        "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_CANCELLED_IND_0",
+        "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_TYPE_IND_1",
+        "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_LOST_IND_1"
+      ]
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_REFUSED_IND_1.N": {
+      "shows": [],
+      "hides": [
+        "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_REFUSED_EXPL"
+      ]
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblVWP_DENIAL_IND_1.N": {
+      "shows": [],
+      "hides": [
+        "ctl00_SiteContentPlaceHolder_FormView1_tbxVWP_DENIAL_EXPL"
+      ]
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblIV_PETITION_IND_1.N": {
+      "shows": [],
+      "hides": [
+        "ctl00_SiteContentPlaceHolder_FormView1_tbxIV_PETITION_EXPL"
+      ]
+    }
+  },
+  "buttons": []
+}

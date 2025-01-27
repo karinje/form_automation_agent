@@ -1,0 +1,178 @@
+{
+  "fields": [
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblChildCustody",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblChildCustody_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblChildCustody_1"
+      },
+      "text_phrase": "Have you ever withheld custody of a U.S. citizen child outside the United States from a person granted legal custody by a U.S. court?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblVotingViolation",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblVotingViolation_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblVotingViolation_1"
+      },
+      "text_phrase": "Have you voted in the United States in violation of any law or regulation?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblRenounceExp",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblRenounceExp_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblRenounceExp_1"
+      },
+      "text_phrase": "Have you ever renounced United States citizenship for the purposes of avoiding taxation?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblAttWoReimb",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblAttWoReimb_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAttWoReimb_1"
+      },
+      "text_phrase": "Have you attended a public elementary school on student (F) status or a public secondary school after November 30, 1996 without reimbursing the school?",
+      "parent_text_phrase": "Yes"
+    }
+  ],
+  "dependencies": {
+    "ctl00_SiteContentPlaceHolder_FormView1_rblChildCustody_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxChildCustody",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblChildCustody_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblVotingViolation_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxVotingViolation",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblVotingViolation_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblRenounceExp_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxRenounceExp",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblRenounceExp_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblAttWoReimb_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAttWoReimb",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblAttWoReimb_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    }
+  },
+  "buttons": [
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "type": "submit",
+      "value": "Back: Security/Background Part 4"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "type": "submit",
+      "value": "Save"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "type": "submit",
+      "value": "Next: PHOTO"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+application_location:
+  post: ""  # Example: "INDIA - HYDERABAD"
+
+personal_information:
+  surname: ""
+  given_name: ""
+  full_name_native_alphabet: ""  # Leave empty if not applicable
+  other_names_used: []  # List of other names used
+  telecode_name: false  # true if you have a telecode name
+  gender: ""  # M or F
+  marital_status: ""  # S=Single, M=Married, D=Divorced, etc.
+  date_of_birth: ""  # YYYY-MM-DD format
+  place_of_birth:
+    city: ""
+    state_province: ""  # Leave empty if not applicable
+    country: ""  # Country code
+
+passport_information:
+  passport_number: ""
+  passport_book_number: ""  # If applicable
+  issuance_date: ""
+  expiration_date: ""
+  issuing_country: ""
+  lost_stolen_passports: []
+
+contact_information:
+  home_address:
+    street: ""
+    city: ""
+    state_province: ""
+    postal_code: ""
+    country: ""
+  phone_numbers:
+    home: ""
+    mobile: ""
+    work: ""
+  email: ""
+
+travel_information:
+  purpose_of_trip: ""
+  intended_arrival_date: ""
+  intended_length_of_stay: ""
+  travel_companions: []
+  specific_travel_plans:
+    locations: []
+    contacts: []
+
+employment_information:
+  current_employer:
+    name: ""
+    address: ""
+    phone: ""
+    start_date: ""
+    monthly_income: ""
+    job_title: ""
+    duties: ""
+
+education_information:
+  highest_level: ""
+  institutions:
+    - name: ""
+      address: ""
+      course_of_study: ""
+      start_date: ""
+      end_date: ""
+
+security_background:
+  criminal_history: []
+  visa_denials: []
+  immigration_violations: []
+
+security_question:
+  question: ""
+  answer: ""
+
+photos:
+  passport_photo_path: "" 

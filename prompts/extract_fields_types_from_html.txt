@@ -1,0 +1,32 @@
+From the input HTML, extract all the fields that have to be filled in and their types. 
+Don't truncate output, provide all the fields/values. The output should parse the html to extract the following:
+
+- The field name [such as #ctl00_SiteContentPlaceHolder_ucLocation_ddlLocation]
+- The field type [such as dropdown, input text, checkbox, etc.]
+- The field value [such as the value of the dropdown, the text in the input field, the value of the checkbox, etc.]
+- The final button on the page such as submit, next, save etc.. that would typically send to the next page. It shoudl stored with a key called final_buttons.
+- For dropdown, provide the options in the dropdown. But values should be  visible text ("English") instead of the value of the option ("en-US"). 
+- For radio button, provide the options in the radio button. But also get the button_ids for each of the options. Sample below: 
+{
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames",
+      "type": "radio",
+      "value": ["Y", "N"],
+      "labels": ["Yes", "No"],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames_1"
+      }
+}
+
+
+The output should be a JSON object with the following structure:
+
+```json
+{
+  "fields": [{"name": "field_name", "type": "field_type", "value": "field_value"}]
+}
+```
+
+It should be stored in a file called {input_file_name}.json in the json_files folder.
+
+This file will be used to fill in the fields in the form later through the form_handler.py and form_mapping.py files. It will also be used provide a sample of the data that will be used to fill in the form in test_application.yaml.

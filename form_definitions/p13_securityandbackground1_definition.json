@@ -1,0 +1,140 @@
+{
+  "fields": [
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblDisease",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblDisease_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblDisease_1"
+      },
+      "text_phrase": "Do you have a communicable disease of public health significance?  (Communicable diseases of public significance include chancroid, gonorrhea, granuloma inguinale, infectious leprosy, lymphogranuloma venereum, infectious stage syphilis, active tuberculosis, and other diseases as determined by the Department of Health and Human Services.)",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblDisorder",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblDisorder_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblDisorder_1"
+      },
+      "text_phrase": "Do you have a mental or physical disorder that poses or is likely to pose a threat\n                                to the safety or welfare of yourself or others?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblDruguser",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblDruguser_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblDruguser_1"
+      },
+      "text_phrase": "Are you or have you ever been a drug abuser or addict?",
+      "parent_text_phrase": "Yes"
+    }
+  ],
+  "dependencies": {
+    "ctl00_SiteContentPlaceHolder_FormView1_rblDisease_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDisease",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblDisease_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblDisorder_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDisorder",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblDisorder_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblDruguser_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDruguser",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblDruguser_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    }
+  },
+  "buttons": [
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "type": "submit",
+      "value": "Back: Work/Education/Training"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "type": "submit",
+      "value": "Save"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "type": "submit",
+      "value": "Next: Security/Background Part 2"
+    }
+  ]
+}

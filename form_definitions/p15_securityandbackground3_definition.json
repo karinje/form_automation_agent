@@ -1,0 +1,482 @@
+{
+  "fields": [
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblIllegalActivity",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblIllegalActivity_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblIllegalActivity_1"
+      },
+      "text_phrase": "Do you seek to engage in espionage, sabotage, export control violations, or any other illegal activity while in the United States?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTerroristActivity",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristActivity_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristActivity_1"
+      },
+      "text_phrase": "Do you seek to engage in terrorist activities while in the United States or have you ever engaged in terrorist activities?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTerroristSupport",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristSupport_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristSupport_1"
+      },
+      "text_phrase": "Have you ever or do you intend to provide financial assistance or other support to terrorists or terrorist organizations?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTerroristOrg",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristOrg_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristOrg_1"
+      },
+      "text_phrase": "Are you a member or representative of a terrorist organization?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTerroristRel",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristRel_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristRel_1"
+      },
+      "text_phrase": "Are you the spouse, son, or daughter of an individual who has engaged in terrorist activity, including providing financial assistance or other support to terrorists or terrorist organizations, in the last five years?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblGenocide",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblGenocide_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblGenocide_1"
+      },
+      "text_phrase": "Have you ever ordered, incited, committed, assisted, or otherwise participated in genocide?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTorture",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblTorture_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTorture_1"
+      },
+      "text_phrase": "Have you ever committed, ordered, incited, assisted, or otherwise participated in torture?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblExViolence",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblExViolence_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblExViolence_1"
+      },
+      "text_phrase": "Have you committed, ordered, incited, assisted, or otherwise participated in extrajudicial killings, political killings, or other acts of violence?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblChildSoldier",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblChildSoldier_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblChildSoldier_1"
+      },
+      "text_phrase": "Have you ever engaged in the recruitment or the use of child soldiers?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblReligiousFreedom",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblReligiousFreedom_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblReligiousFreedom_1"
+      },
+      "text_phrase": "Have you, while serving as a government official, been responsible for or directly carried out, at any time, particularly severe violations of religious freedom?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPopulationControls",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblPopulationControls_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPopulationControls_1"
+      },
+      "text_phrase": "Have you ever been directly involved in the establishment or enforcement of population controls forcing a woman to undergo an abortion against her free choice or a man or a woman to undergo sterilization against his or her free will?",
+      "parent_text_phrase": "Yes"
+    },
+    {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTransplant",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblTransplant_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTransplant_1"
+      },
+      "text_phrase": "Have you ever been directly involved in the coercive transplantation of human organs or bodily tissue?",
+      "parent_text_phrase": "Yes"
+    }
+  ],
+  "dependencies": {
+    "ctl00_SiteContentPlaceHolder_FormView1_rblIllegalActivity_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxIllegalActivity",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblIllegalActivity_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristActivity_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxTerroristActivity",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristActivity_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristSupport_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxTerroristSupport",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristSupport_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristOrg_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxTerroristOrg",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristOrg_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristRel_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxTerroristRel",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristRel_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblGenocide_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxGenocide",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblGenocide_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTorture_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxTorture",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTorture_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblExViolence_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxExViolence",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblExViolence_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblChildSoldier_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxChildSoldier",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblChildSoldier_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblReligiousFreedom_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxReligiousFreedom",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblReligiousFreedom_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPopulationControls_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPopulationControls",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPopulationControls_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTransplant_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxTransplant",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblTransplant_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    }
+  },
+  "buttons": [
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "type": "submit",
+      "value": "Back: Security/Background Part 2"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "type": "submit",
+      "value": "Save"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
+      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "type": "submit",
+      "value": "Next: Security/Background Part 4"
+    }
+  ]
+}

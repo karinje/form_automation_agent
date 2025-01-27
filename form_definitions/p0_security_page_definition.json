@@ -1,0 +1,48 @@
+{
+  "fields": [
+    {
+      "name": "ctl00_SiteContentPlaceHolder_chkbxPrivacyAct",
+      "type": "checkbox",
+      "value": "true",
+      "label": "I AGREE"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_ddlQuestions",
+      "type": "dropdown",
+      "value": [
+        "What is the given name of your mother's mother?",
+        "What is the given name of your father's father?",
+        "What is your maternal grandmother's maiden name?",
+        "What name did your family used to call you when you were a child?",
+        "In what city did you meet your spouse/significant other?",
+        "What is the name of your favorite childhood friend?",
+        "What street did you live on when you were 8 years old?",
+        "What is your oldest sibling's birthday month and year? (e.g., January 1900)",
+        "What is the middle name of your youngest child?",
+        "What is your oldest sibling's middle name?",
+        "What school did you attend when you were 11 years old?",
+        "What was your home phone number when you were a child?",
+        "What is your oldest cousin's first and last name?",
+        "What was the name of your favorite stuffed animal or toy?",
+        "In what city or town did your mother and father meet?",
+        "What was the last name of your favorite teacher?",
+        "In what city does your nearest sibling live?",
+        "What is your youngest sibling's birthday month and year? (e.g., January 1900)",
+        "In what city or town was your first job?",
+        "What was the name of your first boyfriend or girlfriend?"
+      ]
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_txtAnswer",
+      "type": "text",
+      "maxlength": "50"
+    }
+  ],
+  "buttons": [
+    {
+      "id": "ctl00_SiteContentPlaceHolder_btnContinue",
+      "type": "submit",
+      "value": "Continue"
+    }
+  ]
+} 

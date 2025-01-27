@@ -1,0 +1,1633 @@
+{
+  "A": {
+    "text": "FOREIGN GOVERNMENT OFFICIAL (A)",
+    "second_dropdown_options": {
+      "A1-AM": {
+        "text": "AMBASSADOR OR PUBLIC MINISTER (A1)",
+        "text_fields": []
+      },
+      "A1-CH": {
+        "text": "CHILD OF AN A1 (A1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "A1-DP": {
+        "text": "CAREER DIPLOMAT/CONSULAR OFFICER (A1)",
+        "text_fields": []
+      },
+      "A1-SP": {
+        "text": "SPOUSE OF AN A1 (A1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "A2-CH": {
+        "text": "CHILD OF AN A2 (A2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "A2-EM": {
+        "text": "FOREIGN OFFICIAL/EMPLOYEE (A2)",
+        "text_fields": []
+      },
+      "A2-SP": {
+        "text": "SPOUSE OF AN A2 (A2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "A3-CH": {
+        "text": "CHILD OF AN A3 (A3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "A3-EM": {
+        "text": "PERSONAL EMP. OF AN A1 OR A2 (A3)",
+        "text_fields": []
+      },
+      "A3-SP": {
+        "text": "SPOUSE OF AN A3 (A3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "B": {
+    "text": "TEMP. BUSINESS OR PLEASURE VISITOR (B)",
+    "second_dropdown_options": {
+      "B1-B2": {
+        "text": "BUSINESS OR TOURISM (TEMPORARY VISITOR) (B1/B2)",
+        "text_fields": []
+      },
+      "B1-CF": {
+        "text": "BUSINESS/CONFERENCE (B1)",
+        "text_fields": []
+      },
+      "B2-TM": {
+        "text": "TOURISM/MEDICAL TREATMENT (B2)",
+        "text_fields": []
+      }
+    }
+  },
+  "C": {
+    "text": "ALIEN IN TRANSIT (C)",
+    "second_dropdown_options": {
+      "C1-D": {
+        "text": "CREWMEMBER IN TRANSIT (C1/D)",
+        "text_fields": []
+      },
+      "C1-TR": {
+        "text": "TRANSIT (C1)",
+        "text_fields": []
+      },
+      "C2-UN": {
+        "text": "TRANSIT TO U.N. HEADQUARTERS (C2)",
+        "text_fields": []
+      },
+      "C3-CH": {
+        "text": "CHILD OF A C3 (C3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "C3-EM": {
+        "text": "PERSONAL EMP. OF A C3 (C3)",
+        "text_fields": []
+      },
+      "C3-FR": {
+        "text": "FOREIGN OFFICIAL IN TRANSIT (C3)",
+        "text_fields": []
+      },
+      "C3-SP": {
+        "text": "SPOUSE OF A C3 (C3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "C4-NO": {
+        "text": "NONCITIZEN IN TRANSIT LIGHTERING OP. (C4)",
+        "text_fields": []
+      },
+      "C4-D3": {
+        "text": "LIGHTERING CREWMEMBER IN TRANSIT (C4/D3)",
+        "text_fields": []
+      }
+    }
+  },
+  "CNMI": {
+    "text": "CNMI WORKER OR INVESTOR (CW/E2C)",
+    "second_dropdown_options": {
+      "CW1-CW1": {
+        "text": "CNMI TEMPORARY WORKER (CW1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "CW2-CH": {
+        "text": "CHILD OF CW1 (CW2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "CW2-SP": {
+        "text": "SPOUSE OF CW1 (CW2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "E2C-E2C": {
+        "text": "CNMI LONG TERM INVESTOR (E2C)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "D": {
+    "text": "CREWMEMBER (D)",
+    "second_dropdown_options": {
+      "D-D": {
+        "text": "CREWMEMBER (D)",
+        "text_fields": []
+      },
+      "D3-LI": {
+        "text": "LIGHTERING CREWMEMBER (D3)",
+        "text_fields": []
+      }
+    }
+  },
+  "E": {
+    "text": "TREATY TRADER OR INVESTOR (E)",
+    "second_dropdown_options": {
+      "E1-CH": {
+        "text": "CHILD OF AN E1 (E1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipalAppCompany",
+            "label": "Principal Applicant's Company Name",
+            "required": false
+          }
+        ]
+      },
+      "E1-EX": {
+        "text": "EXECUTIVE/MGR/ESSENTIAL EMP (E1)",
+        "text_fields": []
+      },
+      "E1-SP": {
+        "text": "SPOUSE OF AN E1 (E1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipalAppCompany",
+            "label": "Principal Applicant's Company Name",
+            "required": false
+          }
+        ]
+      },
+      "E1-TR": {
+        "text": "TREATY TRADER (E1)",
+        "text_fields": []
+      },
+      "E2-CH": {
+        "text": "CHILD OF AN E2 (E2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipalAppCompany",
+            "label": "Principal Applicant's Company Name",
+            "required": false
+          }
+        ]
+      },
+      "E2-EX": {
+        "text": "EXECUTIVE/MGR/ESSENTIAL EMP (E2)",
+        "text_fields": []
+      },
+      "E2-SP": {
+        "text": "SPOUSE OF AN E2 (E2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipalAppCompany",
+            "label": "Principal Applicant's Company Name",
+            "required": false
+          }
+        ]
+      },
+      "E2-TR": {
+        "text": "TREATY INVESTOR (E2)",
+        "text_fields": []
+      },
+      "E3D-CH": {
+        "text": "CHILD OF AN E3 (E3D)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "E3D-SP": {
+        "text": "SPOUSE OF AN E3 (E3D)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "F": {
+    "text": "ACADEMIC OR LANGUAGE STUDENT (F)",
+    "second_dropdown_options": {
+      "F1-F1": {
+        "text": "STUDENT (F1)",
+        "text_fields": []
+      },
+      "F2-CH": {
+        "text": "CHILD OF AN F1 (F2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "F2-SP": {
+        "text": "SPOUSE OF AN F1 (F2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "G": {
+    "text": "INTERNATIONAL ORGANIZATION REP./EMP. (G)",
+    "second_dropdown_options": {
+      "G1-CH": {
+        "text": "CHILD OF A G1 (G1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "G1-G1": {
+        "text": "PRINCIPAL REPRESENTATIVE (G1)",
+        "text_fields": []
+      },
+      "G1-SP": {
+        "text": "SPOUSE OF A G1 (G1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "G1-ST": {
+        "text": "STAFF OF PRINCIPAL REPRESENTATIVE (G1)",
+        "text_fields": []
+      },
+      "G2-CH": {
+        "text": "CHILD OF A G2 (G2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "G2-RP": {
+        "text": "REPRESENTATIVE (G2)",
+        "text_fields": []
+      },
+      "G2-SP": {
+        "text": "SPOUSE OF A G2 (G2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "G3-CH": {
+        "text": "CHILD OF A G3 (G3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "G3-RP": {
+        "text": "NON-RECOGNIZED/-MEMBER COUNTRY REP(G3)",
+        "text_fields": []
+      },
+      "G3-SP": {
+        "text": "SPOUSE OF A G3 (G3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "G4-CH": {
+        "text": "CHILD OF AN G4 (G4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "G4-G4": {
+        "text": "INTERNATIONAL ORG. EMPLOYEE (G4)",
+        "text_fields": []
+      },
+      "G4-SP": {
+        "text": "SPOUSE OF A G4 (G4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "G5-CH": {
+        "text": "CHILD OF A G5 (G5)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "G5-EM": {
+        "text": "PERSONAL EMP. OF A G1, 2, 3, OR 4 (G5)",
+        "text_fields": []
+      },
+      "G5-SP": {
+        "text": "SPOUSE OF A G5 (G5)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "H": {
+    "text": "TEMPORARY WORKER (H)",
+    "second_dropdown_options": {
+      "H1B-H1B": {
+        "text": "SPECIALTY OCCUPATION (H1B)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "H1B1-CHL": {
+        "text": "CHILEAN SPEC. OCCUPATION (H1B1)",
+        "text_fields": []
+      },
+      "H1B1-SGP": {
+        "text": "SINGAPOREAN SPEC. OCCUPATION (H1B1)",
+        "text_fields": []
+      },
+      "H1C-NR": {
+        "text": "NURSE IN SHORTAGE AREA (H1C)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "H2A-AG": {
+        "text": "AGRICULTURAL WORKER (H2A)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "H2B-NA": {
+        "text": "NONAGRICULTURAL WORKER (H2B)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "H3-TR": {
+        "text": "TRAINEE (H3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "H4-CH": {
+        "text": "CHILD OF AN H (H4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "H4-SP": {
+        "text": "SPOUSE OF AN H (H4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "I": {
+    "text": "FOREIGN MEDIA REPRESENTATIVE (I)",
+    "second_dropdown_options": {
+      "I-CH": {
+        "text": "CHILD OF AN I (I)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "I-FR": {
+        "text": "FOREIGN MEDIA REPRESENTATIVE (I)",
+        "text_fields": []
+      },
+      "I-SP": {
+        "text": "SPOUSE OF AN I (I)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "J": {
+    "text": "EXCHANGE VISITOR (J)",
+    "second_dropdown_options": {
+      "J1-J1": {
+        "text": "EXCHANGE VISITOR (J1)",
+        "text_fields": []
+      },
+      "J2-CH": {
+        "text": "CHILD OF A J1 (J2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "J2-SP": {
+        "text": "SPOUSE OF A J1 (J2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "K": {
+    "text": "FIANCÉ(E) OR SPOUSE OF A U.S. CITIZEN (K)",
+    "second_dropdown_options": {
+      "K1-K1": {
+        "text": "FIANCÉ(E) OF A U.S. CITIZEN (K1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "K2-K2": {
+        "text": "CHILD OF A K1 (K2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "K3-K3": {
+        "text": "SPOUSE OF A U.S. CITIZEN (K3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "K4-K4": {
+        "text": "CHILD OF A K3 (K4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "L": {
+    "text": "INTRACOMPANY TRANSFEREE (L)",
+    "second_dropdown_options": {
+      "L1-L1": {
+        "text": "INTRACOMPANY TRANSFEREE (L1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "L2-CH": {
+        "text": "CHILD OF A L1 (L2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "L2-SP": {
+        "text": "SPOUSE OF A L1 (L2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "M": {
+    "text": "VOCATIONAL/NONACADEMIC STUDENT (M)",
+    "second_dropdown_options": {
+      "M1-M1": {
+        "text": "STUDENT (M1)",
+        "text_fields": []
+      },
+      "M2-CH": {
+        "text": "CHILD OF M1 (M2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "M2-SP": {
+        "text": "SPOUSE OF M1 (M2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "M3-M3": {
+        "text": "COMMUTER STUDENT (M3)",
+        "text_fields": []
+      }
+    }
+  },
+  "N": {
+    "text": "OTHER (N)",
+    "second_dropdown_options": {
+      "N8-CH": {
+        "text": "CHILD OF A N8 (N9)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "N8-N8": {
+        "text": "PARENT OF CERTAIN SPECIAL IMMIGRANT (N8)",
+        "text_fields": []
+      }
+    }
+  },
+  "NATO": {
+    "text": "NATO STAFF (NATO)",
+    "second_dropdown_options": {
+      "NATO1-CH": {
+        "text": "CHILD OF NATO 1 (NATO1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO1-PR": {
+        "text": "PRINCIPAL REPRESENTATIVE (NATO1)",
+        "text_fields": []
+      },
+      "NATO1-SP": {
+        "text": "SPOUSE OF NATO1 (NATO1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO2-CH": {
+        "text": "CHILD OF NATO2 (NATO2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO2-RP": {
+        "text": "REPRESENTATIVE (NATO2)",
+        "text_fields": []
+      },
+      "NATO2-SP": {
+        "text": "SPOUSE OF NATO2 (NATO2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO3-CH": {
+        "text": "CHILD OF NATO3 (NATO3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO3-SP": {
+        "text": "SPOUSE OF NATO3 (NATO3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO3-ST": {
+        "text": "CLERICAL STAFF (NATO3)",
+        "text_fields": []
+      },
+      "NATO4-CH": {
+        "text": "CHILD OF NATO4 (NATO4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO4-OF": {
+        "text": "OFFICIAL (NATO4)",
+        "text_fields": []
+      },
+      "NATO4-SP": {
+        "text": "SPOUSE OF NATO4 (NATO4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO5-CH": {
+        "text": "CHILD OF NATO5 (NATO5)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO5-EX": {
+        "text": "EXPERT (NATO5)",
+        "text_fields": []
+      },
+      "NATO5-SP": {
+        "text": "SPOUSE OF NATO5 (NATO5)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO6-CH": {
+        "text": "CHILD OF NATO6 (NATO6)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO6-SP": {
+        "text": "SPOUSE OF NATO6 (NATO6)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO6-ST": {
+        "text": "CIVILIAN STAFF (NATO6)",
+        "text_fields": []
+      },
+      "NATO7-CH": {
+        "text": "CHILD OF NATO7 (NATO7)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "NATO7-EM": {
+        "text": "PERSONAL EMP. OF NATO1-NATO6 (NATO7)",
+        "text_fields": []
+      },
+      "NATO7-SP": {
+        "text": "SPOUSE OF NATO7 (NATO7)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "P": {
+    "text": "INTERNATIONALLY RECOGNIZED ALIEN (P)",
+    "second_dropdown_options": {
+      "P1-P1": {
+        "text": "INTERNATIONALLY RECOGNIZED ALIEN (P1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "P2-P2": {
+        "text": "ARTIST/ENTERTAINER EXCHANGE PROG. (P2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "P3-P3": {
+        "text": "ARTIST/ENTERTAINER IN CULTURAL PROG. (P3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "P4-CH": {
+        "text": "CHILD OF P1, P2 OR P3 (P4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "P4-SP": {
+        "text": "SPOUSE OF P1, P2 OR P3 (P4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "Q": {
+    "text": "CULTURAL EXCHANGE VISITOR (Q)",
+    "second_dropdown_options": {
+      "Q1-Q1": {
+        "text": "CULTURAL EXCHANGE VISITOR (Q1)",
+        "text_fields": []
+      }
+    }
+  },
+  "R": {
+    "text": "RELIGIOUS WORKER (R)",
+    "second_dropdown_options": {
+      "R1-R1": {
+        "text": "RELIGIOUS WORKER (R1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "R2-CH": {
+        "text": "CHILD OF R1 (R2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "R2-SP": {
+        "text": "SPOUSE OF R1 (R2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "S": {
+    "text": "INFORMANT OR WITNESS (S)",
+    "second_dropdown_options": {
+      "S7-S7": {
+        "text": "FAMILY MEMBER OF AN INFORMANT (S7)",
+        "text_fields": []
+      }
+    }
+  },
+  "T": {
+    "text": "VICTIM OF TRAFFICKING (T)",
+    "second_dropdown_options": {
+      "T1-T1": {
+        "text": "VICTIM OF TRAFFICKING (T1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "T2-SP": {
+        "text": "SPOUSE OF T1 (T2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "T3-CH": {
+        "text": "CHILD OF T1 (T3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "T4-PR": {
+        "text": "PARENT OF T1 (T4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "T5-SB": {
+        "text": "SIBLING OF T1 (T5)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "T6-CB": {
+        "text": "ADULT/MINOR CHILD OF A DERIV BEN OF A T1 (T6)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "TD/TN": {
+    "text": "NAFTA PROFESSIONAL (TD/TN)",
+    "second_dropdown_options": {
+      "TD-CH": {
+        "text": "CHILD OF TN (TD)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      },
+      "TD-SP": {
+        "text": "SPOUSE OF TN (TD)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "U": {
+    "text": "VICTIM OF CRIMINAL ACTIVITY (U)",
+    "second_dropdown_options": {
+      "U1-U1": {
+        "text": "VICTIM OF CRIME (U1)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "U2-SP": {
+        "text": "SPOUSE OF U1 (U2)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "U3-CH": {
+        "text": "CHILD OF U1 (U3)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "U4-PR": {
+        "text": "PARENT OF U1 (U4)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      },
+      "U5-SB": {
+        "text": "SIBLING OF U1 (U5)",
+        "text_fields": [
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppSurname",
+            "label": "Surnames",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
+            "label": "Given Names",
+            "required": false
+          },
+          {
+            "id": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
+            "label": "Application Receipt/Petition Number",
+            "required": false
+          }
+        ]
+      }
+    }
+  },
+  "PAROLE-BEN": {
+    "text": "PAROLE BENEFICIARY (PARCIS)",
+    "second_dropdown_options": {
+      "PRL-PARCIS": {
+        "text": "PARCIS (USCIS APPROVED PAROLE)",
+        "text_fields": []
+      }
+    }
+  }
+}

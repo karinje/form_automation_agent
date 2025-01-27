@@ -1,0 +1,3 @@
+configs:
+  - target_page_url: https://ceac.state.gov/GenNIV/Common/SessionTimedOut.aspx
+    exclude_patterns: Day, Month, Year, State, Country, Language, Cntry, SpouseNat
