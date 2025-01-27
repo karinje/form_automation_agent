@@ -43,3 +43,4 @@ data/input/*.yml
 
 # Source files
 source_files/
+node_modules/
