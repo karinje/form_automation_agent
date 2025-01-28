@@ -45,17 +45,22 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
     
     // Look through all dependencies to find ones related to this parent
     Object.entries(formDefinition.dependencies || {}).forEach(([depKey, dep]) => {
-      // Check if this dependency key is related to our parent field
-      if (depKey.startsWith(parentFieldName)) {
+      // Check if this dependency key starts with the base parent field name
+      // Convert ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_TRAVEL_IND to 
+      // ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_TRAVEL_IND
+      const baseFieldName = parentFieldName.replace(/\$/g, '_')
+      if (depKey.startsWith(baseFieldName)) {
         // Get all fields from this dependency branch
-        const dependentFields = getAllDependentFields(dep)
-        dependentFields.forEach(field => fieldsToCleanup.add(field))
+        if (dep.shows) {
+          dep.shows.forEach(field => fieldsToCleanup.add(field.name))
+        }
         
         // If this dependency has nested dependencies, get their fields too
         if (dep.dependencies) {
           Object.values(dep.dependencies).forEach(nestedDep => {
-            const nestedFields = getAllDependentFields(nestedDep)
-            nestedFields.forEach(field => fieldsToCleanup.add(field))
+            if (nestedDep.shows) {
+              nestedDep.shows.forEach(field => fieldsToCleanup.add(field.name))
+            }
           })
         }
       }
@@ -82,6 +87,7 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
 
   const handleDependencyChange = (key: string, parentField?: FormFieldType) => {
     console.log('Checking dependencies for key:', key)
+    console.log('Parent field name:', parentField?.name)
     
     if (parentField) {
       const newVisibleFields = new Set(visibleFields)
@@ -89,7 +95,7 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
 
       // First, clean up ALL fields related to this parent
       const fieldsToCleanup = getFieldsToCleanup(parentField.name)
-      console.log('Cleaning up fields:', fieldsToCleanup)
+      console.log('Fields to cleanup:', Array.from(fieldsToCleanup))
       
       // Remove all dependent fields first
       fieldsToCleanup.forEach(fieldName => {
@@ -101,12 +107,12 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
         }
       })
 
-      // For N case, we just want to clean up and not add any new fields
+      // Find dependency for new selection
       const dependency = findDependency(formDefinition.dependencies, key)
       console.log('Found dependency for new selection:', dependency)
 
       // Only add new fields if there are dependencies AND shows for the current selection
-      if (dependency?.shows?.length > 0) {  // Changed condition to be more explicit
+      if (dependency?.shows?.length > 0) {
         const insertIndex = newOrderedFields.findIndex(f => f.name === parentField.name) + 1
         
         dependency.shows.forEach(field => {
@@ -118,9 +124,9 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
         })
       }
 
-      console.log('New visible fields:', Array.from(newVisibleFields))
-      console.log('New ordered fields:', newOrderedFields.map(f => f.name))
-      
+      console.log('Final visible fields:', Array.from(newVisibleFields))
+      console.log('Final ordered fields:', newOrderedFields.map(f => f.name))
+
       setVisibleFields(newVisibleFields)
       setOrderedFields(newOrderedFields)
     }
