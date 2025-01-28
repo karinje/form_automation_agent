@@ -14,6 +14,8 @@ interface DynamicFormProps {
 export default function DynamicForm({ formDefinition, formData, onInputChange }: DynamicFormProps) {
   const [visibleFields, setVisibleFields] = useState<Set<string>>(new Set())
   const [orderedFields, setOrderedFields] = useState<FormFieldType[]>([])
+  // Track which fields were shown by which dependency
+  const [fieldDependencyMap, setFieldDependencyMap] = useState<Map<string, Set<string>>>(new Map())
 
   useEffect(() => {
     const initialFields = new Set(formDefinition.fields.map((field) => field.name))
@@ -43,27 +45,13 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
   const getFieldsToCleanup = (parentFieldName: string): Set<string> => {
     const fieldsToCleanup = new Set<string>()
     
-    // Look through all dependencies to find ones related to this parent
-    Object.entries(formDefinition.dependencies || {}).forEach(([depKey, dep]) => {
-      // Check if this dependency key starts with the base parent field name
-      // Convert ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_TRAVEL_IND to 
-      // ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_TRAVEL_IND
-      const baseFieldName = parentFieldName.replace(/\$/g, '_')
-      if (depKey.startsWith(baseFieldName)) {
-        // Get all fields from this dependency branch
-        if (dep.shows) {
-          dep.shows.forEach(field => fieldsToCleanup.add(field.name))
-        }
-        
-        // If this dependency has nested dependencies, get their fields too
-        if (dep.dependencies) {
-          Object.values(dep.dependencies).forEach(nestedDep => {
-            if (nestedDep.shows) {
-              nestedDep.shows.forEach(field => fieldsToCleanup.add(field.name))
-            }
-          })
-        }
-      }
+    // Get all fields that were shown by this parent's dependencies
+    const shownFields = fieldDependencyMap.get(parentFieldName) || new Set()
+    shownFields.forEach(field => {
+      fieldsToCleanup.add(field)
+      // Also get any fields that were shown by this field
+      const nestedFields = fieldDependencyMap.get(field) || new Set()
+      nestedFields.forEach(nestedField => fieldsToCleanup.add(nestedField))
     })
     
     return fieldsToCleanup
@@ -92,12 +80,13 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
     if (parentField) {
       const newVisibleFields = new Set(visibleFields)
       const newOrderedFields = [...orderedFields]
+      const newFieldDependencyMap = new Map(fieldDependencyMap)
 
       // First, clean up ALL fields related to this parent
       const fieldsToCleanup = getFieldsToCleanup(parentField.name)
       console.log('Fields to cleanup:', Array.from(fieldsToCleanup))
       
-      // Remove all dependent fields first
+      // Remove all dependent fields and their mappings
       fieldsToCleanup.forEach(fieldName => {
         newVisibleFields.delete(fieldName)
         const index = newOrderedFields.findIndex(f => f.name === fieldName)
@@ -105,7 +94,11 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
           console.log('Removing field:', fieldName)
           newOrderedFields.splice(index, 1)
         }
+        // Clean up the dependency map
+        newFieldDependencyMap.delete(fieldName)
       })
+      // Clear the parent's shown fields
+      newFieldDependencyMap.delete(parentField.name)
 
       // Find dependency for new selection
       const dependency = findDependency(formDefinition.dependencies, key)
@@ -114,21 +107,28 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
       // Only add new fields if there are dependencies AND shows for the current selection
       if (dependency?.shows?.length > 0) {
         const insertIndex = newOrderedFields.findIndex(f => f.name === parentField.name) + 1
+        const shownFields = new Set<string>()
         
         dependency.shows.forEach(field => {
           console.log('Adding field:', field.name)
           newVisibleFields.add(field.name)
+          shownFields.add(field.name)
           if (!newOrderedFields.find(f => f.name === field.name)) {
             newOrderedFields.splice(insertIndex, 0, field)
           }
         })
+        
+        // Update the dependency map
+        newFieldDependencyMap.set(parentField.name, shownFields)
       }
 
       console.log('Final visible fields:', Array.from(newVisibleFields))
       console.log('Final ordered fields:', newOrderedFields.map(f => f.name))
+      console.log('Field dependency map:', Object.fromEntries(newFieldDependencyMap))
 
       setVisibleFields(newVisibleFields)
       setOrderedFields(newOrderedFields)
+      setFieldDependencyMap(newFieldDependencyMap)
     }
   }
 

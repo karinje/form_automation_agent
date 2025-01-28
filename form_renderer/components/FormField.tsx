@@ -5,7 +5,10 @@ import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Textarea } from "@/components/ui/textarea"
 import type { FormField as FormFieldType } from "@/types/form-definition"
+import { useState } from "react"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface FormFieldProps {
   field: FormFieldType
@@ -17,6 +20,8 @@ interface FormFieldProps {
 }
 
 export function FormField({ field, value, onChange, visible, dependencies, onDependencyChange }: FormFieldProps) {
+  const [isNAChecked, setIsNAChecked] = useState(false)
+
   if (!visible) return null
 
   const handleRadioChange = (value: string) => {
@@ -32,6 +37,15 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     }
   }
 
+  const handleNACheckboxChange = (checked: boolean) => {
+    setIsNAChecked(checked)
+    if (checked) {
+      onChange(field.name, "N/A")
+    } else {
+      onChange(field.name, "")
+    }
+  }
+
   const renderField = () => {
     switch (field.type) {
       case "text":
@@ -42,22 +56,43 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
             value={value}
             onChange={(e) => onChange(field.name, e.target.value)}
             maxLength={field.maxlength ? parseInt(field.maxlength) : undefined}
+            disabled={isNAChecked}
+          />
+        )
+
+      case "textarea":
+        return (
+          <Textarea
+            id={field.name}
+            value={value}
+            onChange={(e) => onChange(field.name, e.target.value)}
+            maxLength={field.maxlength ? parseInt(field.maxlength) : undefined}
+            disabled={isNAChecked}
+            className="min-h-[100px]"
           />
         )
 
       case "radio":
         if (!Array.isArray(field.value) || !Array.isArray(field.labels)) return null
         return (
-          <RadioGroup value={value} onValueChange={handleRadioChange}>
-            <div className="space-y-2">
+          <Tabs
+            value={value}
+            onValueChange={(value) => handleRadioChange(value)}
+            className="w-[200px]"
+          >
+            <TabsList className="grid w-full grid-cols-2 bg-muted p-1 text-muted-foreground">
               {field.value.map((option, index) => (
-                <div key={option} className="flex items-center space-x-2">
-                  <RadioGroupItem value={option} id={`${field.name}-${option}`} />
-                  <Label htmlFor={`${field.name}-${option}`}>{field.labels[index]}</Label>
-                </div>
+                <TabsTrigger
+                  key={option}
+                  value={option}
+                  id={`${field.name}-${option}`}
+                  className="data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                >
+                  {field.labels[index]}
+                </TabsTrigger>
               ))}
-            </div>
-          </RadioGroup>
+            </TabsList>
+          </Tabs>
         )
 
       case "dropdown":
@@ -99,8 +134,24 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
       {field.parent_text_phrase && (
         <div className="font-medium text-sm text-gray-500">{field.parent_text_phrase}</div>
       )}
-      {field.text_phrase && <Label htmlFor={field.name}>{field.text_phrase}</Label>}
-      {renderField()}
+      <div className="space-y-2">
+        {field.text_phrase && <Label htmlFor={field.name}>{field.text_phrase}</Label>}
+        <div className="flex items-start space-x-4">
+          <div className="flex-grow">{renderField()}</div>
+          {(field.type === "text" || field.type === "textarea") && field.has_na_checkbox && (
+            <div className="flex items-center space-x-2 mt-1">
+              <Checkbox 
+                id={`${field.name}-na`} 
+                checked={isNAChecked} 
+                onCheckedChange={handleNACheckboxChange}
+              />
+              <Label htmlFor={`${field.name}-na`} className="text-sm text-gray-500">
+                N/A
+              </Label>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 } 
