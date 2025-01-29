@@ -67,7 +67,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
                   key={option}
                   value={option}
                   id={field.button_ids?.[option]}
-                  className="font-medium"
+                  className="font-medium border border-gray-200 data-[state=inactive]:bg-gray-50 data-[state=inactive]:hover:bg-gray-100"
                 >
                   {field.labels[index]}
                 </TabsTrigger>
