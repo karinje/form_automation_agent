@@ -306,11 +306,29 @@
       "parent_text_phrase": "Home Address"
     },
     {
+      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblMailingAddrSame",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblMailingAddrSame_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblMailingAddrSame_1"
+      },
+      "text_phrase": "Is your Mailing Address the same as your Home Address?",
+      "parent_text_phrase": "Home Address"
+    },
+    {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_HOME_TEL",
       "type": "text",
       "value": "",
       "text_phrase": "Primary Phone Number",
-      "parent_text_phrase": "",
+      "parent_text_phrase": "Primary Contact Information",
       "maxlength": "15",
       "has_na_checkbox": false
     },
@@ -319,7 +337,7 @@
       "type": "text",
       "value": "",
       "text_phrase": "Secondary Phone Number",
-      "parent_text_phrase": "Phone",
+      "parent_text_phrase": "Other Contact Information",
       "maxlength": "15",
       "has_na_checkbox": true
     },
@@ -328,7 +346,7 @@
       "type": "text",
       "value": "",
       "text_phrase": "Work Phone Number",
-      "parent_text_phrase": "Phone",
+      "parent_text_phrase": "Other Contact Information",
       "maxlength": "15",
       "has_na_checkbox": true
     },
@@ -337,7 +355,7 @@
       "type": "text",
       "value": "",
       "text_phrase": "Email Address",
-      "parent_text_phrase": "Email",
+      "parent_text_phrase": "Primary Contact Information",
       "maxlength": "50",
       "has_na_checkbox": false
     },
@@ -369,34 +387,16 @@
         "NONE"
       ],
       "text_phrase": "Social Media Provider/Platform",
-      "parent_text_phrase": "Social"
+      "parent_text_phrase": "Primary Contact Information"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_tbxSocialMediaIdent",
       "type": "text",
       "value": "",
       "text_phrase": "Social Media Identifier",
-      "parent_text_phrase": "Social Media Provider/Platform",
+      "parent_text_phrase": "Primary Contact Information",
       "maxlength": "50",
       "has_na_checkbox": false
-    },
-    {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblMailingAddrSame",
-      "type": "radio",
-      "value": [
-        "Y",
-        "N"
-      ],
-      "labels": [
-        "Yes",
-        "No"
-      ],
-      "button_ids": {
-        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblMailingAddrSame_0",
-        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblMailingAddrSame_1"
-      },
-      "text_phrase": "Is your Mailing Address the same as your Home Address?",
-      "parent_text_phrase": "Home Address"
     },
     {
       "name": "ctl00$SiteContentPlaceHolder$FormView1$rblAddPhone",
@@ -414,7 +414,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone_1"
       },
       "text_phrase": "Have you used any other phone numbers in the last five years?",
-      "parent_text_phrase": "Phone"
+      "parent_text_phrase": "Other Contact Information"
     },
     {
       "name": "ctl00$SiteContentPlaceHolder$FormView1$rblAddEmail",
@@ -432,7 +432,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAddEmail_1"
       },
       "text_phrase": "Have you used any other email addresses in the last five years?",
-      "parent_text_phrase": "Email"
+      "parent_text_phrase": "Other Contact Information"
     },
     {
       "name": "ctl00$SiteContentPlaceHolder$FormView1$rblAddSocial",
@@ -450,7 +450,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAddSocial_1"
       },
       "text_phrase": "Do you wish to provide information about your presence on any other websites or applications you have used within the last five years to create or share content (photos, videos, status updates, etc.)?",
-      "parent_text_phrase": "Social"
+      "parent_text_phrase": "Other Contact Information"
     }
   ],
   "dependencies": {
@@ -777,7 +777,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Additional Phone Number",
-          "parent_text_phrase": "Additional Phone Number",
+          "parent_text_phrase": "Other Contact Information",
           "maxlength": "15",
           "has_na_checkbox": false
         }
@@ -797,7 +797,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Additional Email Address",
-          "parent_text_phrase": "Additional Email Address",
+          "parent_text_phrase": "Other Contact Information",
           "maxlength": "40",
           "has_na_checkbox": false
         }
@@ -817,7 +817,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Additional Social Media Platform",
-          "parent_text_phrase": "Additional Social Media Platform",
+          "parent_text_phrase": "Other Contact Information",
           "maxlength": "40",
           "has_na_checkbox": false
         },
@@ -826,7 +826,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Additional Social Media Handle",
-          "parent_text_phrase": "Additional Social Media Platform",
+          "parent_text_phrase": "Other Contact Information",
           "maxlength": "40",
           "has_na_checkbox": false
         }

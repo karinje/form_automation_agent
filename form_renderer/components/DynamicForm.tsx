@@ -4,11 +4,35 @@ import { useState, useEffect } from "react"
 import { FormField } from "@/components/FormField"
 import { Button } from "@/components/ui/button"
 import type { FormDefinition, FormField as FormFieldType, Dependency } from "@/types/form-definition"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 interface DynamicFormProps {
   formDefinition: FormDefinition
   formData: Record<string, string>
   onInputChange: (name: string, value: string) => void
+}
+
+type FieldGroup = {
+  parentTextPhrase: string;
+  fields: FormFieldType[];
+}
+
+const groupFieldsByParent = (fields: FormFieldType[]): FieldGroup[] => {
+  const groups = new Map<string, FormFieldType[]>();
+  
+  fields.forEach(field => {
+    const parent = field.parent_text_phrase || 'Other';
+    if (!groups.has(parent)) {
+      groups.set(parent, []);
+    }
+    groups.get(parent)?.push(field);
+  });
+
+  return Array.from(groups.entries())
+    .map(([parent, fields]) => ({
+      parentTextPhrase: parent,
+      fields
+    }));
 }
 
 export default function DynamicForm({ formDefinition, formData, onInputChange }: DynamicFormProps) {
@@ -137,20 +161,51 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
   }
 
   return (
-    <div className="space-y-8">
-      <div className="grid gap-6 md:grid-cols-1">
-        {orderedFields.map((field) => (
-          <FormField
-            key={field.name}
-            field={field}
-            value={formData[field.name] || ""}
-            onChange={handleInputChange}
-            visible={visibleFields.has(field.name)}
-            dependencies={formDefinition.dependencies}
-            onDependencyChange={(key) => handleDependencyChange(key, field)}
-          />
-        ))}
-      </div>
+    <form onSubmit={handleInputChange} className="space-y-6">
+      {groupFieldsByParent(orderedFields).map((group) => {
+        // Single field without parent text phrase - render directly
+        if (group.fields.length === 1 && (!group.parentTextPhrase || group.parentTextPhrase === 'Other')) {
+          return (
+            <FormField
+              key={group.fields[0].name}
+              field={group.fields[0]}
+              value={formData[group.fields[0].name] || ''}
+              onChange={handleInputChange}
+              visible={visibleFields.has(group.fields[0].name)}
+              onDependencyChange={(key) => handleDependencyChange(key, group.fields[0])}
+            />
+          );
+        }
+
+        // Multiple fields or has parent text phrase - render in a card
+        return (
+          <Card 
+            key={group.parentTextPhrase} 
+            className="relative border-2 border-gray-200 pt-6 mt-8"
+          >
+            {group.parentTextPhrase && group.parentTextPhrase !== 'Other' && (
+              <div className="absolute -top-4 left-4 px-2 bg-white">
+                <h3 className="text-base font-bold text-gray-800">
+                  {group.parentTextPhrase}
+                </h3>
+              </div>
+            )}
+            <CardContent className="space-y-4 pt-2">
+              {group.fields.map((field) => (
+                <FormField
+                  key={field.name}
+                  field={field}
+                  value={formData[field.name] || ''}
+                  onChange={handleInputChange}
+                  visible={visibleFields.has(field.name)}
+                  onDependencyChange={(key) => handleDependencyChange(key, field)}
+                />
+              ))}
+            </CardContent>
+          </Card>
+        );
+      })}
+      
       <div className="flex justify-end space-x-4">
         {formDefinition.buttons?.map((button) => (
           <Button key={button.id} type={button.type as "button" | "submit"}>
@@ -158,6 +213,6 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
           </Button>
         ))}
       </div>
-    </div>
+    </form>
   )
 } 

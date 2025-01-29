@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import type { FormField as FormFieldType } from "@/types/form-definition"
 import { useState } from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface FormFieldProps {
   field: FormFieldType
@@ -46,6 +47,38 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     }
   }
 
+  const renderRadioButton = () => {
+    if (!field.value || !field.labels) return null
+    
+    return (
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex-grow">
+          <p className="text-sm font-medium text-gray-700">{field.text_phrase}</p>
+        </div>
+        <div className="min-w-[200px]">
+          <Tabs
+            value={value}
+            onValueChange={(value) => handleRadioChange(value)}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-2">
+              {field.value.map((option: string, index: number) => (
+                <TabsTrigger
+                  key={option}
+                  value={option}
+                  id={field.button_ids?.[option]}
+                  className="font-medium"
+                >
+                  {field.labels[index]}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        </div>
+      </div>
+    )
+  }
+
   const renderField = () => {
     switch (field.type) {
       case "text":
@@ -73,27 +106,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
         )
 
       case "radio":
-        if (!Array.isArray(field.value) || !Array.isArray(field.labels)) return null
-        return (
-          <Tabs
-            value={value}
-            onValueChange={(value) => handleRadioChange(value)}
-            className="w-[200px]"
-          >
-            <TabsList className="grid w-full grid-cols-2 bg-muted p-1 text-muted-foreground">
-              {field.value.map((option, index) => (
-                <TabsTrigger
-                  key={option}
-                  value={option}
-                  id={`${field.name}-${option}`}
-                  className="data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
-                >
-                  {field.labels[index]}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
-        )
+        return renderRadioButton()
 
       case "dropdown":
         if (!Array.isArray(field.value) || field.value.length === 0) return null
@@ -130,27 +143,24 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
   }
 
   return (
-    <div className="space-y-2">
-      {field.parent_text_phrase && (
-        <div className="font-medium text-sm text-gray-500">{field.parent_text_phrase}</div>
-      )}
+    <div className={`w-full ${!visible ? 'hidden' : ''}`}>
       <div className="space-y-2">
-        {field.text_phrase && <Label htmlFor={field.name}>{field.text_phrase}</Label>}
-        <div className="flex items-start space-x-4">
-          <div className="flex-grow">{renderField()}</div>
-          {(field.type === "text" || field.type === "textarea") && field.has_na_checkbox && (
-            <div className="flex items-center space-x-2 mt-1">
-              <Checkbox 
-                id={`${field.name}-na`} 
-                checked={isNAChecked} 
-                onCheckedChange={handleNACheckboxChange}
-              />
-              <Label htmlFor={`${field.name}-na`} className="text-sm text-gray-500">
-                N/A
-              </Label>
-            </div>
-          )}
-        </div>
+        {field.type !== 'radio' && field.text_phrase && (
+          <Label htmlFor={field.name}>{field.text_phrase}</Label>
+        )}
+        {renderField()}
+        {field.has_na_checkbox && (field.type === "text" || field.type === "textarea") && (
+          <div className="flex items-center gap-2 mt-1">
+            <Checkbox 
+              id={`${field.name}-na`} 
+              checked={isNAChecked} 
+              onCheckedChange={handleNACheckboxChange}
+            />
+            <Label htmlFor={`${field.name}-na`} className="text-sm text-gray-500">
+              N/A
+            </Label>
+          </div>
+        )}
       </div>
     </div>
   )
