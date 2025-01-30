@@ -12,74 +12,198 @@ interface DynamicFormProps {
   onInputChange: (name: string, value: string) => void
 }
 
-type FieldGroup = {
-  parentTextPhrase: string;
+// Add interface to track dependency hierarchy
+interface DependencyLevel {
+  parentField: FormFieldType;
   fields: FormFieldType[];
+  level: number;
 }
 
-const groupFieldsByParent = (fields: FormFieldType[]): FieldGroup[] => {
-  const groups = new Map<string, FormFieldType[]>();
-  
-  fields.forEach(field => {
-    const parent = field.parent_text_phrase || 'Other';
-    if (!groups.has(parent)) {
-      groups.set(parent, []);
-    }
-    groups.get(parent)?.push(field);
-  });
+// Add a new interface to track dependency chain
+interface DependencyChain {
+  parentField: FormFieldType;
+  childFields: FormFieldType[];
+  parentChainId?: string; // Links to parent's chain
+}
 
-  return Array.from(groups.entries())
-    .map(([parent, fields]) => ({
-      parentTextPhrase: parent,
-      fields
-    }));
+const getDependencyLevel = (fieldName: string, groups: DependencyLevel[]): number => {
+  const group = groups.find(g => 
+    g.fields.some(f => f.name === fieldName)
+  )
+  return group?.level ?? 0
+}
+
+// Modify groupFieldsByParent to handle dependency levels differently
+const groupFieldsByParent = (fields: FormFieldType[], chains: DependencyChain[]): FormFieldType[][] => {
+  console.log('Starting groupFieldsByParent:', {
+    totalFields: fields.length,
+    totalChains: chains.length
+  })
+  
+  const result: FormFieldType[][] = []
+  const processedFields = new Set<string>()
+  
+  // Helper to process a field and its dependencies recursively
+  const processFieldWithDependencies = (field: FormFieldType, isBaseField: boolean = true) => {
+    console.log('Processing field:', {
+      fieldName: field.name,
+      isBaseField,
+      alreadyProcessed: processedFields.has(field.name)
+    })
+
+    if (processedFields.has(field.name)) return
+    processedFields.add(field.name)
+    
+    // Add field to result if it's a base field
+    if (isBaseField) {
+      console.log('Adding base field to result:', field.name)
+      result.push([field])
+    }
+    
+    // Find direct dependencies of this field
+    const chain = chains.find(c => c.parentField.name === field.name)
+    if (chain) {
+      console.log('Found dependency chain:', {
+        parentField: field.name,
+        dependencyCount: chain.childFields.length
+      })
+
+      const dependencyGroup: FormFieldType[] = []
+      
+      chain.childFields.forEach(depField => {
+        // Add the dependency field
+        dependencyGroup.push(depField)
+        console.log('Added dependency to group:', {
+          parentField: field.name,
+          dependencyField: depField.name
+        })
+        
+        // Check for nested dependencies (grandchildren)
+        const nestedChain = chains.find(c => c.parentField.name === depField.name)
+        if (nestedChain) {
+          console.log('Found nested dependencies:', {
+            parentField: depField.name,
+            nestedCount: nestedChain.childFields.length
+          })
+          
+          // Add nested dependencies right after their parent
+          nestedChain.childFields.forEach(nestedField => {
+            if (!processedFields.has(nestedField.name)) {
+              dependencyGroup.push(nestedField)
+              processedFields.add(nestedField.name)
+              console.log('Added nested dependency:', {
+                parentField: depField.name,
+                nestedField: nestedField.name
+              })
+            }
+          })
+        }
+      })
+      
+      if (dependencyGroup.length > 0) {
+        console.log('Adding dependency group to result:', {
+          parentField: field.name,
+          groupSize: dependencyGroup.length,
+          fields: dependencyGroup.map(f => f.name)
+        })
+        result.push(dependencyGroup)
+      }
+    }
+  }
+  
+  // Process base fields first
+  const baseFields = fields.filter(field => 
+    !chains.some(chain => 
+      chain.childFields.some(cf => cf.name === field.name)
+    )
+  )
+  
+  console.log('Found base fields:', baseFields.map(f => f.name))
+  
+  baseFields.forEach(field => {
+    processFieldWithDependencies(field)
+  })
+
+  console.log('Final grouped result:', {
+    totalGroups: result.length,
+    groups: result.map(group => ({
+      size: group.length,
+      fields: group.map(f => f.name)
+    }))
+  })
+  
+  return result
 }
 
 export default function DynamicForm({ formDefinition, formData, onInputChange }: DynamicFormProps) {
   const [visibleFields, setVisibleFields] = useState<Set<string>>(new Set())
+  const [dependencyChains, setDependencyChains] = useState<DependencyChain[]>([])
   const [orderedFields, setOrderedFields] = useState<FormFieldType[]>([])
-  // Track which fields were shown by which dependency
-  const [fieldDependencyMap, setFieldDependencyMap] = useState<Map<string, Set<string>>>(new Map())
 
   useEffect(() => {
+    console.log('Initializing form with fields:', formDefinition.fields)
     const initialFields = new Set(formDefinition.fields.map((field) => field.name))
     setVisibleFields(initialFields)
     setOrderedFields(formDefinition.fields)
-  }, [formDefinition])
-
-  // Helper to get all dependent fields recursively from a dependency
-  const getAllDependentFields = (dep: Dependency): Set<string> => {
-    const fields = new Set<string>()
     
-    // Add current level shows/hides
-    dep.shows.forEach(field => fields.add(field.name))
-    dep.hides.forEach(field => fields.add(field.name))
-    
-    // Recursively add nested dependencies
-    if (dep.dependencies) {
-      Object.values(dep.dependencies).forEach(childDep => {
-        const childFields = getAllDependentFields(childDep)
-        childFields.forEach(field => fields.add(field))
-      })
-    }
-    return fields
-  }
-
-  // Helper to get all fields that need to be cleaned up for a parent field
-  const getFieldsToCleanup = (parentFieldName: string): Set<string> => {
-    const fieldsToCleanup = new Set<string>()
-    
-    // Get all fields that were shown by this parent's dependencies
-    const shownFields = fieldDependencyMap.get(parentFieldName) || new Set()
-    shownFields.forEach(field => {
-      fieldsToCleanup.add(field)
-      // Also get any fields that were shown by this field
-      const nestedFields = fieldDependencyMap.get(field) || new Set()
-      nestedFields.forEach(nestedField => fieldsToCleanup.add(nestedField))
+    // Initialize dependency chains based on existing form data
+    const initialChains: DependencyChain[] = []
+    formDefinition.fields.forEach(field => {
+      // For radio buttons, construct the key based on selected value
+      if (field.type === 'radio' && formData[field.name]) {
+        const selectedValue = formData[field.name]
+        const buttonId = field.button_ids?.[selectedValue]
+        if (buttonId) {
+          const key = `${buttonId}.${selectedValue}`
+          console.log('Checking initial dependency for:', {
+            field: field.name,
+            key,
+            value: selectedValue
+          })
+          
+          const dependency = findDependency(formDefinition.dependencies, key)
+          if (dependency?.shows?.length) {
+            const newChain: DependencyChain = {
+              parentField: field,
+              childFields: dependency.shows
+            }
+            initialChains.push(newChain)
+            dependency.shows.forEach(depField => initialFields.add(depField.name))
+            
+            // Check for nested dependencies
+            dependency.shows.forEach(depField => {
+              if (depField.type === 'radio' && formData[depField.name]) {
+                const nestedValue = formData[depField.name]
+                const nestedButtonId = depField.button_ids?.[nestedValue]
+                if (nestedButtonId) {
+                  const nestedKey = `${nestedButtonId}.${nestedValue}`
+                  const nestedDep = findDependency(formDefinition.dependencies, nestedKey)
+                  if (nestedDep?.shows?.length) {
+                    const nestedChain: DependencyChain = {
+                      parentField: depField,
+                      childFields: nestedDep.shows,
+                      parentChainId: field.name
+                    }
+                    initialChains.push(nestedChain)
+                    nestedDep.shows.forEach(nestedField => initialFields.add(nestedField.name))
+                  }
+                }
+              }
+            })
+          }
+        }
+      }
     })
     
-    return fieldsToCleanup
-  }
+    console.log('Initial dependency setup:', {
+      chains: initialChains,
+      visibleFields: Array.from(initialFields)
+    })
+    
+    setDependencyChains(initialChains)
+    setVisibleFields(initialFields)
+    
+  }, [formDefinition, formData]) // Added formData as dependency
 
   const findDependency = (deps: Record<string, Dependency> | undefined, searchKey: string): Dependency | undefined => {
     if (!deps) return undefined
@@ -97,63 +221,122 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
     return undefined
   }
 
-  const handleDependencyChange = (key: string, parentField?: FormFieldType) => {
-    console.log('Checking dependencies for key:', key)
-    console.log('Parent field name:', parentField?.name)
+  const handleDependencyChange = (key: string, parentField: FormFieldType) => {
+    console.log('Handling dependency change:', {
+      key,
+      parentField: parentField.name,
+      currentChains: dependencyChains
+    })
+
+    const newVisibleFields = new Set(visibleFields)
+    const newDependencyChains = [...dependencyChains]
     
-    if (parentField) {
-      const newVisibleFields = new Set(visibleFields)
-      const newOrderedFields = [...orderedFields]
-      const newFieldDependencyMap = new Map(fieldDependencyMap)
-
-      // First, clean up ALL fields related to this parent
-      const fieldsToCleanup = getFieldsToCleanup(parentField.name)
-      console.log('Fields to cleanup:', Array.from(fieldsToCleanup))
-      
-      // Remove all dependent fields and their mappings
-      fieldsToCleanup.forEach(fieldName => {
-        newVisibleFields.delete(fieldName)
-        const index = newOrderedFields.findIndex(f => f.name === fieldName)
-        if (index !== -1) {
-          console.log('Removing field:', fieldName)
-          newOrderedFields.splice(index, 1)
-        }
-        // Clean up the dependency map
-        newFieldDependencyMap.delete(fieldName)
+    // Find existing chain for this parent
+    const existingChainIndex = newDependencyChains.findIndex(
+      chain => chain.parentField.name === parentField.name
+    )
+    
+    // Remove this chain and all its children
+    if (existingChainIndex !== -1) {
+      const chainsToRemove = getChildChains(newDependencyChains, existingChainIndex)
+      chainsToRemove.forEach(chain => {
+        chain.childFields.forEach(field => newVisibleFields.delete(field.name))
       })
-      // Clear the parent's shown fields
-      newFieldDependencyMap.delete(parentField.name)
-
-      // Find dependency for new selection
-      const dependency = findDependency(formDefinition.dependencies, key)
-      console.log('Found dependency for new selection:', dependency)
-
-      // Only add new fields if there are dependencies AND shows for the current selection
-      if (dependency?.shows?.length > 0) {
-        const insertIndex = newOrderedFields.findIndex(f => f.name === parentField.name) + 1
-        const shownFields = new Set<string>()
-        
-        dependency.shows.forEach(field => {
-          console.log('Adding field:', field.name)
-          newVisibleFields.add(field.name)
-          shownFields.add(field.name)
-          if (!newOrderedFields.find(f => f.name === field.name)) {
-            newOrderedFields.splice(insertIndex, 0, field)
-          }
-        })
-        
-        // Update the dependency map
-        newFieldDependencyMap.set(parentField.name, shownFields)
-      }
-
-      console.log('Final visible fields:', Array.from(newVisibleFields))
-      console.log('Final ordered fields:', newOrderedFields.map(f => f.name))
-      console.log('Field dependency map:', Object.fromEntries(newFieldDependencyMap))
-
-      setVisibleFields(newVisibleFields)
-      setOrderedFields(newOrderedFields)
-      setFieldDependencyMap(newFieldDependencyMap)
+      newDependencyChains.splice(existingChainIndex, chainsToRemove.length)
     }
+    
+    // Find and add new dependencies
+    const dependency = findDependency(formDefinition.dependencies, key)
+    if (dependency?.shows?.length) {
+      const parentChainId = getParentChainId(newDependencyChains, parentField)
+      const newChain: DependencyChain = {
+        parentField,
+        childFields: dependency.shows,
+        parentChainId
+      }
+      
+      // Insert chain after its parent chain
+      const insertIndex = parentChainId 
+        ? newDependencyChains.findIndex(c => c.parentField.name === parentChainId) + 1
+        : newDependencyChains.length
+      
+      newDependencyChains.splice(insertIndex, 0, newChain)
+      dependency.shows.forEach(field => newVisibleFields.add(field.name))
+    }
+    
+    console.log('Updated chains:', newDependencyChains)
+    setVisibleFields(newVisibleFields)
+    setDependencyChains(newDependencyChains)
+    updateOrderedFields(newDependencyChains)
+  }
+
+  // Helper to get all child chains that need to be removed
+  const getChildChains = (chains: DependencyChain[], startIndex: number): DependencyChain[] => {
+    const result: DependencyChain[] = []
+    const parentChain = chains[startIndex]
+    result.push(parentChain)
+    
+    // Recursively find all chains that depend on this one
+    let currentIndex = startIndex + 1
+    while (currentIndex < chains.length) {
+      const chain = chains[currentIndex]
+      if (chain.parentChainId === parentChain.parentField.name) {
+        const childChains = getChildChains(chains, currentIndex)
+        result.push(...childChains)
+        currentIndex += childChains.length
+      } else {
+        currentIndex++
+      }
+    }
+    
+    return result
+  }
+
+  // Helper to find parent chain ID
+  const getParentChainId = (chains: DependencyChain[], field: FormFieldType): string | undefined => {
+    for (const chain of chains) {
+      if (chain.childFields.some(f => f.name === field.name)) {
+        return chain.parentField.name
+      }
+    }
+    return undefined
+  }
+
+  // Modified to handle dependency chains
+  const updateOrderedFields = (chains: DependencyChain[]) => {
+    console.log('Updating ordered fields with chains:', chains)
+    let newOrdered = [...formDefinition.fields]
+    
+    // Process chains in order, maintaining parent-child relationships
+    chains.forEach(chain => {
+      const parentIndex = newOrdered.findIndex(f => f.name === chain.parentField.name)
+      if (parentIndex !== -1) {
+        // Find insert position - after parent and any preceding siblings
+        let insertIndex = parentIndex + 1
+        const parentChainId = chain.parentChainId
+        
+        if (parentChainId) {
+          // If this is a nested dependency, find the last field of the parent chain
+          const parentChain = chains.find(c => c.parentField.name === parentChainId)
+          if (parentChain) {
+            const lastParentChildIndex = newOrdered.findIndex(
+              f => f.name === parentChain.childFields[parentChain.childFields.length - 1].name
+            )
+            if (lastParentChildIndex !== -1) {
+              insertIndex = lastParentChildIndex + 1
+            }
+          }
+        }
+        
+        // Remove any existing instances of these fields
+        newOrdered = newOrdered.filter(f => !chain.childFields.some(cf => cf.name === f.name))
+        
+        // Insert at the correct position
+        newOrdered.splice(insertIndex, 0, ...chain.childFields)
+      }
+    })
+    
+    setOrderedFields(newOrdered)
   }
 
   const handleInputChange = (name: string, value: string) => {
@@ -162,48 +345,51 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
 
   return (
     <form onSubmit={handleInputChange} className="space-y-6">
-      {groupFieldsByParent(orderedFields).map((group) => {
-        // Single field without parent text phrase - render directly
-        if (group.fields.length === 1 && (!group.parentTextPhrase || group.parentTextPhrase === 'Other')) {
-          return (
-            <FormField
-              key={group.fields[0].name}
-              field={group.fields[0]}
-              value={formData[group.fields[0].name] || ''}
-              onChange={handleInputChange}
-              visible={visibleFields.has(group.fields[0].name)}
-              onDependencyChange={(key) => handleDependencyChange(key, group.fields[0])}
-            />
-          );
-        }
-
-        // Multiple fields or has parent text phrase - render in a card
+      {groupFieldsByParent(orderedFields, dependencyChains).map((group, index) => {
+        const isParentGroup = group.length === 1
+        const parentField = isParentGroup ? group[0] : undefined
+        const chain = parentField ? dependencyChains.find(c => c.parentField.name === parentField.name) : undefined
+        const isDependencyGroup = !isParentGroup && dependencyChains.some(c => 
+          group.some(f => c.childFields.includes(f))
+        )
+        
+        console.log('Rendering group:', {
+          index,
+          isParentGroup,
+          parentFieldName: parentField?.name,
+          isDependencyGroup,
+          hasParentChain: !!chain?.parentChainId,
+          fields: group.map(f => f.name)
+        })
+        
         return (
-          <Card 
-            key={group.parentTextPhrase} 
-            className="relative border-2 border-gray-200 pt-6 mt-8"
-          >
-            {group.parentTextPhrase && group.parentTextPhrase !== 'Other' && (
-              <div className="absolute -top-4 left-4 px-2 bg-white">
-                <h3 className="text-base font-bold text-gray-800">
-                  {group.parentTextPhrase}
-                </h3>
-              </div>
-            )}
-            <CardContent className="space-y-4 pt-2">
-              {group.fields.map((field) => (
-                <FormField
-                  key={field.name}
-                  field={field}
-                  value={formData[field.name] || ''}
-                  onChange={handleInputChange}
-                  visible={visibleFields.has(field.name)}
-                  onDependencyChange={(key) => handleDependencyChange(key, field)}
-                />
-              ))}
-            </CardContent>
-          </Card>
-        );
+          <div key={index} className={`
+            ${isDependencyGroup ? 'border-2 border-gray-200 p-4 rounded-lg mt-2' : ''}
+            ${chain?.parentChainId ? 'ml-4' : ''} // Indent nested dependencies
+            ${isDependencyGroup ? 'space-y-6' : 'space-y-4'} // Increased spacing for dependency groups
+          `}>
+            {group.map(field => {
+              console.log('Rendering field in group:', {
+                groupIndex: index,
+                fieldName: field.name,
+                isVisible: visibleFields.has(field.name),
+                hasOwnDependencies: dependencyChains.some(c => c.parentField.name === field.name)
+              })
+              
+              return (
+                <div key={field.name} className="space-y-6">
+                  <FormField
+                    field={field}
+                    value={formData[field.name] || ''}
+                    onChange={handleInputChange}
+                    visible={visibleFields.has(field.name)}
+                    onDependencyChange={(key) => handleDependencyChange(key, field)}
+                  />
+                </div>
+              )
+            })}
+          </div>
+        )
       })}
       
       <div className="flex justify-end space-x-4">
