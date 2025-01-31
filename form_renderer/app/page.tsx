@@ -226,7 +226,7 @@ export default function Home() {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">
-            DS-160 Form
+            DS-160 Agent
           </h1>
           <p className="mt-2 text-base text-gray-500">
             Please fill out all sections below
@@ -234,6 +234,40 @@ export default function Home() {
         </div>
         
         <div className="bg-white shadow-lg rounded-lg p-8">
+          <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+            <h2 className="text-lg font-semibold mb-2">Upload Required Documents</h2>
+            <p className="text-sm text-gray-600 mb-4">
+              Please upload the following documents: Previous DS160, Passport, I767, Travel Ticket
+            </p>
+            <div className="flex items-center justify-center w-full">
+              <label
+                htmlFor="dropzone-file"
+                className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+              >
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <svg
+                    className="w-10 h-10 mb-3 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                    />
+                  </svg>
+                  <p className="mb-2 text-sm text-gray-500">
+                    <span className="font-semibold">Click to upload</span> or drag and drop
+                  </p>
+                  <p className="text-xs text-gray-500">PDF, PNG, JPG or GIF (MAX. 10MB)</p>
+                </div>
+                <input id="dropzone-file" type="file" className="hidden" multiple />
+              </label>
+            </div>
+          </div>
           <Tabs defaultValue="personal" className="w-full">
             <TabsList className="grid w-full grid-cols-4 h-20">
               {Object.entries(formCategories).map(([category, forms]) => {
