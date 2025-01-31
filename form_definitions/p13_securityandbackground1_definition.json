@@ -1,7 +1,7 @@
 {
   "fields": [
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblDisease",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblDisease",
       "type": "radio",
       "value": [
         "Y",
@@ -19,7 +19,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblDisorder",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblDisorder",
       "type": "radio",
       "value": [
         "Y",
@@ -37,7 +37,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblDruguser",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblDruguser",
       "type": "radio",
       "value": [
         "Y",
@@ -120,19 +120,19 @@
   "buttons": [
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
       "type": "submit",
       "value": "Back: Work/Education/Training"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
       "type": "submit",
       "value": "Save"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
       "type": "submit",
       "value": "Next: Security/Background Part 2"
     }

@@ -56,7 +56,7 @@
       "parent_text_phrase": "Travel Information"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblSpecificTravel",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblSpecificTravel",
       "type": "radio",
       "value": [
         "Y",
@@ -101,7 +101,7 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPayerAddrSameAsInd",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPayerAddrSameAsInd",
           "type": "radio",
           "value": [
             "Y",
@@ -1321,19 +1321,19 @@
   "buttons": [
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
       "type": "submit",
       "value": "Back: Personal"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
       "type": "submit",
       "value": "Save"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
       "type": "submit",
       "value": "Next: Travel Companions"
     }

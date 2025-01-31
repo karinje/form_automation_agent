@@ -10,7 +10,7 @@
       "has_na_checkbox": false
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblCLAN_TRIBE_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblCLAN_TRIBE_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -28,7 +28,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblCOUNTRIES_VISITED_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblCOUNTRIES_VISITED_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -46,7 +46,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblORGANIZATION_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblORGANIZATION_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -64,7 +64,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblSPECIALIZED_SKILLS_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblSPECIALIZED_SKILLS_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -82,7 +82,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblMILITARY_SERVICE_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblMILITARY_SERVICE_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -100,7 +100,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblINSURGENT_ORG_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblINSURGENT_ORG_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -868,19 +868,19 @@
   "buttons": [
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
       "type": "submit",
       "value": "Back: Work/Education: Previous"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
       "type": "submit",
       "value": "Save"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
       "type": "submit",
       "value": "Next: Security and Background"
     }

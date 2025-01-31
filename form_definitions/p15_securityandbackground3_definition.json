@@ -1,7 +1,7 @@
 {
   "fields": [
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblIllegalActivity",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblIllegalActivity",
       "type": "radio",
       "value": [
         "Y",
@@ -19,7 +19,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTerroristActivity",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristActivity",
       "type": "radio",
       "value": [
         "Y",
@@ -37,7 +37,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTerroristSupport",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristSupport",
       "type": "radio",
       "value": [
         "Y",
@@ -55,7 +55,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTerroristOrg",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristOrg",
       "type": "radio",
       "value": [
         "Y",
@@ -73,7 +73,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTerroristRel",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristRel",
       "type": "radio",
       "value": [
         "Y",
@@ -91,7 +91,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblGenocide",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblGenocide",
       "type": "radio",
       "value": [
         "Y",
@@ -109,7 +109,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTorture",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTorture",
       "type": "radio",
       "value": [
         "Y",
@@ -127,7 +127,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblExViolence",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblExViolence",
       "type": "radio",
       "value": [
         "Y",
@@ -145,7 +145,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblChildSoldier",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblChildSoldier",
       "type": "radio",
       "value": [
         "Y",
@@ -163,7 +163,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblReligiousFreedom",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblReligiousFreedom",
       "type": "radio",
       "value": [
         "Y",
@@ -181,7 +181,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPopulationControls",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPopulationControls",
       "type": "radio",
       "value": [
         "Y",
@@ -199,7 +199,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblTransplant",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTransplant",
       "type": "radio",
       "value": [
         "Y",
@@ -462,19 +462,19 @@
   "buttons": [
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
       "type": "submit",
       "value": "Back: Security/Background Part 2"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
       "type": "submit",
       "value": "Save"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
       "type": "submit",
       "value": "Next: Security/Background Part 4"
     }

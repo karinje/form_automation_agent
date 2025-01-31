@@ -265,7 +265,7 @@
       "has_na_checkbox": true
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblAPP_OTH_NATL_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAPP_OTH_NATL_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -283,7 +283,7 @@
       "parent_text_phrase": "Personal Information 2"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPermResOtherCntryInd",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPermResOtherCntryInd",
       "type": "radio",
       "value": [
         "Y",
@@ -524,7 +524,7 @@
           "parent_text_phrase": "Other Country/Region of Origin (Nationality)"
         },
         {
-          "name": "ctl00$SiteContentPlaceHolder$FormView1$dtlOTHER_NATL$ctl00$rblOTHER_PPT_IND",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_rblOTHER_PPT_IND",
           "type": "radio",
           "value": [
             "Y",
@@ -841,19 +841,19 @@
   "buttons": [
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
       "type": "submit",
       "value": "Back: Personal 1"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
       "type": "submit",
       "value": "Save"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
       "type": "submit",
       "value": "Next: Travel"
     }

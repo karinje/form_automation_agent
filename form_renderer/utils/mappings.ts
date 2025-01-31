@@ -168,7 +168,7 @@ export const formMappings: Record<string, Record<string, string>> = {
         "social_media.platform_select": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_ddlSocialMedia",
         "social_media.handle": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_tbxSocialMediaIdent"
     },
-    "ppt_visa_page": {
+    "pptvisa_page": {
         "passport_type": "ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_TYPE",
         "passport_number": "ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_NUM",
         "passport_book_number": "ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_BOOK_NUM",
@@ -207,7 +207,7 @@ export const formMappings: Record<string, Record<string, string>> = {
         "father_birth_day": "ctl00_SiteContentPlaceHolder_FormView1_ddlFathersDOBDay",
         "father_birth_month": "ctl00_SiteContentPlaceHolder_FormView1_ddlFathersDOBMonth",
         "father_birth_year": "ctl00_SiteContentPlaceHolder_FormView1_tbxFathersDOBYear",
-        "father_in_us": "ctl00$SiteContentPlaceHolder$FormView1$rblFATHER_LIVE_IN_US_IND",
+        "father_in_us": "ctl00_SiteContentPlaceHolder_FormView1_rblFATHER_LIVE_IN_US_IND",
         "father_us_status": "ctl00_SiteContentPlaceHolder_FormView1_ddlFATHER_US_STATUS",
         
         "mother_surname": "ctl00_SiteContentPlaceHolder_FormView1_tbxMOTHER_SURNAME",
@@ -215,16 +215,16 @@ export const formMappings: Record<string, Record<string, string>> = {
         "mother_birth_day": "ctl00_SiteContentPlaceHolder_FormView1_ddlMothersDOBDay",
         "mother_birth_month": "ctl00_SiteContentPlaceHolder_FormView1_ddlMothersDOBMonth",
         "mother_birth_year": "ctl00_SiteContentPlaceHolder_FormView1_tbxMothersDOBYear",
-        "mother_in_us": "ctl00$SiteContentPlaceHolder$FormView1$rblMOTHER_LIVE_IN_US_IND",
+        "mother_in_us": "ctl00_SiteContentPlaceHolder_FormView1_rblMOTHER_LIVE_IN_US_IND",
         "mother_us_status": "ctl00_SiteContentPlaceHolder_FormView1_ddlMOTHER_US_STATUS",
         
-        "has_immediate_relatives": "ctl00$SiteContentPlaceHolder$FormView1$rblUS_IMMED_RELATIVE_IND",
+        "has_immediate_relatives": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_IMMED_RELATIVE_IND",
         "immediate_relative_type": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_ddlUS_REL_TYPE",
         "immediate_relative_status": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_ddlUS_REL_STATUS",
         "immediate_relative_surname": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_tbxUS_REL_SURNAME",
         "immediate_relative_given_name": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_tbxUS_REL_GIVEN_NAME",
         
-        "has_other_relatives": "ctl00$SiteContentPlaceHolder$FormView1$rblUS_OTHER_RELATIVE_IND"
+        "has_other_relatives": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_OTHER_RELATIVE_IND"
     },
     
     "spouse_page": {
@@ -244,7 +244,7 @@ export const formMappings: Record<string, Record<string, string>> = {
         "spouse_address_postal_code": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_POSTAL_CD",
         "spouse_address_country": "ctl00_SiteContentPlaceHolder_FormView1_ddlSPOUSE_ADDR_CNTRY"
     },
-    "work_education1_page": {
+    "workeducation1_page": {
         "occupation": "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation",
         "other_occupation_explanation": "ctl00_SiteContentPlaceHolder_FormView1_tbxExplainOtherPresentOccupation",
         "employer.name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
@@ -261,9 +261,9 @@ export const formMappings: Record<string, Record<string, string>> = {
         "employer.duties": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
         "employer.address.country": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpSchCountry"
     },
-    "work_education2_page": {
-        "education": "ctl00$SiteContentPlaceHolder$FormView1$rblOtherEduc",
-        "previously_employed": "ctl00$SiteContentPlaceHolder$FormView1$rblPreviouslyEmployed",
+    "workeducation2_page": {
+        "education": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherEduc",
+        "previously_employed": "ctl00_SiteContentPlaceHolder_FormView1_rblPreviouslyEmployed",
         "previous_employment.employer": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerName",
         "previous_employment.address.street1": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerStreetAddress1",
         "previous_employment.address.street2": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerStreetAddress2",
@@ -297,13 +297,13 @@ export const formMappings: Record<string, Record<string, string>> = {
         "schools.end_date.day": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_ddlSchoolToDay",
         "schools.end_date.year": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolToYear"
     },
-    "work_education3_page": {
+    "workeducation3_page": {
         "language_name": "ctl00_SiteContentPlaceHolder_FormView1_dtlLANGUAGES_ctl00_tbxLANGUAGE_NAME",
-        "clan_tribe_ind": "ctl00$SiteContentPlaceHolder$FormView1$rblCLAN_TRIBE_IND",
+        "clan_tribe_ind": "ctl00_SiteContentPlaceHolder_FormView1_rblCLAN_TRIBE_IND",
         "clan_tribe_name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCLAN_TRIBE_NAME",
-        "countries_visited_ind": "ctl00$SiteContentPlaceHolder$FormView1$rblCOUNTRIES_VISITED_IND",
+        "countries_visited_ind": "ctl00_SiteContentPlaceHolder_FormView1_rblCOUNTRIES_VISITED_IND",
         "countries_visited": "ctl00_SiteContentPlaceHolder_FormView1_dtlCountriesVisited_ctl00_ddlCOUNTRIES_VISITED",
-        "military_service_ind": "ctl00$SiteContentPlaceHolder$FormView1$rblMILITARY_SERVICE_IND",
+        "military_service_ind": "ctl00_SiteContentPlaceHolder_FormView1_rblMILITARY_SERVICE_IND",
         "military_service.branch": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_BRANCH",
         "military_service.rank": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_RANK",
         "military_service.specialty": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_SPECIALTY",
@@ -314,9 +314,9 @@ export const formMappings: Record<string, Record<string, string>> = {
         "military_service.to_day": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_ddlMILITARY_SVC_TODay",
         "military_service.to_year": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_TOYear",
         "military_service.country": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_ddlMILITARY_SVC_CNTRY",
-        "specialized_skills_ind": "ctl00$SiteContentPlaceHolder$FormView1$rblSPECIALIZED_SKILLS_IND",
-        "organization_ind": "ctl00$SiteContentPlaceHolder$FormView1$rblORGANIZATION_IND",
-        "insurgent_org_ind": "ctl00$SiteContentPlaceHolder$FormView1$rblINSURGENT_ORG_IND",
+        "specialized_skills_ind": "ctl00_SiteContentPlaceHolder_FormView1_rblSPECIALIZED_SKILLS_IND",
+        "organization_ind": "ctl00_SiteContentPlaceHolder_FormView1_rblORGANIZATION_IND",
+        "insurgent_org_ind": "ctl00_SiteContentPlaceHolder_FormView1_rblINSURGENT_ORG_IND",
         "insurgent_org_explanation": "ctl00_SiteContentPlaceHolder_FormView1_tbxINSURGENT_ORG_EXPL"
     },
     "security_background1_page": {

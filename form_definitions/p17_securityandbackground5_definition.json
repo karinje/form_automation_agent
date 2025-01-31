@@ -1,7 +1,7 @@
 {
   "fields": [
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblChildCustody",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblChildCustody",
       "type": "radio",
       "value": [
         "Y",
@@ -19,7 +19,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblVotingViolation",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblVotingViolation",
       "type": "radio",
       "value": [
         "Y",
@@ -37,7 +37,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblRenounceExp",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblRenounceExp",
       "type": "radio",
       "value": [
         "Y",
@@ -55,7 +55,7 @@
       "parent_text_phrase": "Yes"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblAttWoReimb",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAttWoReimb",
       "type": "radio",
       "value": [
         "Y",
@@ -158,19 +158,19 @@
   "buttons": [
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
       "type": "submit",
       "value": "Back: Security/Background Part 4"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
       "type": "submit",
       "value": "Save"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
       "type": "submit",
       "value": "Next: PHOTO"
     }

@@ -5,6 +5,7 @@ import { FormField } from "@/components/FormField"
 import { Button } from "@/components/ui/button"
 import type { FormDefinition, FormField as FormFieldType, Dependency } from "@/types/form-definition"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import yaml from 'js-yaml'
 
 interface DynamicFormProps {
   formDefinition: FormDefinition
@@ -133,6 +134,24 @@ const groupFieldsByParent = (fields: FormFieldType[], chains: DependencyChain[])
   })
   
   return result
+}
+
+const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, onFormDataLoad: (data: Record<string, any>) => void) => {
+  const file = e.target.files?.[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = (event) => {
+    try {
+      const yamlContent = event.target?.result as string
+      const data = yaml.load(yamlContent) as Record<string, any>
+      console.log('Loaded YAML data:', data)
+      onFormDataLoad(data)
+    } catch (error) {
+      console.error('Error parsing YAML:', error)
+    }
+  }
+  reader.readAsText(file)
 }
 
 export default function DynamicForm({ formDefinition, formData, onInputChange }: DynamicFormProps) {

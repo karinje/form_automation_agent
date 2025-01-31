@@ -1,7 +1,7 @@
 {
   "fields": [
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_TRAVEL_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_TRAVEL_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -19,7 +19,7 @@
       "parent_text_phrase": ""
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -37,7 +37,7 @@
       "parent_text_phrase": ""
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_REFUSED_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_REFUSED_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -55,7 +55,7 @@
       "parent_text_phrase": ""
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblVWP_DENIAL_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblVWP_DENIAL_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -73,7 +73,7 @@
       "parent_text_phrase": ""
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblIV_PETITION_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblIV_PETITION_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -124,7 +124,7 @@
           "parent_text_phrase": "Date Arrived"
         },
         {
-          "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_US_DRIVER_LIC_IND",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_DRIVER_LIC_IND",
           "type": "radio",
           "value": [
             "Y",
@@ -327,7 +327,7 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_CANCELLED_IND",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_CANCELLED_IND",
           "type": "radio",
           "value": [
             "Y",
@@ -383,7 +383,7 @@
           "parent_text_phrase": "Date Last Visa Was Issued"
         },
         {
-          "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_SAME_TYPE_IND",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_TYPE_IND",
           "type": "radio",
           "value": [
             "Y",
@@ -409,7 +409,7 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_TEN_PRINT_IND",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_TEN_PRINT_IND",
           "type": "radio",
           "value": [
             "Y",
@@ -426,7 +426,7 @@
           "text_phrase": "Have you been ten-printed?"
         },
         {
-          "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_LOST_IND",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_LOST_IND",
           "type": "radio",
           "value": [
             "Y",
@@ -443,7 +443,7 @@
           "text_phrase": "Has your U.S. Visa ever been lost or stolen?"
         },
         {
-          "name": "ctl00$SiteContentPlaceHolder$FormView1$rblPREV_VISA_SAME_CNTRY_IND",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_CNTRY_IND",
           "type": "radio",
           "value": [
             "Y",
@@ -612,19 +612,19 @@
   "buttons": [
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
       "type": "submit",
       "value": "Back: Travel Companions"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
       "type": "submit",
       "value": "Save"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
       "type": "submit",
       "value": "Next: Address & Phone"
     }

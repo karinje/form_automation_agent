@@ -181,7 +181,7 @@
       "has_na_checkbox": true
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblFATHER_LIVE_IN_US_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblFATHER_LIVE_IN_US_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -199,7 +199,7 @@
       "parent_text_phrase": ""
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblMOTHER_LIVE_IN_US_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblMOTHER_LIVE_IN_US_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -217,7 +217,7 @@
       "parent_text_phrase": ""
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblUS_IMMED_RELATIVE_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_IMMED_RELATIVE_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -235,7 +235,7 @@
       "parent_text_phrase": ""
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblUS_OTHER_RELATIVE_IND",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_OTHER_RELATIVE_IND",
       "type": "radio",
       "value": [
         "Y",
@@ -388,7 +388,7 @@
         }
       ],
       "hides": [
-        "ctl00$SiteContentPlaceHolder$FormView1$rblUS_OTHER_RELATIVE_IND"
+        "ctl00_SiteContentPlaceHolder_FormView1_rblUS_OTHER_RELATIVE_IND"
       ],
       "dependencies": null
     },
@@ -411,19 +411,19 @@
   "buttons": [
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
       "type": "submit",
       "value": "Back: U.S. Contact"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
       "type": "submit",
       "value": "Save"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
       "type": "submit",
       "value": "Next: Spouse"
     }

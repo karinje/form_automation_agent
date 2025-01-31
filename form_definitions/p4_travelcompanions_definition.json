@@ -1,7 +1,7 @@
 {
   "fields": [
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblOtherPersonsTravelingWithYou",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherPersonsTravelingWithYou",
       "type": "radio",
       "value": [
         "Y",
@@ -23,7 +23,7 @@
     "ctl00_SiteContentPlaceHolder_FormView1_rblOtherPersonsTravelingWithYou_0.Y": {
       "shows": [
         {
-          "name": "ctl00$SiteContentPlaceHolder$FormView1$rblGroupTravel",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_rblGroupTravel",
           "type": "radio",
           "value": [
             "Y",
@@ -143,19 +143,19 @@
   "buttons": [
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
       "type": "submit",
       "value": "Back: Travel"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
       "type": "submit",
       "value": "Save"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
       "type": "submit",
       "value": "Next: Previous U.S. Travel"
     }

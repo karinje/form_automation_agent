@@ -1,9 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import DynamicForm from "@/components/DynamicForm"
+import { flattenYamlData, unflattenFormData } from '@/utils/yaml-helpers'
+import { getFormFieldId, getYamlField, formMappings } from '@/utils/mappings'
+import yaml from 'js-yaml'
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -27,6 +30,7 @@ import p9_relatives_definition from "../form_definitions/p9_relatives_definition
 
 export default function Home() {
   const [formData, setFormData] = useState<Record<string, string>>({})
+  const [yamlData, setYamlData] = useState<Record<string, any>>({})
 
   const formCategories = {
     personal: [
@@ -57,25 +61,98 @@ export default function Home() {
     ],
   }
 
+  const handleFormDataLoad = useCallback((uploadedYamlData: Record<string, any>) => {
+    console.log('Loading complete YAML data:', uploadedYamlData)
+    setYamlData(uploadedYamlData)
+    
+    // Process all pages
+    const allFormFields: Record<string, string> = {}
+    
+    Object.entries(uploadedYamlData).forEach(([pageName, pageData]) => {
+      console.log('Processing page:', pageName, pageData)
+      const flattenedData = flattenYamlData(pageData)
+      console.log('Flattened data for page:', pageName, flattenedData)
+      
+      Object.entries(flattenedData).forEach(([yamlField, value]) => {
+        const formFieldId = getFormFieldId(pageName, yamlField)
+        if (formFieldId) {
+          console.log('Mapping field:', { pageName, yamlField, formFieldId, value })
+          allFormFields[formFieldId] = value
+        }
+      })
+    })
+    
+    console.log('Setting form data:', allFormFields)
+    setFormData(allFormFields)
+  }, [])
+
+  const handleDownloadYaml = useCallback(() => {
+    const updatedYamlData = { ...yamlData }
+    
+    // Use the actual page mappings from mappings.ts
+    Object.keys(formMappings).forEach(pageName => {
+      const pageFormData: Record<string, string> = {}
+      const pageMapping = formMappings[pageName]
+      
+      // Find all form fields that belong to this page
+      Object.entries(formData).forEach(([formFieldId, value]) => {
+        const yamlField = getYamlField(pageName, formFieldId)
+        if (yamlField) {
+          console.log('Found YAML mapping:', {
+            page: pageName,
+            formField: formFieldId,
+            yamlField,
+            value
+          })
+          pageFormData[yamlField] = value
+        }
+      })
+      
+      if (Object.keys(pageFormData).length > 0) {
+        console.log('Adding page data to YAML:', {
+          page: pageName,
+          data: pageFormData
+        })
+        updatedYamlData[pageName] = unflattenFormData(pageFormData)
+      }
+    })
+    
+    console.log('Final YAML data:', updatedYamlData)
+    const yamlStr = yaml.dump(updatedYamlData)
+    const blob = new Blob([yamlStr], { type: 'text/yaml' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'form_data.yaml'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }, [formData, yamlData])
+
   const handleInputChange = (name: string, value: string) => {
-    setFormData((prev) => ({
+    console.log('Form input change:', { name, value })
+    setFormData(prev => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }))
   }
 
   const renderFormSection = (forms: typeof formCategories.personal) => (
-    <Accordion type="single" collapsible className="w-full">
+    <Accordion type="single" collapsible className="space-y-4">
       {forms.map((form, index) => (
         <AccordionItem key={index} value={`item-${index}`}>
-          <AccordionTrigger className="text-base font-medium text-gray-600">
-            {form.title}
-          </AccordionTrigger>
+          <AccordionTrigger className="text-lg">{form.title}</AccordionTrigger>
           <AccordionContent>
             <DynamicForm
               formDefinition={form.definition}
               formData={formData}
-              onInputChange={handleInputChange}
+              onInputChange={(name, value) => {
+                console.log('Form input change:', { name, value })
+                setFormData(prev => ({ ...prev, [name]: value }))
+              }}
+              onFormDataLoad={handleFormDataLoad}
+              onDownloadYaml={handleDownloadYaml}
             />
           </AccordionContent>
         </AccordionItem>
@@ -94,6 +171,7 @@ export default function Home() {
             Please fill out all sections below
           </p>
         </div>
+        
         <div className="bg-white shadow-lg rounded-lg p-8">
           <Tabs defaultValue="personal" className="w-full">
             <TabsList className="grid w-full grid-cols-4 mb-6 h-16">
@@ -137,6 +215,43 @@ export default function Home() {
               </TabsContent>
             </div>
           </Tabs>
+        </div>
+
+        <div className="mt-8 flex justify-end space-x-4">
+          <input
+            type="file"
+            accept=".yaml,.yml"
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) {
+                const reader = new FileReader()
+                reader.onload = (event) => {
+                  try {
+                    const content = event.target?.result as string
+                    const data = yaml.load(content) as Record<string, any>
+                    handleFormDataLoad(data)
+                  } catch (error) {
+                    console.error('Error parsing YAML:', error)
+                  }
+                }
+                reader.readAsText(file)
+              }
+            }}
+            className="hidden"
+            id="yaml-upload"
+          />
+          <label 
+            htmlFor="yaml-upload"
+            className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+          >
+            Upload YAML
+          </label>
+          <button
+            onClick={handleDownloadYaml}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+          >
+            Download YAML
+          </button>
         </div>
       </div>
     </div>

@@ -306,7 +306,7 @@
       "parent_text_phrase": "Home Address"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblMailingAddrSame",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblMailingAddrSame",
       "type": "radio",
       "value": [
         "Y",
@@ -399,7 +399,7 @@
       "has_na_checkbox": false
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblAddPhone",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone",
       "type": "radio",
       "value": [
         "Y",
@@ -417,7 +417,7 @@
       "parent_text_phrase": "Other Contact Information"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblAddEmail",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAddEmail",
       "type": "radio",
       "value": [
         "Y",
@@ -435,7 +435,7 @@
       "parent_text_phrase": "Other Contact Information"
     },
     {
-      "name": "ctl00$SiteContentPlaceHolder$FormView1$rblAddSocial",
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAddSocial",
       "type": "radio",
       "value": [
         "Y",
@@ -843,19 +843,19 @@
   "buttons": [
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
       "type": "submit",
       "value": "Back: Previous U.S. Travel"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
       "type": "submit",
       "value": "Save"
     },
     {
       "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
-      "name": "ctl00$SiteContentPlaceHolder$UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
       "type": "submit",
       "value": "Next: Passport"
     }
