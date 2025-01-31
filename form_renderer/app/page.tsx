@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import DynamicForm from "@/components/DynamicForm"
@@ -31,6 +31,7 @@ import p9_relatives_definition from "../form_definitions/p9_relatives_definition
 export default function Home() {
   const [formData, setFormData] = useState<Record<string, string>>({})
   const [yamlData, setYamlData] = useState<Record<string, any>>({})
+  const [completionStatus, setCompletionStatus] = useState<Record<string, { completed: number; total: number }>>({})
 
   const formCategories = {
     personal: [
@@ -138,25 +139,85 @@ export default function Home() {
     }))
   }
 
-  const renderFormSection = (forms: typeof formCategories.personal) => (
+  // Calculate completion for a single form
+  const calculateFormCompletion = useCallback((formDefinition: any, currentFormData: Record<string, string>) => {
+    const totalFields = formDefinition.fields.length
+    const completedFields = formDefinition.fields.reduce((count: number, field: any) => {
+      return currentFormData[field.name] ? count + 1 : count
+    }, 0)
+    return { completed: completedFields, total: totalFields }
+  }, [])
+
+  // Update completion status whenever form data changes
+  useEffect(() => {
+    const newCompletionStatus: Record<string, { completed: number; total: number }> = {}
+    
+    // Calculate for each form
+    Object.entries(formCategories).forEach(([category, forms]) => {
+      let categoryCompleted = 0
+      let categoryTotal = 0
+      
+      forms.forEach((form, index) => {
+        const formStatus = calculateFormCompletion(form.definition, formData)
+        const formId = `${category}-${index}`
+        newCompletionStatus[formId] = formStatus
+        categoryCompleted += formStatus.completed
+        categoryTotal += formStatus.total
+      })
+      
+      // Store category totals
+      newCompletionStatus[category] = {
+        completed: categoryCompleted,
+        total: categoryTotal
+      }
+    })
+    
+    setCompletionStatus(newCompletionStatus)
+  }, [formData, calculateFormCompletion])
+
+  const renderFormSection = (forms: typeof formCategories.personal, category: string) => (
     <Accordion type="single" collapsible className="space-y-4">
-      {forms.map((form, index) => (
-        <AccordionItem key={index} value={`item-${index}`}>
-          <AccordionTrigger className="text-lg">{form.title}</AccordionTrigger>
-          <AccordionContent>
-            <DynamicForm
-              formDefinition={form.definition}
-              formData={formData}
-              onInputChange={(name, value) => {
-                console.log('Form input change:', { name, value })
-                setFormData(prev => ({ ...prev, [name]: value }))
-              }}
-              onFormDataLoad={handleFormDataLoad}
-              onDownloadYaml={handleDownloadYaml}
-            />
-          </AccordionContent>
-        </AccordionItem>
-      ))}
+      {forms.map((form, index) => {
+        const formId = `${category}-${index}`
+        const isComplete = completionStatus[formId]?.completed === completionStatus[formId]?.total && 
+                          completionStatus[formId]?.total > 0
+        
+        return (
+          <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
+            <AccordionTrigger className="w-full hover:no-underline [&>svg]:h-8 [&>svg]:w-8 [&>svg]:shrink-0 [&>svg]:text-gray-500 p-0">
+              <div className="flex justify-between items-center py-2 px-4 bg-gray-50 w-full">
+                <h2 className="text-lg font-semibold leading-none">
+                  {form.title}
+                </h2>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center">
+                    <span className="mr-2 text-sm text-gray-600">
+                      {completionStatus[formId]?.completed || 0}/
+                      {completionStatus[formId]?.total || 0} completed
+                    </span>
+                    {isComplete ? (
+                      <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="p-4">
+              <DynamicForm
+                formDefinition={form.definition}
+                formData={formData}
+                onInputChange={handleInputChange}
+              />
+            </AccordionContent>
+          </AccordionItem>
+        )
+      })}
     </Accordion>
   )
 
@@ -174,44 +235,73 @@ export default function Home() {
         
         <div className="bg-white shadow-lg rounded-lg p-8">
           <Tabs defaultValue="personal" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-6 h-16">
-              <TabsTrigger 
-                value="personal" 
-                className="text-lg font-bold text-gray-900 data-[state=active]:text-black data-[state=active]:font-extrabold"
-              >
-                Personal & Passport
-              </TabsTrigger>
-              <TabsTrigger 
-                value="travel" 
-                className="text-lg font-bold text-gray-900 data-[state=active]:text-black data-[state=active]:font-extrabold"
-              >
-                Travel Info
-              </TabsTrigger>
-              <TabsTrigger 
-                value="education" 
-                className="text-lg font-bold text-gray-900 data-[state=active]:text-black data-[state=active]:font-extrabold"
-              >
-                Work/Education
-              </TabsTrigger>
-              <TabsTrigger 
-                value="security" 
-                className="text-lg font-bold text-gray-900 data-[state=active]:text-black data-[state=active]:font-extrabold"
-              >
-                Security
-              </TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4 h-20">
+              {Object.entries(formCategories).map(([category, forms]) => {
+                const categoryStatus = completionStatus[category];
+                const isComplete = categoryStatus?.completed === categoryStatus?.total && categoryStatus?.total > 0;
+                
+                return (
+                  <TabsTrigger 
+                    key={category} 
+                    value={category} 
+                    className="relative flex flex-col items-center justify-center gap-2 py-2"
+                  >
+                    <span className="text-xl font-bold">
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </span>
+                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                      <span>
+                        {categoryStatus?.completed || 0}/
+                        {categoryStatus?.total || 0} completed
+                      </span>
+                      {categoryStatus?.total > 0 && (
+                        isComplete ? (
+                          <svg
+                            className="w-5 h-5 text-green-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={3}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            className="w-5 h-5 text-red-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={3}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        )
+                      )}
+                    </div>
+                  </TabsTrigger>
+                );
+              })}
             </TabsList>
             <div className="mt-6">
               <TabsContent value="personal">
-                {renderFormSection(formCategories.personal)}
+                {renderFormSection(formCategories.personal, 'personal')}
               </TabsContent>
               <TabsContent value="travel">
-                {renderFormSection(formCategories.travel)}
+                {renderFormSection(formCategories.travel, 'travel')}
               </TabsContent>
               <TabsContent value="education">
-                {renderFormSection(formCategories.education)}
+                {renderFormSection(formCategories.education, 'education')}
               </TabsContent>
               <TabsContent value="security">
-                {renderFormSection(formCategories.security)}
+                {renderFormSection(formCategories.security, 'security')}
               </TabsContent>
             </div>
           </Tabs>

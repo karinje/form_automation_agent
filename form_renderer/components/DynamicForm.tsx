@@ -247,7 +247,7 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
       currentChains: dependencyChains
     })
 
-    const newVisibleFields = new Set(visibleFields)
+      const newVisibleFields = new Set(visibleFields)
     const newDependencyChains = [...dependencyChains]
     
     // Find existing chain for this parent
@@ -265,7 +265,7 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
     }
     
     // Find and add new dependencies
-    const dependency = findDependency(formDefinition.dependencies, key)
+      const dependency = findDependency(formDefinition.dependencies, key)
     if (dependency?.shows?.length) {
       const parentChainId = getParentChainId(newDependencyChains, parentField)
       const newChain: DependencyChain = {
@@ -397,13 +397,13 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
               
               return (
                 <div key={field.name} className="space-y-6">
-                  <FormField
-                    field={field}
-                    value={formData[field.name] || ''}
-                    onChange={handleInputChange}
-                    visible={visibleFields.has(field.name)}
-                    onDependencyChange={(key) => handleDependencyChange(key, field)}
-                  />
+                <FormField
+                  field={field}
+                  value={formData[field.name] || ''}
+                  onChange={handleInputChange}
+                  visible={visibleFields.has(field.name)}
+                  onDependencyChange={(key) => handleDependencyChange(key, field)}
+                />
                 </div>
               )
             })}
