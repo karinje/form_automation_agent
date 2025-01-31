@@ -1,15 +1,6 @@
 {
   "fields": [
     {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDeport_EXPL",
-      "type": "textarea",
-      "value": "",
-      "text_phrase": "Explain",
-      "parent_text_phrase": "",
-      "maxlength": "4000",
-      "has_na_checkbox": false
-    },
-    {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblRemovalHearing",
       "type": "radio",
       "value": [
@@ -182,7 +173,17 @@
       "dependencies": null
     },
     "ctl00_SiteContentPlaceHolder_FormView1_rblDeport_0.Y": {
-      "shows": [],
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDeport_EXPL",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
       "hides": [],
       "dependencies": null
     },
