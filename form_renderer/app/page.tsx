@@ -77,6 +77,19 @@ export default function Home() {
     ],
   }
 
+  // On mount, initialize each form’s counter based on its definition
+  useEffect(() => {
+    const initialStatus: Record<string, { completed: number, total: number }> = {}
+    Object.entries(formCategories).forEach(([category, forms]) => {
+      forms.forEach((form, index) => {
+        const formId = `${category}-${index}`
+        const total = form.definition.fields.length
+        initialStatus[formId] = { completed: 0, total }
+      })
+    })
+    setCompletionStatus(initialStatus)
+  }, [])
+
   const handleFormDataLoad = useCallback((uploadedYamlData: Record<string, any>) => {
     console.log('Loading complete YAML data:', uploadedYamlData)
     setYamlData(uploadedYamlData)
@@ -154,48 +167,16 @@ export default function Home() {
     }))
   }
 
-  // Calculate completion for a single form
-  const calculateFormCompletion = useCallback((formDefinition: any, currentFormData: Record<string, string>) => {
-    const totalFields = formDefinition.fields.length
-    const completedFields = formDefinition.fields.reduce((count: number, field: any) => {
-      return currentFormData[field.name] ? count + 1 : count
-    }, 0)
-    return { completed: completedFields, total: totalFields }
-  }, [])
-
-  // Update completion status whenever form data changes
-  useEffect(() => {
-    const newCompletionStatus: Record<string, { completed: number; total: number }> = {}
-    
-    // Calculate for each form
-    Object.entries(formCategories).forEach(([category, forms]) => {
-      let categoryCompleted = 0
-      let categoryTotal = 0
-      
-      forms.forEach((form, index) => {
-        const formStatus = calculateFormCompletion(form.definition, formData)
-        const formId = `${category}-${index}`
-        newCompletionStatus[formId] = formStatus
-        categoryCompleted += formStatus.completed
-        categoryTotal += formStatus.total
-      })
-      
-      // Store category totals
-      newCompletionStatus[category] = {
-        completed: categoryCompleted,
-        total: categoryTotal
-      }
-    })
-    
-    setCompletionStatus(newCompletionStatus)
-  }, [formData, calculateFormCompletion])
-
   const renderFormSection = (forms: typeof formCategories.personal, category: string) => (
     <Accordion type="single" collapsible className="space-y-4">
       {forms.map((form, index) => {
         const formId = `${category}-${index}`
-        const isComplete = completionStatus[formId]?.completed === completionStatus[formId]?.total && 
-                          completionStatus[formId]?.total > 0
+        const onCompletionMemo = useCallback((completed: number, total: number) => {
+          setCompletionStatus(prev => ({
+            ...prev,
+            [formId]: { completed, total }
+          }))
+        }, [formId])
         
         return (
           <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
@@ -207,10 +188,10 @@ export default function Home() {
                 <div className="flex items-center gap-4">
                   <div className="flex items-center">
                     <span className="mr-2 text-sm text-gray-600">
-                      {completionStatus[formId]?.completed || 0}/
-                      {completionStatus[formId]?.total || 0} completed
+                      { (completionStatus[formId]?.completed || 0) }/
+                      { (completionStatus[formId]?.total || 0) } completed
                     </span>
-                    {isComplete ? (
+                    { (completionStatus[formId]?.total || 0) > 0 && (completionStatus[formId]?.completed === completionStatus[formId]?.total ? (
                       <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                       </svg>
@@ -218,7 +199,7 @@ export default function Home() {
                       <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                    )}
+                    ))}
                   </div>
                 </div>
               </div>
@@ -228,6 +209,7 @@ export default function Home() {
                 formDefinition={form.definition}
                 formData={formData}
                 onInputChange={handleInputChange}
+                onCompletionUpdate={onCompletionMemo}
               />
             </AccordionContent>
           </AccordionItem>
@@ -465,9 +447,16 @@ export default function Home() {
           <Tabs defaultValue="personal" className="w-full">
             <TabsList className="grid w-full grid-cols-4 h-20">
               {Object.entries(formCategories).map(([category, forms]) => {
-                const categoryStatus = completionStatus[category]
-                const isComplete = categoryStatus?.completed === categoryStatus?.total && categoryStatus?.total > 0
-                
+                let categoryCompleted = 0, categoryTotal = 0
+                forms.forEach((_, index) => {
+                  const formId = `${category}-${index}`
+                  if (completionStatus[formId]) {
+                    categoryCompleted += completionStatus[formId].completed
+                    categoryTotal += completionStatus[formId].total
+                  }
+                })
+                const isComplete = categoryTotal > 0 && categoryCompleted === categoryTotal
+
                 return (
                   <TabsTrigger 
                     key={category} 
@@ -479,10 +468,9 @@ export default function Home() {
                     </span>
                     <div className="flex items-center gap-1 text-sm text-gray-600">
                       <span>
-                        {categoryStatus?.completed || 0}/
-                        {categoryStatus?.total || 0} completed
+                        {categoryCompleted}/{categoryTotal} completed
                       </span>
-                      {categoryStatus?.total > 0 && (
+                      {categoryTotal > 0 && (
                         isComplete ? (
                           <svg
                             className="w-5 h-5 text-green-500"

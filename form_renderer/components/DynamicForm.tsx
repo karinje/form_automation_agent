@@ -11,6 +11,7 @@ interface DynamicFormProps {
   formDefinition: FormDefinition
   formData: Record<string, string>
   onInputChange: (name: string, value: string) => void
+  onCompletionUpdate?: (completed: number, total: number) => void
 }
 
 // Add interface to track dependency hierarchy
@@ -154,7 +155,7 @@ const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, onFormDa
   reader.readAsText(file)
 }
 
-export default function DynamicForm({ formDefinition, formData, onInputChange }: DynamicFormProps) {
+export default function DynamicForm({ formDefinition, formData, onInputChange, onCompletionUpdate }: DynamicFormProps) {
   const [visibleFields, setVisibleFields] = useState<Set<string>>(new Set())
   const [dependencyChains, setDependencyChains] = useState<DependencyChain[]>([])
   const [orderedFields, setOrderedFields] = useState<FormFieldType[]>([])
@@ -222,7 +223,11 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
     setDependencyChains(initialChains)
     setVisibleFields(initialFields)
     
-  }, [formDefinition, formData]) // Added formData as dependency
+    // Trigger initial completion update on mount
+    if (onCompletionUpdate) {
+      onCompletionUpdate(0, initialFields.size)
+    }
+  }, [formDefinition.fields, onCompletionUpdate])
 
   const findDependency = (deps: Record<string, Dependency> | undefined, searchKey: string): Dependency | undefined => {
     if (!deps) return undefined
@@ -361,6 +366,17 @@ export default function DynamicForm({ formDefinition, formData, onInputChange }:
   const handleInputChange = (name: string, value: string) => {
     onInputChange(name, value)
   }
+
+  // Add a useEffect to calculate current (visible) completion counters
+  useEffect(() => {
+    const visibleFieldNames = Array.from(visibleFields)
+    const total = visibleFieldNames.length
+    const completed = visibleFieldNames.filter(name => formData[name] && formData[name].trim() !== "").length
+    console.log('DynamicForm completion update:', { completed, total, visibleFieldNames })
+    if (onCompletionUpdate) {
+      onCompletionUpdate(completed, total)
+    }
+  }, [visibleFields, formData, onCompletionUpdate])
 
   return (
     <form onSubmit={handleInputChange} className="space-y-6">
