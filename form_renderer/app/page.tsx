@@ -135,7 +135,7 @@ export default function Home() {
           }, index * 200);
         });
       }, delay);
-      delay += formCategories[category].length * 200 + 200;
+      delay += formCategories[category].length * 200 + 500;
     });
   }, [])
 
@@ -252,8 +252,16 @@ export default function Home() {
   const handleFileUpload = async (file: File) => {
     if (file.type === "application/pdf") {
       try {
+        // Reset all states before processing new file
+        setFormData({})
+        setYamlData({})
+        setYamlOutput("")
+        setExtractedText("")
+        setErrorMessage("")
+        setConsoleErrors([])
+        setRefreshKey(prev => prev + 1)
+        
         setIsConverting(true);
-        setConsoleErrors([]); // Clear previous errors
         
         // Load PDF.js scripts dynamically
         const pdfjsLib = window.pdfjsLib;
@@ -289,38 +297,34 @@ export default function Home() {
         const prompt = generatePrompt(fullText);
         const yamlOutput = await callOpenAI(prompt);
         
-        // Save YAML first
-        const blob = new Blob([yamlOutput], { type: 'text/yaml' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${file.name.replace('.pdf', '')}_converted.yaml`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        // Set the YAML output for display and later use
+        setYamlOutput(yamlOutput);
         
-        // Try to parse YAML separately
         try {
-          const yamlData = yaml.load(yamlOutput) as Record<string, any>;
-          handleFormDataLoad(yamlData);
-          setYamlOutput(yamlOutput);
-        } catch (yamlError: any) {
-          console.error('YAML parsing error:', yamlError);
-          setConsoleErrors(prev => [...prev, `YAML Parsing Error: ${yamlError.message}`]);
-          // Still show the raw YAML output even if parsing failed
-          setYamlOutput(yamlOutput);
+          const parsedYaml = yaml.load(yamlOutput) as Record<string, any>;
+          handleFormDataLoad(parsedYaml);
+        } catch (error) {
+          console.error('Error parsing YAML:', error);
+          setErrorMessage('Error parsing the generated YAML data');
         }
-
+        
+        setIsProcessingLLM(false);
       } catch (error: any) {
         console.error('Error processing PDF:', error);
         setConsoleErrors(prev => [...prev, `PDF Processing Error: ${error.message}`]);
       } finally {
         setIsConverting(false);
         setIsProcessingLLM(false);
+        // Reset the file input
+        const fileInput = document.getElementById('dropzone-file') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
       }
+    } else {
+      setErrorMessage('Please upload a PDF file');
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -352,17 +356,36 @@ export default function Home() {
                 Please upload the following documents: Previous DS160, Passport, I767, Travel Ticket
               </p>
               <div className="space-y-4">
-                <div className="flex items-center justify-center w-full">
+                <div className="upload-container relative">
+                  {/* LLM processing overlay */}
+                  {isProcessingLLM && (
+                    <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-lg z-50">
+                      <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center h-32 justify-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+                        <p className="text-lg font-semibold">Extracting Information from DS160</p>
+                        <p className="text-sm text-gray-500">Typically takes 1-2 minutes</p>
+                      </div>
+                    </div>
+                  )}
                   <label
                     htmlFor="dropzone-file"
-                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                    className={`flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg ${isProcessing ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-100'} bg-gray-50 relative`}
                     onDrop={(e) => {
+                      if (isProcessing) return;
                       e.preventDefault();
                       const file = e.dataTransfer.files[0];
                       if (file) handleFileUpload(file);
                     }}
-                    onDragOver={(e) => e.preventDefault()}
+                    onDragOver={(e) => {
+                      if (isProcessing) return;
+                      e.preventDefault();
+                    }}
                   >
+                    {isProcessing && (
+                      <div className="absolute -top-16 left-0 w-full flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+                      </div>
+                    )}
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                       {isConverting ? (
                         <>
@@ -386,92 +409,66 @@ export default function Home() {
                       type="file" 
                       className="hidden" 
                       onChange={(e) => {
+                        if (isProcessing) return;
                         const file = e.target.files?.[0];
                         if (file) handleFileUpload(file);
                       }}
+                      disabled={isProcessing}
                       accept=".pdf"
                     />
                   </label>
-                </div>
-
-                <div className="space-y-4">
-                  {/* File Status Row */}
+                  {/* Download Links */}
                   {(extractedText || yamlOutput) && (
-                    <div className="flex justify-between items-center mt-4">
-                      {/* DS160 Text Section */}
+                    <div className="flex justify-between items-center mt-4 text-sm">
                       {extractedText && (
-                        <div className="flex items-center">
-                          <span className="text-sm font-medium text-gray-700 mr-2">DS160 Text</span>
+                        <div className="flex items-center space-x-2">
+                          <span className="font-medium">DS160 Text</span>
                           <button
                             onClick={() => {
                               const blob = new Blob([extractedText], { type: 'text/plain' });
                               const url = URL.createObjectURL(blob);
-                              const a = document.createElement('a');
-                              a.href = url;
-                              a.download = 'extracted_text.txt';
-                              document.body.appendChild(a);
-                              a.click();
-                              document.body.removeChild(a);
+                              window.open(url, '_blank');
                               URL.revokeObjectURL(url);
                             }}
-                            className="text-xs text-blue-600 hover:text-blue-800 flex items-center"
+                            className="text-blue-600 hover:text-blue-800 hover:underline"
                           >
-                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
                             Download
                           </button>
                         </div>
                       )}
-
-                      {/* Generated Input File Section */}
                       {yamlOutput && (
-                        <div className="flex items-center">
-                          <span className="text-sm font-medium text-gray-700 mr-2">Generated Input File from DS160</span>
+                        <div className="flex items-center space-x-2">
+                          <span className="font-medium">Fields Extracted</span>
                           <button
                             onClick={() => {
                               const blob = new Blob([yamlOutput], { type: 'text/yaml' });
                               const url = URL.createObjectURL(blob);
-                              const a = document.createElement('a');
-                              a.href = url;
-                              a.download = 'form_data.yaml';
-                              document.body.appendChild(a);
-                              a.click();
-                              document.body.removeChild(a);
+                              window.open(url, '_blank');
                               URL.revokeObjectURL(url);
                             }}
-                            className="text-xs text-blue-600 hover:text-blue-800 flex items-center"
+                            className="text-blue-600 hover:text-blue-800 hover:underline"
                           >
-                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
                             Download
                           </button>
                         </div>
                       )}
                     </div>
                   )}
+                </div>
 
-                  {/* Processing Indicator */}
-                  {isProcessingLLM && (
-                    <div className="flex items-center justify-center p-2 bg-blue-50 rounded-lg">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500 mr-2"></div>
-                      <p className="text-xs text-blue-700">Processing with LLM...</p>
+                <div className="space-y-4">
+                  {errorMessage && (
+                    <div className="mt-4 p-4 bg-red-50 rounded-lg border border-red-200">
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h3 className="text-sm font-medium text-red-800">Error</h3>
+                      </div>
+                      <p className="mt-2 text-sm text-red-700">{errorMessage}</p>
                     </div>
                   )}
                 </div>
-
-                {errorMessage && (
-                  <div className="mt-4 p-4 bg-red-50 rounded-lg border border-red-200">
-                    <div className="flex items-center">
-                      <svg className="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <h3 className="text-sm font-medium text-red-800">Error</h3>
-                    </div>
-                    <p className="mt-2 text-sm text-red-700">{errorMessage}</p>
-                  </div>
-                )}
               </div>
             </div>
           </div>
