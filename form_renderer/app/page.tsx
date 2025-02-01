@@ -47,6 +47,9 @@ export default function Home() {
   const [yamlOutput, setYamlOutput] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [consoleErrors, setConsoleErrors] = useState<string[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [accordionValues, setAccordionValues] = useState<Record<string, string>>({});
+  const [currentTab, setCurrentTab] = useState<string>("personal");
 
   const formCategories = {
     personal: [
@@ -77,7 +80,7 @@ export default function Home() {
     ],
   }
 
-  // On mount, initialize each form’s counter based on its definition
+  // On mount, initialize each form's counter based on its definition
   useEffect(() => {
     const initialStatus: Record<string, { completed: number, total: number }> = {}
     Object.entries(formCategories).forEach(([category, forms]) => {
@@ -96,7 +99,6 @@ export default function Home() {
     
     // Process all pages
     const allFormFields: Record<string, string> = {}
-    
     Object.entries(uploadedYamlData).forEach(([pageName, pageData]) => {
       console.log('Processing page:', pageName, pageData)
       const flattenedData = flattenYamlData(pageData)
@@ -113,6 +115,28 @@ export default function Home() {
     
     console.log('Setting form data:', allFormFields)
     setFormData(allFormFields)
+    setRefreshKey(prev => prev + 1)
+    
+    // Cycle through every tab and simulate expand/collapse for every page within each tab.
+    const categories = Object.keys(formCategories)
+    let delay = 0;
+    categories.forEach((category) => {
+      setTimeout(() => {
+        setCurrentTab(category); // Switch tab
+        const forms = formCategories[category];
+        forms.forEach((_, index) => {
+          setTimeout(() => {
+            // Expand
+            setAccordionValues(prev => ({ ...prev, [category]: `item-${index}` }));
+            setTimeout(() => {
+              // Collapse
+              setAccordionValues(prev => ({ ...prev, [category]: "" }));
+            }, 100);
+          }, index * 200);
+        });
+      }, delay);
+      delay += formCategories[category].length * 200 + 200;
+    });
   }, [])
 
   const handleDownloadYaml = useCallback(() => {
@@ -168,7 +192,13 @@ export default function Home() {
   }
 
   const renderFormSection = (forms: typeof formCategories.personal, category: string) => (
-    <Accordion type="single" collapsible className="space-y-4">
+    <Accordion 
+      type="single" 
+      collapsible 
+      className="space-y-4"
+      value={accordionValues[category] || ""}
+      onValueChange={(val) => setAccordionValues(prev => ({ ...prev, [category]: val }))}
+    >
       {forms.map((form, index) => {
         const formId = `${category}-${index}`
         const onCompletionMemo = useCallback((completed: number, total: number) => {
@@ -206,6 +236,7 @@ export default function Home() {
             </AccordionTrigger>
             <AccordionContent className="p-4">
               <DynamicForm
+                key={`${formId}-${refreshKey}`}
                 formDefinition={form.definition}
                 formData={formData}
                 onInputChange={handleInputChange}
@@ -444,7 +475,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <Tabs defaultValue="personal" className="w-full">
+          <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
             <TabsList className="grid w-full grid-cols-4 h-20">
               {Object.entries(formCategories).map(([category, forms]) => {
                 let categoryCompleted = 0, categoryTotal = 0
