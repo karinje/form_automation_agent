@@ -534,20 +534,68 @@ export default function Home() {
                 )
               })}
             </TabsList>
-            <div className="mt-6">
-              <TabsContent value="personal">
-                {renderFormSection(formCategories.personal, 'personal')}
-              </TabsContent>
-              <TabsContent value="travel">
-                {renderFormSection(formCategories.travel, 'travel')}
-              </TabsContent>
-              <TabsContent value="education">
-                {renderFormSection(formCategories.education, 'education')}
-              </TabsContent>
-              <TabsContent value="security">
-                {renderFormSection(formCategories.security, 'security')}
-              </TabsContent>
-            </div>
+            <TabsContent value="personal">
+              {renderFormSection(formCategories.personal, 'personal')}
+            </TabsContent>
+            <TabsContent value="travel">
+              {renderFormSection(formCategories.travel, 'travel')}
+            </TabsContent>
+            <TabsContent value="education">
+              {renderFormSection(formCategories.education, 'education')}
+            </TabsContent>
+            <TabsContent value="security">
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex-grow">
+                    <p className="text-base font-medium text-gray-800 my-auto">
+                      Select default answer for all Security and Background Questions:
+                    </p>
+                  </div>
+                  <div className="min-w-[200px]">
+                    <Tabs
+                      defaultValue=""
+                      onValueChange={(value) => {
+                        const newFormData = { ...formData };
+                        formCategories.security.forEach(form => {
+                          form.definition.fields.forEach(field => {
+                            if (field.type === 'radio') {
+                              newFormData[field.name] = value;
+                            }
+                          });
+                        });
+                        setFormData(newFormData);
+                        
+                        formCategories.security.forEach((_, index) => {
+                          setTimeout(() => {
+                            setAccordionValues(prev => ({ ...prev, security: `item-${index}` }));
+                            setTimeout(() => {
+                              setAccordionValues(prev => ({ ...prev, security: "" }));
+                            }, 100);
+                          }, index * 200);
+                        });
+                      }}
+                      className="w-full"
+                    >
+                      <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger
+                          value="Y"
+                          className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
+                        >
+                          Yes
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value="N"
+                          className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
+                        >
+                          No
+                        </TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
+                </div>
+              </div>
+              {renderFormSection(formCategories.security, 'security')}
+            </TabsContent>
           </Tabs>
         </div>
 

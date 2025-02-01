@@ -53,7 +53,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     return (
       <div className="flex items-start justify-between gap-4">
         <div className="flex-grow">
-          <p className="text-sm font-medium text-gray-700">{field.text_phrase}</p>
+          <p className="text-sm font-medium text-gray-800 my-auto">{field.text_phrase}</p>
         </div>
         <div className="min-w-[200px]">
           <Tabs
@@ -67,7 +67,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
                   key={option}
                   value={option}
                   id={field.button_ids?.[option]}
-                  className="font-medium border border-gray-200 data-[state=inactive]:bg-gray-50 data-[state=inactive]:hover:bg-gray-100"
+                  className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
                 >
                   {field.labels[index]}
                 </TabsTrigger>
