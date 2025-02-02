@@ -16,7 +16,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_TRAVEL_IND_1"
       },
       "text_phrase": "Have you ever been in the U.S.?",
-      "parent_text_phrase": ""
+      "parent_text_phrase": "Have you ever been in the U.S.?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_IND",
@@ -34,7 +34,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_IND_1"
       },
       "text_phrase": "Have you ever been issued a U.S. Visa?",
-      "parent_text_phrase": ""
+      "parent_text_phrase": "Have you ever been issued a U.S. Visa?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_REFUSED_IND",
@@ -52,7 +52,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_REFUSED_IND_1"
       },
       "text_phrase": "Have you ever been refused a U.S. Visa, or been refused admission to the United States, or withdrawn your application for admission at the port of entry?",
-      "parent_text_phrase": ""
+      "parent_text_phrase": "Have you ever been refused a U.S. Visa, or been refused admission to the United States, or withdrawn your application for admission at the port of entry?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblVWP_DENIAL_IND",
@@ -70,7 +70,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblVWP_DENIAL_IND_1"
       },
       "text_phrase": "Have you ever been denied travel authorization by the Department of Homeland Security through the Electronic System for Travel Authorization (ESTA)?",
-      "parent_text_phrase": ""
+      "parent_text_phrase": "Have you ever been denied travel authorization by the Department of Homeland Security through the Electronic System for Travel Authorization (ESTA)?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblIV_PETITION_IND",
@@ -88,7 +88,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblIV_PETITION_IND_1"
       },
       "text_phrase": "Has anyone ever filed an immigrant petition on your behalf with the United States Citizenship and Immigration Services?",
-      "parent_text_phrase": ""
+      "parent_text_phrase": "Has anyone ever filed an immigrant petition on your behalf with the United States Citizenship and Immigration Services?"
     }
   ],
   "dependencies": {
@@ -99,7 +99,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Date Arrived - Year",
-          "parent_text_phrase": "Date Arrived",
+          "parent_text_phrase": "Previous U.S. Travel",
           "maxlength": "4",
           "has_na_checkbox": false
         },
@@ -121,7 +121,7 @@
             "DEC"
           ],
           "text_phrase": "Date Arrived - Month",
-          "parent_text_phrase": "Date Arrived"
+          "parent_text_phrase": "Previous U.S. Travel"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_DRIVER_LIC_IND",
@@ -145,7 +145,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Length of Stay",
-          "parent_text_phrase": "Length of Stay - Number",
+          "parent_text_phrase": "Previous U.S. Travel",
           "maxlength": "3",
           "has_na_checkbox": false
         },
@@ -186,7 +186,7 @@
             "31"
           ],
           "text_phrase": "Date Arrived - Day",
-          "parent_text_phrase": "Date Arrived"
+          "parent_text_phrase": "Previous U.S. Travel"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_ddlPREV_US_VISIT_LOS_CD",
@@ -199,7 +199,7 @@
             "Less Than 24 Hours"
           ],
           "text_phrase": "Length of Stay - Period",
-          "parent_text_phrase": "Length of Stay"
+          "parent_text_phrase": "Previous U.S. Travel"
         }
       ],
       "hides": [],
@@ -315,14 +315,14 @@
             "DEC"
           ],
           "text_phrase": "Date Last Visa Was Issued - Month",
-          "parent_text_phrase": "Date Last Visa Was Issued"
+          "parent_text_phrase": "Previous Visa Details"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_FOIL_NUMBER",
           "type": "text",
           "value": "",
           "text_phrase": "Visa Number",
-          "parent_text_phrase": "Date Last Visa Was Issued",
+          "parent_text_phrase": "Previous Visa Details",
           "maxlength": "12",
           "has_na_checkbox": false
         },
@@ -380,7 +380,7 @@
             "31"
           ],
           "text_phrase": "Date Last Visa Was Issued - Day",
-          "parent_text_phrase": "Date Last Visa Was Issued"
+          "parent_text_phrase": "Previous Visa Details"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_TYPE_IND",
@@ -404,7 +404,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Date Last Visa Was Issued - Year",
-          "parent_text_phrase": "Date Last Visa Was Issued",
+          "parent_text_phrase": "Previous Visa Details",
           "maxlength": "4",
           "has_na_checkbox": false
         },
