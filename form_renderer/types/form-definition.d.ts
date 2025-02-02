@@ -25,4 +25,11 @@ export interface FormDefinition {
     type: string
     value: string
   }[]
-} 
+}
+
+export interface DateFieldGroup {
+  basePhrase: string;
+  dayField: FormField;
+  monthField: FormField;
+  yearField: FormField;
+}

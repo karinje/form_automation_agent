@@ -23,6 +23,13 @@ interface FormFieldProps {
 export function FormField({ field, value, onChange, visible, dependencies, onDependencyChange }: FormFieldProps) {
   const [isNAChecked, setIsNAChecked] = useState(false)
 
+  // Check if this is part of a date group
+  const isDateComponent = field.text_phrase ? /^(.*?)\s*-\s*(Day|Month|Year)$/i.test(field.text_phrase) : false;
+  if (isDateComponent) {
+    // Skip rendering individual components - they'll be handled by DateFieldGroup
+    return null;
+  }
+
   if (!visible) return null
 
   const handleRadioChange = (value: string) => {
@@ -48,7 +55,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
   }
 
   const renderRadioButton = () => {
-    if (!field.value || !field.labels) return null
+    if (!Array.isArray(field.value) || !field.labels) return null;
     
     return (
       <div className="flex items-start justify-between gap-4">
@@ -69,7 +76,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
                   id={field.button_ids?.[option]}
                   className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
                 >
-                  {field.labels[index]}
+                  {field.labels?.[index]}
                 </TabsTrigger>
               ))}
             </TabsList>

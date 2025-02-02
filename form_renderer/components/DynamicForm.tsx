@@ -1,11 +1,17 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { FormProvider } from "react-hook-form"
+import { formSchema, type FormValues } from "@/lib/schema"
 import { FormField } from "@/components/FormField"
 import { Button } from "@/components/ui/button"
-import type { FormDefinition, FormField as FormFieldType, Dependency } from "@/types/form-definition"
+import type { FormDefinition, FormField as FormFieldType, Dependency, DateFieldGroup } from "@/types/form-definition"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import yaml from 'js-yaml'
+import DateFieldGroup from "@/components/DateFieldGroup"
+import SSNFieldGroup from "@/components/SSNFieldGroup"
 
 interface DynamicFormProps {
   formDefinition: FormDefinition
@@ -26,6 +32,13 @@ interface DependencyChain {
   parentField: FormFieldType;
   childFields: FormFieldType[];
   parentChainId?: string; // Links to parent's chain
+}
+
+interface SSNFieldGroup {
+  basePhrase: string
+  number1Field: FormFieldType
+  number2Field: FormFieldType
+  number3Field: FormFieldType
 }
 
 const getDependencyLevel = (fieldName: string, groups: DependencyLevel[]): number => {
@@ -155,7 +168,114 @@ const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, onFormDa
   reader.readAsText(file)
 }
 
+const detectDateFields = (fields: FormFieldType[]): DateFieldGroup[] => {
+  const groups: DateFieldGroup[] = [];
+  const dateRegex = /^(.*?)\s*-\s*(Day|Month|Year)$/i;
+  
+  // Group fields by their base phrase
+  const fieldsByBase = new Map<string, {
+    day?: FormFieldType;
+    month?: FormFieldType;
+    year?: FormFieldType;
+  }>();
+
+  fields.forEach(field => {
+    const match = field.text_phrase?.match(dateRegex);
+    if (match) {
+      const [_, basePhrase, type] = match;
+      if (!fieldsByBase.has(basePhrase)) {
+        fieldsByBase.set(basePhrase, {});
+      }
+      const group = fieldsByBase.get(basePhrase)!;
+      
+      switch (type.toLowerCase()) {
+        case 'day':
+          group.day = field;
+          break;
+        case 'month':
+          group.month = field;
+          break;
+        case 'year':
+          group.year = field;
+          break;
+      }
+    }
+  });
+
+  // Create groups where we have all three components
+  fieldsByBase.forEach((components, basePhrase) => {
+    if (components.day && components.month && components.year) {
+      groups.push({
+        basePhrase,
+        dayField: components.day,
+        monthField: components.month,
+        yearField: components.year
+      });
+    }
+  });
+
+  return groups;
+};
+
+const detectSSNFields = (fields: FormFieldType[]): SSNFieldGroup[] => {
+  const groups: SSNFieldGroup[] = []
+  const ssnRegex = /^U\.S\. Social Security Number (\d+)$/i
+
+  // Group fields by their base phrase
+  const fieldsByNumber = new Map<string, {
+    number1?: FormFieldType
+    number2?: FormFieldType
+    number3?: FormFieldType
+  }>()
+
+  fields.forEach(field => {
+    const match = field.text_phrase?.match(ssnRegex)
+    if (match) {
+      const [_, number] = match
+      const basePhrase = "U.S. Social Security Number"
+      
+      if (!fieldsByNumber.has(basePhrase)) {
+        fieldsByNumber.set(basePhrase, {})
+      }
+      const group = fieldsByNumber.get(basePhrase)!
+      
+      switch (number) {
+        case "1":
+          group.number1 = field
+          break
+        case "2":
+          group.number2 = field
+          break
+        case "3":
+          group.number3 = field
+          break
+      }
+    }
+  })
+
+  // Create groups where we have all three components
+  fieldsByNumber.forEach((components, basePhrase) => {
+    if (components.number1 && components.number2 && components.number3) {
+      groups.push({
+        basePhrase,
+        number1Field: components.number1,
+        number2Field: components.number2,
+        number3Field: components.number3
+      })
+    }
+  })
+
+  return groups
+}
+
 export default function DynamicForm({ formDefinition, formData, onInputChange, onCompletionUpdate }: DynamicFormProps) {
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      date: undefined,
+    },
+  })
+
   const [visibleFields, setVisibleFields] = useState<Set<string>>(new Set())
   const [dependencyChains, setDependencyChains] = useState<DependencyChain[]>([])
   const [orderedFields, setOrderedFields] = useState<FormFieldType[]>([])
@@ -378,62 +498,114 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
     }
   }, [visibleFields, formData, onCompletionUpdate])
 
+  // Group date fields
+  const dateGroups = useMemo(() => 
+    detectDateFields(orderedFields), 
+    [orderedFields]
+  );
+  
+  // Track which fields are part of date groups
+  const dateFieldNames = useMemo(() => 
+    new Set(dateGroups.flatMap(group => 
+      [group.dayField.name, group.monthField.name, group.yearField.name]
+    )),
+    [dateGroups]
+  );
+
+  const ssnGroups = useMemo(() => 
+    detectSSNFields(orderedFields), 
+    [orderedFields]
+  )
+
+  const ssnFieldNames = useMemo(() => 
+    new Set(ssnGroups.flatMap(group => 
+      [group.number1Field.name, group.number2Field.name, group.number3Field.name]
+    )),
+    [ssnGroups]
+  )
+
   return (
-    <form onSubmit={handleInputChange} className="space-y-6">
-      {groupFieldsByParent(orderedFields, dependencyChains).map((group, index) => {
-        const isParentGroup = group.length === 1
-        const parentField = isParentGroup ? group[0] : undefined
-        const chain = parentField ? dependencyChains.find(c => c.parentField.name === parentField.name) : undefined
-        const isDependencyGroup = !isParentGroup && dependencyChains.some(c => 
-          group.some(f => c.childFields.includes(f))
-        )
-        
-        console.log('Rendering group:', {
-          index,
-          isParentGroup,
-          parentFieldName: parentField?.name,
-          isDependencyGroup,
-          hasParentChain: !!chain?.parentChainId,
-          fields: group.map(f => f.name)
-        })
-        
-        return (
-          <div key={index} className={`
-            ${isDependencyGroup ? 'border-2 border-gray-200 p-4 rounded-lg mt-2' : ''}
-            ${chain?.parentChainId ? 'ml-4' : ''} // Indent nested dependencies
-            ${isDependencyGroup ? 'space-y-6' : 'space-y-4'} // Increased spacing for dependency groups
-          `}>
-            {group.map(field => {
-              console.log('Rendering field in group:', {
-                groupIndex: index,
-                fieldName: field.name,
-                isVisible: visibleFields.has(field.name),
-                hasOwnDependencies: dependencyChains.some(c => c.parentField.name === field.name)
-              })
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(() => {})} className="space-y-6">
+        {groupFieldsByParent(orderedFields, dependencyChains).map((group, index) => {
+          const isParentGroup = group.length === 1
+          const parentField = isParentGroup ? group[0] : undefined
+          const chain = parentField ? dependencyChains.find(c => c.parentField.name === parentField.name) : undefined
+          const isDependencyGroup = !isParentGroup && dependencyChains.some(c => 
+            group.some(f => c.childFields.includes(f))
+          )
+          
+          console.log('Rendering group:', {
+            index,
+            isParentGroup,
+            parentFieldName: parentField?.name,
+            isDependencyGroup,
+            hasParentChain: !!chain?.parentChainId,
+            fields: group.map(f => f.name)
+          })
+          
+          return (
+            <div key={index} className={`
+              ${isDependencyGroup ? 'border-2 border-gray-200 p-4 rounded-lg mt-2' : ''}
+              ${chain?.parentChainId ? 'ml-4' : ''} // Indent nested dependencies
+              ${isDependencyGroup ? 'space-y-6' : 'space-y-4'} // Increased spacing for dependency groups
+            `}>
+              {/* Render date groups */}
+              {dateGroups
+                .filter(dg => 
+                  group.some(f => f.name === dg.dayField.name)
+                )
+                .map(dateGroup => (
+                  <DateFieldGroup
+                    key={dateGroup.basePhrase}
+                    dateGroup={dateGroup}
+                    values={formData}
+                    onChange={onInputChange}
+                    visible={visibleFields.has(dateGroup.dayField.name)}
+                  />
+                ))}
               
-              return (
-                <div key={field.name} className="space-y-6">
-                <FormField
-                  field={field}
-                  value={formData[field.name] || ''}
-                  onChange={handleInputChange}
-                  visible={visibleFields.has(field.name)}
-                  onDependencyChange={(key) => handleDependencyChange(key, field)}
-                />
-                </div>
-              )
-            })}
-          </div>
-        )
-      })}
-      
-      <div className="flex justify-end space-x-4">
-        {formDefinition.buttons?.map((button) => (
-          <Button key={button.id} type={button.type as "button" | "submit"}>
-            {button.value}
-          </Button>
-        ))}
-      </div>
-    </form>
+              {/* Render SSN groups */}
+              {ssnGroups
+                .filter(sg => 
+                  group.some(f => f.name === sg.number1Field.name)
+                )
+                .map(ssnGroup => (
+                  <SSNFieldGroup
+                    key={ssnGroup.basePhrase}
+                    ssnGroup={ssnGroup}
+                    values={formData}
+                    onChange={onInputChange}
+                    visible={visibleFields.has(ssnGroup.number1Field.name)}
+                  />
+                ))}
+              
+              {/* Render regular fields */}
+              {group
+                .filter(field => !dateFieldNames.has(field.name) && !ssnFieldNames.has(field.name))
+                .map(field => (
+                  <div key={field.name} className="space-y-6">
+                  <FormField
+                    field={field}
+                    value={formData[field.name] || ''}
+                    onChange={handleInputChange}
+                    visible={visibleFields.has(field.name)}
+                    onDependencyChange={(key) => handleDependencyChange(key, field)}
+                  />
+                  </div>
+                ))}
+            </div>
+          )
+        })}
+        
+        <div className="flex justify-end space-x-4">
+          {formDefinition.buttons?.map((button) => (
+            <Button key={button.id} type={button.type as "button" | "submit"}>
+              {button.value}
+            </Button>
+          ))}
+        </div>
+      </form>
+    </FormProvider>
   )
 } 
