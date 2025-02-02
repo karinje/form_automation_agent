@@ -90,7 +90,7 @@
         "30",
         "31"
       ],
-      "text_phrase": "Date-Day",
+      "text_phrase": "Date of Birth - Day",
       "parent_text_phrase": "Date and Place of Birth"
     },
     {
@@ -111,14 +111,14 @@
         "NOV",
         "DEC"
       ],
-      "text_phrase": "Date-Month",
+      "text_phrase": "Date of Birth - Month",
       "parent_text_phrase": "Date and Place of Birth"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDOBYear",
       "type": "text",
       "value": "",
-      "text_phrase": "Date-Year",
+      "text_phrase": "Date of Birth - Year",
       "parent_text_phrase": "Date and Place of Birth",
       "maxlength": "4",
       "has_na_checkbox": false

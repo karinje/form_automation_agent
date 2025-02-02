@@ -7,12 +7,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/components/ui/textarea"
 import type { FormField as FormFieldType } from "@/types/form-definition"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { DateField } from "./DateField"
+import { DatePicker } from "./DatePicker"
 
 interface FormFieldProps {
-  field: FormFieldType
+  field: FormFieldType & {
+    type: "text" | "textarea" | "radio" | "dropdown" | "date"
+  }
   value: string
   onChange: (name: string, value: string) => void
   visible: boolean
@@ -29,6 +33,15 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     // Skip rendering individual components - they'll be handled by DateFieldGroup
     return null;
   }
+
+  // Add useEffect to handle initial dependencies when value is loaded from YAML
+  useEffect(() => {
+    if (onDependencyChange && field.type === "radio" && value && field.button_ids?.[value]) {
+      const buttonId = field.button_ids[value]
+      const key = `${buttonId}.${value}`
+      onDependencyChange(key, field)
+    }
+  }, []) // Empty dependency array to run only on mount
 
   if (!visible) return null
 
@@ -142,6 +155,19 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
                 ))}
             </SelectContent>
           </Select>
+        )
+
+      case "date":
+        return (
+          <div className="space-y-2">
+            <DatePicker
+              name={field.name}
+              value={value}
+              onChange={(newValue) => onChange(field.name, newValue)}
+              disabled={isNAChecked}
+              placeholder={field.text_phrase}
+            />
+          </div>
         )
 
       default:

@@ -55,7 +55,7 @@
         "30",
         "31"
       ],
-      "text_phrase": "",
+      "text_phrase": "Spouse Date of Birth - Day",
       "parent_text_phrase": "Spouse's Date of Birth"
     },
     {
@@ -76,14 +76,14 @@
         "NOV",
         "DEC"
       ],
-      "text_phrase": "",
+      "text_phrase": "Spouse Date of Birth - Month",
       "parent_text_phrase": "Spouse's Date of Birth"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDOBYear",
       "type": "text",
       "value": "",
-      "text_phrase": "",
+      "text_phrase": "Spouse Date of Birth - Year",
       "parent_text_phrase": "Spouse's Date of Birth",
       "maxlength": "4",
       "has_na_checkbox": false

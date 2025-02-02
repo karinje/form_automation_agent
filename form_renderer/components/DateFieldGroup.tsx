@@ -1,17 +1,16 @@
-import { useMemo } from "react";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format, parse } from "date-fns";
-import { Label } from "@/components/ui/label";
-import type { DateFieldGroup as DateFieldGroupType } from "@/types/form-definition";
+import { Label } from "@/components/ui/label"
+import type { DateFieldGroup as DateFieldGroupType } from "@/types/form-definition"
+import { DatePicker } from "./DatePicker"
 
 const MONTH_MAP: Record<string, number> = {
   JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
   JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11
 };
+
+const REVERSE_MONTH_MAP: Record<number, string> = Object.entries(MONTH_MAP).reduce(
+  (acc, [key, value]) => ({ ...acc, [value]: key }),
+  {} as Record<number, string>
+);
 
 interface DateFieldGroupProps {
   dateGroup: DateFieldGroupType;
@@ -23,74 +22,71 @@ interface DateFieldGroupProps {
 const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroupProps) => {
   const { dayField, monthField, yearField } = dateGroup;
   
-  // Convert individual values to Date object
-  const date = useMemo(() => {
-    if (!values[dayField.name] || !values[monthField.name] || !values[yearField.name]) {
-      return undefined;
+  if (!visible) return null;
+
+  const handleDateChange = (value: string) => {
+    if (!value) {
+      // Clear all fields if date is cleared
+      onChange(dayField.name, "")
+      onChange(monthField.name, "")
+      onChange(yearField.name, "")
+      return
+    }
+
+    // Parse the selected date
+    const date = new Date(value)
+    const day = date.getDate().toString()
+    const monthIndex = date.getMonth()
+    const year = date.getFullYear().toString()
+
+    // Convert month number to three-letter format (e.g., JAN, FEB)
+    const monthStr = REVERSE_MONTH_MAP[monthIndex]
+
+    // Update all three fields
+    onChange(dayField.name, day)
+    onChange(monthField.name, monthStr)
+    onChange(yearField.name, year)
+  }
+
+  // Convert from form values to date string
+  const getDateValue = () => {
+    if (!values[yearField.name] || !values[monthField.name] || !values[dayField.name]) {
+      return ""
     }
 
     try {
-      const day = parseInt(values[dayField.name]);
-      const month = MONTH_MAP[values[monthField.name].toUpperCase()] ?? parseInt(values[monthField.name]) - 1;
-      const year = parseInt(values[yearField.name]);
+      const year = values[yearField.name]
+      const monthStr = values[monthField.name].toUpperCase()
+      const day = values[dayField.name]
 
-      if (isNaN(day) || isNaN(month) || isNaN(year)) {
-        return undefined;
+      // Convert month string to number (0-11)
+      const monthIndex = MONTH_MAP[monthStr]
+      if (monthIndex === undefined) {
+        // If not a three-letter month, assume it's already a number
+        const monthNum = parseInt(monthStr)
+        if (isNaN(monthNum) || monthNum < 1 || monthNum > 12) return ""
+        return `${year}-${monthNum.toString().padStart(2, '0')}-${day.padStart(2, '0')}`
       }
 
-      const date = new Date(year, month, day);
-      return date;
+      // Add 1 to monthIndex since HTML date input expects 1-12
+      return `${year}-${(monthIndex + 1).toString().padStart(2, '0')}-${day.padStart(2, '0')}`
     } catch (error) {
-      console.error('Error parsing date:', error);
-      return undefined;
+      console.error('Error converting date values:', error)
+      return ""
     }
-  }, [values, dayField.name, monthField.name, yearField.name]);
-
-  const handleDateChange = (newDate: Date | undefined) => {
-    if (newDate) {
-      // Get month name from month number
-      const monthName = Object.keys(MONTH_MAP).find(
-        key => MONTH_MAP[key] === newDate.getMonth()
-      ) || (newDate.getMonth() + 1).toString();
-
-      onChange(dayField.name, newDate.getDate().toString());
-      onChange(monthField.name, monthName);
-      onChange(yearField.name, newDate.getFullYear().toString());
-    }
-  };
-
-  if (!visible) return null;
+  }
 
   return (
     <div className="flex flex-col space-y-2">
       <Label>{dateGroup.basePhrase}</Label>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={"outline"}
-            className={cn(
-              "w-[240px] pl-3 text-left font-normal",
-              !date && "text-muted-foreground"
-            )}
-          >
-            {date && !isNaN(date.getTime()) 
-              ? format(date, "PPP") 
-              : <span>Pick a date</span>
-            }
-            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={date && !isNaN(date.getTime()) ? date : undefined}
-            onSelect={handleDateChange}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
+      <DatePicker
+        name={dayField.name}
+        value={getDateValue()}
+        onChange={handleDateChange}
+        placeholder="Select date"
+      />
     </div>
-  );
-};
+  )
+}
 
-export default DateFieldGroup;
+export default DateFieldGroup
