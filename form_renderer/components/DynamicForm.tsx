@@ -41,6 +41,13 @@ interface SSNFieldGroup {
   number3Field: FormFieldType
 }
 
+// Add new interface to track parent text phrase grouping
+interface FieldGroup {
+  parentTextPhrase: string;
+  fields: FormFieldType[];
+  subgroups: FieldGroup[];
+}
+
 const getDependencyLevel = (fieldName: string, groups: DependencyLevel[]): number => {
   const group = groups.find(g => 
     g.fields.some(f => f.name === fieldName)
@@ -48,105 +55,93 @@ const getDependencyLevel = (fieldName: string, groups: DependencyLevel[]): numbe
   return group?.level ?? 0
 }
 
-// Modify groupFieldsByParent to handle dependency levels differently
+// Modify groupFieldsByParent to handle top-level fields that share parent_text_phrase:
 const groupFieldsByParent = (fields: FormFieldType[], chains: DependencyChain[]): FormFieldType[][] => {
   console.log('Starting groupFieldsByParent:', {
     totalFields: fields.length,
     totalChains: chains.length
   })
-  
+
   const result: FormFieldType[][] = []
   const processedFields = new Set<string>()
-  
-  // Helper to process a field and its dependencies recursively
-  const processFieldWithDependencies = (field: FormFieldType, isBaseField: boolean = true) => {
-    console.log('Processing field:', {
-      fieldName: field.name,
-      isBaseField,
-      alreadyProcessed: processedFields.has(field.name)
-    })
 
-    if (processedFields.has(field.name)) return
-    processedFields.add(field.name)
-    
-    // Add field to result if it's a base field
-    if (isBaseField) {
-      console.log('Adding base field to result:', field.name)
-      result.push([field])
-    }
-    
-    // Find direct dependencies of this field
-    const chain = chains.find(c => c.parentField.name === field.name)
-    if (chain) {
-      console.log('Found dependency chain:', {
-        parentField: field.name,
-        dependencyCount: chain.childFields.length
-      })
+  // STEP 1: Collect base fields by parent_text_phrase
+  // ------------------------------------------------
+  // Instead of pushing each base field separately, we group them by their parent_text_phrase.
+  type FieldsByPhrase = Record<string, FormFieldType[]>
+  const topLevelGroups: FieldsByPhrase = {}
 
-      const dependencyGroup: FormFieldType[] = []
-      
-      chain.childFields.forEach(depField => {
-        // Add the dependency field
-        dependencyGroup.push(depField)
-        console.log('Added dependency to group:', {
-          parentField: field.name,
-          dependencyField: depField.name
-        })
-        
-        // Check for nested dependencies (grandchildren)
-        const nestedChain = chains.find(c => c.parentField.name === depField.name)
-        if (nestedChain) {
-          console.log('Found nested dependencies:', {
-            parentField: depField.name,
-            nestedCount: nestedChain.childFields.length
-          })
-          
-          // Add nested dependencies right after their parent
-          nestedChain.childFields.forEach(nestedField => {
-            if (!processedFields.has(nestedField.name)) {
-              dependencyGroup.push(nestedField)
-              processedFields.add(nestedField.name)
-              console.log('Added nested dependency:', {
-                parentField: depField.name,
-                nestedField: nestedField.name
-              })
-            }
-          })
-        }
-      })
-      
-      if (dependencyGroup.length > 0) {
-        console.log('Adding dependency group to result:', {
-          parentField: field.name,
-          groupSize: dependencyGroup.length,
-          fields: dependencyGroup.map(f => f.name)
-        })
-        result.push(dependencyGroup)
-      }
-    }
-  }
-  
-  // Process base fields first
+  // “Base” means fields not found as children in any chain.
   const baseFields = fields.filter(field => 
     !chains.some(chain => 
       chain.childFields.some(cf => cf.name === field.name)
     )
   )
-  
-  console.log('Found base fields:', baseFields.map(f => f.name))
-  
+
   baseFields.forEach(field => {
-    processFieldWithDependencies(field)
+    if (!topLevelGroups[field.parent_text_phrase ?? '']) {
+      topLevelGroups[field.parent_text_phrase ?? ''] = []
+    }
+    topLevelGroups[field.parent_text_phrase ?? ''].push(field)
+  })
+
+  // STEP 2: Process base groups and recursively add dependencies
+  // ------------------------------------------------------------
+  const processGroupWithDependencies = (groupedFields: FormFieldType[]) => {
+    // Mark them processed
+    groupedFields.forEach(f => processedFields.add(f.name))
+
+    // Insert this group as a single “top-level group” in result
+    result.push([...groupedFields])
+
+    // For each field in this group, handle its dependencies
+    groupedFields.forEach(field => {
+      const chain = chains.find(c => c.parentField.name === field.name)
+      if (chain) {
+        // Add child fields in a separate array, but keep them in the same bounding box
+        const dependencyGroup: FormFieldType[] = []
+        chain.childFields.forEach(depField => {
+          dependencyGroup.push(depField)
+          processedFields.add(depField.name)
+
+          // Check for nested dependencies
+          const nestedChain = chains.find(c => c.parentField.name === depField.name)
+          if (nestedChain) {
+            nestedChain.childFields.forEach(nestedField => {
+              if (!processedFields.has(nestedField.name)) {
+                dependencyGroup.push(nestedField)
+                processedFields.add(nestedField.name)
+              }
+            })
+          }
+        })
+        if (dependencyGroup.length > 0) {
+          result.push(dependencyGroup)
+        }
+      }
+    })
+  }
+
+  // For each top-level group by parent phrase, process together
+  Object.values(topLevelGroups).forEach(grouped => {
+    processGroupWithDependencies(grouped)
+  })
+
+  // STEP 3: Process leftover fields (in case any child fields not yet visited).
+  // ------------------------------------------------
+  fields.forEach(field => {
+    if (!processedFields.has(field.name)) {
+      // This is a child of some chain that never got processed
+      // or an orphan we haven’t handled. 
+      console.log('Orphan or leftover field found, processing dependencies:', field.name)
+      result.push([field])
+    }
   })
 
   console.log('Final grouped result:', {
     totalGroups: result.length,
-    groups: result.map(group => ({
-      size: group.length,
-      fields: group.map(f => f.name)
-    }))
+    groups: result
   })
-  
   return result
 }
 
@@ -267,6 +262,28 @@ const detectSSNFields = (fields: FormFieldType[]): SSNFieldGroup[] => {
 
   return groups
 }
+
+// Helper function to group fields by parent_text_phrase
+const groupFieldsByParentPhrase = (fields: FormFieldType[]): FieldGroup[] => {
+  const groups = new Map<string, FieldGroup>();
+  
+  fields.forEach(field => {
+    const parentPhrase = field.parent_text_phrase || '';
+    if (!groups.has(parentPhrase)) {
+      groups.set(parentPhrase, {
+        parentTextPhrase: parentPhrase,
+        fields: [],
+        subgroups: []
+      });
+    }
+    groups.get(parentPhrase)!.fields.push(field);
+  });
+
+  // Convert map to array and sort by parent phrase
+  return Array.from(groups.values()).sort((a, b) => 
+    a.parentTextPhrase.localeCompare(b.parentTextPhrase)
+  );
+};
 
 export default function DynamicForm({ formDefinition, formData, onInputChange, onCompletionUpdate }: DynamicFormProps) {
   const form = useForm<FormValues>({
@@ -528,74 +545,96 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(() => {})} className="space-y-6">
         {groupFieldsByParent(orderedFields, dependencyChains).map((group, index) => {
-          const isParentGroup = group.length === 1
-          const parentField = isParentGroup ? group[0] : undefined
-          const chain = parentField ? dependencyChains.find(c => c.parentField.name === parentField.name) : undefined
+          const isParentGroup = group.length === 1;
+          const parentField = isParentGroup ? group[0] : undefined;
+          const chain = parentField ? dependencyChains.find(c => c.parentField.name === parentField.name) : undefined;
           const isDependencyGroup = !isParentGroup && dependencyChains.some(c => 
             group.some(f => c.childFields.includes(f))
-          )
+          );
           
-          console.log('Rendering group:', {
-            index,
-            isParentGroup,
-            parentFieldName: parentField?.name,
-            isDependencyGroup,
-            hasParentChain: !!chain?.parentChainId,
-            fields: group.map(f => f.name)
-          })
+          // Group fields by parent_text_phrase
+          const phraseGroups = groupFieldsByParentPhrase(group);
           
           return (
-            <div key={index} className={`
-              ${isDependencyGroup ? 'border-2 border-gray-200 p-4 rounded-lg mt-2' : ''}
-              ${chain?.parentChainId ? 'ml-4' : ''} // Indent nested dependencies
-              ${isDependencyGroup ? 'space-y-6' : 'space-y-4'} // Increased spacing for dependency groups
-            `}>
-              {/* Render date groups */}
-              {dateGroups
-                .filter(dg => 
-                  group.some(f => f.name === dg.dayField.name)
-                )
-                .map(dateGroup => (
-                  <DateFieldGroup
-                    key={dateGroup.basePhrase}
-                    dateGroup={dateGroup}
-                    values={formData}
-                    onChange={onInputChange}
-                    visible={visibleFields.has(dateGroup.dayField.name)}
-                  />
-                ))}
-              
-              {/* Render SSN groups */}
-              {ssnGroups
-                .filter(sg => 
-                  group.some(f => f.name === sg.number1Field.name)
-                )
-                .map(ssnGroup => (
-                  <SSNFieldGroup
-                    key={ssnGroup.basePhrase}
-                    ssnGroup={ssnGroup}
-                    values={formData}
-                    onChange={onInputChange}
-                    visible={visibleFields.has(ssnGroup.number1Field.name)}
-                  />
-                ))}
-              
-              {/* Render regular fields */}
-              {group
-                .filter(field => !dateFieldNames.has(field.name) && !ssnFieldNames.has(field.name))
-                .map(field => (
-                  <div key={field.name} className="space-y-6">
-                  <FormField
-                    field={field}
-                    value={formData[field.name] || ''}
-                    onChange={handleInputChange}
-                    visible={visibleFields.has(field.name)}
-                    onDependencyChange={(key) => handleDependencyChange(key, field)}
-                  />
-                  </div>
-                ))}
+            <div 
+              key={index} 
+              className={`
+                ${isDependencyGroup ? 'border-2 border-gray-200 p-4 rounded-lg mt-2' : ''}
+                ${chain?.parentChainId ? 'ml-4' : ''} 
+                space-y-4
+              `}
+            >
+              {phraseGroups.map((phraseGroup, phraseIndex) => (
+                <div 
+                  key={`${index}-${phraseIndex}`}
+                  className={`
+                    ${phraseGroup.parentTextPhrase && phraseGroup.fields.length > 1
+                      ? 'border border-gray-300 p-3 rounded-md bg-gray-50' 
+                      : ''
+                    }
+                    ${isDependencyGroup ? 'mt-2' : ''}
+                    space-y-3
+                  `}
+                >
+                  {/* Only show the header if there is more than one field */}
+                  {phraseGroup.parentTextPhrase && phraseGroup.fields.length > 1 && (
+                    <h3 className="text-sm font-medium text-gray-700">
+                      {phraseGroup.parentTextPhrase}
+                    </h3>
+                  )}
+                  
+                  {/* Render date groups */}
+                  {dateGroups
+                    .filter(dg => 
+                      phraseGroup.fields.some(f => f.name === dg.dayField.name)
+                    )
+                    .map(dateGroup => (
+                      <DateFieldGroup
+                        key={dateGroup.basePhrase}
+                        dateGroup={dateGroup}
+                        values={formData}
+                        onChange={onInputChange}
+                        visible={visibleFields.has(dateGroup.dayField.name)}
+                      />
+                    ))}
+
+                  {/* Render SSN groups */}
+                  {ssnGroups
+                    .filter(sg => 
+                      phraseGroup.fields.some(f => f.name === sg.number1Field.name)
+                    )
+                    .map(ssnGroup => (
+                      <SSNFieldGroup
+                        key={ssnGroup.basePhrase}
+                        ssnGroup={ssnGroup}
+                        values={formData}
+                        onChange={onInputChange}
+                        visible={visibleFields.has(ssnGroup.number1Field.name)}
+                      />
+                    ))}
+
+                  {/* Render regular fields */}
+                  {phraseGroup.fields.map(field => (
+                    <div 
+                      key={field.name} 
+                      className={`
+                        space-y-2
+                        ${field.parent_text_phrase ? 'pl-3' : ''}
+                      `}
+                    >
+                      <FormField
+                        field={field}
+                        value={formData[field.name] || ''}
+                        onChange={handleInputChange}
+                        visible={visibleFields.has(field.name)}
+                        onDependencyChange={(key) => handleDependencyChange(key, field)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ))}
             </div>
-          )
+          );
         })}
         
         <div className="flex justify-end space-x-4">
