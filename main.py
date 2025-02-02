@@ -7,19 +7,38 @@ import logging
 from src.utils.form_mapping import FormPage
 from dotenv import load_dotenv
 import os
+import sys
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+def setup_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.StreamHandler(),
+            logging.FileHandler('ds160_automation.log')
+        ]
+    )
 
 def load_json(file_path: str) -> dict:
     with open(file_path, 'r') as f:
         return json.load(f)
 
 def load_yaml(file_path: str) -> dict:
-    with open(file_path, 'r') as f:
-        return yaml.safe_load(f)
+    try:
+        with open(file_path, 'r') as f:
+            data = yaml.safe_load(f)
+            logger.info(f"Successfully loaded YAML from {file_path}")
+            return data
+    except Exception as e:
+        logger.error(f"Error loading YAML from {file_path}: {str(e)}")
+        raise
 
 def main():
+    setup_logging()
+    
     # Load environment variables from .env file
     load_dotenv()
     
@@ -29,11 +48,27 @@ def main():
     
     logger.info("Starting DS-160 form automation...")
     try:
-        # Load test data
-        test_data = load_yaml('data/input/ds160_from_o1.yaml')
-        #test_data = load_yaml('data/input/full_application.yaml')
+        # Get YAML path from environment variable or command line argument
+        yaml_path = (
+            os.getenv('DS160_INPUT_YAML') or 
+            (len(sys.argv) > 1 and sys.argv[1]) or 
+            'data/input/ds160_from_o1.yaml'
+        )
         
-        # Load all form definitions
+        # Verify the YAML file exists
+        if not os.path.exists(yaml_path):
+            raise FileNotFoundError(f"Input YAML file not found: {yaml_path}")
+            
+        logger.info(f"Using input YAML file: {yaml_path}")
+        test_data = load_yaml(yaml_path)
+        
+        # Validate the loaded YAML has required sections
+        required_sections = ['start_page']
+        missing_sections = [section for section in required_sections if section not in test_data]
+        if missing_sections:
+            raise ValueError(f"Missing required sections in YAML: {', '.join(missing_sections)}")
+        
+        # Load form definitions
         page_definitions = {}
         form_definitions_dir = 'form_definitions'
         
@@ -97,19 +132,11 @@ def main():
             form_handler.process_form_pages(test_data, page_definitions)
 
         logger.info("DS-160 form automation completed successfully")
+        return 0
         
     except Exception as e:
         logger.error(f"Error in main process: {str(e)}")
-        raise
+        return 1
 
 if __name__ == "__main__":
-    # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler('ds160_automation.log'),
-            logging.StreamHandler()
-        ]
-    )
-    main()
+    sys.exit(main())

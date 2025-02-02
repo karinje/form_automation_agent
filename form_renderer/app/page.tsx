@@ -9,6 +9,9 @@ import { getFormFieldId, getYamlField, formMappings } from '@/utils/mappings'
 import yaml from 'js-yaml'
 import { generatePrompt } from '@/prompts/pdf_to_yaml'
 import { callOpenAI } from '@/utils/openai'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -50,6 +53,23 @@ export default function Home() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [accordionValues, setAccordionValues] = useState<Record<string, string>>({});
   const [currentTab, setCurrentTab] = useState<string>("personal");
+  const [retrieveMode, setRetrieveMode] = useState<'new' | 'retrieve'>('new')
+  const [applicationId, setApplicationId] = useState('')
+  const [secretQuestion, setSecretQuestion] = useState('')
+  const [secretAnswer, setSecretAnswer] = useState('')
+  const [location, setLocation] = useState('ENGLAND, LONDON')
+  const [surname, setSurname] = useState('')
+  const [birthYear, setBirthYear] = useState('')
+  const [isRunningDS160, setIsRunningDS160] = useState(false)
+
+  // Sample secret questions - replace with actual questions later
+  const secretQuestions = [
+    "What is your mother's maiden name?",
+    "What was your first pet's name?",
+    "What city were you born in?",
+    "What was your high school mascot?",
+    "What is your favorite book?"
+  ]
 
   const formCategories = {
     personal: [
@@ -79,6 +99,19 @@ export default function Home() {
       { title: "Security and Background 5", definition: p17_securityandbackground5_definition },
     ],
   }
+
+  // Add locations array
+  const locations = [
+    'ENGLAND, LONDON',
+    'USA, NEW YORK',
+    'CANADA, TORONTO',
+    // Add more locations as needed
+  ]
+
+  // Generate years for dropdown (e.g., 1940 to current year)
+  const years = Array.from({ length: new Date().getFullYear() - 1940 + 1 }, (_, i) => 
+    (1940 + i).toString()
+  ).reverse()
 
   // On mount, initialize each form's counter based on its definition
   useEffect(() => {
@@ -140,9 +173,8 @@ export default function Home() {
   }, [])
 
   const handleDownloadYaml = useCallback(() => {
-    const updatedYamlData = { ...yamlData }
-    
-    // Use the actual page mappings from mappings.ts
+    // First get all the form data converted to YAML format
+    const formYamlData: Record<string, any> = {}
     Object.keys(formMappings).forEach(pageName => {
       const pageFormData: Record<string, string> = {}
       const pageMapping = formMappings[pageName]
@@ -151,27 +183,72 @@ export default function Home() {
       Object.entries(formData).forEach(([formFieldId, value]) => {
         const yamlField = getYamlField(pageName, formFieldId)
         if (yamlField) {
-          console.log('Found YAML mapping:', {
-            page: pageName,
-            formField: formFieldId,
-            yamlField,
-            value
-          })
           pageFormData[yamlField] = value
         }
       })
       
       if (Object.keys(pageFormData).length > 0) {
-        console.log('Adding page data to YAML:', {
-          page: pageName,
-          data: pageFormData
-        })
-        updatedYamlData[pageName] = unflattenFormData(pageFormData)
+        formYamlData[pageName] = {
+          ...unflattenFormData(pageFormData),
+          button_clicks: [1, 2]  // Add button_clicks to each page
+        }
       }
     })
     
-    console.log('Final YAML data:', updatedYamlData)
-    const yamlStr = yaml.dump(updatedYamlData)
+    // Add start_page section
+    const startPage = {
+      language: "English",
+      location: location,
+      button_clicks: [0]
+    }
+
+    // Add retrieve_page section if in retrieve mode
+    const retrievePage = retrieveMode === 'retrieve' ? {
+      application_id: applicationId,
+      surname: surname,
+      year: birthYear,
+      security_answer: secretAnswer,
+      button_clicks: [1]
+    } : undefined
+
+    // Add security_page section if in new mode
+    const securityPage = retrieveMode === 'new' ? {
+      privacy_agreement: true,
+      security_question: "What is the name of your favorite childhood friend?",
+      security_answer: "John Doe",
+      button_clicks: [0]
+    } : undefined
+
+    // Combine all sections
+    const finalYamlData = {
+      start_page: startPage,
+      ...(retrievePage && { retrieve_page: retrievePage }),
+      ...(securityPage && { security_page: securityPage }),
+      ...formYamlData  // Add all the form data
+    }
+    
+    console.log('Final YAML data:', finalYamlData)
+    let yamlStr = yaml.dump(finalYamlData, {
+      lineWidth: -1,
+      noArrayIndent: true,
+      quotingType: '"',
+      forceQuotes: true,
+    })
+
+    // Fix button_clicks formatting for all cases
+    yamlStr = yamlStr
+      // First handle the special cases
+      .replace(/button_clicks:\s*(?:-\s*0|"\[0\]")/g, 'button_clicks: [0]')
+      .replace(/button_clicks:\s*(?:-\s*1|"\[1\]")/g, 'button_clicks: [1]')
+      // Fix the [1, 2] case specifically
+      .replace(/button_clicks:\s*(?:-\s*1\s*-\s*2|"\[1,\s*2\]"|"\[1, 2\]"|\[1\]\s*-\s*2)/g, 'button_clicks: [1, 2]')
+      // Clean up any remaining incorrect formats
+      .replace(/button_clicks:\s*\[\s*(\d+)\s*\]\s*-\s*(\d+)/g, 'button_clicks: [$1, $2]')
+      // Add newlines between all pages (including those without _page suffix)
+      .replace(/^([a-zA-Z][a-zA-Z0-9_]*(?:_page)?:)/gm, '\n$1')
+      // Remove extra newline at the start of the file
+      .replace(/^\n/, '')
+    
     const blob = new Blob([yamlStr], { type: 'text/yaml' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -181,7 +258,7 @@ export default function Home() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-  }, [formData, yamlData])
+  }, [formData, yamlData, location, retrieveMode, applicationId, surname, birthYear, secretAnswer, secretQuestion])
 
   const handleInputChange = (name: string, value: string) => {
     console.log('Form input change:', { name, value })
@@ -323,6 +400,97 @@ export default function Home() {
       }
     } else {
       setErrorMessage('Please upload a PDF file');
+    }
+  }
+
+  const handleRunDS160 = async () => {
+    try {
+      setIsRunningDS160(true)
+      
+      // First get all the form data converted to YAML format
+      const formYamlData: Record<string, any> = {}
+      Object.keys(formMappings).forEach(pageName => {
+        const pageFormData: Record<string, string> = {}
+        const pageMapping = formMappings[pageName]
+        
+        // Find all form fields that belong to this page
+        Object.entries(formData).forEach(([formFieldId, value]) => {
+          const yamlField = getYamlField(pageName, formFieldId)
+          if (yamlField) {
+            pageFormData[yamlField] = value
+          }
+        })
+        
+        if (Object.keys(pageFormData).length > 0) {
+          formYamlData[pageName] = {
+            ...unflattenFormData(pageFormData),
+            button_clicks: [1, 2]  // Add button_clicks to each page
+          }
+        }
+      })
+      
+      // Add start_page section
+      const startPage = {
+        language: "English",
+        location: location,
+        button_clicks: [0]
+      }
+
+      // Add retrieve_page section if in retrieve mode
+      const retrievePage = retrieveMode === 'retrieve' ? {
+        application_id: applicationId,
+        surname: surname,
+        year: birthYear,
+        security_answer: secretAnswer,
+        button_clicks: [1]
+      } : undefined
+
+      // Add security_page section if in new mode
+      const securityPage = retrieveMode === 'new' ? {
+        privacy_agreement: true,
+        security_question: "What is the name of your favorite childhood friend?",
+        security_answer: "John Doe",
+        button_clicks: [0]
+      } : undefined
+
+      // Combine all sections
+      const finalYamlData = {
+        start_page: startPage,
+        ...(retrievePage && { retrieve_page: retrievePage }),
+        ...(securityPage && { security_page: securityPage }),
+        ...formYamlData  // Add all the form data
+      }
+
+      // Create YAML string
+      const yamlStr = yaml.dump(finalYamlData, {
+        lineWidth: -1,
+        noArrayIndent: true,
+        quotingType: '"',
+        forceQuotes: true,
+      })
+        
+      // Create form data for upload (renamed to avoid conflict)
+      const uploadFormData = new FormData()
+      const yamlBlob = new Blob([yamlStr], { type: 'text/yaml' })
+      uploadFormData.append('file', yamlBlob, 'ds160_input.yaml')
+      
+      // Send to backend
+      const response = await fetch('http://localhost:8000/api/run-ds160', {
+        method: 'POST',
+        body: uploadFormData,
+      })
+      
+      const result = await response.json()
+      
+      if (result.status === 'error') {
+        setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${result.message}`])
+      } else {
+        console.log('DS-160 Processing Output:', result.message)
+      }
+    } catch (error) {
+      setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${error.message}`])
+    } finally {
+      setIsRunningDS160(false)
     }
   }
 
@@ -599,41 +767,166 @@ export default function Home() {
           </Tabs>
         </div>
 
-        <div className="mt-8 flex justify-end space-x-4">
-          <input
-            type="file"
-            accept=".yaml,.yml"
-            onChange={(e) => {
-              const file = e.target.files?.[0]
-              if (file) {
-                const reader = new FileReader()
-                reader.onload = (event) => {
-                  try {
-                    const content = event.target?.result as string
-                    const data = yaml.load(content) as Record<string, any>
-                    handleFormDataLoad(data)
-                  } catch (error) {
-                    console.error('Error parsing YAML:', error)
-                  }
-                }
-                reader.readAsText(file)
-              }
-            }}
-            className="hidden"
-            id="yaml-upload"
-          />
-          <label 
-            htmlFor="yaml-upload"
-            className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
-          >
-            Upload YAML
-          </label>
+        <div className="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <Select
+                value={location}
+                onValueChange={setLocation}
+              >
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Select location" />
+                </SelectTrigger>
+                <SelectContent>
+                  {locations.map((loc) => (
+                    <SelectItem key={loc} value={loc}>
+                      {loc}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select
+                value={retrieveMode}
+                onValueChange={(value: 'new' | 'retrieve') => setRetrieveMode(value)}
+              >
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Select mode" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="new">New Application</SelectItem>
+                  <SelectItem value="retrieve">Retrieve Application</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {retrieveMode === 'retrieve' && (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="application-id">Application ID</Label>
+                  <Input
+                    id="application-id"
+                    value={applicationId}
+                    onChange={(e) => setApplicationId(e.target.value)}
+                    placeholder="Enter application ID"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="surname">Surname</Label>
+                  <Input
+                    id="surname"
+                    value={surname}
+                    onChange={(e) => setSurname(e.target.value)}
+                    placeholder="Enter surname"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="birth-year">Birth Year</Label>
+                  <Select
+                    value={birthYear}
+                    onValueChange={setBirthYear}
+                  >
+                    <SelectTrigger id="birth-year">
+                      <SelectValue placeholder="Select birth year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {years.map((year) => (
+                        <SelectItem key={year} value={year}>
+                          {year}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="secret-question">Secret Question</Label>
+                  <Select
+                    value={secretQuestion}
+                    onValueChange={setSecretQuestion}
+                  >
+                    <SelectTrigger id="secret-question">
+                      <SelectValue placeholder="Select a security question" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {secretQuestions.map((question) => (
+                        <SelectItem key={question} value={question}>
+                          {question}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2 col-span-2">
+                  <Label htmlFor="secret-answer">Answer</Label>
+                  <Input
+                    id="secret-answer"
+                    value={secretAnswer}
+                    onChange={(e) => setSecretAnswer(e.target.value)}
+                    placeholder="Enter your answer"
+                    type="password"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-8 flex justify-between">
           <button
-            onClick={handleDownloadYaml}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+            onClick={handleRunDS160}
+            disabled={isRunningDS160}
+            className={`inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white 
+              ${isRunningDS160 ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
           >
-            Download YAML
+            {isRunningDS160 ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+              </>
+            ) : (
+              'Upload to DS160'
+            )}
           </button>
+
+          <div className="flex space-x-4">
+            <input
+              type="file"
+              accept=".yaml,.yml"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) {
+                  const reader = new FileReader()
+                  reader.onload = (event) => {
+                    try {
+                      const content = event.target?.result as string
+                      const data = yaml.load(content) as Record<string, any>
+                      handleFormDataLoad(data)
+                    } catch (error) {
+                      console.error('Error parsing YAML:', error)
+                    }
+                  }
+                  reader.readAsText(file)
+                }
+              }}
+              className="hidden"
+              id="yaml-upload"
+            />
+            <label 
+              htmlFor="yaml-upload"
+              className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+            >
+              Upload YAML
+            </label>
+            <button
+              onClick={handleDownloadYaml}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+            >
+              Download YAML
+            </button>
+          </div>
         </div>
       </div>
 

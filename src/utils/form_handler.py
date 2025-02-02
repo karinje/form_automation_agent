@@ -85,24 +85,24 @@ class FormHandler:
 
             # Process remaining pages in sequence
             page_sequence = [
-                # FormPage.PERSONAL1.value,  # p1
-                # FormPage.PERSONAL2.value,  # p2
-                # FormPage.TRAVEL.value,  # p3
-                # FormPage.TRAVEL_COMPANIONS.value,  # p4
-                # FormPage.PREVIOUS_TRAVEL.value,  # p5
-                # FormPage.ADDRESS_PHONE.value,  # p6
+                FormPage.PERSONAL1.value,  # p1
+                FormPage.PERSONAL2.value,  # p2
+                FormPage.TRAVEL.value,  # p3
+                FormPage.TRAVEL_COMPANIONS.value,  # p4
+                FormPage.PREVIOUS_TRAVEL.value,  # p5
+                FormPage.ADDRESS_PHONE.value,  # p6
                 FormPage.PPTVISA.value,  # p7
-                # FormPage.USCONTACT.value,  # p8
-                # FormPage.RELATIVES.value,  # p9
-                # FormPage.SPOUSE.value,  # p18
-                # FormPage.WORK_EDUCATION1.value,  # p10
-                # FormPage.WORK_EDUCATION2.value,  # p11
+                FormPage.USCONTACT.value,  # p8
+                FormPage.RELATIVES.value,  # p9
+                FormPage.SPOUSE.value,  # p18
+                FormPage.WORK_EDUCATION1.value,  # p10
+                FormPage.WORK_EDUCATION2.value,  # p11
                 FormPage.WORK_EDUCATION3.value,  # p12
-                # FormPage.SECURITY_BACKGROUND1.value,  # p13
-                # FormPage.SECURITY_BACKGROUND2.value,  # p14
-                # FormPage.SECURITY_BACKGROUND3.value,  # p15
-                # FormPage.SECURITY_BACKGROUND4.value,  # p16
-                # FormPage.SECURITY_BACKGROUND5.value  # p17
+                FormPage.SECURITY_BACKGROUND1.value,  # p13
+                FormPage.SECURITY_BACKGROUND2.value,  # p14
+                FormPage.SECURITY_BACKGROUND3.value,  # p15
+                FormPage.SECURITY_BACKGROUND4.value,  # p16
+                FormPage.SECURITY_BACKGROUND5.value  # p17
             ]
 
             for page_name in page_sequence:
