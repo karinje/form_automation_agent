@@ -233,7 +233,7 @@
       "type": "text",
       "value": "",
       "text_phrase": "U.S. Social Security Number 1",
-      "parent_text_phrase": "U.S. Social Security Number",
+      "parent_text_phrase": "Personal Information 2",
       "maxlength": "3",
       "has_na_checkbox": true
     },
@@ -242,7 +242,7 @@
       "type": "text",
       "value": "",
       "text_phrase": "U.S. Social Security Number 2",
-      "parent_text_phrase": "U.S. Social Security Number",
+      "parent_text_phrase": "Personal Information 2",
       "maxlength": "2",
       "has_na_checkbox": true
     },
@@ -251,7 +251,7 @@
       "type": "text",
       "value": "",
       "text_phrase": "U.S. Social Security Number 3",
-      "parent_text_phrase": "U.S. Social Security Number",
+      "parent_text_phrase": "Personal Information 2",
       "maxlength": "4",
       "has_na_checkbox": true
     },

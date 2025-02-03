@@ -71,7 +71,7 @@ const groupFieldsByParent = (fields: FormFieldType[], chains: DependencyChain[])
   type FieldsByPhrase = Record<string, FormFieldType[]>
   const topLevelGroups: FieldsByPhrase = {}
 
-  // “Base” means fields not found as children in any chain.
+  // "Base" means fields not found as children in any chain.
   const baseFields = fields.filter(field => 
     !chains.some(chain => 
       chain.childFields.some(cf => cf.name === field.name)
@@ -91,7 +91,7 @@ const groupFieldsByParent = (fields: FormFieldType[], chains: DependencyChain[])
     // Mark them processed
     groupedFields.forEach(f => processedFields.add(f.name))
 
-    // Insert this group as a single “top-level group” in result
+    // Insert this group as a single "top-level group" in result
     result.push([...groupedFields])
 
     // For each field in this group, handle its dependencies
@@ -132,7 +132,7 @@ const groupFieldsByParent = (fields: FormFieldType[], chains: DependencyChain[])
   fields.forEach(field => {
     if (!processedFields.has(field.name)) {
       // This is a child of some chain that never got processed
-      // or an orphan we haven’t handled. 
+      // or an orphan we haven't handled. 
       console.log('Orphan or leftover field found, processing dependencies:', field.name)
       result.push([field])
     }
@@ -279,10 +279,9 @@ const groupFieldsByParentPhrase = (fields: FormFieldType[]): FieldGroup[] => {
     groups.get(parentPhrase)!.fields.push(field);
   });
 
-  // Convert map to array and sort by parent phrase
-  return Array.from(groups.values()).sort((a, b) => 
-    a.parentTextPhrase.localeCompare(b.parentTextPhrase)
-  );
+  // Convert map to array without sorting by parent phrase
+  // to preserve the original insertion order from the JSON
+  return Array.from(groups.values());
 };
 
 export default function DynamicForm({ formDefinition, formData, onInputChange, onCompletionUpdate }: DynamicFormProps) {
@@ -545,15 +544,24 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(() => {})} className="space-y-6">
         {groupFieldsByParent(orderedFields, dependencyChains).map((group, index) => {
-          const isParentGroup = group.length === 1;
-          const parentField = isParentGroup ? group[0] : undefined;
-          const chain = parentField ? dependencyChains.find(c => c.parentField.name === parentField.name) : undefined;
+          const isParentGroup = group.length === 1
+          const parentField = isParentGroup ? group[0] : undefined
+          const chain = parentField ? dependencyChains.find(c => c.parentField.name === parentField.name) : undefined
           const isDependencyGroup = !isParentGroup && dependencyChains.some(c => 
             group.some(f => c.childFields.includes(f))
-          );
+          )
           
           // Group fields by parent_text_phrase
           const phraseGroups = groupFieldsByParentPhrase(group);
+          
+          console.log('Rendering group:', {
+            index,
+            isParentGroup,
+            parentFieldName: parentField?.name,
+            isDependencyGroup,
+            hasParentChain: !!chain?.parentChainId,
+            fields: group.map(f => f.name)
+          })
           
           return (
             <div 
@@ -568,19 +576,30 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
                 <div 
                   key={`${index}-${phraseIndex}`}
                   className={`
+                    relative
                     ${phraseGroup.parentTextPhrase && phraseGroup.fields.length > 1
-                      ? 'border border-gray-300 p-3 rounded-md bg-gray-50' 
+                      ? 'border border-gray-300 p-4 rounded-md bg-gray-50' 
                       : ''
                     }
                     ${isDependencyGroup ? 'mt-2' : ''}
                     space-y-3
                   `}
                 >
-                  {/* Only show the header if there is more than one field */}
                   {phraseGroup.parentTextPhrase && phraseGroup.fields.length > 1 && (
-                    <h3 className="text-sm font-medium text-gray-700">
+                    <div
+                      className="
+                        absolute
+                        -top-2
+                        left-3
+                        bg-gray-50
+                        px-2
+                        text-sm
+                        font-semibold
+                        text-gray-700
+                      "
+                    >
                       {phraseGroup.parentTextPhrase}
-                    </h3>
+                    </div>
                   )}
                   
                   {/* Render date groups */}
@@ -614,27 +633,29 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
                     ))}
 
                   {/* Render regular fields */}
-                  {phraseGroup.fields.map(field => (
-                    <div 
-                      key={field.name} 
-                      className={`
-                        space-y-2
-                        ${field.parent_text_phrase ? 'pl-3' : ''}
-                      `}
-                    >
-                      <FormField
-                        field={field}
-                        value={formData[field.name] || ''}
-                        onChange={handleInputChange}
-                        visible={visibleFields.has(field.name)}
-                        onDependencyChange={(key) => handleDependencyChange(key, field)}
-                      />
-                    </div>
-                  ))}
+                  {phraseGroup.fields
+                    .filter(field => !dateFieldNames.has(field.name) && !ssnFieldNames.has(field.name))
+                    .map(field => (
+                      <div 
+                        key={field.name} 
+                        className={`
+                          space-y-2
+                          ${field.parent_text_phrase ? 'pl-3' : ''}
+                        `}
+                      >
+                        <FormField
+                          field={field}
+                          value={formData[field.name] || ''}
+                          onChange={handleInputChange}
+                          visible={visibleFields.has(field.name)}
+                          onDependencyChange={(key) => handleDependencyChange(key, field)}
+                        />
+                      </div>
+                    ))}
                 </div>
               ))}
             </div>
-          );
+          )
         })}
         
         <div className="flex justify-end space-x-4">
