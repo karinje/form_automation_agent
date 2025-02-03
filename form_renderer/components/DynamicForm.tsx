@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FormProvider } from "react-hook-form"
@@ -295,6 +295,10 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   const [visibleFields, setVisibleFields] = useState<Set<string>>(new Set())
   const [dependencyChains, setDependencyChains] = useState<DependencyChain[]>([])
   const [orderedFields, setOrderedFields] = useState<FormFieldType[]>([])
+  const [repeatedGroups, setRepeatedGroups] = useState<Record<string, FormFieldType[][]>>({})
+
+  const lastUpdateTimeRef = useRef<number>(0);
+  const UPDATE_THRESHOLD = 100; // ms
 
   useEffect(() => {
     console.log('Initializing form with fields:', formDefinition.fields)
@@ -540,144 +544,236 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
     [ssnGroups]
   )
 
+  // Add debug logging to track state updates
+  const handleAddGroup = (phraseGroup: FieldGroup) => {
+    const key = phraseGroup.parentTextPhrase || "NO_PHRASE";
+    
+    console.log("=== handleAddGroup BEFORE setState ===", {
+      key,
+      currentGroups: repeatedGroups[key]?.length || 0
+    });
+    
+    setRepeatedGroups(prev => {
+      const newState = {
+        ...prev,
+        [key]: [
+          ...(prev[key] || []),
+          phraseGroup.fields.map(f => ({ ...f }))
+        ]
+      };
+      console.log("=== handleAddGroup DURING setState ===", {
+        prevLength: prev[key]?.length || 0,
+        newLength: newState[key].length
+      });
+      return newState;
+    });
+  };
+
+  // 2. Add effect to track state changes
+  useEffect(() => {
+    console.log("=== repeatedGroups state changed ===", repeatedGroups)
+  }, [repeatedGroups])
+
+  // 2) Add new remove handler
+  const handleRemoveGroup = (phraseGroup: FieldGroup, index: number, e: React.MouseEvent) => {
+    // Stop event propagation
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const key = phraseGroup.parentTextPhrase || "NO_PHRASE";
+    setRepeatedGroups(prev => {
+      const newState = { ...prev };
+      if (newState[key]) {
+        // Create new array with the item removed
+        newState[key] = [
+          ...newState[key].slice(0, index),
+          ...newState[key].slice(index + 1)
+        ];
+      }
+      return newState;
+    });
+  };
+
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(() => {})} className="space-y-6">
         {groupFieldsByParent(orderedFields, dependencyChains).map((group, index) => {
+          // Add back the necessary group calculations
           const isParentGroup = group.length === 1
           const parentField = isParentGroup ? group[0] : undefined
-          const chain = parentField ? dependencyChains.find(c => c.parentField.name === parentField.name) : undefined
           const isDependencyGroup = !isParentGroup && dependencyChains.some(c => 
             group.some(f => c.childFields.includes(f))
           )
           
           // Group fields by parent_text_phrase
-          const phraseGroups = groupFieldsByParentPhrase(group);
-          
-          console.log('Rendering group:', {
-            index,
-            isParentGroup,
-            parentFieldName: parentField?.name,
-            isDependencyGroup,
-            hasParentChain: !!chain?.parentChainId,
-            fields: group.map(f => f.name)
-          })
-          
+          const phraseGroups = groupFieldsByParentPhrase(group)
+
           return (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`
-                ${isDependencyGroup ? 'border-2 border-gray-200 p-4 rounded-lg mt-2' : ''}
-                ${chain?.parentChainId ? 'ml-4' : ''} 
                 space-y-4
+                ${isDependencyGroup ? 'border-2 border-gray-200 p-4 rounded-lg mt-2' : ''}
               `}
             >
               {phraseGroups.map((phraseGroup, phraseIndex) => {
-                // track which date groups / SSN groups we’ve already rendered
+                // track which date groups / SSN groups we've already rendered
                 const renderedDateGroups = new Set<string>()
                 const renderedSSNGroups = new Set<string>()
 
+                const hasAddGroup = phraseGroup.fields.some(f => f.add_group)
+
                 return (
-                  <div
-                    key={phraseIndex}
-                    className={`
-                      relative
-                      ${phraseGroup.parentTextPhrase && phraseGroup.fields.length > 1
-                        ? 'border border-gray-300 p-4 rounded-md bg-gray-50'
-                        : ''
-                      }
-                      ${isDependencyGroup ? 'mt-2' : ''}
-                      space-y-3
-                    `}
-                  >
-                    {phraseGroup.parentTextPhrase && phraseGroup.fields.length > 1 && (
-                      <div
-                        className="
-                          absolute
-                          -top-2
-                          left-3
-                          bg-gray-50
-                          px-2
-                          text-sm
-                          font-semibold
-                          text-gray-700
-                        "
-                      >
-                        {phraseGroup.parentTextPhrase}
-                      </div>
-                    )}
+                  <div key={phraseIndex}>
+                    {/* Original fields */}
+                    <div className="space-y-4">
+                      {phraseGroup.fields.map((field) => {
+                        // 1) Check if this field is the 'dayField' of any date group
+                        const dateGroup = dateGroups.find(dg => dg.dayField.name === field.name)
+                        if (dateGroup && !renderedDateGroups.has(dateGroup.basePhrase)) {
+                          // Render the entire date group here
+                          renderedDateGroups.add(dateGroup.basePhrase)
+                          return (
+                            <DateFieldGroup
+                              key={dateGroup.basePhrase}
+                              dateGroup={dateGroup}
+                              values={formData}
+                              onChange={onInputChange}
+                              visible={visibleFields.has(dateGroup.dayField.name)}
+                            />
+                          )
+                        }
 
-                    {/* Replace the old “Render date groups” and “Render SSN groups” blocks
-                        with a single pass to keep everything in its original order */}
-                    {phraseGroup.fields.map((field) => {
-                      // 1) Check if this field is the 'dayField' of any date group
-                      const dateGroup = dateGroups.find(dg => dg.dayField.name === field.name)
-                      if (dateGroup && !renderedDateGroups.has(dateGroup.basePhrase)) {
-                        // Render the entire date group here
-                        renderedDateGroups.add(dateGroup.basePhrase)
+                        // 2) Check if this field is the 'number1Field' (first SSN field) of an SSN group
+                        const ssnGroup = ssnGroups.find(
+                          sg => sg.number1Field.name === field.name
+                        )
+                        if (ssnGroup && !renderedSSNGroups.has(ssnGroup.basePhrase)) {
+                          // Render entire SSN group
+                          renderedSSNGroups.add(ssnGroup.basePhrase)
+                          return (
+                            <SSNFieldGroup
+                              key={ssnGroup.basePhrase}
+                              ssnGroup={ssnGroup}
+                              values={formData}
+                              onChange={onInputChange}
+                              visible={visibleFields.has(ssnGroup.number1Field.name)}
+                            />
+                          )
+                        }
+
+                        // 3) Otherwise, if it's part of a date or SSN group but not the "first" field,
+                        // skip it so we don't double-render. We already rendered the entire group above:
+                        if (
+                          dateGroups.some(dg =>
+                            [dg.dayField.name, dg.monthField.name, dg.yearField.name]
+                              .includes(field.name)
+                          ) ||
+                          ssnGroups.some(sg =>
+                            [sg.number1Field.name, sg.number2Field.name, sg.number3Field.name]
+                              .includes(field.name)
+                          )
+                        ) {
+                          return null
+                        }
+
+                        // 4) Render regular fields
                         return (
-                          <DateFieldGroup
-                            key={dateGroup.basePhrase}
-                            dateGroup={dateGroup}
-                            values={formData}
-                            onChange={onInputChange}
-                            visible={visibleFields.has(dateGroup.dayField.name)}
-                          />
+                          <div
+                            key={field.name}
+                            className={`
+                              space-y-2
+                              ${field.parent_text_phrase ? 'pl-3' : ''}
+                            `}
+                          >
+                            <FormField
+                              field={field}
+                              value={formData[field.name] || ''}
+                              onChange={onInputChange}
+                              visible={visibleFields.has(field.name)}
+                              onDependencyChange={(key) => handleDependencyChange(key, field)}
+                            />
+                          </div>
                         )
-                      }
+                      })}
 
-                      // 2) Check if this field is the 'number1Field' (first SSN field) of an SSN group
-                      const ssnGroup = ssnGroups.find(
-                        sg => sg.number1Field.name === field.name
-                      )
-                      if (ssnGroup && !renderedSSNGroups.has(ssnGroup.basePhrase)) {
-                        // Render entire SSN group
-                        renderedSSNGroups.add(ssnGroup.basePhrase)
-                        return (
-                          <SSNFieldGroup
-                            key={ssnGroup.basePhrase}
-                            ssnGroup={ssnGroup}
-                            values={formData}
-                            onChange={onInputChange}
-                            visible={visibleFields.has(ssnGroup.number1Field.name)}
-                          />
-                        )
-                      }
-
-                      // 3) Otherwise, if it’s part of a date or SSN group but not the “first” field,
-                      // skip it so we don’t double-render. We already rendered the entire group above:
-                      if (
-                        dateGroups.some(dg =>
-                          [dg.dayField.name, dg.monthField.name, dg.yearField.name]
-                            .includes(field.name)
-                        ) ||
-                        ssnGroups.some(sg =>
-                          [sg.number1Field.name, sg.number2Field.name, sg.number3Field.name]
-                            .includes(field.name)
-                        )
-                      ) {
-                        return null
-                      }
-
-                      // 4) Render regular fields
-                      return (
-                        <div
-                          key={field.name}
-                          className={`
-                            space-y-2
-                            ${field.parent_text_phrase ? 'pl-3' : ''}
-                          `}
-                        >
-                          <FormField
-                            field={field}
-                            value={formData[field.name] || ''}
-                            onChange={onInputChange}
-                            visible={visibleFields.has(field.name)}
-                            onDependencyChange={(key) => handleDependencyChange(key, field)}
-                          />
+                      {/* Add Group button with updated click handler */}
+                      {hasAddGroup && (
+                        <div className="flex justify-end mt-4">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleAddGroup(phraseGroup)}
+                          >
+                            Add Group
+                          </Button>
                         </div>
-                      )
-                    })}
+                      )}
+                    </div>
+
+                    {/* Repeated copies */}
+                    <div className="space-y-4">
+                      {repeatedGroups[phraseGroup.parentTextPhrase || "NO_PHRASE"]?.map((clonedFields, cloneIdx) => {
+                        const renderedDateGroupsCopy = new Set<string>()
+                        const renderedSSNGroupsCopy = new Set<string>()
+
+                        return (
+                          <div 
+                            key={`clone-${phraseIndex}-${cloneIdx}`} 
+                            className="relative border border-dashed border-gray-300 p-4 rounded-md bg-gray-50"
+                          >
+                            <div className="flex justify-end mb-4">
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={(e) => handleRemoveGroup(phraseGroup, cloneIdx, e)}
+                              >
+                                Remove Group
+                              </Button>
+                            </div>
+
+                            {/* Cloned fields */}
+                            {clonedFields.map((field) => {
+                              // Check for date groups first
+                              const dateGroup = dateGroups.find(dg => 
+                                [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
+                              )
+                              if (dateGroup && !renderedDateGroupsCopy.has(dateGroup.basePhrase)) {
+                                renderedDateGroupsCopy.add(dateGroup.basePhrase)
+                                return (
+                                  <DateFieldGroup
+                                    key={`${dateGroup.basePhrase}-clone${cloneIdx}`}
+                                    dateGroup={dateGroup}
+                                    values={formData}
+                                    onChange={onInputChange}
+                                    visible={visibleFields.has(dateGroup.dayField.name)}
+                                  />
+                                )
+                              }
+
+                              // Skip if this field is part of an already rendered date group
+                              if (dateGroup && renderedDateGroupsCopy.has(dateGroup.basePhrase)) {
+                                return null
+                              }
+
+                              // Rest of the field rendering logic...
+                              return (
+                                <div key={`${field.name}-clone${cloneIdx}`} className="space-y-2">
+                                  <FormField
+                                    field={field}
+                                    value={formData[field.name] || ''}
+                                    onChange={onInputChange}
+                                    visible={visibleFields.has(field.name)}
+                                    onDependencyChange={(key) => handleDependencyChange(key, field)}
+                                  />
+                                </div>
+                              )
+                            })}
+                          </div>
+                        )
+                      })}
+                    </div>
                   </div>
                 )
               })}
