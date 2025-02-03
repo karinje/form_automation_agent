@@ -280,7 +280,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAPP_OTH_NATL_IND_1"
       },
       "text_phrase": "Do you hold or have you held any nationality other than the one indicated above on nationality?",
-      "parent_text_phrase": "Personal Information 2"
+      "parent_text_phrase": "Do you hold or have you held any nationality other than the one indicated above on nationality?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPermResOtherCntryInd",
@@ -298,7 +298,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPermResOtherCntryInd_1"
       },
       "text_phrase": "Are you a permanent resident of a country/region other than your country/region of origin (nationality) indicated above?",
-      "parent_text_phrase": "Personal Information 2"
+      "parent_text_phrase": "Are you a permanent resident of a country/region other than your country/region of origin (nationality) indicated above?"
     }
   ],
   "dependencies": {
@@ -520,8 +520,7 @@
             "ZAMBIA",
             "ZIMBABWE"
           ],
-          "text_phrase": "Other Country/Region of Origin (Nationality)",
-          "parent_text_phrase": "Other Country/Region of Origin (Nationality)"
+          "text_phrase": "Other Country/Region of Origin (Nationality)"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_rblOTHER_PPT_IND",
@@ -538,8 +537,7 @@
             "Y": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_rblOTHER_PPT_IND_0",
             "N": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_rblOTHER_PPT_IND_1"
           },
-          "text_phrase": "Do you hold a passport for the other country/region of origin (nationality) indicated above?",
-          "parent_text_phrase": "Other Country/Region of Origin (Nationality)"
+          "text_phrase": "Do you hold a passport for the other country/region of origin (nationality) indicated above?"
         }
       ],
       "hides": [],

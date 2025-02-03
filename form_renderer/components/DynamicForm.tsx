@@ -572,88 +572,115 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
                 space-y-4
               `}
             >
-              {phraseGroups.map((phraseGroup, phraseIndex) => (
-                <div 
-                  key={`${index}-${phraseIndex}`}
-                  className={`
-                    relative
-                    ${phraseGroup.parentTextPhrase && phraseGroup.fields.length > 1
-                      ? 'border border-gray-300 p-4 rounded-md bg-gray-50' 
-                      : ''
-                    }
-                    ${isDependencyGroup ? 'mt-2' : ''}
-                    space-y-3
-                  `}
-                >
-                  {phraseGroup.parentTextPhrase && phraseGroup.fields.length > 1 && (
-                    <div
-                      className="
-                        absolute
-                        -top-2
-                        left-3
-                        bg-gray-50
-                        px-2
-                        text-sm
-                        font-semibold
-                        text-gray-700
-                      "
-                    >
-                      {phraseGroup.parentTextPhrase}
-                    </div>
-                  )}
-                  
-                  {/* Render date groups */}
-                  {dateGroups
-                    .filter(dg => 
-                      phraseGroup.fields.some(f => f.name === dg.dayField.name)
-                    )
-                    .map(dateGroup => (
-                      <DateFieldGroup
-                        key={dateGroup.basePhrase}
-                        dateGroup={dateGroup}
-                        values={formData}
-                        onChange={onInputChange}
-                        visible={visibleFields.has(dateGroup.dayField.name)}
-                      />
-                    ))}
+              {phraseGroups.map((phraseGroup, phraseIndex) => {
+                // track which date groups / SSN groups we’ve already rendered
+                const renderedDateGroups = new Set<string>()
+                const renderedSSNGroups = new Set<string>()
 
-                  {/* Render SSN groups */}
-                  {ssnGroups
-                    .filter(sg => 
-                      phraseGroup.fields.some(f => f.name === sg.number1Field.name)
-                    )
-                    .map(ssnGroup => (
-                      <SSNFieldGroup
-                        key={ssnGroup.basePhrase}
-                        ssnGroup={ssnGroup}
-                        values={formData}
-                        onChange={onInputChange}
-                        visible={visibleFields.has(ssnGroup.number1Field.name)}
-                      />
-                    ))}
-
-                  {/* Render regular fields */}
-                  {phraseGroup.fields
-                    .filter(field => !dateFieldNames.has(field.name) && !ssnFieldNames.has(field.name))
-                    .map(field => (
-                      <div 
-                        key={field.name} 
-                        className={`
-                          space-y-2
-                          ${field.parent_text_phrase ? 'pl-3' : ''}
-                        `}
+                return (
+                  <div
+                    key={phraseIndex}
+                    className={`
+                      relative
+                      ${phraseGroup.parentTextPhrase && phraseGroup.fields.length > 1
+                        ? 'border border-gray-300 p-4 rounded-md bg-gray-50'
+                        : ''
+                      }
+                      ${isDependencyGroup ? 'mt-2' : ''}
+                      space-y-3
+                    `}
+                  >
+                    {phraseGroup.parentTextPhrase && phraseGroup.fields.length > 1 && (
+                      <div
+                        className="
+                          absolute
+                          -top-2
+                          left-3
+                          bg-gray-50
+                          px-2
+                          text-sm
+                          font-semibold
+                          text-gray-700
+                        "
                       >
-                        <FormField
-                          field={field}
-                          value={formData[field.name] || ''}
-                          onChange={handleInputChange}
-                          visible={visibleFields.has(field.name)}
-                          onDependencyChange={(key) => handleDependencyChange(key, field)}
-                        />
+                        {phraseGroup.parentTextPhrase}
                       </div>
-                    ))}
-                </div>
-              ))}
+                    )}
+
+                    {/* Replace the old “Render date groups” and “Render SSN groups” blocks
+                        with a single pass to keep everything in its original order */}
+                    {phraseGroup.fields.map((field) => {
+                      // 1) Check if this field is the 'dayField' of any date group
+                      const dateGroup = dateGroups.find(dg => dg.dayField.name === field.name)
+                      if (dateGroup && !renderedDateGroups.has(dateGroup.basePhrase)) {
+                        // Render the entire date group here
+                        renderedDateGroups.add(dateGroup.basePhrase)
+                        return (
+                          <DateFieldGroup
+                            key={dateGroup.basePhrase}
+                            dateGroup={dateGroup}
+                            values={formData}
+                            onChange={onInputChange}
+                            visible={visibleFields.has(dateGroup.dayField.name)}
+                          />
+                        )
+                      }
+
+                      // 2) Check if this field is the 'number1Field' (first SSN field) of an SSN group
+                      const ssnGroup = ssnGroups.find(
+                        sg => sg.number1Field.name === field.name
+                      )
+                      if (ssnGroup && !renderedSSNGroups.has(ssnGroup.basePhrase)) {
+                        // Render entire SSN group
+                        renderedSSNGroups.add(ssnGroup.basePhrase)
+                        return (
+                          <SSNFieldGroup
+                            key={ssnGroup.basePhrase}
+                            ssnGroup={ssnGroup}
+                            values={formData}
+                            onChange={onInputChange}
+                            visible={visibleFields.has(ssnGroup.number1Field.name)}
+                          />
+                        )
+                      }
+
+                      // 3) Otherwise, if it’s part of a date or SSN group but not the “first” field,
+                      // skip it so we don’t double-render. We already rendered the entire group above:
+                      if (
+                        dateGroups.some(dg =>
+                          [dg.dayField.name, dg.monthField.name, dg.yearField.name]
+                            .includes(field.name)
+                        ) ||
+                        ssnGroups.some(sg =>
+                          [sg.number1Field.name, sg.number2Field.name, sg.number3Field.name]
+                            .includes(field.name)
+                        )
+                      ) {
+                        return null
+                      }
+
+                      // 4) Render regular fields
+                      return (
+                        <div
+                          key={field.name}
+                          className={`
+                            space-y-2
+                            ${field.parent_text_phrase ? 'pl-3' : ''}
+                          `}
+                        >
+                          <FormField
+                            field={field}
+                            value={formData[field.name] || ''}
+                            onChange={onInputChange}
+                            visible={visibleFields.has(field.name)}
+                            onDependencyChange={(key) => handleDependencyChange(key, field)}
+                          />
+                        </div>
+                      )
+                    })}
+                  </div>
+                )
+              })}
             </div>
           )
         })}

@@ -101,7 +101,8 @@
           "text_phrase": "Date Arrived - Year",
           "parent_text_phrase": "Previous U.S. Travel",
           "maxlength": "4",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true 
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_ddlPREV_US_VISIT_DTEMonth",
@@ -121,7 +122,8 @@
             "DEC"
           ],
           "text_phrase": "Date Arrived - Month",
-          "parent_text_phrase": "Previous U.S. Travel"
+          "parent_text_phrase": "Previous U.S. Travel",
+          "add_group": true 
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_DRIVER_LIC_IND",
@@ -147,7 +149,8 @@
           "text_phrase": "Length of Stay",
           "parent_text_phrase": "Previous U.S. Travel",
           "maxlength": "3",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true 
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_ddlPREV_US_VISIT_DTEDay",
@@ -186,7 +189,8 @@
             "31"
           ],
           "text_phrase": "Date Arrived - Day",
-          "parent_text_phrase": "Previous U.S. Travel"
+          "parent_text_phrase": "Previous U.S. Travel",
+          "add_group": true 
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_ddlPREV_US_VISIT_LOS_CD",
@@ -199,7 +203,8 @@
             "Less Than 24 Hours"
           ],
           "text_phrase": "Length of Stay - Period",
-          "parent_text_phrase": "Previous U.S. Travel"
+          "parent_text_phrase": "Previous U.S. Travel",
+          "add_group": true 
         }
       ],
       "hides": [],

@@ -54,6 +54,42 @@
       "parent_text_phrase": "Personal Information"
     },
     {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames_1"
+      },
+      "text_phrase": "Have you ever used other names (i.e., maiden, religious, professional, alias, etc.)?",
+      "parent_text_phrase": "Have you ever used other names (i.e., maiden, religious, professional, alias, etc.)?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTelecodeQuestion",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblTelecodeQuestion_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTelecodeQuestion_1"
+      },
+      "text_phrase": "Do you have a telecode that represents your name?",
+      "parent_text_phrase": "Do you have a telecode that represents your name?"
+    },
+    {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlDOBDay",
       "type": "dropdown",
       "value": [
@@ -428,42 +464,6 @@
       ],
       "text_phrase": "Country/Region",
       "parent_text_phrase": "Date and Place of Birth"
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames",
-      "type": "radio",
-      "value": [
-        "Y",
-        "N"
-      ],
-      "labels": [
-        "Yes",
-        "No"
-      ],
-      "button_ids": {
-        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames_0",
-        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames_1"
-      },
-      "text_phrase": "Have you ever used other names (i.e., maiden, religious, professional, alias, etc.)?",
-      "parent_text_phrase": "Personal Information"
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTelecodeQuestion",
-      "type": "radio",
-      "value": [
-        "Y",
-        "N"
-      ],
-      "labels": [
-        "Yes",
-        "No"
-      ],
-      "button_ids": {
-        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblTelecodeQuestion_0",
-        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTelecodeQuestion_1"
-      },
-      "text_phrase": "Do you have a telecode that represents your name?",
-      "parent_text_phrase": "Personal Information"
     }
   ],
   "dependencies": {
@@ -534,7 +534,6 @@
           "type": "text",
           "value": "",
           "text_phrase": "Other Given Names Used",
-          "parent_text_phrase": "Other Surnames Used (maiden, religious, professional, aliases, etc.)",
           "maxlength": "33",
           "has_na_checkbox": false
         },
@@ -543,7 +542,6 @@
           "type": "text",
           "value": "",
           "text_phrase": "Other Surnames Used (maiden, religious, professional, aliases, etc.)",
-          "parent_text_phrase": "Other Surnames Used (maiden, religious, professional, aliases, etc.)",
           "maxlength": "33",
           "has_na_checkbox": false
         }
@@ -563,7 +561,6 @@
           "type": "text",
           "value": "",
           "text_phrase": "Telecode Surnames",
-          "parent_text_phrase": "Telecode Details",
           "maxlength": "20",
           "has_na_checkbox": false
         },
@@ -572,7 +569,6 @@
           "type": "text",
           "value": "",
           "text_phrase": "Telecode Given Names",
-          "parent_text_phrase": "Telecode Details",
           "maxlength": "20",
           "has_na_checkbox": false
         }
