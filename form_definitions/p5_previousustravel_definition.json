@@ -99,7 +99,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Date Arrived - Year",
-          "parent_text_phrase": "Previous U.S. Travel",
+          "parent_text_phrase": "Previous Travel Details",
           "maxlength": "4",
           "has_na_checkbox": false,
           "add_group": true 
@@ -122,7 +122,7 @@
             "DEC"
           ],
           "text_phrase": "Date Arrived - Month",
-          "parent_text_phrase": "Previous U.S. Travel",
+          "parent_text_phrase": "Previous Travel Details",
           "add_group": true 
         },
         {
@@ -147,7 +147,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Length of Stay",
-          "parent_text_phrase": "Previous U.S. Travel",
+          "parent_text_phrase": "Previous Travel Details",
           "maxlength": "3",
           "has_na_checkbox": false,
           "add_group": true 
@@ -189,7 +189,7 @@
             "31"
           ],
           "text_phrase": "Date Arrived - Day",
-          "parent_text_phrase": "Previous U.S. Travel",
+          "parent_text_phrase": "Previous Travel Details",
           "add_group": true 
         },
         {
@@ -203,7 +203,7 @@
             "Less Than 24 Hours"
           ],
           "text_phrase": "Length of Stay - Period",
-          "parent_text_phrase": "Previous U.S. Travel",
+          "parent_text_phrase": "Previous Travel Details",
           "add_group": true 
         }
       ],
