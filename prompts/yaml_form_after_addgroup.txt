@@ -1,0 +1,16 @@
+now regarding input and output data to fill form through yaml. When yaml has a - following an indentation, for example structure attached, that means that its a list of group of fields. THe first list element shoudl be used to fill all the fields on the page as we would with any other indedent group. The second list element should be used to click on add group element that we added and then the copy generated on the web page should be filled by fields in the second list item. So on..does that makse sense? Only when hypen exists its ok to assume this might be a add group case and make the yaml to form filling and vice verse work based on this logic. Can you givem me a summary of wha tyou plan to do..dont introduce new mappings, use original mappings but ct100 becomes ct101 (only the second occurence name field etc..) pay attention to what nees to be done and lmk. Dont make any other unnecessary changes.
+
+well you need to replace _ctl10 with _ctl01 and so on..since the clt that occurs at begining of the name should be ignored (not replaced) but the one that occurs after _ should be replaced. Also, the add group needs to be clicked by the script when it detect multiple items in list of input yaml. Do you know how to reconize teh correponding add group and click? This also should be generic and not hard coded to the previous travel page example we are testing currently. I've attached input yaml @ds160_from_o1.yaml 
+
+first give me a plna of what changes logically you plan to do in eery file. givem a sequence of code execution: yaml upload -> triggers formdata etc.. -> detect list (add group) -> first first item in existing fields -> click add group -> first second item etc..each step should have what code is relvant. you're repeadly unable to completed this task in preivous attempts so be very thorough in analysis and planning before confidently proceeding..double check you assumptions..dont break existing funcality at any cost
+
+Dont break the add group / remove group functionality. 
+
+Also whatever plan you suggest, look at yaml in @ds160_from_o1.yaml -> previous_travel_page -> previous_travel_details -> arrival -> month, day, year. This is an example of add group. Cross check again json @p5_from_o1.json -> dependencies -> page_name: previous_travel_page -> dependencies -> page_name: previous_travel_details -> dependencies -> page_name: arrival -> dependencies -> page_name: month, day, year. Cross check again 
+@p5_previousustravel_definition.json to make sure whatever logic you have in mind actually works. 
+
+
+Add extensive console logging such that even if youre attemp failed, you gather great insight on what to do next. 
+
+
+When you suggest a fix no previous changes shoudl break. 
