@@ -1,16 +1,38 @@
-now regarding input and output data to fill form through yaml. When yaml has a - following an indentation, for example structure attached, that means that its a list of group of fields. THe first list element shoudl be used to fill all the fields on the page as we would with any other indedent group. The second list element should be used to click on add group element that we added and then the copy generated on the web page should be filled by fields in the second list item. So on..does that makse sense? Only when hypen exists its ok to assume this might be a add group case and make the yaml to form filling and vice verse work based on this logic. Can you givem me a summary of wha tyou plan to do..dont introduce new mappings, use original mappings but ct100 becomes ct101 (only the second occurence name field etc..) pay attention to what nees to be done and lmk. Dont make any other unnecessary changes.
+1. Change requied for input and output data to fill form through yaml. When yaml has a - following an indentation, for example structure attached, that means that its a list of group of fields. 
 
-well you need to replace _ctl10 with _ctl01 and so on..since the clt that occurs at begining of the name should be ignored (not replaced) but the one that occurs after _ should be replaced. Also, the add group needs to be clicked by the script when it detect multiple items in list of input yaml. Do you know how to reconize teh correponding add group and click? This also should be generic and not hard coded to the previous travel page example we are testing currently. I've attached input yaml @ds160_from_o1.yaml 
+2. The first list element should be used to fill all the fields on the page as we would with any other indedent group. 
 
-first give me a plna of what changes logically you plan to do in eery file. givem a sequence of code execution: yaml upload -> triggers formdata etc.. -> detect list (add group) -> first first item in existing fields -> click add group -> first second item etc..each step should have what code is relvant. you're repeadly unable to completed this task in preivous attempts so be very thorough in analysis and planning before confidently proceeding..double check you assumptions..dont break existing funcality at any cost
+3. Then to fill second list element code should click on add group element that we added.
 
-Dont break the add group / remove group functionality. 
+4. Then the new copy of fields in the group generated on the web page should be filled by fields in the second list item and so on for third element if it exists etc.  
 
-Also whatever plan you suggest, look at yaml in @ds160_from_o1.yaml -> previous_travel_page -> previous_travel_details -> arrival -> month, day, year. This is an example of add group. Cross check again json @p5_from_o1.json -> dependencies -> page_name: previous_travel_page -> dependencies -> page_name: previous_travel_details -> dependencies -> page_name: arrival -> dependencies -> page_name: month, day, year. Cross check again 
+5. Only when hypen exists its ok to assume this might be a add group case and make the yaml to form filling and vice verse work based on this logic. 
+
+6. For the second set of fields, to get the form field you need to replace _ctl00 with _ctl01 for second set of fields and so on..since the clt that occurs at begining of the name should be ignored (not replaced) but the one that occurs after _ should be replaced. Also, the add group needs to be clicked by the script when it detect multiple items in list of input yaml. Do you know how to reconize teh correponding add group and click? 
+
+7. This logic should be generic and not hard coded to the previous travel page example we are testing currently. I've attached input yaml @ds160_from_o1.yaml 
+
+8. First give me a plna of what changes logically you plan to do in every file. 
+
+9. Give a sequence of code execution: yaml upload -> triggers formdata etc.. -> detect list (add group) -> first first item in existing fields -> click add group -> first second item etc..each step should have what code is relvant. you're repeadly unable to completed this task in preivous attempts so be very thorough in analysis and planning before confidently proceeding..double check you assumptions..dont break existing funcality at any cost
+
+10. Add extensive console logging for the previous travel page only such that even if youre attempt failed, you gather great insight on what to do next. This is so that we arent overwhelmed by loggin on other pages for now
+
+
+11. Pay special attention to these while enable above functionality:
+a. Dont break the add group / remove group functionality. 
+b. Dont break functionality of handling depencies recrusively and boundary box rendering around dependencies. 
+c. Look at yaml in @ds160_from_o1.yaml -> previous_travel_page -> previous_travel_details -> arrival -> month, day, year. This is an example of add group. Cross check again json @p5_from_o1.json -> dependencies -> page_name: previous_travel_page -> dependencies -> page_name: previous_travel_details -> dependencies -> page_name: arrival -> dependencies -> page_name: month, day, year. Cross check again 
 @p5_previousustravel_definition.json to make sure whatever logic you have in mind actually works. 
+d. Dont introduce new input mappings, you can manipulate mappings once you read input mapping however you see fit but dont suggest changing input mapping itself. 
+e. When you suggest a fix no previous changes shoudl break. 
+f. Previously you've made this mistake where the mappings for previous previous_travel_details become a string : [object, Object] instead of the actual object. So double check whre this could occur and remedy it. 
 
 
-Add extensive console logging such that even if youre attemp failed, you gather great insight on what to do next. 
+ Give me a high level summary of what you plan to do and verify all changes in the end step by step to see if requirements in the file have been manipulate
+ Linting changes are not important and can be put off until I confirm that logic changes work as expected. 
+
+ Latest console log is save in @logs/console_debug.json and overwritten with latest data every time we run it. 
 
 
-When you suggest a fix no previous changes shoudl break. 
+
