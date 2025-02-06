@@ -49,6 +49,13 @@ interface FieldGroup {
   subgroups: FieldGroup[];
 }
 
+// Instead, just check if we're in the previous travel page
+const isPrevTravelPage = (formDef: FormDefinition): boolean => {
+  // The form title or ID should indicate which page we're on
+  return formDef.title?.includes('Previous Travel') || 
+         formDef.id?.includes('previous_travel');
+}
+
 const getDependencyLevel = (fieldName: string, groups: DependencyLevel[]): number => {
   const group = groups.find(g => 
     g.fields.some(f => f.name === fieldName)
@@ -57,12 +64,16 @@ const getDependencyLevel = (fieldName: string, groups: DependencyLevel[]): numbe
 }
 
 // Modify groupFieldsByParent to handle top-level fields that share parent_text_phrase:
-const groupFieldsByParent = (fields: FormFieldType[], chains: DependencyChain[]): FormFieldType[][] => {
-  console.log('Starting groupFieldsByParent:', {
-    totalFields: fields.length,
-    totalChains: chains.length
-  })
-
+const groupFieldsByParent = (
+  fields: FormFieldType[], 
+  chains: DependencyChain[],
+  formDef: FormDefinition
+): FormFieldType[][] => {
+  const hasPrevTravel = fields.some(f => isPrevTravelPage(formDef));
+  if (hasPrevTravel) {
+    debugLog('previous_travel_page', 'Grouping fields:', fields);
+  }
+  
   const result: FormFieldType[][] = []
   const processedFields = new Set<string>()
 
@@ -134,15 +145,13 @@ const groupFieldsByParent = (fields: FormFieldType[], chains: DependencyChain[])
     if (!processedFields.has(field.name)) {
       // This is a child of some chain that never got processed
       // or an orphan we haven't handled. 
-      console.log('Orphan or leftover field found, processing dependencies:', field.name)
       result.push([field])
     }
   })
 
-  console.log('Final grouped result:', {
-    totalGroups: result.length,
-    groups: result
-  })
+  if (hasPrevTravel) {
+    debugLog('previous_travel_page', 'Grouped result:', result);
+  }
   return result
 }
 
@@ -155,7 +164,10 @@ const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, onFormDa
     try {
       const yamlContent = event.target?.result as string
       const data = yaml.load(yamlContent) as Record<string, any>
-      console.log('Loaded YAML data:', data)
+      const hasPrevTravel = Object.keys(data).some(key => key.includes('previous_travel'));
+      if (hasPrevTravel) {
+        debugLog('previous_travel_page', 'Loaded YAML data:', data);
+      }
       onFormDataLoad(data)
     } catch (error) {
       console.error('Error parsing YAML:', error)
@@ -334,6 +346,13 @@ const renderPhraseGroup = (
   );
 };
 
+// Keep this simple check that was working
+const isPrevTravelField = (name: string) => {
+  return name.includes('PREV_US_TRAVEL') || 
+         name.includes('PREV_US_VISIT') || 
+         name.includes('PREV_VISA');
+}
+
 export default function DynamicForm({ formDefinition, formData, onInputChange, onCompletionUpdate }: DynamicFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -351,7 +370,26 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   const UPDATE_THRESHOLD = 100; // ms
 
   useEffect(() => {
-    console.log('Initializing form with fields:', formDefinition.fields)
+    // Remove or filter these logs:
+    // console.log('Initializing form with fields:', formDefinition.fields);
+    // console.log('Initial dependency setup:', { formData, dependencies });
+    // console.log('Handling dependency change:', { formData, dependencyChains });
+
+    // Instead, only log for previous travel page:
+    const isPrevTravelFields = formDefinition.fields.some(f => f.name.includes('previoustravel')) ||
+      Object.keys(formDefinition.dependencies || {}).some(key => key.includes('previoustravel'));
+
+    if (isPrevTravelFields) {
+      debugLog('previous_travel_page', 'Form initialization:', {
+        fields: formDefinition.fields,
+        dependencies: formDefinition.dependencies
+      });
+      debugLog('previous_travel_page', 'Dependency update:', {
+        formData,
+        dependencyChains
+      });
+    }
+
     const initialFields = new Set(formDefinition.fields.map((field) => field.name))
     setVisibleFields(initialFields)
     setOrderedFields(formDefinition.fields)
@@ -365,11 +403,9 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
         const buttonId = field.button_ids?.[selectedValue]
         if (buttonId) {
           const key = `${buttonId}.${selectedValue}`
-          console.log('Checking initial dependency for:', {
-            field: field.name,
-            key,
-            value: selectedValue
-          })
+          if (field.name.includes('previoustravel')) {
+            debugLog('previous_travel_page', 'Checking dependency:', field.name);
+          }
           
           const dependency = findDependency(formDefinition.dependencies, key)
           if (dependency?.shows?.length) {
@@ -405,10 +441,12 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
       }
     })
     
-    console.log('Initial dependency setup:', {
-      chains: initialChains,
-      visibleFields: Array.from(initialFields)
-    })
+    if (isPrevTravelFields) {
+      debugLog('previous_travel_page', 'Initial dependency setup:', {
+        chains: initialChains,
+        visibleFields: Array.from(initialFields)
+      });
+    }
     
     setDependencyChains(initialChains)
     setVisibleFields(initialFields)
@@ -417,7 +455,7 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
     if (onCompletionUpdate) {
       onCompletionUpdate(0, initialFields.size)
     }
-  }, [formDefinition.fields, onCompletionUpdate])
+  }, [formData, formDefinition.dependencies])
 
   const findDependency = (deps: Record<string, Dependency> | undefined, searchKey: string): Dependency | undefined => {
     if (!deps) return undefined
@@ -436,13 +474,31 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   }
 
   const handleDependencyChange = (key: string, parentField: FormFieldType) => {
-    console.log('Handling dependency change:', {
-      key,
-      parentField: parentField.name,
-      currentChains: dependencyChains
-    })
+    const isPrevTravelFields = 
+      (key.includes('PREV_US_TRAVEL') || key.includes('PREV_US_VISIT') || key.includes('PREV_VISA')) ||
+      isPrevTravelField(parentField.name) ||
+      dependencyChains.some(chain => 
+        chain.childFields.some(f => isPrevTravelField(f.name))
+      );
 
-      const newVisibleFields = new Set(visibleFields)
+    if (isPrevTravelFields) {
+      // Clean up chains before logging by removing value arrays
+      const cleanedChains = dependencyChains.map(chain => ({
+        parentField: { 
+          name: chain.parentField.name,
+          type: chain.parentField.type
+        },
+        childFields: chain.childFields.map(f => ({ 
+          name: f.name,
+          type: f.type
+        })),
+        parentChainId: chain.parentChainId
+      }));
+
+      debugLog('previous_travel_page', 'Updated dependency chains:', cleanedChains);
+    }
+
+    const newVisibleFields = new Set(visibleFields)
     const newDependencyChains = [...dependencyChains]
     
     // Find existing chain for this parent
@@ -478,7 +534,9 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
       dependency.shows.forEach(field => newVisibleFields.add(field.name))
     }
     
-    console.log('Updated chains:', newDependencyChains)
+    if (isPrevTravelFields) {
+      debugLog('previous_travel_page', 'Updated dependency chains:', newDependencyChains);
+    }
     setVisibleFields(newVisibleFields)
     setDependencyChains(newDependencyChains)
     updateOrderedFields(newDependencyChains)
@@ -553,11 +611,10 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   }
 
   const handleInputChange = (name: string, value: string) => {
-    const isPrevTravelPage = name.includes('previoustravel');
-    if (isPrevTravelPage) {
+    if (isPrevTravelField(name)) {
       debugLog('previous_travel_page', `Field changed: ${name} = ${value}`);
     }
-    onInputChange(name, value)
+    onInputChange(name, value);
   }
 
   // Add a useEffect to calculate current (visible) completion counters
@@ -566,8 +623,8 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
     const total = visibleFieldNames.length;
     const completed = visibleFieldNames.filter(name => formData[name]?.trim() !== "").length;
     
-    const isPrevTravelPage = visibleFieldNames.some(name => name.includes('previoustravel'));
-    if (isPrevTravelPage) {
+    const hasPrevTravelFields = visibleFieldNames.some(name => isPrevTravelPage(formDefinition));
+    if (hasPrevTravelFields) {
       debugLog('previous_travel_page', 'Form completion update:', { completed, total });
     }
     
@@ -605,8 +662,8 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   // Add debug logging to track state updates
   const handleAddGroup = (phraseGroup: FieldGroup) => {
     const key = phraseGroup.parentTextPhrase || "NO_PHRASE";
-    const isPrevTravelPage = key.includes('previoustravel');
-    if (isPrevTravelPage) {
+    const hasPrevTravelField = isPrevTravelPage(formDefinition);
+    if (hasPrevTravelField) {
       debugLog('previous_travel_page', `Adding group: ${key}`);
     }
     
@@ -645,7 +702,7 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(() => {})} className="space-y-6">
-        {groupFieldsByParent(orderedFields, dependencyChains).map((group, index) => {
+        {groupFieldsByParent(orderedFields, dependencyChains, formDefinition).map((group, index) => {
           const phraseGroups = groupFieldsByParentPhrase(group)
           
           // Calculate if this is a dependency group

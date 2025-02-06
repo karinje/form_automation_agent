@@ -263,7 +263,9 @@ export default function Home() {
       ...formYamlData  // Add all the form data
     }
     
-    console.log('Final YAML data:', finalYamlData)
+    debugLog('all_pages', '[Mapping Creation] Processing YAML data');
+    // And previous_travel_page logs
+    
     let yamlStr = yaml.dump(finalYamlData, {
       lineWidth: -1,
       noArrayIndent: true,

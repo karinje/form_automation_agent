@@ -12,7 +12,7 @@ export const createFormMapping = (yamlContent: string): MappingResult => {
   try {
     // Parse YAML content
     const parsedYaml = yaml.load(yamlContent) as Record<string, any>;
-    debugLog('all_pages', '[Mapping Creation] Parsed YAML:', parsedYaml);
+    debugLog('all_pages', '[Mapping Creation] Processing YAML data');
 
     const formData: Record<string, string> = {};
     const arrayGroups: Record<string, Array<Record<string, string>>> = {};
