@@ -365,9 +365,11 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   const [dependencyChains, setDependencyChains] = useState<DependencyChain[]>([])
   const [orderedFields, setOrderedFields] = useState<FormFieldType[]>([])
   const [repeatedGroups, setRepeatedGroups] = useState<Record<string, FormFieldType[][]>>({})
+  const [renderedSSNGroups] = useState(() => new Set<string>());
 
   const lastUpdateTimeRef = useRef<number>(0);
   const UPDATE_THRESHOLD = 100; // ms
+  const lastVisibleFieldsSize = useRef<number>(0);
 
   useEffect(() => {
     // Remove or filter these logs:
@@ -474,30 +476,6 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   }
 
   const handleDependencyChange = (key: string, parentField: FormFieldType) => {
-    const isPrevTravelFields = 
-      (key.includes('PREV_US_TRAVEL') || key.includes('PREV_US_VISIT') || key.includes('PREV_VISA')) ||
-      isPrevTravelField(parentField.name) ||
-      dependencyChains.some(chain => 
-        chain.childFields.some(f => isPrevTravelField(f.name))
-      );
-
-    if (isPrevTravelFields) {
-      // Clean up chains before logging by removing value arrays
-      const cleanedChains = dependencyChains.map(chain => ({
-        parentField: { 
-          name: chain.parentField.name,
-          type: chain.parentField.type
-        },
-        childFields: chain.childFields.map(f => ({ 
-          name: f.name,
-          type: f.type
-        })),
-        parentChainId: chain.parentChainId
-      }));
-
-      debugLog('previous_travel_page', 'Updated dependency chains:', cleanedChains);
-    }
-
     const newVisibleFields = new Set(visibleFields)
     const newDependencyChains = [...dependencyChains]
     
@@ -510,13 +488,36 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
     if (existingChainIndex !== -1) {
       const chainsToRemove = getChildChains(newDependencyChains, existingChainIndex)
       chainsToRemove.forEach(chain => {
-        chain.childFields.forEach(field => newVisibleFields.delete(field.name))
+        chain.childFields.forEach(field => {
+          // Check if this is part of a date group
+          const dateGroup = dateGroups.find(dg => 
+            [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
+          )
+          // Check if this is part of an SSN group
+          const ssnGroup = ssnGroups.find(sg => 
+            [sg.number1Field.name, sg.number2Field.name, sg.number3Field.name].includes(field.name)
+          )
+          
+          if (dateGroup) {
+            // Remove all components of the date group
+            newVisibleFields.delete(dateGroup.dayField.name)
+            newVisibleFields.delete(dateGroup.monthField.name)
+            newVisibleFields.delete(dateGroup.yearField.name)
+          } else if (ssnGroup) {
+            // Remove all components of the SSN group
+            newVisibleFields.delete(ssnGroup.number1Field.name)
+            newVisibleFields.delete(ssnGroup.number2Field.name)
+            newVisibleFields.delete(ssnGroup.number3Field.name)
+          } else {
+            newVisibleFields.delete(field.name)
+          }
+        })
       })
       newDependencyChains.splice(existingChainIndex, chainsToRemove.length)
     }
     
     // Find and add new dependencies
-      const dependency = findDependency(formDefinition.dependencies, key)
+    const dependency = findDependency(formDefinition.dependencies, key)
     if (dependency?.shows?.length) {
       const parentChainId = getParentChainId(newDependencyChains, parentField)
       const newChain: DependencyChain = {
@@ -531,12 +532,32 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
         : newDependencyChains.length
       
       newDependencyChains.splice(insertIndex, 0, newChain)
-      dependency.shows.forEach(field => newVisibleFields.add(field.name))
+      dependency.shows.forEach(field => {
+        // Check if this is part of a date group
+        const dateGroup = dateGroups.find(dg => 
+          [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
+        )
+        // Check if this is part of an SSN group
+        const ssnGroup = ssnGroups.find(sg => 
+          [sg.number1Field.name, sg.number2Field.name, sg.number3Field.name].includes(field.name)
+        )
+        
+        if (dateGroup) {
+          // Add all components of the date group
+          newVisibleFields.add(dateGroup.dayField.name)
+          newVisibleFields.add(dateGroup.monthField.name)
+          newVisibleFields.add(dateGroup.yearField.name)
+        } else if (ssnGroup) {
+          // Add all components of the SSN group
+          newVisibleFields.add(ssnGroup.number1Field.name)
+          newVisibleFields.add(ssnGroup.number2Field.name)
+          newVisibleFields.add(ssnGroup.number3Field.name)
+        } else {
+          newVisibleFields.add(field.name)
+        }
+      })
     }
     
-    if (isPrevTravelFields) {
-      debugLog('previous_travel_page', 'Updated dependency chains:', newDependencyChains);
-    }
     setVisibleFields(newVisibleFields)
     setDependencyChains(newDependencyChains)
     updateOrderedFields(newDependencyChains)
@@ -699,6 +720,21 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
     });
   };
 
+  // Add this after the handleDependencyChange function
+  useEffect(() => {
+    updateOrderedFields(dependencyChains)
+  }, [visibleFields]) // Add visibleFields as dependency
+
+  useEffect(() => {
+    if (visibleFields.size !== lastVisibleFieldsSize.current) {
+      debugLog('previous_travel_page', 'Visible fields updated:', {
+        count: visibleFields.size,
+        fields: Array.from(visibleFields)
+      });
+      lastVisibleFieldsSize.current = visibleFields.size;
+    }
+  }, [visibleFields]);
+
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(() => {})} className="space-y-6">
@@ -725,8 +761,14 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
 
                 // Collect all fields that will be rendered
                 const fieldsToRender = phraseGroup.fields.map(field => {
+                  // First check for date groups
                   const dateGroup = dateGroups.find(dg => 
                     [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
+                  )
+                  
+                  // Add check for SSN groups
+                  const ssnGroup = ssnGroups.find(sg => 
+                    [sg.number1Field.name, sg.number2Field.name, sg.number3Field.name].includes(field.name)
                   )
                   
                   if (dateGroup && !renderedDateGroups.has(dateGroup.basePhrase)) {
@@ -738,7 +780,18 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
                     }
                   }
                   
-                  if (!dateFieldNames.has(field.name) || !renderedDateGroups.has(dateGroup?.basePhrase || '')) {
+                  if (ssnGroup && !renderedSSNGroups.has(ssnGroup.basePhrase)) {
+                    renderedSSNGroups.add(ssnGroup.basePhrase)
+                    return {
+                      type: 'ssn',
+                      ssnGroup,
+                      key: `ssn-${ssnGroup.basePhrase}`
+                    }
+                  }
+                  
+                  // Only render individual fields if they're not part of a rendered group
+                  if ((!dateFieldNames.has(field.name) || !renderedDateGroups.has(dateGroup?.basePhrase || '')) &&
+                      (!ssnFieldNames.has(field.name) || !renderedSSNGroups.has(ssnGroup?.basePhrase || ''))) {
                     return {
                       type: 'field',
                       field,
@@ -769,6 +822,18 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
                                 values={formData}
                                 onChange={onInputChange}
                                 visible={visibleFields.has(item.dateGroup.dayField.name)}
+                              />
+                            )
+                          }
+                          
+                          if (item.type === 'ssn') {
+                            return (
+                              <SSNFieldGroup
+                                key={item.key}
+                                ssnGroup={item.ssnGroup}
+                                values={formData}
+                                onChange={onInputChange}
+                                visible={visibleFields.has(item.ssnGroup.number1Field.name)}
                               />
                             )
                           }
