@@ -12,6 +12,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import yaml from 'js-yaml'
 import DateFieldGroup from "@/components/DateFieldGroup"
 import SSNFieldGroup from "@/components/SSNFieldGroup"
+import { debugLog } from '@/utils/consoleLogger'
 
 interface DynamicFormProps {
   formDefinition: FormDefinition
@@ -517,7 +518,6 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
 
   // Modified to handle dependency chains
   const updateOrderedFields = (chains: DependencyChain[]) => {
-    console.log('Updating ordered fields with chains:', chains)
     let newOrdered = [...formDefinition.fields]
     
     // Process chains in order, maintaining parent-child relationships
@@ -553,19 +553,28 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   }
 
   const handleInputChange = (name: string, value: string) => {
+    const isPrevTravelPage = name.includes('previoustravel');
+    if (isPrevTravelPage) {
+      debugLog('previous_travel_page', `Field changed: ${name} = ${value}`);
+    }
     onInputChange(name, value)
   }
 
   // Add a useEffect to calculate current (visible) completion counters
   useEffect(() => {
-    const visibleFieldNames = Array.from(visibleFields)
-    const total = visibleFieldNames.length
-    const completed = visibleFieldNames.filter(name => formData[name] && formData[name].trim() !== "").length
-    console.log('DynamicForm completion update:', { completed, total, visibleFieldNames })
-    if (onCompletionUpdate) {
-      onCompletionUpdate(completed, total)
+    const visibleFieldNames = Array.from(visibleFields);
+    const total = visibleFieldNames.length;
+    const completed = visibleFieldNames.filter(name => formData[name]?.trim() !== "").length;
+    
+    const isPrevTravelPage = visibleFieldNames.some(name => name.includes('previoustravel'));
+    if (isPrevTravelPage) {
+      debugLog('previous_travel_page', 'Form completion update:', { completed, total });
     }
-  }, [visibleFields, formData, onCompletionUpdate])
+    
+    if (onCompletionUpdate) {
+      onCompletionUpdate(completed, total);
+    }
+  }, [visibleFields, formData, onCompletionUpdate]);
 
   // Group date fields
   const dateGroups = useMemo(() => 
@@ -596,11 +605,10 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   // Add debug logging to track state updates
   const handleAddGroup = (phraseGroup: FieldGroup) => {
     const key = phraseGroup.parentTextPhrase || "NO_PHRASE";
-    
-    console.log("=== handleAddGroup BEFORE setState ===", {
-      key,
-      currentGroups: repeatedGroups[key]?.length || 0
-    });
+    const isPrevTravelPage = key.includes('previoustravel');
+    if (isPrevTravelPage) {
+      debugLog('previous_travel_page', `Adding group: ${key}`);
+    }
     
     setRepeatedGroups(prev => {
       const newState = {
@@ -610,18 +618,9 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
           phraseGroup.fields.map(f => ({ ...f }))
         ]
       };
-      console.log("=== handleAddGroup DURING setState ===", {
-        prevLength: prev[key]?.length || 0,
-        newLength: newState[key].length
-      });
       return newState;
     });
-  };
-
-  // 2. Add effect to track state changes
-  useEffect(() => {
-    console.log("=== repeatedGroups state changed ===", repeatedGroups)
-  }, [repeatedGroups])
+  }
 
   // 2) Add new remove handler
   const handleRemoveGroup = (phraseGroup: FieldGroup, index: number, e: React.MouseEvent) => {

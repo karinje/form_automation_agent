@@ -12,6 +12,8 @@ import { callOpenAI } from '@/utils/openai'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { createFormMapping } from '@/utils/yaml-mapping'
+import { debugLog } from '@/utils/consoleLogger'
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -61,6 +63,7 @@ export default function Home() {
   const [surname, setSurname] = useState('')
   const [birthYear, setBirthYear] = useState('')
   const [isRunningDS160, setIsRunningDS160] = useState(false)
+  const [arrayGroups, setArrayGroups] = useState<Record<string, Array<Record<string, string>>>>({})
 
   // Sample secret questions - replace with actual questions later
   const secretQuestions = [
@@ -127,50 +130,83 @@ export default function Home() {
   }, [])
 
   const handleFormDataLoad = useCallback((uploadedYamlData: Record<string, any>) => {
-    console.log('Loading complete YAML data:', uploadedYamlData)
-    setYamlData(uploadedYamlData)
-    
-    // Process all pages
-    const allFormFields: Record<string, string> = {}
-    Object.entries(uploadedYamlData).forEach(([pageName, pageData]) => {
-      console.log('Processing page:', pageName, pageData)
-      const flattenedData = flattenYamlData(pageData)
-      console.log('Flattened data for page:', pageName, flattenedData)
+    try {
+      // Only log mapping creation and previous_travel_page data
+      debugLog('all_pages', '[Mapping Creation] Processing YAML data');
+      const relevantPage = uploadedYamlData['previous_travel_page'];
+      if (relevantPage) {
+        debugLog('previous_travel_page', 'Processing page data:', relevantPage);
+      }
       
-      Object.entries(flattenedData).forEach(([yamlField, value]) => {
-        const formFieldId = getFormFieldId(pageName, yamlField)
-        if (formFieldId) {
-          console.log('Mapping field:', { pageName, yamlField, formFieldId, value })
-          allFormFields[formFieldId] = value
+      setYamlData(uploadedYamlData);
+      
+      // Convert to YAML string for array detection
+      const yamlString = yaml.dump(uploadedYamlData);
+      
+      // Create the mapping using our new helper - this handles arrays
+      const { formData: arrayAwareFormData, arrayGroups } = createFormMapping(yamlString);
+      
+      // Also process using existing logic to ensure backward compatibility
+      const allFormFields: Record<string, string> = {};
+      Object.entries(uploadedYamlData).forEach(([pageName, pageData]) => {
+        const isDebugPage = pageName === 'previous_travel_page';
+        const flattenedData = flattenYamlData(pageData);
+        
+        if (isDebugPage) {
+          debugLog('previous_travel_page', 'Processing page:', { pageName, pageData });
+          debugLog('previous_travel_page', 'Flattened data:', { pageName, flattenedData });
         }
-      })
-    })
-    
-    console.log('Setting form data:', allFormFields)
-    setFormData(allFormFields)
-    setRefreshKey(prev => prev + 1)
-    
-    // Cycle through every tab and simulate expand/collapse for every page within each tab.
-    const categories = Object.keys(formCategories)
-    let delay = 0;
-    categories.forEach((category) => {
-      setTimeout(() => {
-        setCurrentTab(category); // Switch tab
-        const forms = formCategories[category];
-        forms.forEach((_, index) => {
-          setTimeout(() => {
-            // Expand
-            setAccordionValues(prev => ({ ...prev, [category]: `item-${index}` }));
-            setTimeout(() => {
-              // Collapse
-              setAccordionValues(prev => ({ ...prev, [category]: "" }));
-            }, 100);
-          }, index * 200);
+        
+        Object.entries(flattenedData).forEach(([yamlField, value]) => {
+          const formFieldId = getFormFieldId(pageName, yamlField);
+          if (formFieldId) {
+            if (isDebugPage) {
+              debugLog('previous_travel_page', 'Mapping field:', { yamlField, formFieldId, value });
+            }
+            allFormFields[formFieldId] = value;
+          }
         });
-      }, delay);
-      delay += formCategories[category].length * 200 + 500;
-    });
-  }, [])
+      });
+      
+      // Merge the results, preferring array-aware mappings
+      const mergedFormData = {
+        ...allFormFields,
+        ...arrayAwareFormData
+      };
+      
+      // Only log form data for previous_travel_page fields
+      const travelPageData = Object.entries(mergedFormData)
+        .filter(([key]) => key.includes('PREV_') || key.includes('PrevTravel'))
+        .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+      
+      debugLog('previous_travel_page', 'Setting form data:', travelPageData);
+      
+      setFormData(mergedFormData);
+      setArrayGroups(arrayGroups);
+      setRefreshKey(prev => prev + 1);
+      
+      // Cycle through tabs (preserve existing behavior)
+      const categories = Object.keys(formCategories);
+      let delay = 0;
+      categories.forEach((category) => {
+        setTimeout(() => {
+          setCurrentTab(category);
+          const forms = formCategories[category];
+          forms.forEach((_, index) => {
+            setTimeout(() => {
+              setAccordionValues(prev => ({ ...prev, [category]: `item-${index}` }));
+              setTimeout(() => {
+                setAccordionValues(prev => ({ ...prev, [category]: "" }));
+              }, 100);
+            }, index * 200);
+          });
+        }, delay);
+        delay += formCategories[category].length * 200 + 500;
+      });
+    } catch (error) {
+      console.error('[Form Load] Error loading form data:', error);
+    }
+  }, [formCategories]);
 
   const handleDownloadYaml = useCallback(() => {
     // First get all the form data converted to YAML format
@@ -563,7 +599,7 @@ export default function Home() {
                       ) : (
                         <>
                           <svg className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
                           <p className="mb-2 text-sm text-gray-500">
                             <span className="font-semibold">Click to upload</span> or drag and drop

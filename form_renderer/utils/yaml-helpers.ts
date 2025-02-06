@@ -1,20 +1,80 @@
-// Helper to flatten nested YAML objects into dot notation
-export const flattenYamlData = (obj: any, prefix = ''): Record<string, string> => {
-  const flattened: Record<string, string> = {}
+import { debugLog } from './consoleLogger';
+
+// Helper to detect if a value is a YAML array (list)
+const isYamlArray = (value: any): boolean => {
+  return Array.isArray(value) && value.length > 0;
+};
+
+// Helper to transform field names for additional groups
+const transformFieldName = (fieldName: string, groupIndex: number): string => {
+  // Don't transform the first group
+  if (groupIndex === 0) return fieldName;
   
+  // Replace the last occurrence of _ctl\d+ with _ctlXX where XX is the group index
+  const match = fieldName.match(/(_ctl\d+)(?!.*_ctl\d+)/);
+  if (!match) return fieldName;
+
+  const prefix = fieldName.substring(0, match.index);
+  const suffix = fieldName.substring(match.index + match[1].length);
+  return `${prefix}_ctl${groupIndex.toString().padStart(2, '0')}${suffix}`;
+};
+
+// Modified flattenYamlData to handle arrays and transform field names
+export const flattenYamlData = (
+  obj: any, 
+  prefix = '', 
+  isDebugPage = false
+): Record<string, string | Record<string, string>[]> => {
+  const flattened: Record<string, string | Record<string, string>[]> = {};
+
   for (const key in obj) {
-    const value = obj[key]
-    const newKey = prefix ? `${prefix}.${key}` : key
-    
-    if (value && typeof value === 'object' && !Array.isArray(value)) {
-      Object.assign(flattened, flattenYamlData(value, newKey))
+    const value = obj[key];
+    const newKey = prefix ? `${prefix}.${key}` : key;
+
+    if (isYamlArray(value)) {
+      debugLog('previous_travel_page', `Detected array at key: ${newKey}`, value);
+      
+      // Create a mapping for each item in the array
+      const arrayMappings = value.map((item: any, index: number) => {
+        if (typeof item === 'object' && !Array.isArray(item)) {
+          // Flatten the nested object first
+          const flattenedItem: Record<string, string> = {};
+          Object.entries(item).forEach(([itemKey, itemValue]) => {
+            if (typeof itemValue === 'object' && !Array.isArray(itemValue)) {
+              // Handle nested objects (like arrival or length_of_stay)
+              Object.entries(itemValue).forEach(([subKey, subValue]) => {
+                const formFieldKey = `${newKey}.${itemKey}.${subKey}`;
+                const transformedKey = transformFieldName(formFieldKey, index);
+                debugLog('previous_travel_page', `Transformed nested field: ${formFieldKey} -> ${transformedKey}`);
+                flattenedItem[transformedKey] = String(subValue);
+              });
+            } else {
+              const formFieldKey = `${newKey}.${itemKey}`;
+              const transformedKey = transformFieldName(formFieldKey, index);
+              debugLog('previous_travel_page', `Transformed field: ${formFieldKey} -> ${transformedKey}`);
+              flattenedItem[transformedKey] = String(itemValue);
+            }
+          });
+          return flattenedItem;
+        }
+        return { [transformFieldName(newKey, index)]: String(item) };
+      });
+
+      flattened[newKey] = arrayMappings;
+      if (isDebugPage) {
+        debugLog('previous_travel_page', `Created array mapping for ${newKey}:`);
+        debugLog('previous_travel_page', JSON.stringify(arrayMappings, null, 2));
+      }
+    } else if (value && typeof value === 'object' && !Array.isArray(value)) {
+      const nested = flattenYamlData(value, newKey, isDebugPage);
+      Object.assign(flattened, nested);
     } else {
-      flattened[newKey] = String(value) // Convert all values to string
+      flattened[newKey] = String(value);
     }
   }
-  
-  return flattened
-}
+
+  return flattened;
+};
 
 // Helper to convert flattened form data back to nested YAML structure
 export const unflattenFormData = (data: Record<string, string>): Record<string, any> => {
@@ -34,4 +94,9 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
   }
   
   return result
-} 
+}
+
+// Helper to identify if a page is the previous travel page
+export const isPreviousTravelPage = (pageName: string): boolean => {
+  return pageName === 'previous_travel_page';
+}; 

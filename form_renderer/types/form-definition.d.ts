@@ -33,3 +33,13 @@ export interface DateFieldGroup {
   monthField: FormField;
   yearField: FormField;
 }
+
+export interface ArrayGroup {
+  fieldId: string;
+  values: Array<Record<string, string>>;
+}
+
+export interface FormState {
+  formData: Record<string, string>;
+  arrayGroups: Record<string, Array<Record<string, string>>>;
+}
