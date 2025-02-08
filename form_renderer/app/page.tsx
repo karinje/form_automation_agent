@@ -173,7 +173,6 @@ export default function Home() {
         ...allFormFields,
         ...arrayAwareFormData
       };
-      
       // Only log form data for previous_travel_page fields
       const travelPageData = Object.entries(mergedFormData)
         .filter(([key]) => key.includes('PREV_') || key.includes('PrevTravel'))
@@ -354,6 +353,7 @@ export default function Home() {
                 key={`${formId}-${refreshKey}`}
                 formDefinition={form.definition}
                 formData={formData}
+                arrayGroups={arrayGroups}
                 onInputChange={handleInputChange}
                 onCompletionUpdate={onCompletionMemo}
               />

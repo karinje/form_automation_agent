@@ -37,27 +37,23 @@ export const flattenYamlData = (
       // Create a mapping for each item in the array
       const arrayMappings = value.map((item: any, index: number) => {
         if (typeof item === 'object' && !Array.isArray(item)) {
-          // Flatten the nested object first
           const flattenedItem: Record<string, string> = {};
           Object.entries(item).forEach(([itemKey, itemValue]) => {
             if (typeof itemValue === 'object' && !Array.isArray(itemValue)) {
-              // Handle nested objects (like arrival or length_of_stay)
+              // Keep parent prefix for nested objects
               Object.entries(itemValue).forEach(([subKey, subValue]) => {
-                const formFieldKey = `${newKey}.${itemKey}.${subKey}`;
-                const transformedKey = transformFieldName(formFieldKey, index);
-                debugLog('previous_travel_page', `Transformed nested field: ${formFieldKey} -> ${transformedKey}`);
-                flattenedItem[transformedKey] = String(subValue);
+                const formFieldKey = `${newKey}.${itemKey}.${subKey}`; // Keep parent prefix
+                flattenedItem[formFieldKey] = String(subValue);
               });
             } else {
-              const formFieldKey = `${newKey}.${itemKey}`;
-              const transformedKey = transformFieldName(formFieldKey, index);
-              debugLog('previous_travel_page', `Transformed field: ${formFieldKey} -> ${transformedKey}`);
-              flattenedItem[transformedKey] = String(itemValue);
+              // Keep parent prefix for direct fields
+              const formFieldKey = `${newKey}.${itemKey}`; // Keep parent prefix
+              flattenedItem[formFieldKey] = String(itemValue);
             }
           });
           return flattenedItem;
         }
-        return { [transformFieldName(newKey, index)]: String(item) };
+        return { [newKey]: String(item) };
       });
 
       flattened[newKey] = arrayMappings;
@@ -71,6 +67,18 @@ export const flattenYamlData = (
     } else {
       flattened[newKey] = String(value);
     }
+  }
+
+  // Add debug logging for complete flattened structure
+  if (prefix === '' && isDebugPage) {  // Only log at top level
+    debugLog('previous_travel_page', 'Complete flattened structure:', {
+      regular_fields: Object.entries(flattened)
+        .filter(([_, v]) => !Array.isArray(v))
+        .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {}),
+      array_fields: Object.entries(flattened)
+        .filter(([_, v]) => Array.isArray(v))
+        .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {})
+    });
   }
 
   return flattened;

@@ -13,10 +13,14 @@ import yaml from 'js-yaml'
 import DateFieldGroup from "@/components/DateFieldGroup"
 import SSNFieldGroup from "@/components/SSNFieldGroup"
 import { debugLog } from '@/utils/consoleLogger'
+import { normalizeTextPhrase, isPrevTravelPage } from '@/utils/helpers'
+import { triggerAsyncId } from "async_hooks"
+import { workerData } from "worker_threads"
 
 interface DynamicFormProps {
   formDefinition: FormDefinition
   formData: Record<string, string>
+  arrayGroups?: Record<string, Array<Record<string, string>>>
   onInputChange: (name: string, value: string) => void
   onCompletionUpdate?: (completed: number, total: number) => void
 }
@@ -50,12 +54,6 @@ interface FieldGroup {
 }
 
 // Instead, just check if we're in the previous travel page
-const isPrevTravelPage = (formDef: FormDefinition): boolean => {
-  // The form title or ID should indicate which page we're on
-  return formDef.title?.includes('Previous Travel') || 
-         formDef.id?.includes('previous_travel');
-}
-
 const getDependencyLevel = (fieldName: string, groups: DependencyLevel[]): number => {
   const group = groups.find(g => 
     g.fields.some(f => f.name === fieldName)
@@ -70,6 +68,8 @@ const groupFieldsByParent = (
   formDef: FormDefinition
 ): FormFieldType[][] => {
   const hasPrevTravel = fields.some(f => isPrevTravelPage(formDef));
+  //print all formdef attribute names
+  
   if (hasPrevTravel) {
     debugLog('previous_travel_page', 'Grouping fields:', fields);
   }
@@ -153,27 +153,6 @@ const groupFieldsByParent = (
     debugLog('previous_travel_page', 'Grouped result:', result);
   }
   return result
-}
-
-const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, onFormDataLoad: (data: Record<string, any>) => void) => {
-  const file = e.target.files?.[0]
-  if (!file) return
-
-  const reader = new FileReader()
-  reader.onload = (event) => {
-    try {
-      const yamlContent = event.target?.result as string
-      const data = yaml.load(yamlContent) as Record<string, any>
-      const hasPrevTravel = Object.keys(data).some(key => key.includes('previous_travel'));
-      if (hasPrevTravel) {
-        debugLog('previous_travel_page', 'Loaded YAML data:', data);
-      }
-      onFormDataLoad(data)
-    } catch (error) {
-      console.error('Error parsing YAML:', error)
-    }
-  }
-  reader.readAsText(file)
 }
 
 const detectDateFields = (fields: FormFieldType[]): DateFieldGroup[] => {
@@ -350,10 +329,29 @@ const renderPhraseGroup = (
 const isPrevTravelField = (name: string) => {
   return name.includes('PREV_US_TRAVEL') || 
          name.includes('PREV_US_VISIT') || 
-         name.includes('PREV_VISA');
+         name.includes('PREV_VISA') ||
+         name.includes('previous_travel');
 }
 
-export default function DynamicForm({ formDefinition, formData, onInputChange, onCompletionUpdate }: DynamicFormProps) {
+const waitForButton = async (selector: string, maxAttempts = 10): Promise<HTMLElement | null> => {
+  for (let i = 0; i < maxAttempts; i++) {
+    const btn = document.querySelector(selector);
+    if (btn) return btn as HTMLElement;
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  return null;
+};
+
+// Add this helper to check if we're on the previous travel section
+const isPrevTravelSection = (fields: string[]): boolean => {
+  return fields.some(f => 
+    f.includes('PREV_US_TRAVEL') || 
+    f.includes('PREV_US_VISIT') || 
+    f.includes('PREV_VISA')
+  );
+};
+
+export default function DynamicForm({ formDefinition, formData, arrayGroups, onInputChange, onCompletionUpdate }: DynamicFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -371,17 +369,72 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
   const UPDATE_THRESHOLD = 100; // ms
   const lastVisibleFieldsSize = useRef<number>(0);
 
+  const [pendingArrayGroups, setPendingArrayGroups] = useState<Record<string, boolean>>({});
+
+  const [fieldGroups, setFieldGroups] = useState<FieldGroup[]>([]);
+
+  const prevArrayGroupsRef = useRef(arrayGroups);  // Move useRef to component level
+
+  // Move findDependency inside component
+  const findDependency = (deps: Record<string, Dependency> | undefined, searchKey: string): Dependency | undefined => {
+    if (!deps) return undefined;
+    
+    const directDep = deps[searchKey];
+    if (directDep) return directDep;
+
+    // Search in nested dependencies
+    for (const dep of Object.values(deps)) {
+      if (dep.dependencies) {
+        const nestedDep = findDependency(dep.dependencies, searchKey);
+        if (nestedDep) return nestedDep;
+      }
+    }
+    return undefined;
+  };
+
+  // Move getFieldsForGroup inside component
+  const getFieldsForGroup = (parentTextPhrase: string, fields: FormFieldType[]): FormFieldType[] => {
+    const normalizedParentPhrase = normalizeTextPhrase(parentTextPhrase);
+    
+    // Get all fields (direct + from dependencies)
+    const allFields = [
+      ...fields,
+      ...getAllDependencyFields(formDefinition.dependencies)
+    ];
+    
+    // Filter by parent phrase
+    const groupFields = allFields.filter(field => {
+      const fieldParentPhrase = normalizeTextPhrase(field.parent_text_phrase || '');
+      return fieldParentPhrase === normalizedParentPhrase;
+    });
+
+    if (isPrevTravelPage(formDefinition)) {
+      debugLog('previous_travel_page', `Found direct fields for group:`, {
+        parentTextPhrase,
+        normalizedParentPhrase,
+        fieldCount: groupFields.length,
+        fields: groupFields.map(f => f.name)
+      });
+    }
+
+    return groupFields;
+  };
+
+  // Helper to recursively get all fields from dependencies
+  const getAllDependencyFields = (deps: Record<string, Dependency> | undefined): FormFieldType[] => {
+    if (!deps) return [];
+    
+    return Object.values(deps).flatMap(dep => {
+      const fields = [...(dep.shows || [])];
+      if (dep.dependencies) {
+        fields.push(...getAllDependencyFields(dep.dependencies));
+      }
+      return fields;
+    });
+  };
+
   useEffect(() => {
-    // Remove or filter these logs:
-    // console.log('Initializing form with fields:', formDefinition.fields);
-    // console.log('Initial dependency setup:', { formData, dependencies });
-    // console.log('Handling dependency change:', { formData, dependencyChains });
-
-    // Instead, only log for previous travel page:
-    const isPrevTravelFields = formDefinition.fields.some(f => f.name.includes('previoustravel')) ||
-      Object.keys(formDefinition.dependencies || {}).some(key => key.includes('previoustravel'));
-
-    if (isPrevTravelFields) {
+    if (isPrevTravelPage(formDefinition)) {
       debugLog('previous_travel_page', 'Form initialization:', {
         fields: formDefinition.fields,
         dependencies: formDefinition.dependencies
@@ -405,7 +458,7 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
         const buttonId = field.button_ids?.[selectedValue]
         if (buttonId) {
           const key = `${buttonId}.${selectedValue}`
-          if (field.name.includes('previoustravel')) {
+          if (field.name.includes('PREV_')) {
             debugLog('previous_travel_page', 'Checking dependency:', field.name);
           }
           
@@ -443,7 +496,7 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
       }
     })
     
-    if (isPrevTravelFields) {
+    if (isPrevTravelPage(formDefinition)) {
       debugLog('previous_travel_page', 'Initial dependency setup:', {
         chains: initialChains,
         visibleFields: Array.from(initialFields)
@@ -458,22 +511,6 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
       onCompletionUpdate(0, initialFields.size)
     }
   }, [formData, formDefinition.dependencies])
-
-  const findDependency = (deps: Record<string, Dependency> | undefined, searchKey: string): Dependency | undefined => {
-    if (!deps) return undefined
-    
-    const directDep = deps[searchKey]
-    if (directDep) return directDep
-
-    // Search in nested dependencies
-    for (const dep of Object.values(deps)) {
-      if (dep.dependencies) {
-        const nestedDep = findDependency(dep.dependencies, searchKey)
-        if (nestedDep) return nestedDep
-      }
-    }
-    return undefined
-  }
 
   const handleDependencyChange = (key: string, parentField: FormFieldType) => {
     const newVisibleFields = new Set(visibleFields)
@@ -680,45 +717,182 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
     [ssnGroups]
   )
 
-  // Add debug logging to track state updates
-  const handleAddGroup = (phraseGroup: FieldGroup) => {
-    const key = phraseGroup.parentTextPhrase || "NO_PHRASE";
-    const hasPrevTravelField = isPrevTravelPage(formDefinition);
-    if (hasPrevTravelField) {
-      debugLog('previous_travel_page', `Adding group: ${key}`);
-    }
-    
-    setRepeatedGroups(prev => {
-      const newState = {
-        ...prev,
-        [key]: [
-          ...(prev[key] || []),
-          phraseGroup.fields.map(f => ({ ...f }))
-        ]
-      };
-      return newState;
-    });
-  }
+  // Modify the useEffect that handles array groups
+  useEffect(() => {
+    if (!arrayGroups) return;
 
-  // 2) Add new remove handler
-  const handleRemoveGroup = (phraseGroup: FieldGroup, index: number, e: React.MouseEvent) => {
-    // Stop event propagation
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const key = phraseGroup.parentTextPhrase || "NO_PHRASE";
-    setRepeatedGroups(prev => {
-      const newState = { ...prev };
-      if (newState[key]) {
-        // Create new array with the item removed
-        newState[key] = [
-          ...newState[key].slice(0, index),
-          ...newState[key].slice(index + 1)
-        ];
+    const processArrayGroups = async () => {
+      // Check if arrayGroups changed
+      console.log('arrayGroups triggered');
+      let attempts = 0;
+      while (attempts < 2) {
+        if (isPrevTravelSection(Array.from(visibleFields))) {
+          // Check if Add Group button exists for any array group
+          const anyButtonExists = await Promise.any(
+            Object.keys(arrayGroups).map(key => 
+              waitForButton(`[data-group-id="${normalizeTextPhrase(key)}"]`).then(btn => {
+                if (btn) {
+                  debugLog('previous_travel_page', 'Found button:', {
+                    selector: `[data-group-id="${normalizeTextPhrase(key)}"]`,
+                    element: btn.outerHTML,
+                    buttonProps: {
+                      id: btn.id,
+                      className: btn.className,
+                      dataset: btn.dataset,
+                      text: btn.textContent,
+                      attributes: Array.from(btn.attributes).map(a => ({name: a.name, value: a.value}))
+                    }
+                  });
+                }
+                return btn;
+              })
+            )
+          ).catch(() => null);
+
+          if (anyButtonExists) {
+            debugLog('previous_travel_page', 'Button exists with properties:', {
+              id: anyButtonExists.id,
+              className: anyButtonExists.className,
+              dataset: anyButtonExists.dataset,
+              text: anyButtonExists.textContent,
+              attributes: Array.from(anyButtonExists.attributes).map(a => ({name: a.name, value: a.value}))
+            });
+          }
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+        attempts++;
       }
-      return newState;
-    });
-  };
+
+      // Process each array group
+      for (const [groupKey, groups] of Object.entries(arrayGroups)) {
+        const normalizedGroupKey = normalizeTextPhrase(groupKey);
+        
+        const isPrevTravelGroup = isPrevTravelField(groupKey);
+        
+        if (isPrevTravelGroup) {
+          debugLog('previous_travel_page', `Processing group: ${groupKey}`, {
+            normalizedKey: normalizedGroupKey,
+            fieldCount: groups.length,
+            groups: groups
+          });
+        }
+
+        const groupFields = getFieldsForGroup(groupKey, formDefinition.fields);
+        
+        if (isPrevTravelGroup) {
+          debugLog('previous_travel_page', `Processing groupfields: ${groupKey}`, {
+            normalizedKey: normalizedGroupKey,
+            fieldCount: groupFields.length
+          });
+        }
+
+        // Fill in first group (index 0)
+        const firstGroupData = groups[0];
+        for (const field of groupFields) {
+          if (isPrevTravelField(field.name)) {
+            debugLog('previous_travel_page', `Processing field inside first group: ${field.name}`, {
+              field,
+              value: formData[field.name],
+              yamlData: firstGroupData
+            });
+          }
+          const baseFieldName = field.name;
+          const value = formData[baseFieldName];
+          
+          if (value !== undefined) {
+            debugLog('previous_travel_page', `Setting first group field value:`, {
+              field: baseFieldName,
+              value
+            });
+            onInputChange(baseFieldName, String(value));
+          }
+        }
+
+        // Find and click Add Group button for additional groups
+        if (groups.length > 1) {
+          const addGroupButton = await waitForButton(`[data-group-id="${normalizedGroupKey}"]`);
+          if (!addGroupButton) {
+            debugLog('previous_travel_page', `Add Group button not found for: ${normalizedGroupKey}`);
+            continue;
+          }
+          debugLog('previous_travel_page', 'Add Group button found second time:', {
+            id: addGroupButton.id,
+            className: addGroupButton.className,
+            dataset: addGroupButton.dataset,
+            text: addGroupButton.textContent,
+            attributes: Array.from(addGroupButton.attributes).map(a => ({name: a.name, value: a.value}))
+          });
+
+          // Process additional groups
+          for (let index = 1; index < groups.length; index++) {
+            debugLog('previous_travel_page', 'Attempting to add group');
+            
+            // Try regular click first
+            addGroupButton.click();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Check if new fields appeared
+            const currentFields = Array.from(document.querySelectorAll(`[id*="PREV_US_VISIT"][id*="_ctl${index.toString().padStart(2, '0')}"]`));
+            const originalFields = Array.from(document.querySelectorAll('[id*="PREV_US_VISIT"][id*=_ctl00]'));
+            debugLog('previous_travel_page', 'Temporary Debug Original fields:', {
+              total: originalFields.length,
+              fields: originalFields.map(f => ({
+                id: f.id,
+                name: f.name
+              }))
+            });
+            debugLog('previous_travel_page', 'Temporary Debug Current fields:', {
+              total: currentFields.length,
+              fields: currentFields.map(f => ({
+                id: f.id,
+                name: f.name
+              }))
+            });
+            if (currentFields.length === 0) {
+              debugLog('previous_travel_page', 'Regular click failed, trying dispatch event');
+              addGroupButton.dispatchEvent(new MouseEvent('click', {
+                bubbles: true,
+                cancelable: true,
+                view: window
+              }));
+              await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+            // Log results
+            debugLog('previous_travel_page', 'Fields after clicking Add Group:', {
+              totalFields: currentFields.length,
+              newFields: currentFields.map(f => ({
+                id: f.id,
+                type: (f as HTMLElement).tagName,
+                visible: (f as HTMLElement).offsetParent !== null
+              }))
+            });
+            
+            // Fill fields using the parent_text_phrase grouping
+            const groupData = groups[index];
+            for (const field of groupFields) {
+              const baseFieldName = field.name;
+              const transformedName = baseFieldName.replace(/_ctl\d+/, `_ctl${index.toString().padStart(2, '0')}`);
+              const value = groupData[baseFieldName];
+              
+              if (value !== undefined) {
+                debugLog('previous_travel_page', `Setting field value:`, {
+                  original: baseFieldName,
+                  transformed: transformedName,
+                  value
+                });
+                onInputChange(transformedName, String(value));
+              }
+            }
+          }
+        }
+      }
+    };
+
+    // Call the async function
+    processArrayGroups();
+
+  }, [arrayGroups]);
 
   // Add this after the handleDependencyChange function
   useEffect(() => {
@@ -734,6 +908,44 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
       lastVisibleFieldsSize.current = visibleFields.size;
     }
   }, [visibleFields]);
+
+  // Add effect to initialize field groups
+  useEffect(() => {
+    const groups = groupFieldsByParentPhrase(formDefinition.fields);
+    setFieldGroups(groups);
+  }, [formDefinition.fields]);
+
+  // Add back the handleAddGroup function
+  const handleAddGroup = (phraseGroup: FieldGroup) => {
+    // Use normalized parent text as key for consistency with render lookup
+    const key = normalizeTextPhrase(phraseGroup.parentTextPhrase || "NO_PHRASE");
+    setRepeatedGroups(prev => ({
+      ...prev,
+      [key]: [
+        ...(prev[key] || []),
+        phraseGroup.fields.map(f => ({ ...f }))
+      ]
+    }));
+  };
+
+  // Synchronous handleRemoveGroup matching the GitHub version:
+  const handleRemoveGroup = (phraseGroup: FieldGroup, index: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  
+    // Use normalized parent text as key for consistency
+    const key = normalizeTextPhrase(phraseGroup.parentTextPhrase || "NO_PHRASE");
+    setRepeatedGroups(prev => {
+      const newState = { ...prev };
+      if (newState[key]) {
+        newState[key] = [
+          ...newState[key].slice(0, index),
+          ...newState[key].slice(index + 1)
+        ];
+      }
+      return newState;
+    });
+  };
 
   return (
     <FormProvider {...form}>
@@ -859,7 +1071,11 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
                           type="button"
                           variant="outline"
                           size="sm"
-                          onClick={() => handleAddGroup(phraseGroup)}
+                          data-group-id={normalizeTextPhrase(phraseGroup.parentTextPhrase)}
+                          onClick={() => {
+                            debugLog('previous_travel_page', 'Adding group with phraseGroup:', phraseGroup);
+                            handleAddGroup(phraseGroup);
+                          }}
                         >
                           Add Group
                         </Button>
@@ -867,7 +1083,7 @@ export default function DynamicForm({ formDefinition, formData, onInputChange, o
                     )}
 
                     {/* Repeated groups */}
-                    {repeatedGroups[phraseGroup.parentTextPhrase || "NO_PHRASE"]?.map((clonedFields, cloneIdx) => {
+                    {repeatedGroups[normalizeTextPhrase(phraseGroup.parentTextPhrase) || "NO_PHRASE"]?.map((clonedFields, cloneIdx) => {
                       // Process cloned fields for date groups
                       const clonedFieldsToRender = clonedFields.map(field => {
                         const dateGroup = dateGroups.find(dg => 
