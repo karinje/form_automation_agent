@@ -194,10 +194,12 @@ export default function Home() {
           forms.forEach((_, index) => {
             setTimeout(() => {
               setAccordionValues(prev => ({ ...prev, [category]: `item-${index}` }));
+              // If this is the last form in the category use a longer delay before collapsing it
+              const collapseDelay = index === forms.length - 1 ? 500 : 100;
               setTimeout(() => {
                 setAccordionValues(prev => ({ ...prev, [category]: "" }));
-              }, 100);
-            }, index * 200);
+              }, collapseDelay);
+            }, index * 300);
           });
         }, delay);
         delay += formCategories[category].length * 200 + 500;

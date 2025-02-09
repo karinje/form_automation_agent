@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo, useRef } from "react"
+import { useState, useEffect, useMemo, useRef, useLayoutEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FormProvider } from "react-hook-form"
@@ -679,21 +679,27 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     onInputChange(name, value);
   }
 
-  // Add a useEffect to calculate current (visible) completion counters
-  useEffect(() => {
+  // Replace this useEffect block (around line 685 or so):
+  useLayoutEffect(() => {
     const visibleFieldNames = Array.from(visibleFields);
-    const total = visibleFieldNames.length;
-    const completed = visibleFieldNames.filter(name => formData[name]?.trim() !== "").length;
-    
+    // Filter out fields marked as optional
+    const nonOptionalFieldNames = visibleFieldNames.filter(name => {
+      const fieldDef = orderedFields.find(f => f.name === name);
+      return fieldDef ? !fieldDef.optional : true;
+    });
+
+    const total = nonOptionalFieldNames.length;
+    const completed = nonOptionalFieldNames.filter(name => (formData[name] || "").trim() !== "").length;
+
     const hasPrevTravelFields = visibleFieldNames.some(name => isPrevTravelPage(formDefinition));
     if (hasPrevTravelFields) {
       debugLog('previous_travel_page', 'Form completion update:', { completed, total });
     }
-    
+
     if (onCompletionUpdate) {
       onCompletionUpdate(completed, total);
     }
-  }, [visibleFields, formData, onCompletionUpdate]);
+  }, [visibleFields, formData, onCompletionUpdate, orderedFields]);
 
   // Group date fields
   const dateGroups = useMemo(() => 

@@ -102,13 +102,21 @@ travel_companions_page:
 
 previous_travel_page:
   previous_us_travel: "Y"
-  arrival:
-    month: "JAN"
-    day: "01"
-    year: "2000"
-  length_of_stay:
-    number: "1"
-    unit: "Year(s)"
+  previous_travel_details:
+    - arrival:
+        month: "JAN"
+        day: "01"
+        year: "2000"
+      length_of_stay:
+        number: "1"
+        unit: "Year(s)"
+    - arrival:
+        month: "JAN"
+        day: "01"
+        year: "2000"
+      length_of_stay:
+        number: "1"
+        unit: "Year(s)"
   drivers_license: "Y"
   license_details:
     number: "ABCD"
@@ -284,9 +292,13 @@ workeducation2_page:
 
 workeducation3_page:
   clan_tribe_ind: "N"
-  language_name: "ENGLISH"
+  language_name:
+    - language: "ENGLISH"
+    - language: "HINDI"
   countries_visited_ind: "Y"
-  countries_visited: "PORTUGAL"
+  countries_visited: 
+    - country: "PORTUGAL"
+    - country: "INDIA"
   military_service_ind: "N"
   specialized_skills_ind: "N"
   organization_ind: "N"
