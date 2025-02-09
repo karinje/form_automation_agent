@@ -86,25 +86,124 @@ export const flattenYamlData = (
 
 // Helper to convert flattened form data back to nested YAML structure
 export const unflattenFormData = (data: Record<string, string>): Record<string, any> => {
-  const result: Record<string, any> = {}
-  
-  for (const key in data) {
-    const parts = key.split('.')
-    let current = result
-    
-    for (let i = 0; i < parts.length - 1; i++) {
-      const part = parts[i]
-      current[part] = current[part] || {}
-      current = current[part]
+  const result: Record<string, any> = {};
+  const arrays: Record<string, any> = {}; // temporary store for array groups
+
+  console.log("Starting unflattenFormData with data:", data);
+
+  // First pass: Process each field
+  Object.entries(data).forEach(([key, value]) => {
+    // Match any _ctl followed by one or more digits anywhere in key
+    const m = key.match(/(.*)_ctl(\d+)/);
+    if (m) {
+      // This is an array field
+      const baseKey = m[1]; // e.g., "previous_travel_page.previous_travel_details.arrival.month"
+      const index = parseInt(m[2]); // e.g., 0, 1, etc.
+      const parts = baseKey.split('.');
+      // Assume the first two parts define the array group:
+      const pageName = parts[0];
+      const groupName = parts[1];
+      const groupPath = `${pageName}.${groupName}`;
+
+      console.log(`Found array field key: ${key}, groupPath: ${groupPath}, index: ${index}`);
+
+      if (!arrays[groupPath]) {
+        arrays[groupPath] = {};
+      }
+      if (!arrays[groupPath][index]) {
+        arrays[groupPath][index] = {};
+      }
+      let obj = arrays[groupPath][index];
+      for (let i = 2; i < parts.length; i++) {
+        const part = parts[i];
+        if (i === parts.length - 1) {
+          obj[part] = value;
+          console.log(`Setting value for ${groupPath} at index ${index}, key part '${part}': ${value}`);
+        } else {
+          obj[part] = obj[part] || {};
+          obj = obj[part];
+        }
+      }
+    } else {
+      // Non-array field: standard unflattening
+      const parts = key.split('.');
+      let obj = result;
+      for (let i = 0; i < parts.length - 1; i++) {
+        obj[parts[i]] = obj[parts[i]] || {};
+        obj = obj[parts[i]];
+      }
+      obj[parts[parts.length - 1]] = value;
+      console.log(`Processed non-array field: ${key} => ${value}`);
     }
-    
-    current[parts[parts.length - 1]] = data[key]
-  }
-  
-  return result
-}
+  });
+
+  console.log("Intermediate arrays object:", arrays);
+
+  // Second pass: merge array groups into result
+  Object.entries(arrays).forEach(([groupPath, groupObj]) => {
+    const parts = groupPath.split('.');
+    let obj = result;
+    for (let i = 0; i < parts.length - 1; i++) {
+      obj[parts[i]] = obj[parts[i]] || {};
+      obj = obj[parts[i]];
+    }
+    // Convert groupObj (object with numeric keys) into an array sorted by numeric index
+    const arr = [];
+    Object.keys(groupObj).forEach(k => {
+      const idx = parseInt(k);
+      arr[idx] = groupObj[k];
+    });
+    obj[parts[parts.length - 1]] = arr;
+    console.log(`Merged array for groupPath: ${groupPath}`, arr);
+  });
+
+  console.log("Final unflattened result:", result);
+  return result;
+};
 
 // Helper to identify if a page is the previous travel page
 export const isPreviousTravelPage = (pageName: string): boolean => {
   return pageName === 'previous_travel_page';
+};
+
+// New helper to "flatten" repeated groups into flat key/value pairs
+export const flattenRepeatedGroups = (repeatedGroups: Record<string, Record<string, any[]>>): Record<string, any> => {
+  const result: Record<string, any> = {};
+  console.log('flattenRepeatedGroups input:', repeatedGroups);
+  
+  // Iterate over each page
+  Object.entries(repeatedGroups).forEach(([pageName, pageGroups]) => {
+    console.log(`Processing page ${pageName}:`, pageGroups);
+    result[pageName] = {};
+    
+    Object.entries(pageGroups).forEach(([groupKey, groupArray]) => {
+      console.log(`Processing group ${groupKey}:`, groupArray);
+      
+      // Transform each group item into proper nested structure
+      result[pageName][groupKey] = groupArray.map(group => {
+        console.log('Processing group item:', group);
+        const restructured = {};
+        
+        Object.entries(group).forEach(([fieldKey, value]) => {
+          const cleanKey = fieldKey.replace(`${groupKey}.`, '');
+          const parts = cleanKey.split('.');
+          console.log(`Processing field ${fieldKey} -> ${cleanKey}:`, {parts, value});
+          
+          let current = restructured;
+          for (let i = 0; i < parts.length - 1; i++) {
+            current[parts[i]] = current[parts[i]] || {};
+            current = current[parts[i]];
+          }
+          current[parts[parts.length - 1]] = value;
+        });
+        
+        console.log('Restructured group item:', restructured);
+        return restructured;
+      });
+      console.log(`Final array for ${groupKey}:`, result[pageName][groupKey]);
+    });
+  });
+  
+  console.log('Final flattened result:', result);
+  return result;
 }; 

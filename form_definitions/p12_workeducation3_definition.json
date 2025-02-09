@@ -7,7 +7,8 @@
       "text_phrase": "Language Name",
       "parent_text_phrase": "Language Name",
       "maxlength": "66",
-      "has_na_checkbox": false
+      "has_na_checkbox": false,
+      "add_group": true
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblCLAN_TRIBE_IND",
@@ -399,7 +400,8 @@
             "ZIMBABWE"
           ],
           "text_phrase": "Country/Region",
-          "parent_text_phrase": "Country/Region"
+          "parent_text_phrase": "Countries Visited",
+          "add_group": true
         }
       ],
       "hides": [],

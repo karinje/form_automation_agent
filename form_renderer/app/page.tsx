@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import DynamicForm from "@/components/DynamicForm"
-import { flattenYamlData, unflattenFormData } from '@/utils/yaml-helpers'
+import { flattenYamlData, unflattenFormData, flattenRepeatedGroups } from '@/utils/yaml-helpers'
 import { getFormFieldId, getYamlField, formMappings } from '@/utils/mappings'
 import yaml from 'js-yaml'
 import { generatePrompt } from '@/prompts/pdf_to_yaml'
@@ -208,11 +208,13 @@ export default function Home() {
   }, [formCategories]);
 
   const handleDownloadYaml = useCallback(() => {
+    console.log('Starting handleDownloadYaml with arrayGroups:', arrayGroups);
+    
     // First get all the form data converted to YAML format
     const formYamlData: Record<string, any> = {}
+    
     Object.keys(formMappings).forEach(pageName => {
       const pageFormData: Record<string, string> = {}
-      const pageMapping = formMappings[pageName]
       
       // Find all form fields that belong to this page
       Object.entries(formData).forEach(([formFieldId, value]) => {
@@ -223,10 +225,43 @@ export default function Home() {
       })
       
       if (Object.keys(pageFormData).length > 0) {
+        console.log(`Processing page ${pageName}:`, { pageFormData });
+        
         formYamlData[pageName] = {
           ...unflattenFormData(pageFormData),
-          button_clicks: [1, 2]  // Add button_clicks to each page
+          button_clicks: [1, 2]
         }
+        
+        // If this page has array groups, just use them directly
+        if (arrayGroups[pageName]) {
+          console.log(`Found array groups for ${pageName}:`, arrayGroups[pageName]);
+          Object.entries(arrayGroups[pageName]).forEach(([groupKey, groupArray]) => {
+            console.log(`Processing group ${groupKey}:`, groupArray);
+            
+            // Create array structure
+            const arrayData = groupArray.map(group => {
+              // Convert flat keys to nested structure
+              const restructured = {};
+              Object.entries(group).forEach(([key, value]) => {
+                const cleanKey = key.replace(`${groupKey}.`, '');
+                const parts = cleanKey.split('.');
+                let current = restructured;
+                for (let i = 0; i < parts.length - 1; i++) {
+                  current[parts[i]] = current[parts[i]] || {};
+                  current = current[parts[i]];
+                }
+                current[parts[parts.length - 1]] = value;
+              });
+              return restructured;
+            });
+            
+            // Add array directly
+            formYamlData[pageName][groupKey] = arrayData;
+            
+            console.log(`Added array group to ${pageName}.${groupKey}:`, arrayData);
+          });
+        }
+        console.log(`Final page data for ${pageName}:`, formYamlData[pageName]);
       }
     })
     
@@ -263,29 +298,28 @@ export default function Home() {
     }
     
     debugLog('all_pages', '[Mapping Creation] Processing YAML data');
-    // And previous_travel_page logs
     
     let yamlStr = yaml.dump(finalYamlData, {
       lineWidth: -1,
-      noArrayIndent: true,
       quotingType: '"',
       forceQuotes: true,
+      indent: 2,
+      flowLevel: -1,  // Force block style
+      noArrayIndent: false,  // Allow array indentation
+      noCompatMode: true,  // Use new style
     })
-
-    // Fix button_clicks formatting for all cases
+    
+    // Fix button_clicks formatting
     yamlStr = yamlStr
-      // First handle the special cases
       .replace(/button_clicks:\s*(?:-\s*0|"\[0\]")/g, 'button_clicks: [0]')
       .replace(/button_clicks:\s*(?:-\s*1|"\[1\]")/g, 'button_clicks: [1]')
-      // Fix the [1, 2] case specifically
       .replace(/button_clicks:\s*(?:-\s*1\s*-\s*2|"\[1,\s*2\]"|"\[1, 2\]"|\[1\]\s*-\s*2)/g, 'button_clicks: [1, 2]')
-      // Clean up any remaining incorrect formats
       .replace(/button_clicks:\s*\[\s*(\d+)\s*\]\s*-\s*(\d+)/g, 'button_clicks: [$1, $2]')
       // Add newlines between all pages (including those without _page suffix)
       .replace(/^([a-zA-Z][a-zA-Z0-9_]*(?:_page)?:)/gm, '\n$1')
       // Remove extra newline at the start of the file
       .replace(/^\n/, '')
-    
+
     const blob = new Blob([yamlStr], { type: 'text/yaml' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -295,7 +329,7 @@ export default function Home() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-  }, [formData, yamlData, location, retrieveMode, applicationId, surname, birthYear, secretAnswer, secretQuestion])
+  }, [formData, yamlData, location, retrieveMode, applicationId, surname, birthYear, secretAnswer, secretQuestion, arrayGroups])
 
   const handleInputChange = (name: string, value: string) => {
     console.log('Form input change:', { name, value })
@@ -505,7 +539,6 @@ export default function Home() {
       // Create YAML string
       const yamlStr = yaml.dump(finalYamlData, {
         lineWidth: -1,
-        noArrayIndent: true,
         quotingType: '"',
         forceQuotes: true,
       })

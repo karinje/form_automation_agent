@@ -298,11 +298,11 @@ export const formMappings: Record<string, Record<string, string>> = {
         "schools.end_date.year": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolToYear"
     },
     "workeducation3_page": {
-        "language_name": "ctl00_SiteContentPlaceHolder_FormView1_dtlLANGUAGES_ctl00_tbxLANGUAGE_NAME",
+        "language_name.language": "ctl00_SiteContentPlaceHolder_FormView1_dtlLANGUAGES_ctl00_tbxLANGUAGE_NAME",
         "clan_tribe_ind": "ctl00_SiteContentPlaceHolder_FormView1_rblCLAN_TRIBE_IND",
         "clan_tribe_name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCLAN_TRIBE_NAME",
         "countries_visited_ind": "ctl00_SiteContentPlaceHolder_FormView1_rblCOUNTRIES_VISITED_IND",
-        "countries_visited": "ctl00_SiteContentPlaceHolder_FormView1_dtlCountriesVisited_ctl00_ddlCOUNTRIES_VISITED",
+        "countries_visited.country": "ctl00_SiteContentPlaceHolder_FormView1_dtlCountriesVisited_ctl00_ddlCOUNTRIES_VISITED",
         "military_service_ind": "ctl00_SiteContentPlaceHolder_FormView1_rblMILITARY_SERVICE_IND",
         "military_service.branch": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_BRANCH",
         "military_service.rank": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_RANK",

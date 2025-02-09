@@ -108,4 +108,78 @@ export const createFormMapping = (yamlContent: string): MappingResult => {
     console.error('[Mapping Creation] Error creating form mapping:', error);
     throw error;
   }
+};
+
+export const unflattenFormData = (data: Record<string, string>): Record<string, any> => {
+  const result: Record<string, any> = {};
+  const arrays: Record<string, any> = {}; // temporary store for array groups
+
+  console.log("Starting unflattenFormData with data:", data);
+
+  // First pass: Process each field
+  Object.entries(data).forEach(([key, value]) => {
+    const m = key.match(/(.*)_ctl(\d+)/);
+    if (m) {
+      // This is an array field
+      const baseKey = m[1]; // e.g., "previous_travel_page.previous_travel_details.arrival.month"
+      const index = parseInt(m[2]); // e.g., 0, 1, etc.
+      const parts = baseKey.split('.');
+      // Assume the first two parts define the array group:
+      const pageName = parts[0];
+      const groupName = parts[1];
+      const groupPath = `${pageName}.${groupName}`;
+
+      console.log(`Found array field key: ${key}, groupPath: ${groupPath}, index: ${index}`);
+
+      if (!arrays[groupPath]) {
+        arrays[groupPath] = {};
+      }
+      if (!arrays[groupPath][index]) {
+        arrays[groupPath][index] = {};
+      }
+      let obj = arrays[groupPath][index];
+      for (let i = 2; i < parts.length; i++) {
+        const part = parts[i];
+        if (i === parts.length - 1) {
+          obj[part] = value;
+          console.log(`Setting value for ${groupPath} index ${index}, key part '${part}': ${value}`);
+        } else {
+          obj[part] = obj[part] || {};
+          obj = obj[part];
+        }
+      }
+    } else {
+      // Non-array field: standard unflattening
+      const parts = key.split('.');
+      let obj = result;
+      for (let i = 0; i < parts.length - 1; i++) {
+        obj[parts[i]] = obj[parts[i]] || {};
+        obj = obj[parts[i]];
+      }
+      obj[parts[parts.length - 1]] = value;
+      console.log(`Processed non-array field: ${key} => ${value}`);
+    }
+  });
+
+  console.log("Intermediate arrays object:", arrays);
+
+  // Second pass: merge arrays into result
+  Object.entries(arrays).forEach(([groupPath, groupObj]) => {
+    const parts = groupPath.split('.');
+    let obj = result;
+    for (let i = 0; i < parts.length - 1; i++) {
+      obj[parts[i]] = obj[parts[i]] || {};
+      obj = obj[parts[i]];
+    }
+    // Convert groupObj (object with numeric keys) into an array sorted by numeric index
+    const arr = [];
+    Object.keys(groupObj).forEach(k => {
+      arr[parseInt(k)] = groupObj[k];
+    });
+    obj[parts[parts.length - 1]] = arr;
+    console.log(`Merged array for groupPath: ${groupPath}`, arr);
+  });
+
+  console.log("Final unflattened result:", result);
+  return result;
 }; 
