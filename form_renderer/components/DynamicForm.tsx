@@ -434,6 +434,9 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     });
   };
 
+  // Add a ref to track processed groups
+  const processedGroups = useRef<Set<string>>(new Set());
+
   useEffect(() => {
     if (isPrevTravelPage(formDefinition)) {
       debugLog('previous_travel_page', 'Form initialization:', {
@@ -726,50 +729,38 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
       return;
     }
     const processArrayGroups = async () => {
-      // No while loop here. We assume the button is rendered at the proper time.
-
       // Process each array group
       for (const [groupKey, groups] of Object.entries(arrayGroups)) {
         const normalizedGroupKey = normalizeTextPhrase(groupKey);
-        
-        const isPrevTravelGroup = isPrevTravelField(groupKey);
-        
-        if (isPrevTravelGroup) {
-          debugLog('previous_travel_page', `Processing group: ${groupKey}`, {
-            normalizedKey: normalizedGroupKey,
-            fieldCount: groups.length,
-            groups: groups
-          });
+        // Skip if we've already processed this group
+        if (processedGroups.current.has(normalizedGroupKey)) {
+          continue;
         }
-
+        // Mark this group as processed immediately
+        processedGroups.current.add(normalizedGroupKey);
+        
         const groupFields = getFieldsForGroup(groupKey, formDefinition.fields);
         
-        if (isPrevTravelGroup) {
-          debugLog('previous_travel_page', `Processing groupfields: ${groupKey}`, {
-            normalizedKey: normalizedGroupKey,
-            fieldCount: groupFields.length
-          });
-        }
-
-        // If there are additional groups, click the Add Group button (groups.length - 1) times
+        // If there are additional groups, call handleAddGroup for each extra group
         if (groups.length > 1) {
           const addGroupButton = await waitForButton(`[data-group-id*="${normalizedGroupKey}"]`, 20);
-          if (!addGroupButton) {
-            debugLog('previous_travel_page', `Add Group button not found for: ${normalizedGroupKey}`);
-          } else {
-            for (let index = 1; index < groups.length; index++) {
-              debugLog('previous_travel_page', `Clicking add group button for extra group ${index}`);
+          
+          // Only add groups if they don't already exist in repeatedGroups
+          const existingGroups = repeatedGroups[normalizedGroupKey]?.length || 0;
+          if (addGroupButton && existingGroups < groups.length) {
+            // Only add the missing groups
+            for (let i = existingGroups; i < groups.length - 1; i++) {
+              debugLog('previous_travel_page', `Clicking add group button for extra group ${i}`);
               addGroupButton.click();
             }
           }
         }
-
+        
         // Now fill in fields for all groups (index 0 is the primary group; indexes > 0 are added groups).
         for (let index = 0; index < groups.length; index++) {
           const groupData = groups[index];
           for (const field of groupFields) {
             const baseFieldName = field.name;
-            // For index 0, use the original field name; for extra groups, use transformFieldName helper.
             const transformedName = index === 0 
               ? baseFieldName 
               : transformFieldName(baseFieldName, index);
@@ -789,8 +780,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
 
     // Call the async function
     processArrayGroups();
-
-  }, [arrayGroups]);
+  }, [arrayGroups]); // Only depend on arrayGroups
 
   // Add this after the handleDependencyChange function
   useEffect(() => {
@@ -816,60 +806,59 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
   // Add back the handleAddGroup function
   const handleAddGroup = (phraseGroup: FieldGroup) => {
     const groupKey = normalizeTextPhrase(phraseGroup.parentTextPhrase);
-    const currentGroups = repeatedGroups[groupKey] || [];
-    const newGroupIndex = currentGroups.length + 1; // New group index (1,2,3,...)
     
-    // Clone fields and update names using transformFieldName helper.
-    const clonedFields = phraseGroup.fields.map(field => {
-      // Check if this field is part of a date group
-      const dateGroup = dateGroups.find(dg => 
-        [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
-      );
+    setRepeatedGroups(prev => {
+      const currentGroups = prev[groupKey] || [];
+      const newGroupIndex = currentGroups.length + 1; // This will be 1 for first extra group, 2 for second, etc.
       
-      if (dateGroup) {
-        // If it's a date field, transform all related date fields together
-        console.log('dateGroup cloning detected', dateGroup);
+      // Clone fields and update names using transformFieldName helper.
+      const newClonedFields = phraseGroup.fields.map(field => {
+        // Check if this field is part of a date group
+        const dateGroup = dateGroups.find(dg => 
+          [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
+        );
+        
+        if (dateGroup) {
+          return {
+            ...field,
+            name: transformFieldName(field.name, newGroupIndex),
+            dateGroup: {
+              ...dateGroup,
+              dayField: { ...dateGroup.dayField, name: transformFieldName(dateGroup.dayField.name, newGroupIndex) },
+              monthField: { ...dateGroup.monthField, name: transformFieldName(dateGroup.monthField.name, newGroupIndex) },
+              yearField: { ...dateGroup.yearField, name: transformFieldName(dateGroup.yearField.name, newGroupIndex) }
+            }
+          };
+        }
+        
         return {
           ...field,
-          name: transformFieldName(field.name, newGroupIndex),
-          dateGroup: {
-            ...dateGroup,
-            dayField: { ...dateGroup.dayField, name: transformFieldName(dateGroup.dayField.name, newGroupIndex) },
-            monthField: { ...dateGroup.monthField, name: transformFieldName(dateGroup.monthField.name, newGroupIndex) },
-            yearField: { ...dateGroup.yearField, name: transformFieldName(dateGroup.yearField.name, newGroupIndex) }
-          }
+          name: transformFieldName(field.name, newGroupIndex)
         };
-      }
+      });
       
-      // For non-date fields, just transform the name
+      debugLog('previous_travel_page', `Added extra group ${newGroupIndex} for phrase ${groupKey}`, newClonedFields);
+      
+      // Update visible fields immediately for this new group
+      setVisibleFields(prevVisible => {
+        const updated = new Set(Array.from(prevVisible));
+        newClonedFields.forEach(field => {
+          updated.add(field.name);
+          // If it's a date field, add all related date field names
+          if (field.dateGroup) {
+            updated.add(field.dateGroup.dayField.name);
+            updated.add(field.dateGroup.monthField.name);
+            updated.add(field.dateGroup.yearField.name);
+          }
+        });
+        return updated;
+      });
+      
       return {
-        ...field,
-        name: transformFieldName(field.name, newGroupIndex)
+        ...prev,
+        [groupKey]: [...(prev[groupKey] || []), newClonedFields]
       };
     });
-    
-    // Append the new group to the repeatedGroups state.
-    setRepeatedGroups(prev => ({
-      ...prev,
-      [groupKey]: [...(prev[groupKey] || []), clonedFields]
-    }));
-
-    // Update the visibleFields state for the new cloned fields so that they are now visible.
-    setVisibleFields(prev => {
-      const updated = new Set(Array.from(prev));
-      clonedFields.forEach(field => {
-        updated.add(field.name);
-        // If it's a date field, add all related date field names
-        if (field.dateGroup) {
-          updated.add(field.dateGroup.dayField.name);
-          updated.add(field.dateGroup.monthField.name);
-          updated.add(field.dateGroup.yearField.name);
-        }
-      });
-      return updated;
-    });
-
-    debugLog('previous_travel_page', `Added extra group ${newGroupIndex} for phrase ${groupKey}`, clonedFields);
   };
 
   // Synchronous handleRemoveGroup matching the GitHub version:
