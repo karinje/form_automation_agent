@@ -6,7 +6,7 @@ const isYamlArray = (value: any): boolean => {
 };
 
 // Helper to transform field names for additional groups
-const transformFieldName = (fieldName: string, groupIndex: number): string => {
+export const transformFieldName = (fieldName: string, groupIndex: number): string => {
   // Don't transform the first group
   if (groupIndex === 0) return fieldName;
   

@@ -31,8 +31,8 @@ import p3_travelinfo_definition from "../form_definitions/p3_travel_definition.j
 import p4_travelcompanions_definition from "../form_definitions/p4_travelcompanions_definition.json"
 import p5_previoustravel_definition from "../form_definitions/p5_previousustravel_definition.json"
 import p6_addressphone_definition from "../form_definitions/p6_addressphone_definition.json"
-import p7_passport_definition from "../form_definitions/p7_pptvisa_definition.json"
-import p8_ucontact_definition from "../form_definitions/p8_uscontact_definition.json"
+import p7_pptvisa_definition from "../form_definitions/p7_pptvisa_definition.json"
+import p8_uscontact_definition from "../form_definitions/p8_uscontact_definition.json"
 import p9_relatives_definition from "../form_definitions/p9_relatives_definition.json"
 
 declare global {
@@ -63,8 +63,7 @@ export default function Home() {
   const [surname, setSurname] = useState('')
   const [birthYear, setBirthYear] = useState('')
   const [isRunningDS160, setIsRunningDS160] = useState(false)
-  const [arrayGroups, setArrayGroups] = useState<Record<string, Array<Record<string, string>>>>({})
-
+  const [arrayGroups, setArrayGroups] = useState<Record<string, Record<string, Array<Record<string, string>>>>>({});
   // Sample secret questions - replace with actual questions later
   const secretQuestions = [
     "What is your mother's maiden name?",
@@ -76,30 +75,30 @@ export default function Home() {
 
   const formCategories = {
     personal: [
-      { title: "Personal Information 1", definition: p1_personal1_definition },
-      { title: "Personal Information 2", definition: p2_personal2_definition },
-      { title: "Address & Phone", definition: p6_addressphone_definition },
-      { title: "Passport", definition: p7_passport_definition },
-      { title: "Relatives", definition: p9_relatives_definition },
-      { title: "Spouse Information", definition: p18_spouse_definition },
+      { title: "Personal Information 1", definition: p1_personal1_definition, pageName: "personal_page1" },
+      { title: "Personal Information 2", definition: p2_personal2_definition, pageName: "personal_page2" },
+      { title: "Address & Phone", definition: p6_addressphone_definition, pageName: "address_phone_page" },
+      { title: "Passport", definition: p7_pptvisa_definition, pageName: "pptvisa_page" },
+      { title: "Relatives", definition: p9_relatives_definition, pageName: "relatives_page" },
+      { title: "Spouse Information", definition: p18_spouse_definition, pageName: "spouse_page" },
     ],
     travel: [
-      { title: "Travel Information", definition: p3_travelinfo_definition },
-      { title: "Travel Companions", definition: p4_travelcompanions_definition },
-      { title: "Previous Travel", definition: p5_previoustravel_definition },
-      { title: "U.S. Contact", definition: p8_ucontact_definition },
+      { title: "Travel Information", definition: p3_travelinfo_definition, pageName: "travel_page" },
+      { title: "Travel Companions", definition: p4_travelcompanions_definition, pageName: "travel_companions_page" },
+      { title: "Previous Travel", definition: p5_previoustravel_definition, pageName: "previous_travel_page" },
+      { title: "U.S. Contact", definition: p8_uscontact_definition, pageName: "us_contact_page" },
     ],
     education: [
-      { title: "Work/Education 1", definition: p10_workeducation1_definition },
-      { title: "Work/Education 2", definition: p11_workeducation2_definition },
-      { title: "Work/Education 3", definition: p12_workeducation3_definition },
+      { title: "Work/Education 1", definition: p10_workeducation1_definition, pageName: "workeducation1_page" },
+      { title: "Work/Education 2", definition: p11_workeducation2_definition, pageName: "workeducation2_page" },
+      { title: "Work/Education 3", definition: p12_workeducation3_definition, pageName: "workeducation3_page" },
     ],
     security: [
-      { title: "Security and Background 1", definition: p13_securityandbackground1_definition },
-      { title: "Security and Background 2", definition: p14_securityandbackground2_definition },
-      { title: "Security and Background 3", definition: p15_securityandbackground3_definition },
-      { title: "Security and Background 4", definition: p16_securityandbackground4_definition },
-      { title: "Security and Background 5", definition: p17_securityandbackground5_definition },
+      { title: "Security and Background 1", definition: p13_securityandbackground1_definition, pageName: "security_background1_page" },
+      { title: "Security and Background 2", definition: p14_securityandbackground2_definition, pageName: "security_background2_page" },
+      { title: "Security and Background 3", definition: p15_securityandbackground3_definition, pageName: "security_background3_page" },
+      { title: "Security and Background 4", definition: p16_securityandbackground4_definition, pageName: "security_background4_page" },
+      { title: "Security and Background 5", definition: p17_securityandbackground5_definition, pageName: "security_background5_page" },
     ],
   }
 
@@ -145,6 +144,8 @@ export default function Home() {
       
       // Create the mapping using our new helper - this handles arrays
       const { formData: arrayAwareFormData, arrayGroups } = createFormMapping(yamlString);
+      console.log("Mapping returned arrayGroups:", arrayGroups);
+      setArrayGroups(arrayGroups);
       
       // Also process using existing logic to ensure backward compatibility
       const allFormFields: Record<string, string> = {};
@@ -181,7 +182,6 @@ export default function Home() {
       debugLog('previous_travel_page', 'Setting form data:', travelPageData);
       
       setFormData(mergedFormData);
-      setArrayGroups(arrayGroups);
       setRefreshKey(prev => prev + 1);
       
       // Cycle through tabs (preserve existing behavior)
@@ -322,6 +322,9 @@ export default function Home() {
           }))
         }, [formId])
         
+        const groupsForPage = form.pageName ? arrayGroups[form.pageName] || {} : {};
+        console.log(`Rendering DynamicForm for ${form.pageName}:`, groupsForPage);
+        
         return (
           <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
             <AccordionTrigger className="w-full hover:no-underline [&>svg]:h-8 [&>svg]:w-8 [&>svg]:shrink-0 [&>svg]:text-gray-500 p-0">
@@ -353,7 +356,7 @@ export default function Home() {
                 key={`${formId}-${refreshKey}`}
                 formDefinition={form.definition}
                 formData={formData}
-                arrayGroups={arrayGroups}
+                arrayGroups={groupsForPage}
                 onInputChange={handleInputChange}
                 onCompletionUpdate={onCompletionMemo}
               />
@@ -589,7 +592,7 @@ export default function Home() {
                   >
                     {isProcessing && (
                       <div className="absolute -top-16 left-0 w-full flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
                       </div>
                     )}
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">

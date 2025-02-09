@@ -16,6 +16,7 @@ import { debugLog } from '@/utils/consoleLogger'
 import { normalizeTextPhrase, isPrevTravelPage } from '@/utils/helpers'
 import { triggerAsyncId } from "async_hooks"
 import { workerData } from "worker_threads"
+import { transformFieldName } from '@/utils/yaml-helpers'
 
 interface DynamicFormProps {
   formDefinition: FormDefinition
@@ -316,7 +317,7 @@ const renderPhraseGroup = (
             field={field}
             value={formData[field.name] || ''}
             onChange={onInputChange}
-            visible={visibleFields.has(field.name)}
+            visible={visibleFields.has(field.name) || true}
             onDependencyChange={(key) => handleDependencyChange(key, field)}
           />
         ))}
@@ -719,49 +720,13 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
 
   // Modify the useEffect that handles array groups
   useEffect(() => {
-    if (!arrayGroups) return;
-
+    console.log("DynamicForm received arrayGroups:", arrayGroups);
+    if (!arrayGroups || Object.keys(arrayGroups).length === 0) {
+      console.log("Skipping processing of arrayGroups – no keys found");
+      return;
+    }
     const processArrayGroups = async () => {
-      // Check if arrayGroups changed
-      console.log('arrayGroups triggered');
-      let attempts = 0;
-      while (attempts < 2) {
-        if (isPrevTravelSection(Array.from(visibleFields))) {
-          // Check if Add Group button exists for any array group
-          const anyButtonExists = await Promise.any(
-            Object.keys(arrayGroups).map(key => 
-              waitForButton(`[data-group-id="${normalizeTextPhrase(key)}"]`).then(btn => {
-                if (btn) {
-                  debugLog('previous_travel_page', 'Found button:', {
-                    selector: `[data-group-id="${normalizeTextPhrase(key)}"]`,
-                    element: btn.outerHTML,
-                    buttonProps: {
-                      id: btn.id,
-                      className: btn.className,
-                      dataset: btn.dataset,
-                      text: btn.textContent,
-                      attributes: Array.from(btn.attributes).map(a => ({name: a.name, value: a.value}))
-                    }
-                  });
-                }
-                return btn;
-              })
-            )
-          ).catch(() => null);
-
-          if (anyButtonExists) {
-            debugLog('previous_travel_page', 'Button exists with properties:', {
-              id: anyButtonExists.id,
-              className: anyButtonExists.className,
-              dataset: anyButtonExists.dataset,
-              text: anyButtonExists.textContent,
-              attributes: Array.from(anyButtonExists.attributes).map(a => ({name: a.name, value: a.value}))
-            });
-          }
-        }
-        await new Promise(resolve => setTimeout(resolve, 500));
-        attempts++;
-      }
+      // No while loop here. We assume the button is rendered at the proper time.
 
       // Process each array group
       for (const [groupKey, groups] of Object.entries(arrayGroups)) {
@@ -786,103 +751,36 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
           });
         }
 
-        // Fill in first group (index 0)
-        const firstGroupData = groups[0];
-        for (const field of groupFields) {
-          if (isPrevTravelField(field.name)) {
-            debugLog('previous_travel_page', `Processing field inside first group: ${field.name}`, {
-              field,
-              value: formData[field.name],
-              yamlData: firstGroupData
-            });
-          }
-          const baseFieldName = field.name;
-          const value = formData[baseFieldName];
-          
-          if (value !== undefined) {
-            debugLog('previous_travel_page', `Setting first group field value:`, {
-              field: baseFieldName,
-              value
-            });
-            onInputChange(baseFieldName, String(value));
+        // If there are additional groups, click the Add Group button (groups.length - 1) times
+        if (groups.length > 1) {
+          const addGroupButton = await waitForButton(`[data-group-id*="${normalizedGroupKey}"]`, 20);
+          if (!addGroupButton) {
+            debugLog('previous_travel_page', `Add Group button not found for: ${normalizedGroupKey}`);
+          } else {
+            for (let index = 1; index < groups.length; index++) {
+              debugLog('previous_travel_page', `Clicking add group button for extra group ${index}`);
+              addGroupButton.click();
+            }
           }
         }
 
-        // Find and click Add Group button for additional groups
-        if (groups.length > 1) {
-          const addGroupButton = await waitForButton(`[data-group-id="${normalizedGroupKey}"]`);
-          if (!addGroupButton) {
-            debugLog('previous_travel_page', `Add Group button not found for: ${normalizedGroupKey}`);
-            continue;
-          }
-          debugLog('previous_travel_page', 'Add Group button found second time:', {
-            id: addGroupButton.id,
-            className: addGroupButton.className,
-            dataset: addGroupButton.dataset,
-            text: addGroupButton.textContent,
-            attributes: Array.from(addGroupButton.attributes).map(a => ({name: a.name, value: a.value}))
-          });
-
-          // Process additional groups
-          for (let index = 1; index < groups.length; index++) {
-            debugLog('previous_travel_page', 'Attempting to add group');
-            
-            // Try regular click first
-            addGroupButton.click();
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            // Check if new fields appeared
-            const currentFields = Array.from(document.querySelectorAll(`[id*="PREV_US_VISIT"][id*="_ctl${index.toString().padStart(2, '0')}"]`));
-            const originalFields = Array.from(document.querySelectorAll('[id*="PREV_US_VISIT"][id*=_ctl00]'));
-            debugLog('previous_travel_page', 'Temporary Debug Original fields:', {
-              total: originalFields.length,
-              fields: originalFields.map(f => ({
-                id: f.id,
-                name: f.name
-              }))
-            });
-            debugLog('previous_travel_page', 'Temporary Debug Current fields:', {
-              total: currentFields.length,
-              fields: currentFields.map(f => ({
-                id: f.id,
-                name: f.name
-              }))
-            });
-            if (currentFields.length === 0) {
-              debugLog('previous_travel_page', 'Regular click failed, trying dispatch event');
-              addGroupButton.dispatchEvent(new MouseEvent('click', {
-                bubbles: true,
-                cancelable: true,
-                view: window
-              }));
-              await new Promise(resolve => setTimeout(resolve, 1000));
-            }
-
-            // Log results
-            debugLog('previous_travel_page', 'Fields after clicking Add Group:', {
-              totalFields: currentFields.length,
-              newFields: currentFields.map(f => ({
-                id: f.id,
-                type: (f as HTMLElement).tagName,
-                visible: (f as HTMLElement).offsetParent !== null
-              }))
-            });
-            
-            // Fill fields using the parent_text_phrase grouping
-            const groupData = groups[index];
-            for (const field of groupFields) {
-              const baseFieldName = field.name;
-              const transformedName = baseFieldName.replace(/_ctl\d+/, `_ctl${index.toString().padStart(2, '0')}`);
-              const value = groupData[baseFieldName];
-              
-              if (value !== undefined) {
-                debugLog('previous_travel_page', `Setting field value:`, {
-                  original: baseFieldName,
-                  transformed: transformedName,
-                  value
-                });
-                onInputChange(transformedName, String(value));
-              }
+        // Now fill in fields for all groups (index 0 is the primary group; indexes > 0 are added groups).
+        for (let index = 0; index < groups.length; index++) {
+          const groupData = groups[index];
+          for (const field of groupFields) {
+            const baseFieldName = field.name;
+            // For index 0, use the original field name; for extra groups, use transformFieldName helper.
+            const transformedName = index === 0 
+              ? baseFieldName 
+              : transformFieldName(baseFieldName, index);
+            const value = groupData[baseFieldName];
+            if (value !== undefined) {
+              debugLog('previous_travel_page', `Setting field value for group ${index}:`, {
+                original: baseFieldName,
+                transformed: transformedName,
+                value
+              });
+              onInputChange(transformedName, String(value));
             }
           }
         }
@@ -917,34 +815,78 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
 
   // Add back the handleAddGroup function
   const handleAddGroup = (phraseGroup: FieldGroup) => {
-    // Use normalized parent text as key for consistency with render lookup
-    const key = normalizeTextPhrase(phraseGroup.parentTextPhrase || "NO_PHRASE");
+    const groupKey = normalizeTextPhrase(phraseGroup.parentTextPhrase);
+    const currentGroups = repeatedGroups[groupKey] || [];
+    const newGroupIndex = currentGroups.length + 1; // New group index (1,2,3,...)
+    
+    // Clone fields and update names using transformFieldName helper.
+    const clonedFields = phraseGroup.fields.map(field => {
+      // Check if this field is part of a date group
+      const dateGroup = dateGroups.find(dg => 
+        [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
+      );
+      
+      if (dateGroup) {
+        // If it's a date field, transform all related date fields together
+        console.log('dateGroup cloning detected', dateGroup);
+        return {
+          ...field,
+          name: transformFieldName(field.name, newGroupIndex),
+          dateGroup: {
+            ...dateGroup,
+            dayField: { ...dateGroup.dayField, name: transformFieldName(dateGroup.dayField.name, newGroupIndex) },
+            monthField: { ...dateGroup.monthField, name: transformFieldName(dateGroup.monthField.name, newGroupIndex) },
+            yearField: { ...dateGroup.yearField, name: transformFieldName(dateGroup.yearField.name, newGroupIndex) }
+          }
+        };
+      }
+      
+      // For non-date fields, just transform the name
+      return {
+        ...field,
+        name: transformFieldName(field.name, newGroupIndex)
+      };
+    });
+    
+    // Append the new group to the repeatedGroups state.
     setRepeatedGroups(prev => ({
       ...prev,
-      [key]: [
-        ...(prev[key] || []),
-        phraseGroup.fields.map(f => ({ ...f }))
-      ]
+      [groupKey]: [...(prev[groupKey] || []), clonedFields]
     }));
+
+    // Update the visibleFields state for the new cloned fields so that they are now visible.
+    setVisibleFields(prev => {
+      const updated = new Set(Array.from(prev));
+      clonedFields.forEach(field => {
+        updated.add(field.name);
+        // If it's a date field, add all related date field names
+        if (field.dateGroup) {
+          updated.add(field.dateGroup.dayField.name);
+          updated.add(field.dateGroup.monthField.name);
+          updated.add(field.dateGroup.yearField.name);
+        }
+      });
+      return updated;
+    });
+
+    debugLog('previous_travel_page', `Added extra group ${newGroupIndex} for phrase ${groupKey}`, clonedFields);
   };
 
   // Synchronous handleRemoveGroup matching the GitHub version:
-  const handleRemoveGroup = (phraseGroup: FieldGroup, index: number, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  
-    // Use normalized parent text as key for consistency
-    const key = normalizeTextPhrase(phraseGroup.parentTextPhrase || "NO_PHRASE");
-    setRepeatedGroups(prev => {
-      const newState = { ...prev };
-      if (newState[key]) {
-        newState[key] = [
-          ...newState[key].slice(0, index),
-          ...newState[key].slice(index + 1)
-        ];
-      }
-      return newState;
-    });
+  const handleRemoveGroup = (phraseGroup: FieldGroup, e: React.MouseEvent) => {
+    const groupKey = normalizeTextPhrase(phraseGroup.parentTextPhrase);
+    const currentGroups = repeatedGroups[groupKey] || [];
+    if (currentGroups.length > 0) {
+      // Remove the last group (pop)
+      const updatedGroups = currentGroups.slice(0, -1);
+      setRepeatedGroups(prev => ({
+        ...prev,
+        [groupKey]: updatedGroups
+      }));
+      debugLog('previous_travel_page', `Removed last group for phrase ${groupKey}`, updatedGroups);
+    } else {
+      debugLog('previous_travel_page', `No extra group exists for phrase ${groupKey} to remove`);
+    }
   };
 
   return (
@@ -1086,9 +1028,8 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                     {repeatedGroups[normalizeTextPhrase(phraseGroup.parentTextPhrase) || "NO_PHRASE"]?.map((clonedFields, cloneIdx) => {
                       // Process cloned fields for date groups
                       const clonedFieldsToRender = clonedFields.map(field => {
-                        const dateGroup = dateGroups.find(dg => 
-                          [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
-                        )
+                        // Use the dateGroup that was attached during cloning
+                        const dateGroup = (field as any).dateGroup;
                         
                         if (dateGroup && !renderedDateGroups.has(dateGroup.basePhrase + `-clone-${cloneIdx}`)) {
                           renderedDateGroups.add(dateGroup.basePhrase + `-clone-${cloneIdx}`)
@@ -1117,7 +1058,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                             <Button
                               variant="destructive"
                               size="sm"
-                              onClick={(e) => handleRemoveGroup(phraseGroup, cloneIdx, e)}
+                              onClick={(e) => handleRemoveGroup(phraseGroup, e)}
                             >
                               Remove Group
                             </Button>
@@ -1143,7 +1084,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                                   field={item.field}
                                   value={formData[item.field.name] || ''}
                                   onChange={onInputChange}
-                                  visible={visibleFields.has(item.field.name)}
+                                  visible={visibleFields.has(item.field.name) }
                                   onDependencyChange={(key) => handleDependencyChange(key, item.field)}
                                 />
                               )

@@ -6,7 +6,7 @@ import { debugLog } from './consoleLogger';
 
 interface MappingResult {
   formData: Record<string, string>;
-  arrayGroups: Record<string, Array<Record<string, string>>>;
+  arrayGroups: Record<string, Record<string, Array<Record<string, string>>>>;
 }
 
 // Add mapping for array fields
@@ -25,7 +25,7 @@ export const createFormMapping = (yamlContent: string): MappingResult => {
     debugLog('all_pages', '[Mapping Creation] Starting YAML processing');
 
     const formData: Record<string, string> = {};
-    const arrayGroups: Record<string, Array<Record<string, string>>> = {};
+    const arrayGroups: Record<string, Record<string, Array<Record<string, string>>>> = {};
 
     // Process each page in the YAML
     Object.entries(parsedYaml).forEach(([pageName, pageData]) => {
@@ -48,7 +48,8 @@ export const createFormMapping = (yamlContent: string): MappingResult => {
       Object.entries(flattenedData).forEach(([yamlField, value]) => {
         if (Array.isArray(value)) {
           const normalizedField = normalizeTextPhrase(yamlField);
-          arrayGroups[normalizedField] = value;
+          if (!arrayGroups[pageName]) arrayGroups[pageName] = {};
+          arrayGroups[pageName][normalizedField] = value;
           
           // Map first group fields to form fields
           value.forEach((item, index) => {
