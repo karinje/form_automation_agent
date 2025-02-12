@@ -38,8 +38,7 @@ wheels/
 *.log
 
 # User data
-data/input/*.yaml
-data/input/*.yml
+
 
 # Source files
 source_files/

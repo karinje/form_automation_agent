@@ -1,0 +1,52 @@
+# Test data for form filling
+start_page:
+  language: "English"  # Will be mapped to ctl00_ddlLanguage
+  location: "ENGLAND, LONDON"  # Will be mapped to ctl00_SiteContentPlaceHolder_ucLocation_ddlLocation
+  button_clicks: [1]  # Index 1 = "RETRIEVE AN APPLICATION" button
+
+retrieve_page:  
+  application_id: "AA00E75U33"  # Application ID input field
+  surname: "Smith"  # First 5 letters only
+  year: "1990"     # Birth year matching personal_page
+  security_answer: "John Doe"    # Same as original security_page
+  button_clicks: [1]  # Index 0 = "Retrieve Application" button
+
+security_page:  # Only shown for new applications
+  privacy_agreement: true
+  security_question: "What is the name of your favorite childhood friend?"
+  security_answer: "John Doe"
+  button_clicks: [0]  # Index 0 = "Continue" button
+
+personal_page:
+  surname: "Smith"
+  given_name: "John"
+  native_name: "约翰·史密斯"
+  native_name_na: false
+  other_names: "N"
+  telecode: "N"
+  gender: "MALE"
+  marital_status: "SINGLE"
+  dob_day: "15"
+  dob_month: "JAN"
+  dob_year: "1990"
+  birth_city: "London"
+  birth_state: "Greater London"
+  birth_state_na: false
+  birth_country: "UNITED KINGDOM"
+  button_clicks: [1, 2]  # Index 1 = "Save", Index 2 = "Next: Personal 2"
+
+personal_page2:
+  nationality: "UNITED KINGDOM"
+  other_nationality: "N"
+  permanent_resident: "N"
+  national_id: "AB123456"
+  national_id_na: false
+  ssn1: "123"
+  ssn2: "45"
+  ssn3: "6789"
+  ssn_na: false
+  tax_id_na: true
+  button_clicks: [1, 2]  # Index 1 = "Save", Index 2 = "Next: Travel"
+
+continue_page:
+  button_clicks: [0]  # Index 0 = "Continue Application"

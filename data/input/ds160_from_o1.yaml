@@ -1,0 +1,401 @@
+start_page:
+  language: "English"
+  location: "INDIA, HYDERABAD"
+  button_clicks: [1]
+
+retrieve_page:
+  application_id: "AA00E9E4A5"
+  surname: "KARINJE"
+  year: "1984"
+  security_answer: "John Doe"
+  button_clicks: [1]
+
+security_page:
+  privacy_agreement: true
+  security_question: "What is the name of your favorite childhood friend?"
+  security_answer: "John Doe"
+  button_clicks: [0]
+
+personal_page1:
+  surname: "KARINJE"
+  given_name: "SANJAY"
+  full_name_native_alphabet: "abcd"
+  full_name_native_alphabet_na: true
+  has_other_names_used: "N"
+  other_names_surname: ""
+  other_names_given: ""
+  has_telecode: "N"
+  telecode_surname: ""
+  telecode_given: ""
+  sex: "MALE"
+  marital_status: "MARRIED"
+  birth_date_mm: "AUG"
+  birth_date_dd: "17"
+  birth_date_yyyy: "1984"
+  birth_city: "BANGALORE"
+  birth_state_province: "KARNATAKA"
+  birth_state_province_na: false
+  birth_country: "INDIA"
+  button_clicks: [1, 2]
+
+personal_page2:
+  nationality: "INDIA"
+  has_other_nationality: "N"
+  other_nationality:
+    country: ""
+    has_passport: "N"
+    passport_number: ""
+  has_permanent_resident: "N"
+  permanent_resident_country: ""
+  national_id: "766928575"
+  national_id_na: true
+  us_social_security:
+    number1: "766"
+    number2: "92"
+    number3: "8575"
+    na: false
+  us_taxpayer_id_na: true
+  us_taxpayer_id: "766928575"
+  button_clicks: [1, 2]
+
+travel_page:
+  purpose_of_trip: "EXCHANGE VISITOR (J)"
+  other_purpose_of_trip: "EXCHANGE VISITOR (J1)"
+  who_is_paying: "Self"
+  payer_details:
+    surname: ""
+    phone: ""
+    address_same_as_home: ""
+    relationship: ""
+    address:
+      street1: ""
+      street2: ""
+      city: ""
+      state: ""
+      postal_code: ""
+      country: ""
+  specific_travel_plans: "N"
+  specific_travel_plans_details:
+    arrival:
+      month: "JAN"
+      day: "15"
+      year: "2023"
+      flight: ""
+      city: ""
+    departure:
+      month: ""
+      day: ""
+      year: ""
+      flight: ""
+      city: ""
+    locations_to_visit: ""
+    length_of_stay:
+      number: "3"
+      unit: "Year(s)"
+  non_specific_travel_plans_details:
+    arrival:
+      month: "JAN"
+      day: "15"
+      year: "2026"
+    duration:
+      number: "3"
+      unit: "Year(s)"
+  stay_address:
+    street1: "338 SPEAR STREET, UNIT 34E"
+    street2: ""
+    city: "SAN FRANCISCO"
+    state: "CALIFORNIA"
+    zip: "94105"
+  button_clicks: [1, 2]
+
+travel_companions_page:
+  traveling_with_others: "Y"
+  group_travel: "N"
+  companion:
+    surname: "KARINJE"
+    given_name: "KABIR"
+    relationship: "CHILD"
+  button_clicks: [1, 2]
+
+previous_travel_page:
+  previous_us_travel: "Y"
+  previous_travel_details:
+    - arrival:
+        month: "OCT"
+        day: "20"
+        year: "2019"
+      length_of_stay:
+        number: "3"
+        unit: "Year(s)"
+    - arrival:
+        month: "NOV"
+        day: "01"
+        year: "2020"
+      length_of_stay:
+        number: "1"
+        unit: "Year(s)"
+  drivers_license: "Y"
+  license_details:
+    number: "WDLBKLPB81FB"
+    state: "WASHINGTON"
+  previous_visa: "Y"
+  visa_number: "M8854325"
+  visa_issue:
+    month: "JAN"
+    day: "30"
+    year: "2018"
+  same_type_visa: "Y"
+  ten_printed: "Y"
+  visa_lost: "N"
+  visa_lost_details:
+    year: ""
+    explanation: ""
+  same_country: "Y"
+  visa_cancelled: "N"
+  visa_cancelled_explanation: ""
+  visa_refused: "N"
+  visa_refused_explanation: ""
+  vwp_denial: "N"
+  vwp_denial_explanation: ""
+  iv_petition: "Y"
+  iv_petition_explanation: "GREEN CARD PROCESS INITIATED I140 APPROVED (A209 365 505)"
+  button_clicks: [1, 2]
+
+address_phone_page:
+  home_address:
+    street1: "338 SPEAR STREET, UNIT 34E"
+    street2: ""
+    city: "SAN FRANCISCO"
+    state: "CA"
+    state_na: false
+    postal_code: "94105"
+    country: "UNITED STATES OF AMERICA"
+  mail_address_same_as_home: "Y"
+  phone:
+    home: "3524439621"
+    mobile: "2066592045"
+    work: "442034567890"
+    work_na: false
+  add_phone: "N"
+  additional_phone: ""
+  add_email: "N"
+  email: "sanjay.karinje.8@gmail.com"
+  additional_email: ""
+  add_social: "N"
+  social_media:
+    platform_select: "FACEBOOK"
+    handle: "SANJAY KARINJE"
+  button_clicks: [1, 2]
+
+pptvisa_page:
+  passport_type: "REGULAR"
+  passport_number: "S7754691"
+  passport_book_number: "ABC"
+  issuance_country: "INDIA"
+  issuance_location:
+    city: "SAN FRANCISCO"
+    state: "CA"
+    country: "UNITED STATES OF AMERICA"
+  issuance:
+    month: "MAR"
+    day: "27"
+    year: "2019"
+  expiration:
+    month: "MAR"
+    day: "26"
+    year: "2029"
+  lost_passport: "N"
+  lost_passport_details:
+    number: ""
+    country: ""
+    explanation: ""
+  button_clicks: [1, 2]
+
+us_contact_page:
+  contact:
+    surname: "KAUSHIK"
+    given_name: "RAMYA"
+    organization: "DO NOT KNOW"
+    relationship: "SPOUSE"
+  address:
+    street1: "338 SPEAR STREET, UNIT 34E"
+    street2: ""
+    city: "SAN FRANCISCO"
+    state: "CALIFORNIA"
+    postal_code: "94105"
+  phone: "2066592045"
+  email: "ramya.kaushik.8@gmail.com"
+  email_na: false
+  button_clicks: [1, 2]
+
+relatives_page:
+  father_surname: "KARINJE ACHARYA"
+  father_given_name: "SHANTHARAM"
+  father_birth_day: "17"
+  father_birth_month: "NOV"
+  father_birth_year: "1952"
+  father_in_us: "N"
+  father_us_status: ""
+  mother_surname: "UDUPI"
+  mother_given_name: "BHARATHI"
+  mother_birth_day: "17"
+  mother_birth_month: "DEC"
+  mother_birth_year: "1958"
+  mother_in_us: "N"
+  mother_us_status: ""
+  has_immediate_relatives: "Y"
+  immediate_relative_type: "SIBLING"
+  immediate_relative_status: "NONIMMIGRANT"
+  immediate_relative_surname: "KARINJE"
+  immediate_relative_given_name: "SAMPOORNA"
+  button_clicks: [1, 2]
+
+workeducation1_page:
+  occupation: "NOT EMPLOYED"
+  other_occupation_explanation: "WORKED AS SR. DATA SCIENTIST AT INSTACART UNTIL SEPT 2022 (ON H1B). TAKING TIME OFF TO FOCUS ON MACHINE LEARNING & AI EDUCATION."
+  previous_employer: "Y"
+  employer:
+    name: "INSTACART"
+    city: "SAN FRANCISCO"
+    state: "CA"
+    postal_code: "94105"
+    country: "UNITED STATES OF AMERICA"
+    phone: "8882467822"
+    job_title: "SR DATA SCIENTIST II"
+    supervisor_surname: "CHEN"
+    supervisor_given_name: "CLAIRE"
+    employment_date_from: "01 JUNE 2021"
+    employment_date_to: "02 SEPTEMBER 2022"
+  button_clicks: [1, 2]
+
+workeducation2_page:
+  education: "Y"
+  previously_employed: "Y"
+  previous_employment:
+    employer: "INSTACART"
+    address:
+      street1: "50 BEALE STREET"
+      street2: ""
+      city: "SAN FRANCISCO"
+      state: "CA"
+      postal_code: "94105"
+      country: "UNITED STATES OF AMERICA"
+    phone: "8882467822"
+    job_title: "SR DATA SCIENTIST II"
+    supervisor:
+      surname: "CHEN"
+      given_name: "CLAIRE"
+    start_date:
+      month: "JUN"
+      day: "01"
+      year: "2021"
+    end_date:
+      month: "SEP"
+      day: "02"
+      year: "2022"
+    duties: "DESIGN & ANALYSIS OF EXPERIMENTS BY APPLYING STATISTICAL METHODS AND MACHINE LEARNING TO SUPPORT INSTACART'S SUBSCRIPTION PRODUCT. DECISION SUPPORT IN CRITICAL AREAS RELATED TO PRICING, PRODUCT FEATURES AND CHURN ANALYSIS. DEVELOPMENT OF METRICS & DASHBOARDS TO TRACK PROGRESS TOWARDS GOALS."
+  schools:
+    name: "UNIVERSITY OF FLORIDA"
+    course: "MBA"
+    address:
+      street1: "1938 W UNIVERSITY AVE"
+      street2: ""
+      city: "GAINESVILLE"
+      state: "FL"
+      postal_code: "32611"
+      country: "UNITED STATES OF AMERICA"
+    start_date:
+      month: "APR"
+      day: "02"
+      year: "2010"
+    end_date:
+      month: "MAY"
+      day: "31"
+      year: "2011"
+  button_clicks: [1, 2]
+
+workeducation3_page:
+  clan_tribe_ind: "N"
+  language_name: "ENGLISH"
+  countries_visited_ind: "Y"
+  countries_visited: "PORTUGAL"
+  military_service_ind: "N"
+  specialized_skills_ind: "N"
+  organization_ind: "N"
+  insurgent_org_ind: "N"
+  button_clicks: [1, 2]
+
+security_background1_page:
+  disease: "N"
+  disorder: "N"
+  disorder_explanation: ""
+  druguser: "N"
+  button_clicks: [1, 2]
+
+security_background2_page:
+  arrested: "N"
+  arrested_explanation: ""
+  controlled_substances: "N"
+  prostitution: "N"
+  money_laundering: "N"
+  human_trafficking: "N"
+  assisted_trafficking: "N"
+  trafficking_related: "N"
+  button_clicks: [1, 2]
+
+security_background3_page:
+  illegal_activity: "N"
+  terrorist_activity: "N"
+  terrorist_support: "N"
+  terrorist_org: "N"
+  terrorist_relative: "N"
+  genocide: "N"
+  torture: "N"
+  extrajudicial_violence: "N"
+  child_soldier: "N"
+  religious_freedom: "N"
+  population_controls: "N"
+  transplant: "N"
+  button_clicks: [1, 2]
+
+security_background4_page:
+  removal_hearing: "N"
+  removal_hearing_explanation: ""
+  immigration_fraud: "N"
+  immigration_fraud_explanation: ""
+  fail_to_attend: "N"
+  fail_to_attend_explanation: ""
+  visa_violation: "N"
+  visa_violation_explanation: ""
+  deported: "N"
+  deported_explanation: ""
+  button_clicks: [1, 2]
+
+security_background5_page:
+  child_custody: "N"
+  child_custody_explanation: ""
+  voting_violation: "N"
+  voting_violation_explanation: ""
+  renounce_tax: "N"
+  renounce_tax_explanation: ""
+  school_reimbursement: "N"
+  school_reimbursement_explanation: ""
+  button_clicks: [1, 2]
+
+spouse_page:
+  spouse_surname: "KAUSHIK"
+  spouse_given_name: "RAMYA"
+  spouse_birth_day: "17"
+  spouse_birth_month: "DEC"
+  spouse_birth_year: "1958"
+  spouse_nationality: "INDIA"
+  spouse_birth_city: "BANGALORE"
+  spouse_birth_country: "INDIA"
+  spouse_address_type: "Other (Specify Address)"
+  spouse_address_line1: "338 SPEAR STREET, UNIT 34E"
+  spouse_address_line2: ""
+  spouse_address_city: "SAN FRANCISCO"
+  spouse_address_state: "CALIFORNIA"
+  spouse_address_postal_code: "94105"
+  spouse_address_country: "UNITED STATES OF AMERICA"
+  button_clicks: [1, 2]

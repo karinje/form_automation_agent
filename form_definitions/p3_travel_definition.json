@@ -5605,7 +5605,8 @@
               "text_phrase": "Street Address (Line 2)",
               "parent_text_phrase": "Other Person Paying - Address",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlPayerCountry",
@@ -5937,7 +5938,8 @@
           "text_phrase": "Street Address (Line 2)",
           "parent_text_phrase": "Details of Company/Organization Paying",
           "maxlength": "40",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlPayerCountry",
@@ -6420,7 +6422,8 @@
           "text_phrase": "Street Address (Line 2)",
           "parent_text_phrase": "Address Where You Will Stay in the U.S.",
           "maxlength": "40",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCity",
@@ -6621,7 +6624,8 @@
           "text_phrase": "Street Address (Line 2)",
           "parent_text_phrase": "Address Where You Will Stay in the U.S.",
           "maxlength": "40",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCity",

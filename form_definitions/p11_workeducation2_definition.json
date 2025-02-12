@@ -533,7 +533,8 @@
           "text_phrase": "Employer Street Address (Line 2)",
           "parent_text_phrase": "Previous Employment Details",
           "maxlength": "40",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "optional": true
         }
       ],
       "hides": [],
@@ -928,7 +929,8 @@
           "text_phrase": "Street Address (Line 2)",
           "parent_text_phrase": "Education Institutions Attended",
           "maxlength": "40",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolCourseOfStudy",

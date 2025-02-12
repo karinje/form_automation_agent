@@ -1,0 +1,409 @@
+# Complete DS-160 form data
+start_page:
+  language: "English"
+  location: "ENGLAND, LONDON"
+  button_clicks: [0]  # Index 1 = "RETRIEVE AN APPLICATION"
+
+retrieve_page:  
+  application_id: "AA00E75U33"
+  surname: "Smith"
+  year: "1990"
+  security_answer: "John Doe"
+  button_clicks: [1]
+
+security_page:  # Only shown for new applications
+  privacy_agreement: true
+  security_question: "What is the name of your favorite childhood friend?"
+  security_answer: "John Doe"
+  button_clicks: [0]  # Index 0 = "Continue" button
+
+personal_page1:  # p1
+  surname: "Smith"
+  given_name: "John"
+  full_name_native_alphabet: "约翰·史密斯"
+  full_name_native_alphabet_na: false
+  has_other_names_used: "Y"
+  other_names_surname: "SmithJones"
+  other_names_given: "Johnny"
+  has_telecode: "Y"
+  telecode_surname: "7456"
+  telecode_given: "0002"
+  sex: "MALE"
+  marital_status: "MARRIED"
+  birth_date_mm: "JAN"
+  birth_date_dd: "15"
+  birth_date_yyyy: "1990"
+  birth_city: "London"
+  birth_state_province: "Greater London"
+  birth_state_province_na: false
+  birth_country: "UNITED KINGDOM"
+  button_clicks: [1, 2]
+
+personal_page2:  # p2
+  nationality: "UNITED KINGDOM"
+  has_other_nationality: "Y"
+  other_nationality:
+    country: "CANADA"
+    has_passport: "Y"
+    passport_number: "CD123456"
+  has_permanent_resident: "Y"
+  permanent_resident_country: "AUSTRALIA"
+  national_id: "AB123456"
+  national_id_na: false
+  us_social_security:
+    number1: "123"
+    number2: "45"
+    number3: "6789"
+    na: false
+  us_taxpayer_id_na: false
+  us_taxpayer_id: "TX123456"
+
+  button_clicks: [1, 2]
+
+travel_page:
+  purpose_of_trip: "EXCHANGE VISITOR (J)"
+  other_purpose_of_trip: "EXCHANGE VISITOR (J1)"
+  who_is_paying: "Other Person"
+  payer_details:
+    surname: "Johnson"
+    phone: "442012345678"
+    address_same_as_home: "N"
+    relationship: "FRIEND"
+    address:
+      street1: "123 Payer Street"
+      street2: "Apt 4B"
+      city: "London"
+      state: "Greater London"
+      postal_code: "SW1A 1AA"
+      country: "UNITED KINGDOM"
+  specific_travel_plans: "Y"
+  specific_travel_plans_details:
+    arrival:
+      month: "JUN"
+      day: "15"
+      year: "2025"
+      flight: "BA123"
+      city: "New York"
+    departure:
+      month: "DEC"
+      day: "15"
+      year: "2025"
+      flight: "BA456"
+      city: "Los Angeles"
+    locations_to_visit: "New York"
+    length_of_stay:
+      number: "6"
+      unit: "Month(s)"
+  non_specific_travel_plans_details:
+    arrival:
+      month: "JUN"
+      day: "15"
+      year: "2025"
+    duration:
+      number: "6"
+      unit: "Month(s)"
+  stay_address:
+      street1: "789 Fifth Avenue"
+      street2: "Suite 1000"
+      city: "New York"
+      state: "NEW YORK"
+      zip: "10022"
+  button_clicks: [1, 2]
+
+travel_companions_page:  # p4
+  traveling_with_others: "Y"
+  group_travel: "N" 
+  companion:
+    surname: "Johnson"
+    given_name: "Sarah"
+    relationship: "FRIEND"
+  button_clicks: [1, 2]
+
+previous_travel_page:
+  previous_us_travel: "Y"
+  arrival:
+    month: "JUN"
+    day: "15"
+    year: "2022"
+  length_of_stay:
+    number: "6"
+    unit: "Month(s)"
+  drivers_license: "Y"
+  license_details:
+    number: "DL123456"
+    state: "CALIFORNIA"
+  previous_visa: "Y"
+  visa_number: "12345678"
+  visa_issue:
+    month: "JAN"
+    day: "01"
+    year: "2020"
+  same_type_visa: "Y"
+  ten_printed: "Y"
+  visa_lost: "Y"
+  visa_lost_details:
+    year: "2021"
+    explanation: "Lost during travel"
+  same_country: "Y"
+  visa_cancelled: "Y"
+  visa_cancelled_explanation: "Administrative processing"
+  visa_refused: "Y"
+  visa_refused_explanation: "Previous application incomplete"
+  vwp_denial: "Y"
+  vwp_denial_explanation: "ESTA denial"
+  iv_petition: "Y"
+  iv_petition_explanation: "Family petition"
+  button_clicks: [1, 2]
+
+address_phone_page:
+  home_address:
+    street1: "456 Home Street"
+    street2: "Flat 3"
+    city: "London"
+    state: "Greater London"
+    state_na: false
+    postal_code: "SW1A 1AA"
+    country: "UNITED KINGDOM"
+  phone:
+    home: "442012345678"
+    mobile: "447789012345"
+    work: "442034567890"
+    work_na: false
+  add_phone: "Y"
+  additional_phone: "447123456789"
+  add_email: "Y"
+  email: "john.smith@email.com"
+  additional_email: "js@work.com"
+  add_social: "Y"
+  social_media:
+    platform: "Twitter"
+    handle: "@johnsmith"
+  button_clicks: [1, 2]
+
+pptvisa_page:
+  passport_type: "REGULAR"
+  passport_number: "123456789"
+  passport_book_number: "AB123456"
+  issuance_country: "UNITED KINGDOM"
+  issuance_location:
+    city: "London"
+    state: "Greater London"
+    country: "UNITED KINGDOM"
+  issuance:
+    month: "JAN"
+    day: "01"
+    year: "2020"
+  expiration:
+    month: "JAN"
+    day: "01"
+    year: "2030"
+  lost_passport: "Y"
+  lost_passport_details:
+    number: "OLD123456"
+    country: "UNITED KINGDOM"
+    explanation: "Lost during travel in 2019"
+  button_clicks: [1, 2]
+
+us_contact_page:
+  contact:
+    surname: "Smith"
+    given_name: "John"
+    organization: "ABC Corporation"
+    relationship: "BUSINESS ASSOCIATE"
+  address:
+    street1: "123 Business Street"
+    street2: "Suite 456"
+    city: "New York"
+    state: "NEW YORK"
+    postal_code: "10001"
+  phone: "2125551234"
+  email: "john.smith@abccorp.com"
+  email_na: false
+  button_clicks: [1, 2]
+
+relatives_page:
+  father_surname: "Smith"
+  father_given_name: "John"
+  father_birth_day: "15"
+  father_birth_month: "JAN" 
+  father_birth_year: "1960"
+  father_in_us: "Y"
+  father_us_status: "U.S. CITIZEN"
+  father_na: false
+  mother_surname: "Johnson"
+  mother_given_name: "Mary"
+  mother_birth_day: "20"
+  mother_birth_month: "MAR"
+  mother_birth_year: "1962"
+  mother_in_us: "Y"
+  mother_us_status: "U.S. LEGAL PERMANENT RESIDENT (LPR)"
+  mother_na: false
+  has_immediate_relatives: "Y"
+  immediate_relative_type: "SIBLING"
+  immediate_relative_status: "U.S. CITIZEN"
+  immediate_relative_surname: "Smith"
+  immediate_relative_given_name: "Jane"
+  immediate_relative_na: false
+  button_clicks: [1, 2]
+
+workeducation1_page:
+  occupation: "AGRICULTURE"
+  other_occupation_explanation: "Sustainable farming specialist"
+  employer:
+    name: "Green Fields Farm"
+    start_date:
+      month: "JAN"
+      day: "01"
+      year: "2020"
+    address:
+      street1: "123 Farm Road"
+      street2: "Unit 45"
+      city: "Burlington"
+      state: "VERMONT"
+      postal_code: "05401"
+      country: "UNITED STATES OF AMERICA"
+    phone: "8025551234"
+    monthly_income: "5000"
+    duties: "Manage sustainable farming operations, crop planning, and team coordination"
+  button_clicks: [1, 2]
+
+workeducation2_page:
+  previously_employed: "Y"
+  previous_employment:
+    employer: "Tech Corp"
+    start_date:
+      month: "JAN"
+      day: "01"
+      year: "2018"
+    end_date:
+      month: "DEC"
+      day: "31"
+      year: "2019"
+    address:
+      street1: "456 Tech Ave"
+      city: "Boston"
+      state: "MASSACHUSETTS"
+      postal_code: "02108"
+      country: "UNITED STATES OF AMERICA"
+    phone: "6175551234"
+    job_title: "Software Engineer"
+    duties: "Full-stack development, system architecture design, and team leadership"
+    supervisor:
+      given_name: "Jane"
+      surname: "Doe"
+  education: "Y"
+  schools:
+    name: "University of Vermont"
+    course: "Computer Science"
+    start_date:
+      month: "SEP"
+      day: "01"
+      year: "2014"
+    end_date:
+      month: "MAY"
+      day: "15"
+      year: "2018"
+    address:
+      street1: "85 South Prospect Street"
+      city: "Burlington"
+      state: "VERMONT"
+      postal_code: "05405"
+      country: "UNITED STATES OF AMERICA"
+  button_clicks: [1, 2]
+
+workeducation3_page:
+  language_name: "English"
+  clan_tribe_ind: "Y"
+  clan_tribe_name: "Example Tribe"
+  countries_visited_ind: "Y"
+  countries_visited: "UNITED KINGDOM"
+  military_service_ind: "Y"
+  military_service:
+    country: "UNITED STATES OF AMERICA"
+    branch: "Army"
+    rank: "Captain"
+    specialty: "Infantry"
+    from_month: "JAN"
+    from_day: "01"
+    from_year: "2010"
+    to_month: "DEC"
+    to_day: "31" 
+    to_year: "2015"
+  specialized_skills_ind: "N"
+  organization_ind: "N"
+  insurgent_org_ind: "Y"
+  insurgent_org_explanation: "Detailed explanation here"
+  button_clicks: [1, 2]
+
+security_background1_page:
+  disease: "N"
+  disorder: "Y"
+  disorder_explanation: "Anxiety managed with medication"
+  druguser: "N"
+  button_clicks: [1, 2]  # Next button
+
+security_background2_page:
+  arrested: "Y"
+  arrested_explanation: "Minor traffic violation in 2020, resolved"
+  controlled_substances: "N"
+  prostitution: "N"
+  money_laundering: "N"
+  human_trafficking: "N"
+  assisted_trafficking: "N"
+  trafficking_related: "N"
+  button_clicks: [1, 2]  # Next button
+
+security_background3_page:
+  illegal_activity: "N"
+  terrorist_activity: "N"
+  terrorist_support: "N"
+  terrorist_org: "N"
+  terrorist_relative: "N"
+  genocide: "N"
+  torture: "N"
+  extrajudicial_violence: "N"
+  child_soldier: "N"
+  religious_freedom: "N"
+  population_controls: "N"
+  button_clicks: [1, 2]  # Next button
+
+security_background4_page:
+  removal_hearing: "Y"
+  removal_hearing_explanation: "Details of removal hearing"
+  immigration_fraud: "Y" 
+  immigration_fraud_explanation: "Details of immigration fraud"
+  fail_to_attend: "Y"
+  fail_to_attend_explanation: "Details of failure to attend"
+  visa_violation: "Y"
+  visa_violation_explanation: "Details of visa violation"
+  deported: "Y"
+  deported_explanation: "Details of deportation"
+  button_clicks: [1, 2]  # Next button
+
+security_background5_page:
+  child_custody: "Y"
+  child_custody_explanation: "Details of child custody case"
+  voting_violation: "Y"
+  voting_violation_explanation: "Details of voting violation"
+  renounce_tax: "Y"
+  renounce_tax_explanation: "Details of citizenship renunciation"
+  school_reimbursement: "Y"
+  school_reimbursement_explanation: "Details of school attendance"
+  button_clicks: [1, 2]  # Next button
+spouse_page:
+  spouse_surname: "Brown"
+  spouse_given_name: "Robert"
+  spouse_birth_day: "10"
+  spouse_birth_month: "JUN"
+  spouse_birth_year: "1985"
+  spouse_nationality: "UNITED KINGDOM"
+  spouse_birth_city: "London"
+  spouse_birth_country: "UNITED KINGDOM"
+  spouse_address_type: "Other (Specify Address)"
+  spouse_address_line1: "123 Main St"
+  spouse_address_line2: "Apt 4B"
+  spouse_address_city: "London"
+  spouse_address_state: "Greater London"
+  spouse_address_postal_code: "SW1A 1AA"
+  spouse_address_country: "UNITED KINGDOM"
+  button_clicks: [1, 2]  # Next button
