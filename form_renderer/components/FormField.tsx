@@ -190,18 +190,44 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
         {field.type !== 'radio' && field.text_phrase && (
           <Label htmlFor={field.name}>{field.text_phrase}</Label>
         )}
-        {renderField()}
-        {field.has_na_checkbox && (field.type === "text" || field.type === "textarea") && (
-          <div className="flex items-center gap-2 mt-1">
-            <Checkbox 
-              id={`${field.name}-na`} 
-              checked={isNAChecked} 
-              onCheckedChange={handleNACheckboxChange}
-            />
-            <Label htmlFor={`${field.name}-na`} className="text-sm text-gray-500">
-              N/A
-            </Label>
+        {field.has_na_checkbox && (field.type === "text" || field.type === "textarea") ? (
+          // For text/textarea fields with has_na_checkbox: render the input and checkbox inline
+          <div className="flex items-center">
+            {renderField()}
+            <div className="ml-2 flex-shrink-0 flex items-center">
+              <Checkbox 
+                id={field.na_checkbox_id || field.name.replace('tbx', 'cbex') + '_NA'}
+                checked={isNAChecked} 
+                onCheckedChange={handleNACheckboxChange}
+                className="w-6 h-6"
+              />
+              <Label 
+                htmlFor={field.na_checkbox_id || field.name.replace('tbx', 'cbex') + '_NA'}
+                className="ml-2 text-sm text-gray-500"
+              >
+                Does Not Apply
+              </Label>
+            </div>
           </div>
+        ) : (
+          <>
+            {renderField()}
+            {field.has_na_checkbox && (
+              <div className="flex items-center gap-2 mt-1">
+                <Checkbox 
+                  id={field.na_checkbox_id || field.name.replace('tbx', 'cbex') + '_NA'}
+                  checked={isNAChecked} 
+                  onCheckedChange={handleNACheckboxChange}
+                />
+                <Label 
+                  htmlFor={field.na_checkbox_id || field.name.replace('tbx', 'cbex') + '_NA'}
+                  className="text-sm text-gray-500"
+                >
+                  Does Not Apply
+                </Label>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

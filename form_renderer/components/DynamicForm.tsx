@@ -957,9 +957,9 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                 return (
                   <div key={`phrase-group-${phraseGroup.parentTextPhrase}-${phraseIndex}`} className="space-y-4">
                     {/* Render the phrase group with border if it has multiple fields */}
-                    <div className={`relative ${phraseGroup.fields.length > 1 ? 'border border-gray-200 rounded-lg p-4 mb-4' : ''}`}>
+                    <div className={`relative ${phraseGroup.fields.length > 1 ? 'border border-gray-400 rounded-lg p-12 mb-8 mt-12' : ''}`}>
                       {phraseGroup.fields.length > 1 && phraseGroup.parentTextPhrase && (
-                        <span className="absolute -top-3 left-3 bg-white px-2 text-sm text-gray-600">
+                        <span className="absolute -top-3 left-3 bg-white px-2 text-sm font-bold text-gray-1000">
                           {phraseGroup.parentTextPhrase}
                         </span>
                       )}
@@ -1009,15 +1009,16 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                       <div key={`add-group-${phraseIndex}`} className="flex justify-end mt-4">
                         <Button
                           type="button"
-                          variant="outline"
+                          variant="secondary"
                           size="sm"
                           data-group-id={normalizeTextPhrase(phraseGroup.parentTextPhrase)}
                           onClick={() => {
                             debugLog('previous_travel_page', 'Adding group with phraseGroup:', phraseGroup);
                             handleAddGroup(phraseGroup);
                           }}
+                          className="border-2 border-gray-300"
                         >
-                          Add Group
+                          Add Another
                         </Button>
                       </div>
                     )}
@@ -1052,13 +1053,14 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                       return (
                         <div key={`clone-${phraseGroup.parentTextPhrase}-${phraseIndex}-${cloneIdx}`} 
                              className="relative border border-dashed border-gray-300 p-4 rounded-md bg-gray-50">
-                          <div className="flex justify-end mb-4">
+                          <div className="flex justify-end mb-0">
                             <Button
                               variant="destructive"
                               size="sm"
+                              className="px-6 py-2 font-medium"
                               onClick={(e) => handleRemoveGroup(phraseGroup, e)}
                             >
-                              Remove Group
+                              Remove
                             </Button>
                           </div>
 

@@ -7,6 +7,7 @@ export interface FormField {
   parent_text_phrase?: string
   maxlength?: string
   has_na_checkbox?: boolean
+  na_checkbox_id?: string
   button_ids?: Record<string, string>
 }
 

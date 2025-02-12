@@ -27,7 +27,8 @@
       "text_phrase": "Full Name in Native Alphabet",
       "parent_text_phrase": "Full Name in Native Alphabet",
       "maxlength": "100",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_FULL_NAME_NATIVE_NA"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames",
@@ -178,7 +179,8 @@
       "text_phrase": "State/Province",
       "parent_text_phrase": "Date and Place of Birth",
       "maxlength": "20",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_POB_ST_PROVINCE_NA"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_POB_CNTRY",

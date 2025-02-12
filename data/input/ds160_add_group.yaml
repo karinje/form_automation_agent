@@ -3,9 +3,12 @@ personal_page1:
   given_name: "SANJAY"
   full_name_native_alphabet: ""
   full_name_native_alphabet_na: true
-  has_other_names_used: "N"
-  other_names_surname: ""
-  other_names_given: ""
+  has_other_names_used: "Y"
+  other_names:
+    - surname: "KARINJEA"
+      givenname: "SANJAYA"
+    - surname: "KARINJEB"
+      givenname: "SANJAYB"
   has_telecode: "N"
   telecode_surname: ""
   telecode_given: ""
