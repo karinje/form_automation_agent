@@ -5,53 +5,29 @@
       "type": "text",
       "value": "",
       "text_phrase": "Surnames",
-      "parent_text_phrase": "Personal Information",
+      "parent_text_phrase": "Surnames",
       "maxlength": "33",
-      "has_na_checkbox": false
+      "has_na_checkbox": false,
+      "help_text": "Enter all surnames as listed in your passport. If only one name is listed in your passport, enter that Surname."
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_GIVEN_NAME",
       "type": "text",
       "value": "",
       "text_phrase": "Given Names",
-      "parent_text_phrase": "Personal Information",
+      "parent_text_phrase": "Given Names",
       "maxlength": "33",
-      "has_na_checkbox": false
+      "has_na_checkbox": false,
+      "help_text": "If your passport does not include a given name, please enter 'FNU' in Given Names."
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_FULL_NAME_NATIVE",
       "type": "text",
       "value": "",
       "text_phrase": "Full Name in Native Alphabet",
-      "parent_text_phrase": "Personal Information",
+      "parent_text_phrase": "Full Name in Native Alphabet",
       "maxlength": "100",
       "has_na_checkbox": true
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_GENDER",
-      "type": "dropdown",
-      "value": [
-        "MALE",
-        "FEMALE"
-      ],
-      "text_phrase": "Sex",
-      "parent_text_phrase": "Personal Information"
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_MARITAL_STATUS",
-      "type": "dropdown",
-      "value": [
-        "MARRIED",
-        "COMMON LAW MARRIAGE",
-        "CIVIL UNION/DOMESTIC PARTNERSHIP",
-        "SINGLE",
-        "WIDOWED",
-        "DIVORCED",
-        "LEGALLY SEPARATED",
-        "OTHER"
-      ],
-      "text_phrase": "Marital Status",
-      "parent_text_phrase": "Personal Information"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames",
@@ -69,7 +45,8 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames_1"
       },
       "text_phrase": "Have you ever used other names (i.e., maiden, religious, professional, alias, etc.)?",
-      "parent_text_phrase": "Have you ever used other names (i.e., maiden, religious, professional, alias, etc.)?"
+      "parent_text_phrase": "Have you ever used other names (i.e., maiden, religious, professional, alias, etc.)?",
+      "help_text": "Other names used include your maiden name, religious name, professional name, or any other names which you are known by or have been known by in the past."
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTelecodeQuestion",
@@ -88,6 +65,32 @@
       },
       "text_phrase": "Do you have a telecode that represents your name?",
       "parent_text_phrase": "Do you have a telecode that represents your name?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_GENDER",
+      "type": "dropdown",
+      "value": [
+        "MALE",
+        "FEMALE"
+      ],
+      "text_phrase": "Sex",
+      "parent_text_phrase": "Sex"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_MARITAL_STATUS",
+      "type": "dropdown",
+      "value": [
+        "MARRIED",
+        "COMMON LAW MARRIAGE",
+        "CIVIL UNION/DOMESTIC PARTNERSHIP",
+        "SINGLE",
+        "WIDOWED",
+        "DIVORCED",
+        "LEGALLY SEPARATED",
+        "OTHER"
+      ],
+      "text_phrase": "Marital Status",
+      "parent_text_phrase": "Marital Status"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlDOBDay",
@@ -530,21 +533,26 @@
     "ctl00_SiteContentPlaceHolder_FormView1_rblOtherNames_0.Y": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_DListAlias_ctl00_tbxGIVEN_NAME",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Other Given Names Used",
-          "maxlength": "33",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_DListAlias_ctl00_tbxSURNAME",
           "type": "text",
           "value": "",
           "text_phrase": "Other Surnames Used (maiden, religious, professional, aliases, etc.)",
+          "parent_text_phrase": "Other Names",
           "maxlength": "33",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_DListAlias_ctl00_tbxGIVEN_NAME",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Other Given Names Used",
+          "parent_text_phrase": "Other Names",
+          "maxlength": "33",
+          "has_na_checkbox": false,
+          "add_group": true
         }
+        
       ],
       "hides": [],
       "dependencies": null
@@ -561,6 +569,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Telecode Surnames",
+          "parent_text_phrase": "Telecode Surnames",
           "maxlength": "20",
           "has_na_checkbox": false
         },
@@ -569,6 +578,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Telecode Given Names",
+          "parent_text_phrase": "Telecode Given Names",
           "maxlength": "20",
           "has_na_checkbox": false
         }
