@@ -1,0 +1,15 @@
+security_background2_page:
+  arrested: "N"  # Have you ever been arrested or convicted for any offense? (Y/N)
+  arrested_explanation: ""  # Required if arrested is Y
+  controlled_substances: "N"  # Have you violated any law relating to controlled substances? (Y/N)
+  controlled_substances_explanation: ""  # Required if controlled_substances is Y
+  prostitution: "N"  # Have you been engaged in prostitution within past 10 years? (Y/N)
+  prostitution_explanation: ""  # Required if prostitution is Y
+  money_laundering: "N"  # Have you been involved in money laundering? (Y/N)
+  money_laundering_explanation: ""  # Required if money_laundering is Y
+  human_trafficking: "N"  # Have you committed human trafficking offense? (Y/N)
+  human_trafficking_explanation: ""  # Required if human_trafficking is Y
+  assisted_trafficking: "N"  # Have you assisted in human trafficking? (Y/N)
+  assisted_trafficking_explanation: ""  # Required if assisted_trafficking is Y
+  trafficking_related: "N"  # Are you related to someone involved in trafficking? (Y/N)
+  trafficking_related_explanation: ""  # Required if trafficking_related is Y 

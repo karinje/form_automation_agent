@@ -453,49 +453,52 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     setVisibleFields(initialFields)
     setOrderedFields(formDefinition.fields)
     
-    // Initialize dependency chains based on existing form data
+    // Initialize dependency chains based on radio dependencies (ignore formData changes)
     const initialChains: DependencyChain[] = []
     formDefinition.fields.forEach(field => {
-      // For radio buttons, construct the key based on selected value
-      if (field.type === 'radio' && formData[field.name]) {
-        const selectedValue = formData[field.name]
-        const buttonId = field.button_ids?.[selectedValue]
-        if (buttonId) {
-          const key = `${buttonId}.${selectedValue}`
-          if (field.name.includes('PREV_')) {
-            debugLog('previous_travel_page', 'Checking dependency:', field.name);
-          }
-          
-          const dependency = findDependency(formDefinition.dependencies, key)
-          if (dependency?.shows?.length) {
-            const newChain: DependencyChain = {
-              parentField: field,
-              childFields: dependency.shows
-            }
-            initialChains.push(newChain)
-            dependency.shows.forEach(depField => initialFields.add(depField.name))
-            
-            // Check for nested dependencies
-            dependency.shows.forEach(depField => {
-              if (depField.type === 'radio' && formData[depField.name]) {
-                const nestedValue = formData[depField.name]
-                const nestedButtonId = depField.button_ids?.[nestedValue]
-                if (nestedButtonId) {
-                  const nestedKey = `${nestedButtonId}.${nestedValue}`
-                  const nestedDep = findDependency(formDefinition.dependencies, nestedKey)
-                  if (nestedDep?.shows?.length) {
-                    const nestedChain: DependencyChain = {
-                      parentField: depField,
-                      childFields: nestedDep.shows,
-                      parentChainId: field.name
-                    }
-                    initialChains.push(nestedChain)
-                    nestedDep.shows.forEach(nestedField => initialFields.add(nestedField.name))
-                  }
-                }
+      if ((field.type === 'radio' || field.type === 'dropdown') && formData[field.name]) {
+        const selectedValue = formData[field.name];
+        let key = "";
+        if (field.type === 'radio') {
+          const buttonId = field.button_ids?.[selectedValue];
+          if (!buttonId) return;
+          key = `${buttonId}.${selectedValue}`;
+        } else { // dropdown
+          key = `${field.name}.${selectedValue.trim()}`;
+        }
+        const dependency = findDependency(formDefinition.dependencies, key);
+        if (dependency?.shows?.length) {
+          const newChain: DependencyChain = {
+            parentField: field,
+            childFields: dependency.shows
+          };
+          initialChains.push(newChain);
+          dependency.shows.forEach(depField => initialFields.add(depField.name));
+
+          // Check for nested dependencies for radio OR dropdown children
+          dependency.shows.forEach(depField => {
+            if ((depField.type === 'radio' || depField.type === 'dropdown') && formData[depField.name]) {
+              const nestedValue = formData[depField.name];
+              let nestedKey = "";
+              if (depField.type === 'radio') {
+                const nestedButtonId = depField.button_ids?.[nestedValue];
+                if (!nestedButtonId) return;
+                nestedKey = `${nestedButtonId}.${nestedValue}`;
+              } else {
+                nestedKey = `${depField.name}.${nestedValue.trim()}`;
               }
-            })
-          }
+              const nestedDep = findDependency(formDefinition.dependencies, nestedKey);
+              if (nestedDep?.shows?.length) {
+                const nestedChain: DependencyChain = {
+                  parentField: depField,
+                  childFields: nestedDep.shows,
+                  parentChainId: field.name
+                };
+                initialChains.push(nestedChain);
+                nestedDep.shows.forEach(nestedField => initialFields.add(nestedField.name));
+              }
+            }
+          });
         }
       }
     })
@@ -514,7 +517,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     if (onCompletionUpdate) {
       onCompletionUpdate(0, initialFields.size)
     }
-  }, [formData, formDefinition.dependencies])
+  }, [formDefinition.dependencies])
 
   const handleDependencyChange = (key: string, parentField: FormFieldType) => {
     const newVisibleFields = new Set(visibleFields)

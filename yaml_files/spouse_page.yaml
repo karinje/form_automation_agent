@@ -1,0 +1,18 @@
+spouse_page:
+  spouse_surname: "KAUSHIK"  # Spouse's Surnames
+  spouse_given_name: "RAMYA"  # Spouse's Given Names
+  spouse_birth_month: "MAY"  # Spouse Date of Birth - Month (JAN-DEC)
+  spouse_birth_day: "08"  # Spouse Date of Birth - Day (01-31)
+  spouse_birth_year: "1985"  # Spouse Date of Birth - Year (YYYY)
+  spouse_nationality: "INDIA"  # Spouse's Country/Region of Origin (Nationality)
+  spouse_birth_city: "HYDERABAD"  # City of birth
+  spouse_birth_country: "INDIA"  # Country/Region of birth
+  spouse_address_type: "Other (Specify Address)"  # Changed to reveal most dependencies
+  
+  # These fields are now required since spouse_address_type is "Other (Specify Address)"
+  spouse_address_line1: "338 SPEAR STREET"  # Street Address (Line 1), max 40 chars
+  spouse_address_line2: "UNIT 34E"  # Street Address (Line 2), max 40 chars
+  spouse_address_city: "SAN FRANCISCO"  # City name
+  spouse_address_state: "CALIFORNIA"  # State/Province name
+  spouse_address_postal_code: "94105"  # Postal Zone/ZIP Code, max 10 chars
+  spouse_address_country: "UNITED STATES OF AMERICA"  # Country/Region name 

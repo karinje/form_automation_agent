@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-mappings": "python ../scripts/generate_mappings.py",
+    "prebuild": "npm run generate-mappings"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

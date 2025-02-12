@@ -1,0 +1,25 @@
+security_background3_page:
+  illegal_activity: "N"  # Do you seek to engage in espionage or illegal activity? (Y/N)
+  illegal_activity_explanation: ""  # Required if illegal_activity is Y
+  terrorist_activity: "N"  # Have you engaged in terrorist activities? (Y/N)
+  terrorist_activity_explanation: ""  # Required if terrorist_activity is Y
+  terrorist_support: "N"  # Have you provided support to terrorists? (Y/N)
+  terrorist_support_explanation: ""  # Required if terrorist_support is Y
+  terrorist_org: "N"  # Are you a member of a terrorist organization? (Y/N)
+  terrorist_org_explanation: ""  # Required if terrorist_org is Y
+  terrorist_relative: "N"  # Are you related to a terrorist? (Y/N)
+  terrorist_relative_explanation: ""  # Required if terrorist_relative is Y
+  genocide: "N"  # Have you participated in genocide? (Y/N)
+  genocide_explanation: ""  # Required if genocide is Y
+  torture: "N"  # Have you participated in torture? (Y/N)
+  torture_explanation: ""  # Required if torture is Y
+  extrajudicial_violence: "N"  # Have you participated in extrajudicial killings? (Y/N)
+  extrajudicial_violence_explanation: ""  # Required if extrajudicial_violence is Y
+  child_soldier: "N"  # Have you recruited child soldiers? (Y/N)
+  child_soldier_explanation: ""  # Required if child_soldier is Y
+  religious_freedom: "N"  # Have you violated religious freedom? (Y/N)
+  religious_freedom_explanation: ""  # Required if religious_freedom is Y
+  population_controls: "N"  # Have you enforced coercive population controls? (Y/N)
+  population_controls_explanation: ""  # Required if population_controls is Y
+  transplant: "N"  # Have you been involved in forced organ transplantation? (Y/N)
+  transplant_explanation: ""  # Required if transplant is Y 

@@ -51,19 +51,19 @@
       "value": ""
     }
   ],
-  "final_buttons": [
+  "buttons": [
     {
-      "name": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_btnBarcodeSubmit",
+      "id": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_btnBarcodeSubmit",
       "type": "submit",
       "value": "Retrieve Application"
     },
     {
-      "name": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_btnRetrieve",
+      "id": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_btnRetrieve",
       "type": "submit",
       "value": "Retrieve Application"
     },
     {
-      "name": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_btnContinueApp",
+      "id": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_btnContinueApp",
       "type": "submit",
       "value": "Continue"
     }

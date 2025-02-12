@@ -1,0 +1,9 @@
+security_background5_page:
+  child_custody: "N"  # Have you withheld custody of US citizen child? (Y/N)
+  child_custody_explanation: ""  # Required if child_custody is Y
+  voting_violation: "N"  # Have you voted illegally in the US? (Y/N)
+  voting_violation_explanation: ""  # Required if voting_violation is Y
+  renounce_tax: "N"  # Have you renounced US citizenship to avoid tax? (Y/N)
+  renounce_tax_explanation: ""  # Required if renounce_tax is Y
+  school_reimbursement: "N"  # Have you attended public school without reimbursement? (Y/N)
+  school_reimbursement_explanation: ""  # Required if school_reimbursement is Y 

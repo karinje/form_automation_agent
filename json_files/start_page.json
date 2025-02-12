@@ -261,14 +261,14 @@
       "value": ""
     }
   ],
-  "final_buttons": [
+  "buttons": [
     {
-      "name": "ctl00_SiteContentPlaceHolder_lnkNew",
+      "id": "ctl00_SiteContentPlaceHolder_lnkNew",
       "type": "button", 
       "value": "START AN APPLICATION"
     },
     {
-      "name": "ctl00_SiteContentPlaceHolder_lnkRetrieve",
+      "id": "ctl00_SiteContentPlaceHolder_lnkRetrieve",
       "type": "button",
       "value": "RETRIEVE AN APPLICATION"
     }

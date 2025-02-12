@@ -359,7 +359,7 @@ export default function Home() {
         }, [formId])
         
         const groupsForPage = form.pageName ? arrayGroups[form.pageName] || {} : {};
-        console.log(`Rendering DynamicForm for ${form.pageName}:`, groupsForPage);
+        //console.log(`Rendering DynamicForm for ${form.pageName}:`, groupsForPage);
         
         return (
           <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">

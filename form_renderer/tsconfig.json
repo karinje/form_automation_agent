@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@mapping_files/*": ["utils/mapping_files/*"]
     },
     "baseUrl": "."
   },

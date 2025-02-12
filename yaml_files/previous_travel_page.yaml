@@ -1,0 +1,55 @@
+previous_travel_page:
+  previous_us_travel: "Y"  # Have you ever been in the U.S.?
+  previous_travel_details:  # Previous visits to US
+    - arrival:
+        month: "OCT"  # Date Arrived - Month (3-letter month format)
+        day: "20"     # Date Arrived - Day (2-digit format)  
+        year: "2019"  # Date Arrived - Year (4-digit format)
+      length_of_stay:
+        number: "3"   # Length of Stay
+        unit: "Year(s)"  # Length of Stay - Period (Year(s), Month(s), Week(s), Day(s))
+    - arrival:
+        month: "NOV"
+        day: "01"
+        year: "2020"
+      length_of_stay:
+        number: "1"
+        unit: "Year(s)"
+    - arrival:
+        month: "JAN"
+        day: "08"
+        year: "2022"
+      length_of_stay:
+        number: "1"
+        unit: "Year(s)"
+
+  drivers_license: "Y"  # Do you or did you ever hold a U.S. Driver's License?
+  license_details:
+    number: "WDLBKLPB81FB" # Driver's License Number
+    state: "WASHINGTON" # State of Driver's License
+
+  previous_visa: "Y"   # Have you ever been issued a U.S. Visa?
+  visa_number: "M8854325"  # Visa Number
+  visa_issue_date:
+    month: "JAN"  # Date Last Visa Was Issued - Month   
+    day: "30"     # Date Last Visa Was Issued - Day
+    year: "2018"  # Date Last Visa Was Issued - Year
+  same_type_visa: "Y"  # Are you applying for the same type of visa?
+  ten_printed: "Y"     # Have you been ten-printed?
+  visa_lost: "N"       # Has your U.S. Visa ever been lost or stolen?
+  visa_lost_details:
+    year: ""   # Year visa was lost/stolen
+    explanation: ""  # Explanation of loss/theft
+
+  same_country: "Y"    # Are you applying in same country where visa was issued?
+  visa_cancelled: "N"   # Has your U.S. Visa ever been cancelled or revoked?
+  visa_cancelled_explanation: ""  # Explanation of visa cancellation
+
+  visa_refused: "N"     # Have you ever been refused a U.S. Visa?
+  visa_refused_explanation: ""  # Explanation of visa refusal
+
+  vwp_denial: "N"       # Have you been denied ESTA authorization?
+  vwp_denial_explanation: ""  # Explanation of ESTA denial
+
+  iv_petition: "Y"     # Has anyone filed immigrant petition for you?
+  iv_petition_explanation: "GREEN CARD PROCESS INITIATED - I140 APPROVED (A209 365 505)"  # Explain petition details 

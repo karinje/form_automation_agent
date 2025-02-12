@@ -43,6 +43,15 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     }
   }, []) // Empty dependency array to run only on mount
 
+  // NEW effect for dropdown fields to trigger dependency evaluation on mount or when value changes
+  useEffect(() => {
+    if (onDependencyChange && field.type === "dropdown" && value) {
+      const key = `${field.name}.${value}`
+      console.log('Dropdown dependency initial evaluation - key:', key)
+      onDependencyChange(key, field)
+    }
+  }, [value])  // run on mount and when value changes
+
   if (!visible) return null
 
   const handleRadioChange = (value: string) => {

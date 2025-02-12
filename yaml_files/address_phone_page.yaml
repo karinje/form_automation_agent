@@ -1,0 +1,65 @@
+address_phone_page:
+  # Home Address
+  home_address:
+    street1: ""  # Street Address (Line 1) - max 40 chars
+    street2: ""  # Street Address (Line 2) - max 40 chars, optional
+    city: ""     # City - max 20 chars
+    state: ""    # State/Province - max 20 chars
+    state_na: false  # Check if State/Province is not applicable
+    postal_code: ""  # Postal Zone/ZIP Code - max 10 chars
+    country: ""  # Country/Region - Select from dropdown list
+  
+  # Mailing Address
+  mail_address_same_as_home: "Y"  # Is your Mailing Address the same as your Home Address? Y/N
+  
+  # Only shown if mail_address_same_as_home = N
+  mail_address:
+    street1: ""  # Mailing Street Address (Line 1) - max 40 chars
+    street2: ""  # Mailing Street Address (Line 2) - max 40 chars, optional
+    city: ""     # Mailing City - max 20 chars
+    state: ""    # Mailing State/Province - max 20 chars
+    state_na: false  # Check if Mailing State/Province is not applicable
+    postal_code: ""  # Mailing Postal Zone/ZIP Code - max 10 chars
+    country: ""  # Mailing Country/Region - Select from dropdown list
+  
+  # Contact Information
+  phone:
+    home: ""     # Primary Phone Number - max 15 chars
+    mobile: ""   # Secondary Phone Number - max 15 chars
+    mobile_na: false  # Check if Secondary Phone is not applicable
+    work: ""     # Work Phone Number - max 15 chars
+    work_na: false  # Check if Work Phone is not applicable
+  
+  email: ""  # Email Address - max 50 chars
+  add_email: "N"  # Have you used any other email addresses in the last five years? Y/N
+  additional_email: ""  # Additional Email Address - max 40 chars, shown if add_email = Y
+  
+  # Social Media
+  add_social: "N"  # Do you wish to provide information about your presence on social media? Y/N
+  social_media:
+    platform_select: ""  # Social Media Provider/Platform - Select from dropdown
+    handle: ""  # Social Media Identifier - max 50 chars
+  
+  # Only shown if add_social = Y
+  additional_social_media:
+    platform: ""  # Additional Social Media Platform - max 40 chars
+    handle: ""    # Additional Social Media Handle - max 40 chars
+  
+  # Additional Contact Information
+  add_phone: "N"  # Have you used any other phone numbers in the last five years? Y/N
+  additional_phone: ""  # Additional Phone Number - max 15 chars, shown if add_phone = Y
+  
+  # Additional Email Information
+  add_email: "N"  # Have you used any other email addresses in the last five years? Y/N
+  additional_email: ""  # Additional Email Address - max 40 chars, shown if add_email = Y
+  
+  # Additional Social Media Information
+  add_social: "N"  # Do you wish to provide information about your presence on social media? Y/N
+  social_media:
+    platform_select: ""  # Social Media Provider/Platform - Select from dropdown
+    handle: ""  # Social Media Identifier - max 50 chars
+  
+  # Only shown if add_social = Y
+  additional_social_media:
+    platform: ""  # Additional Social Media Platform - max 40 chars
+    handle: ""    # Additional Social Media Handle - max 40 chars 

@@ -43,3 +43,6 @@ next-env.d.ts
 # local environment variables
 .env.local
 logs/*.json
+
+# generated mappings
+/generated_mappings

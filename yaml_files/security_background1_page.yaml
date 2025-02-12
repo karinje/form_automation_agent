@@ -1,0 +1,7 @@
+security_background1_page:
+  disease: "N"  # Do you have a communicable disease of public health significance? (Y/N)
+  disease_explanation: ""  # Required if disease is Y
+  disorder: "N"  # Do you have a mental or physical disorder that poses a threat? (Y/N)
+  disorder_explanation: ""  # Required if disorder is Y
+  druguser: "N"  # Are you or have you ever been a drug abuser or addict? (Y/N)
+  druguser_explanation: ""  # Required if druguser is Y 

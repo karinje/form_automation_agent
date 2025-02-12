@@ -1,0 +1,15 @@
+us_contact_page:
+  contact:
+    surname: ""      # Surnames of contact person in US (max 33 chars)
+    given_name: ""   # Given names of contact person in US (max 33 chars)
+    organization: "" # Organization name in US (max 33 chars)
+    relationship: "" # Options: RELATIVE, SPOUSE, FRIEND, BUSINESS ASSOCIATE, EMPLOYER, SCHOOL OFFICIAL, OTHER
+  address:
+    street1: ""      # US Street Address Line 1 (max 40 chars)
+    street2: ""      # US Street Address Line 2 (optional, max 40 chars)
+    city: ""         # US City (max 20 chars)
+    state: ""        # US State (select from list of US states/territories)
+    postal_code: ""  # US ZIP Code (max 10 chars)
+  phone: ""          # US Phone Number (max 15 chars)
+  email: ""          # Email Address (max 50 chars)
+  email_na: false    # Set to true if no email address available 

@@ -79,12 +79,17 @@ def map_all_dropdowns():
     load_dotenv()
     test_data = load_yaml('data/input/test_application.yaml')
     
+    # pages = [
+    #     ('start_page', 'json_files/start_page.json'),
+    #     ('retrieve_page', 'json_files/retrieve_page.json'),
+    #     ('personal_page', 'json_files/personal_page.json'),
+    #     ('personal_page2', 'json_files/personal_page2.json'),
+    #     ('travel_page', 'json_files/travel_page.json')
+    # ]
     pages = [
-        ('start_page', 'json_files/start_page.json'),
-        ('retrieve_page', 'json_files/retrieve_page.json'),
-        ('personal_page', 'json_files/personal_page.json'),
-        ('personal_page2', 'json_files/personal_page2.json'),
-        ('travel_page', 'json_files/travel_page.json')
+        ('start_page', '/Users/sanjaykarinje/git/form_automation_agent/form_definitions/p0_start_page_definition.json'),
+        ('retrieve_page', '/Users/sanjaykarinje/git/form_automation_agent/form_definitions/p0_retrieve_page_definition.json'),
+        ('travel_page', '/Users/sanjaykarinje/git/form_automation_agent/form_definitions/p3_travel_definition.json'),
     ]
     
     page_definitions = {
@@ -101,15 +106,15 @@ def map_all_dropdowns():
         try:
             # Process start page with CAPTCHA
             print("Processing start page...")
-            page_data = form_mapping.map_form_data(test_data['start_page'], FormPage.START)
-            form_handler.field_values = page_data
+            #page_data = form_mapping.map_form_data(test_data['start_page'], FormPage.START)
+            form_handler.field_values = test_data['start_page']
             form_handler.handle_start_page(page_definitions['start_page'])
             time.sleep(2)
             
             # Process retrieve page
             print("Processing retrieve page...")
-            page_data = form_mapping.map_form_data(test_data['retrieve_page'], FormPage.RETRIEVE)
-            form_handler.field_values = page_data
+            #page_data = form_mapping.map_form_data(test_data['retrieve_page'], FormPage.RETRIEVE)
+            form_handler.field_values = test_data['retrieve_page']
             form_handler.handle_retrieve_page(page_definitions['retrieve_page'])
             time.sleep(2)
             
@@ -173,7 +178,7 @@ def map_all_dropdowns():
             # Move this outside the loop
             print("\n=== FINAL MAPPING ===")
             #print(json.dumps(dropdown_mapping, indent=2))
-            with open('json_files/travel_dropdown_mapping.json', 'w', encoding='utf-8') as f:
+            with open('json_files/travel_dropdown_mapping_test.json', 'w', encoding='utf-8') as f:
                 json.dump(dropdown_mapping, f, indent=2, ensure_ascii=False)
                 
         except Exception as e:

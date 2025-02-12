@@ -1,0 +1,4 @@
+security_page:
+  privacy_act: true  # Agreement to Privacy Act Statement
+  security_question: "What is the name of your favorite childhood friend?"  # Security question selection
+  security_answer: "John Doe"  # Answer to selected security question 

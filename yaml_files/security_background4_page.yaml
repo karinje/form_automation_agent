@@ -1,0 +1,11 @@
+security_background4_page:
+  removal_hearing: "N"  # Have you been subject to removal hearing? (Y/N)
+  removal_hearing_explanation: ""  # Required if removal_hearing is Y
+  immigration_fraud: "N"  # Have you committed immigration fraud? (Y/N)
+  immigration_fraud_explanation: ""  # Required if immigration_fraud is Y
+  fail_to_attend: "N"  # Have you failed to attend a hearing? (Y/N)
+  fail_to_attend_explanation: ""  # Required if fail_to_attend is Y
+  visa_violation: "N"  # Have you violated visa terms? (Y/N)
+  visa_violation_explanation: ""  # Required if visa_violation is Y
+  deported: "N"  # Have you been deported from any country? (Y/N)
+  deported_explanation: ""  # Required if deported is Y 

@@ -1,0 +1,40 @@
+workeducation3_page:
+  language_name:  # List of languages you know
+    - language: "ENGLISH"  # Primary language
+    - language: "HINDI"  # Additional language
+    - language: "KANNADA"  # Additional language
+    - language: "TELUGU"  # Additional language
+
+  clan_tribe_ind: "N"  # Do you belong to a clan or tribe?
+  clan_tribe_name: ""  # Name of clan or tribe if applicable
+
+  countries_visited_ind: "Y"  # Have you traveled to any countries/regions within the last five years?
+  countries_visited:  # List of countries visited in last 5 years
+    - country: "GERMANY"
+    - country: "NETHERLANDS"
+    - country: "CANADA"
+    - country: "INDIA"
+
+  organization_ind: "N"  # Have you belonged to any professional, social, or charitable organization?
+  organization_name: ""  # Name of organization if applicable
+
+  specialized_skills_ind: "N"  # Do you have specialized skills (firearms, explosives, nuclear, biological, chemical)?
+  specialized_skills_explanation: ""  # Explanation of specialized skills if applicable
+
+  military_service_ind: "N"  # Have you ever served in the military?
+  military_service:  # Military service details if applicable
+    country: ""  # Country where served
+    branch: ""  # Branch of service
+    rank: ""  # Rank/Position
+    specialty: ""  # Military specialty
+    service_from:
+      month: ""  # Start month of service
+      day: ""  # Start day of service
+      year: ""  # Start year of service
+    service_to:
+      month: ""  # End month of service
+      day: ""  # End day of service
+      year: ""  # End year of service
+
+  insurgent_org_ind: "N"  # Have you been involved with any paramilitary/rebel/insurgent group?
+  insurgent_org_explanation: ""  # Explanation of involvement if applicable 

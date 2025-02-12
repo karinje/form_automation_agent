@@ -1,0 +1,4 @@
+start_page:
+  language: "English"  # Language selection for the form
+  location: "INDIA, HYDERABAD"  # Embassy/Consulate location
+  captcha: ""  # Will be filled during actual form submission 

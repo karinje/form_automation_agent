@@ -1,20 +1,29 @@
 Here the set of steps you need to follow:
 1. The json file is structured such that dependencies store which elements get revealed/hidden based on particular values for various elements. Dependencies are recursive. Parse the json file to figure out which inputs will trigger the maximum number of dependencies to be revealed (because we want to test an input that touches most elements). 
 
-2. Then figure out the input values to be provided in the @full_application.yaml that will reveal the most elements (provide names of input that reasonably match the json based on text phrase/parents text phrase/element name). 
+2. Then figure out the input values to be provided in the yaml file that will reveal the most elements (provide names of input that reasonably match the json based on text phrase/parents text phrase/element name). 
 
-3. Next update relevant section in @full_application.yaml with inputs that accomplish 2. 
+3. The create a yaml file in  yaml_files folder with inputs that accomplish 2. 
 
-4. Next update the form_mapping dict in FormMapping class in the file @form_mapping.py for this page such that elements are mapped consistently between @full_application.yaml and @form_mapping.py 
+4. **Reuse page_name and field names and field structures etc.. from data/input/ds160_add_group.yaml wherever possible. For yaml file name, mapping file name and llm prompt file name (instructions below), use the same name as the page name in the json file. 
 
-5. Follow these naming conventions strictly:
-   - In YAML: Use page_name format (e.g., personal_page1, travel_page)
-   - In form_mapping.py: Use UPPERCASE format (e.g., PERSONAL1, TRAVEL)
-   - Only add numeric suffix (like _page1, _page2 or 1, 2) when the page type repeats
+4. Next create a correponding mapping file in mapping_files folder such that elements are mapped consistently between yaml file and mapping file. 
+This mapping should include every single form field element in the json file. Generate a yaml to json field mapping for every field, not just the path that reveals that most element. So this will be more fields that what is the the yaml obviously. 
+Since we need superset of fields to provide as inpu to llm call, since we dont kno which path the user will take, we need to provide all fields. 
+You can use form_mapping in form_mapping.py as a template for the mapping file. 
+
+5. if a field has a has_na_checkbox set to true, then provide an input in yaml that has the fields with _na and set to false. 
+5. In the yaml file, provides instructions as comments on how to fill the yaml field. The comments should be included on the same line to the right of the fields so that fields are on consecutive lines.
+This should include  what is the json text correponding to the yaml fields and what are all the allowed values etc. This will serve as instruction to the llm call to fill the yaml fields. 
+
+6. In the mapping file and the yaml input file, include all fields that are in the json even if they dont fall on teh path currently chosen. We want to create superset of fields that can be fed to llm prompt in case the path is different from user. 
+
+7. Follow these naming conventions strictly:
+   - In YAML: Use page_name format (e.g., personal_page1, travel_page) and use page names exactly from from this sample json file @data/input/ds160_add_group.yaml
    - For date fields, always split into separate month/day/year fields:
      YAML example: arrival_month: "JUN", arrival_day: "15", arrival_year: "2024"
      Not: arrival_date: "2024-06-15"
-   - In form_mapping.py, do NOT use page name as prefix:
+   - In form_mapping, do NOT use page name as prefix:
      Correct: "purpose_of_trip": "field_id"
      Wrong: "page_name.purpose_of_trip": "field_id"
    - In YAML, put page fields under the page type:
@@ -48,4 +57,7 @@ Here the set of steps you need to follow:
 7. Don't make any other unnecessary changes; provide full code snippets don't truncate with ...etc... 
 
 Files to consider: 
-@full_application.yaml @form_mapping.py and provided input json.
+@data/input/ds160_add_group.yaml @form_mapping.py and provided input json.
+
+Folders to consider: 
+@yaml_files @mapping_files 
