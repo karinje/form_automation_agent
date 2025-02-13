@@ -1,0 +1,6 @@
+{
+  "form_mapping": {
+    "full_name_native_alphabet": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_FULL_NAME_NATIVE",
+    "full_name_native_alphabet_na": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_FULL_NAME_NATIVE_NA"
+  }
+} 

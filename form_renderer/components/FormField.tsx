@@ -12,6 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DateField } from "./DateField"
 import { DatePicker } from "./DatePicker"
+import { debugLog } from "@/utils/consoleLogger"
 
 interface FormFieldProps {
   field: FormFieldType & {
@@ -25,7 +26,27 @@ interface FormFieldProps {
 }
 
 export function FormField({ field, value, onChange, visible, dependencies, onDependencyChange }: FormFieldProps) {
-  const [isNAChecked, setIsNAChecked] = useState(false)
+  // Initialize NA checkbox state based on value
+  const [isNAChecked, setIsNAChecked] = useState(() => {
+    const initialState = value === "N/A";
+    debugLog('all_pages', `Initializing NA checkbox for ${field.name}:`, {
+      value,
+      isNA: initialState,
+      naCheckboxId: field.na_checkbox_id
+    });
+    return initialState;
+  });
+
+  // Update NA state when value changes from outside
+  useEffect(() => {
+    const newState = value === "N/A";
+    debugLog('all_pages', `Updating NA checkbox for ${field.name}:`, {
+      value,
+      newState,
+      naCheckboxId: field.na_checkbox_id
+    });
+    setIsNAChecked(newState);
+  }, [value]);
 
   // Check if this is part of a date group
   const isDateComponent = field.text_phrase ? /^(.*?)\s*-\s*(Day|Month|Year)$/i.test(field.text_phrase) : false;
@@ -68,13 +89,33 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
   }
 
   const handleNACheckboxChange = (checked: boolean) => {
-    setIsNAChecked(checked)
+    debugLog('all_pages', `NA Checkbox changed for ${field.name}:`, {
+      checked,
+      field_id: field.name,
+      na_checkbox_id: field.na_checkbox_id
+    });
+    
+    setIsNAChecked(checked);
     if (checked) {
-      onChange(field.name, "N/A")
+      onChange(field.name, "N/A");
+      if (field.na_checkbox_id) {
+        debugLog('all_pages', `Updating NA checkbox state:`, {
+          id: field.na_checkbox_id,
+          value: "true"
+        });
+        onChange(field.na_checkbox_id, "true");
+      }
     } else {
-      onChange(field.name, "")
+      onChange(field.name, "");
+      if (field.na_checkbox_id) {
+        debugLog('all_pages', `Updating NA checkbox state:`, {
+          id: field.na_checkbox_id,
+          value: "false"
+        });
+        onChange(field.na_checkbox_id, "false");
+      }
     }
-  }
+  };
 
   const renderRadioButton = () => {
     if (!Array.isArray(field.value) || !field.labels) return null;

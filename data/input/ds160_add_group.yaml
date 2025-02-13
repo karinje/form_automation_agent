@@ -19,6 +19,7 @@ personal_page1:
   birth_date_yyyy: "1984"
   birth_city: "BANGALORE"
   birth_state_province: "KARNATAKA"
+  birth_state_province_na: true
   birth_country: "INDIA"
 
 personal_page2:

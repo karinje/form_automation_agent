@@ -17,7 +17,7 @@ import securityBackground3 from './generated_mappings/security_background3_page_
 import securityBackground4 from './generated_mappings/security_background4_page_mapping.json'
 import securityBackground5 from './generated_mappings/security_background5_page_mapping.json'
 import spouse from './generated_mappings/spouse_page_mapping.json'
-
+import { debugLog } from './consoleLogger'
 // Convert Python mappings to TypeScript
 export const pageNameMappings: Record<string, string> = {
   'personal_page1': 'p1_personal1_definition',
@@ -62,7 +62,12 @@ export const formMappings: Record<string, Record<string, string>> = {
 
 // Helper to convert YAML field to form field
 export const getFormFieldId = (pageName: string, yamlField: string): string => {
-  return formMappings[pageName]?.[yamlField]
+  debugLog('all_pages', `getFormFieldId called:`, {
+    pageName,
+    yamlField,
+    mapping: formMappings[pageName]?.[yamlField]
+  });
+  return formMappings[pageName]?.[yamlField];
 }
 
 // Helper to convert form field to YAML field

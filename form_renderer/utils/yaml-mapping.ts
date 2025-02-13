@@ -46,7 +46,49 @@ export const createFormMapping = (yamlContent: string): MappingResult => {
 
       // Process the flattened data
       Object.entries(flattenedData).forEach(([yamlField, value]) => {
-        if (Array.isArray(value)) {
+        debugLog('all_pages', `Processing field: ${yamlField}`, { value, type: typeof value });
+        
+        // Handle NA checkbox fields
+        if (yamlField.endsWith('_na')) {
+          debugLog('all_pages', `Found NA field: ${yamlField}`, { 
+            value,
+            valueType: typeof value,
+            isTrue: value === true,
+            isTrueString: value === "true"
+          });
+          
+          // Get the corresponding form field ID from mappings
+          const formFieldId = getFormFieldId(pageName, yamlField);
+          debugLog('all_pages', `Looking up form field ID for NA field:`, {
+            yamlField,
+            formFieldId,
+            pageName
+          });
+          
+          if (formFieldId && (value === true || value === "true")) {
+            // Find the main field this NA checkbox corresponds to
+            const mainYamlField = yamlField.replace(/_na$/, '');
+            const mainFormFieldId = getFormFieldId(pageName, mainYamlField);
+            
+            debugLog('all_pages', `Found main field for NA: ${mainYamlField}`, {
+              mainFormFieldId
+            });
+            
+            if (mainFormFieldId) {
+              // Set the main field value to "N/A"
+              formData[mainFormFieldId] = "N/A";
+              // Set the checkbox state
+              formData[formFieldId] = "true";
+              
+              debugLog('all_pages', `Set NA values:`, {
+                mainField: mainFormFieldId,
+                mainValue: "N/A",
+                checkboxField: formFieldId,
+                checkboxValue: "true"
+              });
+            }
+          }
+        } else if (Array.isArray(value)) {
           const normalizedField = normalizeTextPhrase(yamlField);
           if (!arrayGroups[pageName]) arrayGroups[pageName] = {};
           arrayGroups[pageName][normalizedField] = value;
