@@ -22,16 +22,18 @@ form_mapping = {
     # Phone Numbers
     "phone.home": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_HOME_TEL",
     "phone.mobile": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_MOBILE_TEL",
+    "phone.mobile_na": "ctl00_SiteContentPlaceHolder_FormView1_cbexMOBILE_TEL_NA",
     "phone.work": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_BUS_TEL",
+    "phone.work_na": "ctl00_SiteContentPlaceHolder_FormView1_cbexBUSINESS_TEL_NA",
     
     # Additional Phone
     "add_phone": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone",
-    "additional_phone": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddPhone_ctl00_tbxAddPhoneInfo",
+    "additional_phone_number.phone": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddPhone_ctl00_tbxAddPhoneInfo",
     
     # Email
     "email": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_EMAIL_ADDR",
     "add_email": "ctl00_SiteContentPlaceHolder_FormView1_rblAddEmail",
-    "additional_email": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddEmail_ctl00_tbxAddEmailInfo",
+    "additional_email_address.email": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddEmail_ctl00_tbxAddEmailInfo",
     
     # Social Media
     "add_social": "ctl00_SiteContentPlaceHolder_FormView1_rblAddSocial",

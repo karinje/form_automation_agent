@@ -11,14 +11,15 @@
         "OTHER"
       ],
       "text_phrase": "Passport/Travel Document Type",
-      "parent_text_phrase": "Passport/Travel Document Details"
+      "parent_text_phrase": "Passport/Travel Document Details",
+      "help_text": "Enter the information on the travel document you will be using when traveling to the U.S. Your travel document should be a valid, unexpired passport or other valid, unexpired documentation that is sufficient to establish your identity and nationality."
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_NUM",
       "type": "text",
       "value": "",
       "text_phrase": "Passport/Travel Document Number",
-      "parent_text_phrase": "Passport/Travel Document Details",
+      "parent_text_phrase": "Passport/Travel Document Number",
       "maxlength": "20",
       "has_na_checkbox": false
     },
@@ -27,9 +28,10 @@
       "type": "text",
       "value": "",
       "text_phrase": "Passport Book Number",
-      "parent_text_phrase": "Passport/Travel Document Details",
+      "parent_text_phrase": "Passport Book Number",
       "maxlength": "20",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "help_text": "The Passport Book Number is commonly called the inventory control number. You may or may not have a Passport Book Number on your passport. The location of the Passport Book Number on your passport may vary depending on the country that issued your passport. Please contact your passport issuing authority if you are unable to determine whether or not your passport contains a Passport Book Number."
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_ISSUED_CNTRY",
@@ -253,14 +255,14 @@
         "ZIMBABWE"
       ],
       "text_phrase": "Country/Authority that Issued Passport/Travel Document",
-      "parent_text_phrase": "Passport/Travel Document Details"
+      "parent_text_phrase": "Country/Authority that Issued Passport/Travel Document"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_ISSUED_IN_CITY",
       "type": "text",
       "value": "",
       "text_phrase": "City",
-      "parent_text_phrase": "Passport/Travel Document Details",
+      "parent_text_phrase": "Where was the Passport/Travel Document Issued?",
       "maxlength": "25",
       "has_na_checkbox": false
     },
@@ -269,7 +271,7 @@
       "type": "text",
       "value": "",
       "text_phrase": "State/Province",
-      "parent_text_phrase": "Passport/Travel Document Details",
+      "parent_text_phrase": "Where was the Passport/Travel Document Issued?",
       "maxlength": "25",
       "has_na_checkbox": false
     },
@@ -531,7 +533,7 @@
         "ZIMBABWE"
       ],
       "text_phrase": "Country/Region",
-      "parent_text_phrase": "Passport/Travel Document Details"
+      "parent_text_phrase": "Where was the Passport/Travel Document Issued?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_ISSUED_DTEDay",
@@ -640,7 +642,9 @@
         "31"
       ],
       "text_phrase": "Expiration Date - Day",
-      "parent_text_phrase": "Expiration Date"
+      "parent_text_phrase": "Expiration Date",
+      "has_na_checkbox": true,
+      "na_checkbox_text": "No Expiration"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_EXPIRE_DTEMonth",
@@ -660,7 +664,9 @@
         "DEC"
       ],
       "text_phrase": "Expiration Date - Month",
-      "parent_text_phrase": "Expiration Date"
+      "parent_text_phrase": "Expiration Date",
+      "has_na_checkbox": true,
+      "na_checkbox_text": "No Expiration"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_EXPIREYear",
@@ -669,7 +675,8 @@
       "text_phrase": "Expiration Date - Year",
       "parent_text_phrase": "Expiration Date",
       "maxlength": "4",
-      "has_na_checkbox": false
+      "has_na_checkbox": true,
+      "na_checkbox_text": "No Expiration"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblLOST_PPT_IND",
@@ -687,7 +694,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblLOST_PPT_IND_1"
       },
       "text_phrase": "Have you ever lost a passport or had one stolen?",
-      "parent_text_phrase": "Passport/Travel Document Details"
+      "parent_text_phrase": "Have you ever lost a passport or had one stolen?"
     }
   ],
   "dependencies": {
@@ -728,6 +735,18 @@
     },
     "ctl00_SiteContentPlaceHolder_FormView1_rblLOST_PPT_IND_0.Y": {
       "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_tbxLOST_PPT_NUM",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Passport/Travel Document Number",
+          "parent_text_phrase": "Lost Passport/Travel Document Details",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "na_checkbox_text": "Do not know",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_InsertButtonLostPPT"
+        },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_ddlLOST_PPT_NATL",
           "type": "dropdown",
@@ -950,7 +969,9 @@
             "ZIMBABWE"
           ],
           "text_phrase": "Country/Authority that Issued Passport/Travel Document",
-          "parent_text_phrase": "Lost Passport/Travel Document Details"
+          "parent_text_phrase": "Lost Passport/Travel Document Details",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_InsertButtonLostPPT"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_tbxLOST_PPT_EXPL",
@@ -959,16 +980,9 @@
           "text_phrase": "Explain",
           "parent_text_phrase": "Lost Passport/Travel Document Details",
           "maxlength": "4000",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_tbxLOST_PPT_NUM",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Passport/Travel Document Number",
-          "parent_text_phrase": "Lost Passport/Travel Document Details",
-          "maxlength": "20",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_InsertButtonLostPPT"
         }
       ],
       "hides": [],

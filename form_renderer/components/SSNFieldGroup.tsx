@@ -92,7 +92,7 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
             htmlFor="ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_SSN_NA"
             className="text-sm text-gray-500 ml-2"
           >
-            Does Not Apply
+            {ssnGroup.number1Field.na_checkbox_text || "Does Not Apply"}
           </Label>
         </div>
       </div>

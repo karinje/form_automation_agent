@@ -59,13 +59,19 @@ export const createFormMapping = (yamlContent: string): MappingResult => {
             
             // Special handling for SSN fields
             if (yamlField === "us_social_security_na" && stringValue === "true") {
-              // Set all SSN fields to "N/A"
               formData["ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN1"] = "N/A";
               formData["ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN2"] = "N/A";
               formData["ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN3"] = "N/A";
-                        
-            } else if (stringValue === "true") {
-              // Regular NA field handling
+            }
+            // Special handling for expiration date
+            else if (yamlField === "expiration_na" && stringValue === "true") {
+              formData["ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_EXPIRE_DTEDay"] = "N/A";
+              formData["ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_EXPIRE_DTEMonth"] = "N/A";
+              formData["ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_EXPIREYear"] = "N/A";
+              formData["ctl00_SiteContentPlaceHolder_FormView1_cbexPPT_EXPIRE_NA"] = "true";
+            }
+            // Regular NA field handling for all other _na fields
+            else if (stringValue === "true") {
               const mainYamlField = yamlField.replace(/_na$/, '');
               const mainFormFieldId = getFormFieldId(pageName, mainYamlField);
               if (mainFormFieldId) {

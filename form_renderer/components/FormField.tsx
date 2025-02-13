@@ -232,7 +232,6 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
           <Label htmlFor={field.name}>{field.text_phrase}</Label>
         )}
         {field.has_na_checkbox && (field.type === "text" || field.type === "textarea") ? (
-          // For text/textarea fields with has_na_checkbox: render the input and checkbox inline
           <div className="flex items-center">
             {renderField()}
             <div className="ml-2 flex-shrink-0 flex items-center">
@@ -246,7 +245,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
                 htmlFor={field.na_checkbox_id || field.name.replace('tbx', 'cbex') + '_NA'}
                 className="ml-2 text-sm text-gray-500"
               >
-                Does Not Apply
+                {field.na_checkbox_text || "Does Not Apply"}
               </Label>
             </div>
           </div>
@@ -264,7 +263,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
                   htmlFor={field.na_checkbox_id || field.name.replace('tbx', 'cbex') + '_NA'}
                   className="text-sm text-gray-500"
                 >
-                  Does Not Apply
+                  {field.na_checkbox_text || "Does Not Apply"}
                 </Label>
               </div>
             )}

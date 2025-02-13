@@ -13,7 +13,7 @@
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_ADDR_LN2",
       "type": "text",
       "value": "",
-      "text_phrase": "Street Address (Line 2)",
+      "text_phrase": "Street Address (Line 2) (optional)",
       "parent_text_phrase": "Home Address",
       "maxlength": "40",
       "has_na_checkbox": false,
@@ -329,16 +329,17 @@
       "type": "text",
       "value": "",
       "text_phrase": "Primary Phone Number",
-      "parent_text_phrase": "Primary Contact Information",
+      "parent_text_phrase": "Phone",
       "maxlength": "15",
-      "has_na_checkbox": false
+      "has_na_checkbox": false,
+      "help_text": "You must provide a primary phone number. The primary phone number should be the phone number at which you are most likely to be reached; this could be a land line or a cellular/mobile number. If you have an additional land line or a cellular/mobile number please list that as your secondary phone number."
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_MOBILE_TEL",
       "type": "text",
       "value": "",
       "text_phrase": "Secondary Phone Number",
-      "parent_text_phrase": "Other Contact Information",
+      "parent_text_phrase": "Phone",
       "maxlength": "15",
       "has_na_checkbox": true
     },
@@ -347,18 +348,55 @@
       "type": "text",
       "value": "",
       "text_phrase": "Work Phone Number",
-      "parent_text_phrase": "Other Contact Information",
+      "parent_text_phrase": "Phone",
       "maxlength": "15",
       "has_na_checkbox": true
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone_1"
+      },
+      "text_phrase": "Have you used any other phone numbers in the last five years?",
+      "parent_text_phrase": "Phone"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_EMAIL_ADDR",
       "type": "text",
       "value": "",
       "text_phrase": "Email Address",
-      "parent_text_phrase": "Primary Contact Information",
+      "parent_text_phrase": "Email Address",
       "maxlength": "50",
-      "has_na_checkbox": false
+      "has_na_checkbox": false,
+      "help_text": "You must provide an email address. The email address you provide will be used for correspondence purposes. Provide an email address that is secure and to which you have reasonable access."
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAddEmail",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblAddEmail_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAddEmail_1"
+      },
+      "text_phrase": "Have you used any other email addresses in the last five years?",
+      "parent_text_phrase": "Email Address"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_ddlSocialMedia",
@@ -388,52 +426,17 @@
         "NONE"
       ],
       "text_phrase": "Social Media Provider/Platform",
-      "parent_text_phrase": "Primary Contact Information"
+      "parent_text_phrase": "Social Media",
+      "help_text": "Enter information associated with your online presence, including the types of online providers/platforms, applications and websites that you use to collaborate, share information, and interact with others. List the username, handle, screen-name, or other identifiers associated with your social media profile. (You do not need to list accounts designed for use by multiple users within a business or other organization.)"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_tbxSocialMediaIdent",
       "type": "text",
       "value": "",
       "text_phrase": "Social Media Identifier",
-      "parent_text_phrase": "Primary Contact Information",
+      "parent_text_phrase": "Social Media",
       "maxlength": "50",
       "has_na_checkbox": false
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone",
-      "type": "radio",
-      "value": [
-        "Y",
-        "N"
-      ],
-      "labels": [
-        "Yes",
-        "No"
-      ],
-      "button_ids": {
-        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone_0",
-        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone_1"
-      },
-      "text_phrase": "Have you used any other phone numbers in the last five years?",
-      "parent_text_phrase": "Other Contact Information"
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAddEmail",
-      "type": "radio",
-      "value": [
-        "Y",
-        "N"
-      ],
-      "labels": [
-        "Yes",
-        "No"
-      ],
-      "button_ids": {
-        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblAddEmail_0",
-        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAddEmail_1"
-      },
-      "text_phrase": "Have you used any other email addresses in the last five years?",
-      "parent_text_phrase": "Other Contact Information"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAddSocial",
@@ -451,7 +454,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAddSocial_1"
       },
       "text_phrase": "Do you wish to provide information about your presence on any other websites or applications you have used within the last five years to create or share content (photos, videos, status updates, etc.)?",
-      "parent_text_phrase": "Other Contact Information"
+      "parent_text_phrase": "Social Media"
     }
   ],
   "dependencies": {
@@ -463,13 +466,23 @@
     "ctl00_SiteContentPlaceHolder_FormView1_rblMailingAddrSame_1.N": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_LN1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Mailing Address Details",
-          "maxlength": "20",
-          "has_na_checkbox": true
+          "maxlength": "40",
+          "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_LN2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2) (optional)",
+          "parent_text_phrase": "Mailing Address Details",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_CITY",
@@ -481,6 +494,15 @@
           "has_na_checkbox": false
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_STATE",
+          "type": "text",
+          "value": "",
+          "text_phrase": "State/Province",
+          "parent_text_phrase": "Mailing Address Details",
+          "maxlength": "20",
+          "has_na_checkbox": true
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_POSTAL_CD",
           "type": "text",
           "value": "",
@@ -488,15 +510,6 @@
           "parent_text_phrase": "Mailing Address Details",
           "maxlength": "10",
           "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_LN2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Mailing Address Details",
-          "maxlength": "40",
-          "has_na_checkbox": false
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlMailCountry",
@@ -757,15 +770,6 @@
           ],
           "text_phrase": "Country/Region",
           "parent_text_phrase": "Mailing Address Details"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_LN1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Mailing Address Details",
-          "maxlength": "40",
-          "has_na_checkbox": false
         }
       ],
       "hides": [],
@@ -778,9 +782,11 @@
           "type": "text",
           "value": "",
           "text_phrase": "Additional Phone Number",
-          "parent_text_phrase": "Other Contact Information",
+          "parent_text_phrase": "Additional Phone Number",
           "maxlength": "15",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddPhone_ctl00_InsertButtonADDL_PHONE"
         }
       ],
       "hides": [],
@@ -798,9 +804,11 @@
           "type": "text",
           "value": "",
           "text_phrase": "Additional Email Address",
-          "parent_text_phrase": "Other Contact Information",
+          "parent_text_phrase": "Additional Email Address",
           "maxlength": "40",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddEmail_ctl00_InsertButtonADDL_EMAIL"
         }
       ],
       "hides": [],
@@ -818,18 +826,22 @@
           "type": "text",
           "value": "",
           "text_phrase": "Additional Social Media Platform",
-          "parent_text_phrase": "Other Contact Information",
+          "parent_text_phrase": "Additional Social Media",
           "maxlength": "40",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_InsertButtonSOCIAL_MEDIA_INFO"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddSocial_ctl00_tbxAddSocialHand",
           "type": "text",
           "value": "",
           "text_phrase": "Additional Social Media Handle",
-          "parent_text_phrase": "Other Contact Information",
+          "parent_text_phrase": "Additional Social Media",
           "maxlength": "40",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_InsertButtonSOCIAL_MEDIA_INFO"
         }
       ],
       "hides": [],

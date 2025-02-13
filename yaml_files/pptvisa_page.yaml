@@ -16,6 +16,7 @@ pptvisa_page:
     month: ""  # Format: JAN, FEB, MAR, etc.
     day: ""  # Format: 01-31
     year: ""  # 4-digit year
+  expiration_na: false  # Set to true if not applicable
   lost_passport: "N"  # Y/N - Have you ever lost a passport or had one stolen?
   lost_passport_details:  # Only required if lost_passport is Y
     number: ""  # Previous passport number

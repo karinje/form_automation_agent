@@ -164,27 +164,48 @@ address_phone_page:
     state: "CA"
     state_na: false
     postal_code: "94105"
+    postal_code_na: false
     country: "UNITED STATES OF AMERICA"
-  mail_address_same_as_home: "Y"
+  mail_address_same_as_home: "N"
+  mail_address:
+    street1: "338 SPEAR STREET, UNIT 34E"
+    street2: ""
+    city: "SAN FRANCISCO"
+    state: "CA"
+    state_na: false
+    postal_code: "94105"
+    postal_code_na: false
+    country: "UNITED STATES OF AMERICA"
   phone:
     home: "3524439621"
     mobile: "2066592045"
+    mobile_na: false
     work: ""
     work_na: true
-  add_phone: "N"
-  additional_phone: ""
-  add_email: "N"
+  add_phone: "Y"
+  additional_phone_number: 
+    - phone: "3524439623"
+    - phone: "2066592046"   
   email: "sanjay.karinje.8@gmail.com"
-  additional_email: ""
-  add_social: "N"
+  add_email: "Y"
+  additional_email_address: 
+    - email: "sanjay.karinje.7@gmail.com"
+    - email: "sanjay.karinje.9@gmail.com"
   social_media:
     platform_select: "FACEBOOK"
     handle: "SANJAY KARINJE"
+  add_social: "Y"
+  additional_social_media:
+    - platform: "FACEBOOK"
+      handle: "SANJAY KARINJE"
+    - platform: "INSTAGRAM"
+      handle: "SANJAY KARINJE"
 
 pptvisa_page:
   passport_type: "REGULAR"
   passport_number: "S7754691"
   passport_book_number: ""
+  passport_book_number_na: true
   issuance_country: "INDIA"
   issuance_location:
     city: "SAN FRANCISCO"
@@ -198,11 +219,12 @@ pptvisa_page:
     month: "MAR"
     day: "26"
     year: "2029"
-  lost_passport: "N"
+  expiration_na: true
+  lost_passport: "Y"
   lost_passport_details:
-    number: ""
-    country: ""
-    explanation: ""
+    number: "S7754692"
+    country: "INDIA"
+    explanation: "STOLEN IN MEXICO"
 
 us_contact_page:
   contact:
