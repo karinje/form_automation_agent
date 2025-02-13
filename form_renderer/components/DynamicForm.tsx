@@ -356,6 +356,42 @@ const isPrevTravelSection = (fields: string[]): boolean => {
   );
 };
 
+// Add helper function to count effective fields (treating grouped fields as one)
+const getEffectiveFieldCount = (fields: FormFieldType[]) => {
+  const dateGroups = new Set();
+  const ssnGroups = new Set();
+  let effectiveCount = 0;
+
+  fields.forEach(field => {
+    // Check if field is part of a date group
+    const dateMatch = field.text_phrase?.match(/^(.*?)\s*-\s*(Day|Month|Year)$/i);
+    if (dateMatch) {
+      const basePhrase = dateMatch[1];
+      if (!dateGroups.has(basePhrase)) {
+        dateGroups.add(basePhrase);
+        effectiveCount++; // Count entire date group as one field
+      }
+      return;
+    }
+
+    // Check if field is part of an SSN group
+    const ssnMatch = field.text_phrase?.match(/^U\.S\. Social Security Number (\d+)$/i);
+    if (ssnMatch) {
+      const basePhrase = "U.S. Social Security Number";
+      if (!ssnGroups.has(basePhrase)) {
+        ssnGroups.add(basePhrase);
+        effectiveCount++; // Count entire SSN group as one field
+      }
+      return;
+    }
+
+    // Regular field
+    effectiveCount++;
+  });
+
+  return effectiveCount;
+};
+
 export default function DynamicForm({ formDefinition, formData, arrayGroups, onInputChange, onCompletionUpdate, formCategories, currentCategory, currentIndex, onNavigate }: DynamicFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -380,20 +416,26 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
 
   const prevArrayGroupsRef = useRef(arrayGroups);  // Move useRef to component level
 
-  // Move findDependency inside component
+  // Update findDependency to better handle nested dependencies
   const findDependency = (deps: Record<string, Dependency> | undefined, searchKey: string): Dependency | undefined => {
     if (!deps) return undefined;
     
+    // First try to find direct dependency
     const directDep = deps[searchKey];
     if (directDep) return directDep;
 
-    // Search in nested dependencies
+    // Then look in nested dependencies
     for (const dep of Object.values(deps)) {
       if (dep.dependencies) {
-        const nestedDep = findDependency(dep.dependencies, searchKey);
+        const nestedDep = dep.dependencies[searchKey];
         if (nestedDep) return nestedDep;
+        
+        // Recursively search deeper
+        const deeperDep = findDependency(dep.dependencies, searchKey);
+        if (deeperDep) return deeperDep;
       }
     }
+    
     return undefined;
   };
 
@@ -523,93 +565,103 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     }
   }, [formDefinition.dependencies])
 
+  // Update handleDependencyChange to handle nested dependencies
   const handleDependencyChange = (key: string, parentField: FormFieldType) => {
-    const newVisibleFields = new Set(visibleFields)
-    const newDependencyChains = [...dependencyChains]
+    const groupMatch = parentField.name.match(/_ctl(\d+)/);
+    const groupIndex = groupMatch ? parseInt(groupMatch[1]) : null;
     
+    const newVisibleFields = new Set(visibleFields);
+    const newDependencyChains = [...dependencyChains];
+
     // Find existing chain for this parent
     const existingChainIndex = newDependencyChains.findIndex(
       chain => chain.parentField.name === parentField.name
-    )
+    );
     
     // Remove this chain and all its children
     if (existingChainIndex !== -1) {
-      const chainsToRemove = getChildChains(newDependencyChains, existingChainIndex)
+      const chainsToRemove = getChildChains(newDependencyChains, existingChainIndex);
       chainsToRemove.forEach(chain => {
         chain.childFields.forEach(field => {
-          // Check if this is part of a date group
-          const dateGroup = dateGroups.find(dg => 
-            [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
-          )
-          // Check if this is part of an SSN group
-          const ssnGroup = ssnGroups.find(sg => 
-            [sg.number1Field.name, sg.number2Field.name, sg.number3Field.name].includes(field.name)
-          )
-          
-          if (dateGroup) {
-            // Remove all components of the date group
-            newVisibleFields.delete(dateGroup.dayField.name)
-            newVisibleFields.delete(dateGroup.monthField.name)
-            newVisibleFields.delete(dateGroup.yearField.name)
-          } else if (ssnGroup) {
-            // Remove all components of the SSN group
-            newVisibleFields.delete(ssnGroup.number1Field.name)
-            newVisibleFields.delete(ssnGroup.number2Field.name)
-            newVisibleFields.delete(ssnGroup.number3Field.name)
-          } else {
-            newVisibleFields.delete(field.name)
-          }
-        })
-      })
-      newDependencyChains.splice(existingChainIndex, chainsToRemove.length)
+          newVisibleFields.delete(field.name);
+        });
+      });
+      newDependencyChains.splice(existingChainIndex, chainsToRemove.length);
     }
+
+    // Find the original dependency key if this is a group field
+    let originalKey = key;
+    if (groupIndex !== null) {
+      // Replace all instances of _ctlXX with _ctl00 to match original dependency structure
+      originalKey = key.replace(/_ctl\d+/g, '_ctl00');
+    }
+
+    // First try to find direct dependency
+    let dependency = findDependency(formDefinition.dependencies, originalKey);
     
-    // Find and add new dependencies
-    const dependency = findDependency(formDefinition.dependencies, key)
+    // If not found, check if this is a nested dependency
+    if (!dependency) {
+      // Look through all top-level dependencies and their nested dependencies
+      Object.entries(formDefinition.dependencies).forEach(([topKey, topDep]) => {
+        if (topDep.dependencies) {
+          // Convert the original key pattern to match nested dependency pattern
+          const nestedKey = originalKey.replace('_ctl00_', '_ctl00_dtlOTHER_NATL_ctl00_');
+          if (topDep.dependencies[nestedKey]) {
+            dependency = topDep.dependencies[nestedKey];
+          }
+        }
+      });
+    }
+
     if (dependency?.shows?.length) {
-      const parentChainId = getParentChainId(newDependencyChains, parentField)
+      const parentChainId = getParentChainId(newDependencyChains, parentField);
+      
+      // Transform child field names if this is a repeated group
+      const transformedChildFields = dependency.shows.map(field => {
+        const transformedName = groupIndex !== null ? 
+          transformFieldName(field.name, groupIndex) : 
+          field.name;
+
+        return {
+          ...field,
+          name: transformedName,
+          button_ids: field.button_ids && groupIndex !== null ? 
+            Object.fromEntries(
+              Object.entries(field.button_ids).map(([k, id]) => [
+                k,
+                transformFieldName(id, groupIndex)
+              ])
+            ) : field.button_ids
+        };
+      });
+
       const newChain: DependencyChain = {
         parentField,
-        childFields: dependency.shows,
+        childFields: transformedChildFields,
         parentChainId
-      }
+      };
       
-      // Insert chain after its parent chain
-      const insertIndex = parentChainId 
-        ? newDependencyChains.findIndex(c => c.parentField.name === parentChainId) + 1
-        : newDependencyChains.length
+      newDependencyChains.splice(
+        parentChainId ? 
+          newDependencyChains.findIndex(c => c.parentField.name === parentChainId) + 1 : 
+          newDependencyChains.length, 
+        0, 
+        newChain
+      );
       
-      newDependencyChains.splice(insertIndex, 0, newChain)
-      dependency.shows.forEach(field => {
-        // Check if this is part of a date group
-        const dateGroup = dateGroups.find(dg => 
-          [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
-        )
-        // Check if this is part of an SSN group
-        const ssnGroup = ssnGroups.find(sg => 
-          [sg.number1Field.name, sg.number2Field.name, sg.number3Field.name].includes(field.name)
-        )
-        
-        if (dateGroup) {
-          // Add all components of the date group
-          newVisibleFields.add(dateGroup.dayField.name)
-          newVisibleFields.add(dateGroup.monthField.name)
-          newVisibleFields.add(dateGroup.yearField.name)
-        } else if (ssnGroup) {
-          // Add all components of the SSN group
-          newVisibleFields.add(ssnGroup.number1Field.name)
-          newVisibleFields.add(ssnGroup.number2Field.name)
-          newVisibleFields.add(ssnGroup.number3Field.name)
-        } else {
-          newVisibleFields.add(field.name)
-        }
-      })
+      transformedChildFields.forEach(field => {
+        newVisibleFields.add(field.name);
+        debugLog('previous_travel_page', `Adding field to visible fields:`, {
+          name: field.name,
+          originalName: field.name.replace(new RegExp(`_ctl${groupIndex}`), '_ctl00')
+        });
+      });
     }
     
-    setVisibleFields(newVisibleFields)
-    setDependencyChains(newDependencyChains)
-    updateOrderedFields(newDependencyChains)
-  }
+    setVisibleFields(newVisibleFields);
+    setDependencyChains(newDependencyChains);
+    updateOrderedFields(newDependencyChains);
+  };
 
   // Helper to get all child chains that need to be removed
   const getChildChains = (chains: DependencyChain[], startIndex: number): DependencyChain[] => {
@@ -816,25 +868,38 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     setFieldGroups(groups);
   }, [formDefinition.fields]);
 
-  // Add back the handleAddGroup function
+  // Update the handleAddGroup function to handle nested dependencies
   const handleAddGroup = (phraseGroup: FieldGroup) => {
     const groupKey = normalizeTextPhrase(phraseGroup.parentTextPhrase);
     
     setRepeatedGroups(prev => {
       const currentGroups = prev[groupKey] || [];
-      const newGroupIndex = currentGroups.length + 1; // This will be 1 for first extra group, 2 for second, etc.
+      const newGroupIndex = currentGroups.length + 1;
       
-      // Clone fields and update names using transformFieldName helper.
+      // Clone fields and update names using transformFieldName helper
       const newClonedFields = phraseGroup.fields.map(field => {
-        // Check if this field is part of a date group
         const dateGroup = dateGroups.find(dg => 
           [dg.dayField.name, dg.monthField.name, dg.yearField.name].includes(field.name)
         );
         
+        const newField = {
+          ...field,
+          name: transformFieldName(field.name, newGroupIndex),
+          // Transform button_ids for the new group
+          button_ids: field.button_ids ? {
+            ...field.button_ids,
+            ...Object.fromEntries(
+              Object.entries(field.button_ids).map(([key, id]) => [
+                key,
+                transformFieldName(id, newGroupIndex)
+              ])
+            )
+          } : undefined
+        };
+
         if (dateGroup) {
           return {
-            ...field,
-            name: transformFieldName(field.name, newGroupIndex),
+            ...newField,
             dateGroup: {
               ...dateGroup,
               dayField: { ...dateGroup.dayField, name: transformFieldName(dateGroup.dayField.name, newGroupIndex) },
@@ -844,28 +909,118 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
           };
         }
         
-        return {
-          ...field,
-          name: transformFieldName(field.name, newGroupIndex)
-        };
+        return newField;
       });
-      
-      debugLog('previous_travel_page', `Added extra group ${newGroupIndex} for phrase ${groupKey}`, newClonedFields);
-      
-      // Update visible fields immediately for this new group
+
+      // Update findAndTransformDependencies to better handle nested dependencies
+      const findAndTransformDependencies = (field: FormFieldType) => {
+        if (!field.button_ids) return [];
+
+        const chains: DependencyChain[] = [];
+        
+        Object.entries(field.button_ids).forEach(([value, buttonId]) => {
+          // First find the original dependency key (using ctl00)
+          const originalKey = buttonId.replace(/_ctl\d+/g, '_ctl00') + '.' + value;
+          const transformedButtonId = transformFieldName(buttonId, newGroupIndex);
+          
+          // Find the dependency in the original form definition
+          const dependency = findDependency(formDefinition.dependencies, originalKey);
+          
+          if (dependency?.shows?.length) {
+            // Transform the parent field
+            const transformedParent = {
+              ...field,
+              name: transformFieldName(field.name, newGroupIndex),
+              button_ids: {
+                ...field.button_ids,
+                [value]: transformedButtonId
+              }
+            };
+
+            // Transform child fields
+            const transformedChildren = dependency.shows.map(child => ({
+              ...child,
+              name: transformFieldName(child.name, newGroupIndex),
+              button_ids: child.button_ids ? 
+                Object.fromEntries(
+                  Object.entries(child.button_ids).map(([k, id]) => [
+                    k,
+                    transformFieldName(id, newGroupIndex)
+                  ])
+                ) : undefined,
+              add_group: child.add_group
+            }));
+
+            // Add this chain
+            chains.push({
+              parentField: transformedParent,
+              childFields: transformedChildren,
+              parentChainId: undefined
+            });
+
+            // Important: Also add the nested dependencies from the original form definition
+            if (dependency.dependencies) {
+              Object.entries(dependency.dependencies).forEach(([depKey, nestedDep]) => {
+                // Transform the nested dependency key to match the new group
+                const [baseId, val] = depKey.split('.');
+                const transformedNestedButtonId = transformFieldName(baseId.replace(/_ctl\d+/g, '_ctl00'), newGroupIndex);
+                
+                // Find the parent field for this nested dependency
+                const nestedParent = transformedChildren.find(
+                  child => child.button_ids && Object.values(child.button_ids).includes(transformedNestedButtonId)
+                );
+
+                if (nestedParent && nestedDep?.shows?.length) {
+                  // Transform the nested children
+                  const transformedNestedChildren = nestedDep.shows.map(child => ({
+                    ...child,
+                    name: transformFieldName(child.name, newGroupIndex),
+                    button_ids: child.button_ids ? 
+                      Object.fromEntries(
+                        Object.entries(child.button_ids).map(([k, id]) => [
+                          k,
+                          transformFieldName(id, newGroupIndex)
+                        ])
+                      ) : undefined
+                  }));
+
+                  // Add the nested chain
+                  chains.push({
+                    parentField: nestedParent,
+                    childFields: transformedNestedChildren,
+                    parentChainId: transformedParent.name
+                  });
+                }
+              });
+            }
+          }
+        });
+
+        return chains;
+      };
+
+      // Get all dependency chains for the new group
+      const newDependencyChains = phraseGroup.fields.flatMap(field => 
+        findAndTransformDependencies(field)
+      );
+
+      // Update visible fields and dependencies
       setVisibleFields(prevVisible => {
         const updated = new Set(Array.from(prevVisible));
         newClonedFields.forEach(field => {
           updated.add(field.name);
-          // If it's a date field, add all related date field names
-          if (field.dateGroup) {
-            updated.add(field.dateGroup.dayField.name);
-            updated.add(field.dateGroup.monthField.name);
-            updated.add(field.dateGroup.yearField.name);
+          if ((field as any).dateGroup) {
+            const dg = (field as any).dateGroup;
+            updated.add(dg.dayField.name);
+            updated.add(dg.monthField.name);
+            updated.add(dg.yearField.name);
           }
         });
         return updated;
       });
+
+      // Add new dependency chains
+      setDependencyChains(prev => [...prev, ...newDependencyChains]);
       
       return {
         ...prev,
@@ -996,15 +1151,16 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                 }).filter(Boolean)
 
                 return (
-                  <div key={`phrase-group-${phraseGroup.parentTextPhrase}-${phraseIndex}`} className="space-y-4">
+                  <div key={`phrase-group-${phraseGroup.parentTextPhrase}-${phraseIndex}`}>
                     {/* Render the phrase group with border if it has multiple fields */}
-                    <div className={`relative ${phraseGroup.fields.length > 1 ? 'border border-gray-400 rounded-lg p-12 mb-8 mt-12' : ''}`}>
-                      {phraseGroup.fields.length > 1 && phraseGroup.parentTextPhrase && (
+                    <div className={`relative ${getEffectiveFieldCount(phraseGroup.fields) > 1 ? 
+                      'border border-gray-400 rounded-lg p-12 mb-8 mt-12' : ''}`}>
+                      {getEffectiveFieldCount(phraseGroup.fields) > 1 && phraseGroup.parentTextPhrase && (
                         <span className="absolute -top-3 left-3 bg-white px-2 text-sm font-bold text-gray-1000">
                           {phraseGroup.parentTextPhrase}
                         </span>
                       )}
-                      
+
                       <div className="space-y-4">
                         {fieldsToRender.map(item => {
                           if (item.type === 'date') {
@@ -1043,28 +1199,28 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                           )
                         })}
                       </div>
+
+                      {/* Add Group button */}
+                      {phraseGroup.fields.some(f => f.add_group) && (
+                        <div className="absolute -bottom-4 right-3">
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            size="sm"
+                            data-group-id={normalizeTextPhrase(phraseGroup.parentTextPhrase)}
+                            onClick={() => {
+                              debugLog('previous_travel_page', 'Adding group with phraseGroup:', phraseGroup);
+                              handleAddGroup(phraseGroup);
+                            }}
+                            className="bg-white border-2 border-gray-300 hover:bg-gray-50 text-gray-700"
+                          >
+                            Add Another
+                          </Button>
+                        </div>
+                      )}
                     </div>
 
-                    {/* Add Group button */}
-                    {phraseGroup.fields.some(f => f.add_group) && (
-                      <div key={`add-group-${phraseIndex}`} className="flex justify-end mt-4">
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          size="sm"
-                          data-group-id={normalizeTextPhrase(phraseGroup.parentTextPhrase)}
-                          onClick={() => {
-                            debugLog('previous_travel_page', 'Adding group with phraseGroup:', phraseGroup);
-                            handleAddGroup(phraseGroup);
-                          }}
-                          className="border-2 border-gray-300"
-                        >
-                          Add Another
-                        </Button>
-                      </div>
-                    )}
-
-                    {/* Repeated groups */}
+                    {/* Repeated groups with increased margins */}
                     {repeatedGroups[normalizeTextPhrase(phraseGroup.parentTextPhrase) || "NO_PHRASE"]?.map((clonedFields, cloneIdx) => {
                       // Process cloned fields for date groups
                       const clonedFieldsToRender = clonedFields.map(field => {
@@ -1080,31 +1236,17 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                           }
                         }
                         
-                        if (!dateFieldNames.has(field.name) || !renderedDateGroups.has(dateGroup?.basePhrase + `-clone-${cloneIdx}` || '')) {
-                          return {
-                            type: 'field',
-                            field,
-                            key: `field-${field.name}-clone-${cloneIdx}`
-                          }
+                        // Return field as a regular form field
+                        return {
+                          type: 'field',
+                          field,
+                          key: `field-${field.name}-clone-${cloneIdx}`
                         }
-                        
-                        return null
                       }).filter(Boolean)
 
                       return (
                         <div key={`clone-${phraseGroup.parentTextPhrase}-${phraseIndex}-${cloneIdx}`} 
-                             className="relative border border-dashed border-gray-300 p-4 rounded-md bg-gray-50">
-                          <div className="flex justify-end mb-0">
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              className="px-6 py-2 font-medium"
-                              onClick={(e) => handleRemoveGroup(phraseGroup, e)}
-                            >
-                              Remove
-                            </Button>
-                          </div>
-
+                             className="relative border border-dashed border-gray-300 p-4 pb-8 rounded-md bg-gray-50 mt-8 mb-8">
                           <div className="space-y-4">
                             {clonedFieldsToRender.map(item => {
                               if (item.type === 'date') {
@@ -1119,17 +1261,30 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                                 )
                               }
                               
+                              // For regular fields
                               return (
                                 <FormField
                                   key={item.key}
                                   field={item.field}
                                   value={formData[item.field.name] || ''}
                                   onChange={onInputChange}
-                                  visible={visibleFields.has(item.field.name) }
+                                  visible={visibleFields.has(item.field.name)}
                                   onDependencyChange={(key) => handleDependencyChange(key, item.field)}
                                 />
                               )
                             })}
+                          </div>
+
+                          {/* Add Remove button at bottom right on the border */}
+                          <div className="absolute -bottom-4 right-3">
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={(e) => handleRemoveGroup(phraseGroup, e)}
+                              className="bg-white border-2 border-red-300 hover:bg-red-50 text-red-700"
+                            >
+                              Remove
+                            </Button>
                           </div>
                         </div>
                       )

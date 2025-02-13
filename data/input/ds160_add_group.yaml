@@ -38,8 +38,9 @@ personal_page2:
     number2: "92"
     number3: "8575"
     na: false
-  us_taxpayer_id_na: true
   us_taxpayer_id: ""
+  us_taxpayer_id_na: true
+  
 
 travel_page:
   purpose_of_trip: "TEMPORARY WORKER (H)"
