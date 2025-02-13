@@ -1,6 +1,7 @@
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 import type { FormField as FormFieldType } from "@/types/form-definition"
 
 interface SSNFieldGroup {
@@ -17,69 +18,84 @@ interface SSNFieldGroupProps {
   visible: boolean
 }
 
-const SSNFieldGroup = ({ ssnGroup, values, onChange, visible }: SSNFieldGroupProps) => {
-  const { number1Field, number2Field, number3Field } = ssnGroup
+export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: SSNFieldGroupProps) {
+  // Check if any field has NA to determine initial state
+  const [isNAChecked, setIsNAChecked] = useState(() => {
+    return values[ssnGroup.number1Field.name] === "N/A" ||
+           values[ssnGroup.number2Field.name] === "N/A" ||
+           values[ssnGroup.number3Field.name] === "N/A";
+  });
 
-  const handleSSNChange = (part: number, value: string) => {
-    const field = part === 1 ? number1Field 
-                : part === 2 ? number2Field 
-                : number3Field
+  const handleNACheckboxChange = (checked: boolean) => {
+    setIsNAChecked(checked);
+    const value = checked ? "N/A" : "";
     
-    // Only allow numbers and limit length
-    const maxLength = part === 1 ? 3 : part === 2 ? 2 : 4
-    const sanitizedValue = value.replace(/\D/g, '').slice(0, maxLength)
-    
-    onChange(field.name, sanitizedValue)
+    // Update all three fields
+    onChange(ssnGroup.number1Field.name, value);
+    onChange(ssnGroup.number2Field.name, value);
+    onChange(ssnGroup.number3Field.name, value);
 
-    // Auto-focus next input when current is filled
-    if (sanitizedValue.length === maxLength) {
-      const nextInput = document.querySelector(
-        `input[name="${part === 1 ? number2Field.name 
-                    : part === 2 ? number3Field.name 
-                    : number3Field.name}"]`
-      ) as HTMLInputElement
-      if (nextInput && part !== 3) nextInput.focus()
+    // Update the NA checkbox state for each field if they have na_checkbox_id
+    if (ssnGroup.number1Field.na_checkbox_id) {
+      onChange(ssnGroup.number1Field.na_checkbox_id, checked ? "true" : "false");
     }
-  }
+    if (ssnGroup.number2Field.na_checkbox_id) {
+      onChange(ssnGroup.number2Field.na_checkbox_id, checked ? "true" : "false");
+    }
+    if (ssnGroup.number3Field.na_checkbox_id) {
+      onChange(ssnGroup.number3Field.na_checkbox_id, checked ? "true" : "false");
+    }
+  };
 
   if (!visible) return null
 
   return (
-    <div className="flex flex-col space-y-2">
-      <Label>Social Security Number</Label>
-      <div className="flex items-center gap-2">
-        <Input
-          type="text"
-          name={number1Field.name}
-          value={values[number1Field.name] || ''}
-          onChange={(e) => handleSSNChange(1, e.target.value)}
-          className="w-16"
-          placeholder="XXX"
-          maxLength={3}
-        />
-        <span className="text-gray-500">-</span>
-        <Input
-          type="text"
-          name={number2Field.name}
-          value={values[number2Field.name] || ''}
-          onChange={(e) => handleSSNChange(2, e.target.value)}
-          className="w-12"
-          placeholder="XX"
-          maxLength={2}
-        />
-        <span className="text-gray-500">-</span>
-        <Input
-          type="text"
-          name={number3Field.name}
-          value={values[number3Field.name] || ''}
-          onChange={(e) => handleSSNChange(3, e.target.value)}
-          className="w-20"
-          placeholder="XXXX"
-          maxLength={4}
-        />
+    <div className="space-y-2">
+      <Label>{ssnGroup.basePhrase}</Label>
+      <div className="flex items-center gap-4">
+        <div className="flex-grow flex items-center gap-2">
+          <Input
+            type="text"
+            maxLength={3}
+            value={values[ssnGroup.number1Field.name] || ''}
+            onChange={(e) => onChange(ssnGroup.number1Field.name, e.target.value)}
+            disabled={isNAChecked}
+            className="w-20"
+          />
+          <span>-</span>
+          <Input
+            type="text"
+            maxLength={2}
+            value={values[ssnGroup.number2Field.name] || ''}
+            onChange={(e) => onChange(ssnGroup.number2Field.name, e.target.value)}
+            disabled={isNAChecked}
+            className="w-16"
+          />
+          <span>-</span>
+          <Input
+            type="text"
+            maxLength={4}
+            value={values[ssnGroup.number3Field.name] || ''}
+            onChange={(e) => onChange(ssnGroup.number3Field.name, e.target.value)}
+            disabled={isNAChecked}
+            className="w-24"
+          />
+        </div>
+        <div className="flex items-center">
+          <Checkbox
+            id="ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_SSN_NA"
+            checked={isNAChecked}
+            onCheckedChange={handleNACheckboxChange}
+            className="w-6 h-6"
+          />
+          <Label 
+            htmlFor="ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_SSN_NA"
+            className="text-sm text-gray-500 ml-2"
+          >
+            Does Not Apply
+          </Label>
+        </div>
       </div>
     </div>
   )
 }
-
-export default SSNFieldGroup

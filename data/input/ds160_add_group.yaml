@@ -37,9 +37,9 @@ personal_page2:
     number1: "766"
     number2: "92"
     number3: "8575"
-    na: false
-  us_taxpayer_id: ""
-  us_taxpayer_id_na: true
+  us_social_security_na: false
+  us_taxpayer_id: "766928575"
+  us_taxpayer_id_na: false
   
 
 travel_page:

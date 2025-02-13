@@ -50,43 +50,34 @@ export const createFormMapping = (yamlContent: string): MappingResult => {
         
         // Handle NA checkbox fields
         if (yamlField.endsWith('_na')) {
-          debugLog('all_pages', `Found NA field: ${yamlField}`, { 
-            value,
-            valueType: typeof value,
-            isTrue: value === true,
-            isTrueString: value === "true"
-          });
-          
-          // Get the corresponding form field ID from mappings
           const formFieldId = getFormFieldId(pageName, yamlField);
-          debugLog('all_pages', `Looking up form field ID for NA field:`, {
-            yamlField,
-            formFieldId,
-            pageName
-          });
-          
-          if (formFieldId && (value === true || value === "true")) {
-            // Find the main field this NA checkbox corresponds to
-            const mainYamlField = yamlField.replace(/_na$/, '');
-            const mainFormFieldId = getFormFieldId(pageName, mainYamlField);
+          const stringValue = String(value) === 'true' ? "true" : "false";
+      
+          if (formFieldId) {
+            // Set the checkbox state
+            formData[formFieldId] = stringValue;
             
-            debugLog('all_pages', `Found main field for NA: ${mainYamlField}`, {
-              mainFormFieldId
-            });
-            
-            if (mainFormFieldId) {
-              // Set the main field value to "N/A"
-              formData[mainFormFieldId] = "N/A";
-              // Set the checkbox state
-              formData[formFieldId] = "true";
-              
-              debugLog('all_pages', `Set NA values:`, {
-                mainField: mainFormFieldId,
-                mainValue: "N/A",
-                checkboxField: formFieldId,
-                checkboxValue: "true"
-              });
+            // Special handling for SSN fields
+            if (yamlField === "us_social_security_na" && stringValue === "true") {
+              // Set all SSN fields to "N/A"
+              formData["ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN1"] = "N/A";
+              formData["ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN2"] = "N/A";
+              formData["ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN3"] = "N/A";
+                        
+            } else if (stringValue === "true") {
+              // Regular NA field handling
+              const mainYamlField = yamlField.replace(/_na$/, '');
+              const mainFormFieldId = getFormFieldId(pageName, mainYamlField);
+              if (mainFormFieldId) {
+                formData[mainFormFieldId] = "N/A";
+              }
             }
+            
+            debugLog('all_pages', `Set NA values:`, {
+              checkboxField: formFieldId,
+              checkboxValue: stringValue,
+              formData
+            });
           }
         } else if (Array.isArray(value)) {
           const normalizedField = normalizeTextPhrase(yamlField);

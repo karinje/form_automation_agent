@@ -6,7 +6,7 @@ personal_page2:
     number1: "123"  # First 3 digits of SSN
     number2: "45"   # Middle 2 digits of SSN
     number3: "6789" # Last 4 digits of SSN
-    na: false      # Check if no SSN
+  us_social_security_na: false      # Check if no SSN
   us_taxpayer_id: "987654321"  # U.S. Taxpayer ID Number, max 20 chars
   us_taxpayer_id_na: false     # Check if no taxpayer ID
   has_other_nationality: "Y"   # Do you hold other nationality? Y/N
