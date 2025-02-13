@@ -217,52 +217,7 @@
         "ZIMBABWE"
       ],
       "text_phrase": "Country/Region of Origin (Nationality)",
-      "parent_text_phrase": "Personal Information 2"
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_NATIONAL_ID",
-      "type": "text",
-      "value": "",
-      "text_phrase": "National Identification Number",
-      "parent_text_phrase": "Personal Information 2",
-      "maxlength": "20",
-      "has_na_checkbox": true
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN1",
-      "type": "text",
-      "value": "",
-      "text_phrase": "U.S. Social Security Number 1",
-      "parent_text_phrase": "Personal Information 2",
-      "maxlength": "3",
-      "has_na_checkbox": true
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN2",
-      "type": "text",
-      "value": "",
-      "text_phrase": "U.S. Social Security Number 2",
-      "parent_text_phrase": "Personal Information 2",
-      "maxlength": "2",
-      "has_na_checkbox": true
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN3",
-      "type": "text",
-      "value": "",
-      "text_phrase": "U.S. Social Security Number 3",
-      "parent_text_phrase": "Personal Information 2",
-      "maxlength": "4",
-      "has_na_checkbox": true
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_TAX_ID",
-      "type": "text",
-      "value": "",
-      "text_phrase": "U.S. Taxpayer ID Number",
-      "parent_text_phrase": "Personal Information 2",
-      "maxlength": "20",
-      "has_na_checkbox": true
+      "parent_text_phrase": "Country/Region of Origin (Nationality) "
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAPP_OTH_NATL_IND",
@@ -298,7 +253,59 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPermResOtherCntryInd_1"
       },
       "text_phrase": "Are you a permanent resident of a country/region other than your country/region of origin (nationality) indicated above?",
-      "parent_text_phrase": "Are you a permanent resident of a country/region other than your country/region of origin (nationality) indicated above?"
+      "parent_text_phrase": "Are you a permanent resident of a country/region other than your country/region of origin (nationality) indicated above?",
+      "help_text_phrase": "Permanent resident means any individual who has been legally granted by a country/region permission to live and work without time limitation in that country/region."
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_NATIONAL_ID",
+      "type": "text",
+      "value": "",
+      "text_phrase": "National Identification Number",
+      "parent_text_phrase": "National Identification Number",
+      "maxlength": "20",
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_NATIONAL_ID_NA",
+      "help_text_phrase": "Your National ID Number is a unique number that your government provides. The U.S. Government provides unique numbers to those who seek employment (Social Security Number) or pay taxes (Taxpayer ID)."
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN1",
+      "type": "text",
+      "value": "",
+      "text_phrase": "U.S. Social Security Number 1",
+      "parent_text_phrase": "U.S. Social Security Number",
+      "maxlength": "3",
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_SSN_NA"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN2",
+      "type": "text",
+      "value": "",
+      "text_phrase": "U.S. Social Security Number 2",
+      "parent_text_phrase": "U.S. Social Security Number",
+      "maxlength": "2",
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_SSN_NA"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SSN3",
+      "type": "text",
+      "value": "",
+      "text_phrase": "U.S. Social Security Number 3",
+      "parent_text_phrase": "U.S. Social Security Number",
+      "maxlength": "4",
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_SSN_NA"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_TAX_ID",
+      "type": "text",
+      "value": "",
+      "text_phrase": "U.S. Taxpayer ID Number",
+      "parent_text_phrase": "U.S. Taxpayer ID Number",
+      "maxlength": "20",
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_TAX_ID_NA"
     }
   ],
   "dependencies": {
@@ -520,7 +527,9 @@
             "ZAMBIA",
             "ZIMBABWE"
           ],
-          "text_phrase": "Other Country/Region of Origin (Nationality)"
+          "text_phrase": "Other Country/Region of Origin (Nationality)",
+          "parent_text_phrase": "Other Country/Region of Origin (Nationality)",
+          "add_group": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_rblOTHER_PPT_IND",
@@ -537,7 +546,9 @@
             "Y": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_rblOTHER_PPT_IND_0",
             "N": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_rblOTHER_PPT_IND_1"
           },
-          "text_phrase": "Do you hold a passport for the other country/region of origin (nationality) indicated above?"
+          "text_phrase": "Do you hold a passport for the other country/region of origin (nationality) indicated above?",
+          "parent_text_phrase": "Other Country/Region of Origin (Nationality)",
+          "add_group": true
         }
       ],
       "hides": [],
@@ -549,10 +560,10 @@
               "type": "text",
               "value": "",
               "text_phrase": "Passport",
-              "parent_text_phrase": "",
+              "parent_text_phrase": "Other Country/Region of Origin (Nationality)",
               "maxlength": "20",
-              "has_na_checkbox": false
-
+              "has_na_checkbox": false,
+              "add_group": true
             }
           ],
           "hides":[]
@@ -824,7 +835,8 @@
             "ZIMBABWE"
           ],
           "text_phrase": "Other Permanent Resident Country/Region",
-          "parent_text_phrase": "Other Permanent Resident Country/Region"
+          "parent_text_phrase": "Other Permanent Resident Country/Region",
+          "add_group": true
         }
       ],
       "hides": [],
