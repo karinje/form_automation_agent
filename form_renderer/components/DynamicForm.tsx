@@ -13,7 +13,7 @@ import yaml from 'js-yaml'
 import DateFieldGroup from "@/components/DateFieldGroup"
 import SSNFieldGroup from "@/components/SSNFieldGroup"
 import { debugLog } from '@/utils/consoleLogger'
-import { normalizeTextPhrase, isPrevTravelPage } from '@/utils/helpers'
+import { normalizeTextPhrase, isPrevTravelPage, getPreviousForm, getNextForm, getPageTitle } from '@/utils/helpers'
 import { triggerAsyncId } from "async_hooks"
 import { workerData } from "worker_threads"
 import { transformFieldName } from '@/utils/yaml-helpers'
@@ -24,6 +24,10 @@ interface DynamicFormProps {
   arrayGroups?: Record<string, Array<Record<string, string>>>
   onInputChange: (name: string, value: string) => void
   onCompletionUpdate?: (completed: number, total: number) => void
+  formCategories: FormCategories
+  currentCategory: string
+  currentIndex: number
+  onNavigate: (category: string, index: number) => void
 }
 
 // Add interface to track dependency hierarchy
@@ -352,7 +356,7 @@ const isPrevTravelSection = (fields: string[]): boolean => {
   );
 };
 
-export default function DynamicForm({ formDefinition, formData, arrayGroups, onInputChange, onCompletionUpdate }: DynamicFormProps) {
+export default function DynamicForm({ formDefinition, formData, arrayGroups, onInputChange, onCompletionUpdate, formCategories, currentCategory, currentIndex, onNavigate }: DynamicFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -887,6 +891,43 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     }
   };
 
+  const renderNavigationButtons = () => {
+    const prevForm = getPreviousForm(formCategories, currentCategory, currentIndex);
+    const nextForm = getNextForm(formCategories, currentCategory, currentIndex);
+
+    return (
+      <div className="flex justify-between mt-6">
+        {prevForm && (
+          <Button
+            type="button"
+            onClick={() => onNavigate(prevForm.category, prevForm.index)}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium"
+          >
+            ← {getPageTitle(formCategories, prevForm.category, prevForm.index)}
+          </Button>
+        )}
+        
+        <Button
+          type="button"
+          onClick={() => {/* Save logic here */}}
+          className="bg-green-600 hover:bg-green-700 text-white font-medium px-8"
+        >
+          Save
+        </Button>
+
+        {nextForm && (
+          <Button
+            type="button"
+            onClick={() => onNavigate(nextForm.category, nextForm.index)}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium"
+          >
+            {getPageTitle(formCategories, nextForm.category, nextForm.index)} →
+          </Button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(() => {})} className="space-y-6">
@@ -1100,13 +1141,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
           )
         })}
         
-        <div className="flex justify-end space-x-4">
-          {formDefinition.buttons?.map((button) => (
-            <Button key={button.id} type={button.type as "button" | "submit"}>
-              {button.value}
-            </Button>
-          ))}
-        </div>
+        {renderNavigationButtons()}
       </form>
     </FormProvider>
   )

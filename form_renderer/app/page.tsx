@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { createFormMapping } from '@/utils/yaml-mapping'
 import { debugLog } from '@/utils/consoleLogger'
+import { FormCategories } from '@/utils/helpers'
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -341,6 +342,37 @@ export default function Home() {
     }))
   }
 
+  // Add state for current form
+  const [currentForm, setCurrentForm] = useState<{category: string; index: number}>({
+    category: 'personal',
+    index: 0
+  });
+
+  // Add navigation handler
+  const handleNavigate = (category: string, index: number) => {
+    // First collapse current accordion
+    setAccordionValues(prev => ({
+      ...prev,
+      [currentForm.category]: ""
+    }));
+
+    // Switch tabs if needed
+    if (category !== currentForm.category) {
+      setCurrentTab(category);
+    }
+
+    // Update current form
+    setCurrentForm({ category, index });
+
+    // Expand new accordion item after a small delay
+    setTimeout(() => {
+      setAccordionValues(prev => ({
+        ...prev,
+        [category]: `item-${index}`
+      }));
+    }, 100);
+  };
+
   const renderFormSection = (forms: typeof formCategories.personal, category: string) => (
     <Accordion 
       type="single" 
@@ -359,7 +391,6 @@ export default function Home() {
         }, [formId])
         
         const groupsForPage = form.pageName ? arrayGroups[form.pageName] || {} : {};
-        //console.log(`Rendering DynamicForm for ${form.pageName}:`, groupsForPage);
         
         return (
           <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
@@ -395,6 +426,10 @@ export default function Home() {
                 arrayGroups={groupsForPage}
                 onInputChange={handleInputChange}
                 onCompletionUpdate={onCompletionMemo}
+                formCategories={formCategories}
+                currentCategory={category}
+                currentIndex={index}
+                onNavigate={handleNavigate}
               />
             </AccordionContent>
           </AccordionItem>
