@@ -17,6 +17,8 @@ import { normalizeTextPhrase, isPrevTravelPage, getPreviousForm, getNextForm, ge
 import { triggerAsyncId } from "async_hooks"
 import { workerData } from "worker_threads"
 import { transformFieldName } from '@/utils/yaml-helpers'
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
 
 interface DynamicFormProps {
   formDefinition: FormDefinition
@@ -73,7 +75,6 @@ const groupFieldsByParent = (
   formDef: FormDefinition
 ): FormFieldType[][] => {
   const hasPrevTravel = fields.some(f => isPrevTravelPage(formDef));
-  //print all formdef attribute names
   
   if (hasPrevTravel) {
     debugLog('previous_travel_page', 'Grouping fields:', fields);
@@ -82,82 +83,61 @@ const groupFieldsByParent = (
   const result: FormFieldType[][] = []
   const processedFields = new Set<string>()
 
-  // STEP 1: Collect base fields by parent_text_phrase
-  // ------------------------------------------------
-  // Instead of pushing each base field separately, we group them by their parent_text_phrase.
-  type FieldsByPhrase = Record<string, FormFieldType[]>
-  const topLevelGroups: FieldsByPhrase = {}
-
-  // "Base" means fields not found as children in any chain.
-  const baseFields = fields.filter(field => 
-    !chains.some(chain => 
-      chain.childFields.some(cf => cf.name === field.name)
-    )
-  )
-
-  baseFields.forEach(field => {
-    if (!topLevelGroups[field.parent_text_phrase ?? '']) {
-      topLevelGroups[field.parent_text_phrase ?? ''] = []
-    }
-    topLevelGroups[field.parent_text_phrase ?? ''].push(field)
-  })
-
-  // STEP 2: Process base groups and recursively add dependencies
-  // ------------------------------------------------------------
-  const processGroupWithDependencies = (groupedFields: FormFieldType[]) => {
-    // Mark them processed
-    groupedFields.forEach(f => processedFields.add(f.name))
-
-    // Insert this group as a single "top-level group" in result
-    result.push([...groupedFields])
-
-    // For each field in this group, handle its dependencies
-    groupedFields.forEach(field => {
-      const chain = chains.find(c => c.parentField.name === field.name)
+  // Process base fields and their complete dependency chains
+  fields.forEach(field => {
+    if (!processedFields.has(field.name)) {
+      // Find all dependencies for this field
+      const chain = chains.find(c => c.parentField.name === field.name);
       if (chain) {
-        // Add child fields in a separate array, but keep them in the same bounding box
-        const dependencyGroup: FormFieldType[] = []
-        chain.childFields.forEach(depField => {
-          dependencyGroup.push(depField)
-          processedFields.add(depField.name)
+        // Create a new result group for this chain's dependencies
+        const dependencyGroup: FormFieldType[] = [field];
+        processedFields.add(field.name);
 
-          // Check for nested dependencies
-          const nestedChain = chains.find(c => c.parentField.name === depField.name)
+        // Process all child fields in this chain
+        chain.childFields.forEach(depField => {
+          dependencyGroup.push(depField);
+          processedFields.add(depField.name);
+
+          // Also process any nested dependencies
+          const nestedChain = chains.find(c => c.parentField.name === depField.name);
           if (nestedChain) {
             nestedChain.childFields.forEach(nestedField => {
               if (!processedFields.has(nestedField.name)) {
-                dependencyGroup.push(nestedField)
-                processedFields.add(nestedField.name)
+                dependencyGroup.push(nestedField);
+                processedFields.add(nestedField.name);
               }
-            })
+            });
           }
-        })
-        if (dependencyGroup.length > 0) {
-          result.push(dependencyGroup)
+        });
+
+        // Add the dependency group to result if it has more than just the parent field
+        if (dependencyGroup.length > 1) {
+          result.push(dependencyGroup);
+        } else {
+          // If no dependencies, add as single field
+          result.push([field]);
         }
+      } else {
+        // Handle non-dependency fields - group by parent_text_phrase
+        const parentPhrase = field.parent_text_phrase ?? '';
+        const existingGroup = result.find(group => 
+          group[0].parent_text_phrase === parentPhrase
+        );
+        
+        if (existingGroup) {
+          existingGroup.push(field);
+        } else {
+          result.push([field]);
+        }
+        processedFields.add(field.name);
       }
-    })
-  }
-
-  // For each top-level group by parent phrase, process together
-  Object.values(topLevelGroups).forEach(grouped => {
-    processGroupWithDependencies(grouped)
-  })
-
-  // STEP 3: Process leftover fields (in case any child fields not yet visited).
-  // ------------------------------------------------
-  fields.forEach(field => {
-    if (!processedFields.has(field.name)) {
-      // This is a child of some chain that never got processed
-      // or an orphan we haven't handled. 
-      result.push([field])
     }
-  })
+  });
 
   if (hasPrevTravel) {
     debugLog('previous_travel_page', 'Grouped result:', result);
   }
-  return result
+  return result;
 }
 
 const detectDateFields = (fields: FormFieldType[]): DateFieldGroup[] => {
@@ -748,7 +728,13 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     });
 
     const total = nonOptionalFieldNames.length;
-    const completed = nonOptionalFieldNames.filter(name => (formData[name] || "").trim() !== "").length;
+    const completed = nonOptionalFieldNames.filter(name => {
+      // Skip any field names that contain dots (nested fields) as they're handled by their individual components
+      if (name.includes('.')) return false;
+      
+      const value = formData[name];
+      return value ? value.toString().trim() !== "" : false;
+    }).length;
 
     const hasPrevTravelFields = visibleFieldNames.some(name => isPrevTravelPage(formDefinition));
     if (hasPrevTravelFields) {
@@ -885,6 +871,10 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
         const newField = {
           ...field,
           name: transformFieldName(field.name, newGroupIndex),
+          // Also transform na_checkbox_id if it exists
+          na_checkbox_id: field.na_checkbox_id ? 
+            transformFieldName(field.na_checkbox_id, newGroupIndex) : 
+            undefined,
           // Transform button_ids for the new group
           button_ids: field.button_ids ? {
             ...field.button_ids,

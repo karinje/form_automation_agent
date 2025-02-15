@@ -42,14 +42,18 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
 
   // Add effect to handle NA state changes from YAML
   useEffect(() => {
-    if (values['expiration_na'] === "true") {
+    const naCheckboxValue = dayField.na_checkbox_id ? values[dayField.na_checkbox_id] : undefined;
+    if (naCheckboxValue === "true" && !isNAChecked) {
       setIsNAChecked(true);
-      onChange(dayField.name, "N/A");
-      onChange(monthField.name, "N/A");
-      onChange(yearField.name, "N/A");
-      onChange('ctl00_SiteContentPlaceHolder_FormView1_cbexPPT_EXPIRE_NA', "true");
+      // Batch these updates together to avoid multiple re-renders
+      const updates = {
+        [dayField.name]: "N/A",
+        [monthField.name]: "N/A",
+        [yearField.name]: "N/A"
+      };
+      Object.entries(updates).forEach(([name, value]) => onChange(name, value));
     }
-  }, [values, dayField.name, monthField.name, yearField.name, onChange]);
+  }, [values[dayField.na_checkbox_id]]); // Only depend on the checkbox value
 
   if (!visible) return null;
 
@@ -78,13 +82,19 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
     setIsNAChecked(checked);
     const value = checked ? "N/A" : "";
     
-    // Update all three fields
-    onChange(dayField.name, value);
-    onChange(monthField.name, value);
-    onChange(yearField.name, value);
+    // Batch these updates together
+    const updates = {
+      [dayField.name]: value,
+      [monthField.name]: value,
+      [yearField.name]: value
+    };
+    
+    if (dayField.na_checkbox_id) {
+      updates[dayField.na_checkbox_id] = checked ? "true" : "false";
+    }
 
-    // Update the NA checkbox state
-    onChange('ctl00_SiteContentPlaceHolder_FormView1_cbexPPT_EXPIRE_NA', checked ? "true" : "false");
+    // Apply all updates at once
+    Object.entries(updates).forEach(([name, value]) => onChange(name, value));
   };
 
   const getDateValue = () => {
@@ -125,16 +135,16 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
           placeholder="Select date"
           disabled={isNAChecked}
         />
-        {dayField.has_na_checkbox && (
+        {dayField.has_na_checkbox && dayField.na_checkbox_id && (
           <div className="flex items-center">
             <Checkbox
-              id="ctl00_SiteContentPlaceHolder_FormView1_cbexPPT_EXPIRE_NA"
+              id={dayField.na_checkbox_id}
               checked={isNAChecked}
               onCheckedChange={handleNACheckboxChange}
               className="w-6 h-6"
             />
             <Label 
-              htmlFor="ctl00_SiteContentPlaceHolder_FormView1_cbexPPT_EXPIRE_NA"
+              htmlFor={dayField.na_checkbox_id}
               className="text-sm text-gray-500 ml-2"
             >
               {dayField.na_checkbox_text || "Does Not Apply"}

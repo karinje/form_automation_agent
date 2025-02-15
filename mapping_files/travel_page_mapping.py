@@ -20,8 +20,10 @@ form_mapping = {
     "principal_applicant.given_name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipleAppGivenName",
     "principal_applicant.petition_number": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
     "principal_applicant.company": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipalAppCompany",
-    "principal_applicant.evisa_executive": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX",
-
+    "investor_issued_visa": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX",
+    "principal_applicant.investor_dob.day": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBDay",
+    "principal_applicant.investor_dob.month": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBMonth",
+    "principal_applicant.investor_dob.year": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxDOBYear",
     # Specific Travel Details
     "specific_travel_plans_details.arrival.month": "ctl00_SiteContentPlaceHolder_FormView1_ddlARRIVAL_US_DTEMonth",
     "specific_travel_plans_details.arrival.day": "ctl00_SiteContentPlaceHolder_FormView1_ddlARRIVAL_US_DTEDay",
@@ -35,7 +37,8 @@ form_mapping = {
     "specific_travel_plans_details.departure.flight": "ctl00_SiteContentPlaceHolder_FormView1_tbxDepartFlight",
     "specific_travel_plans_details.departure.city": "ctl00_SiteContentPlaceHolder_FormView1_tbxDepartCity",
     
-    "specific_travel_plans_details.locations_to_visit": "ctl00_SiteContentPlaceHolder_FormView1_dtlTravelLoc_ctl00_tbxSPECTRAVEL_LOCATION",
+    "specific_travel_plans_details.locations_to_visit.location": "ctl00_SiteContentPlaceHolder_FormView1_dtlTravelLoc_ctl00_tbxSPECTRAVEL_LOCATION",
+    "specific_travel_plans_details.locations_to_visit.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlTravelLoc_ctl00_InsertButtonTravelLoc",
 
     # Non-specific Travel Details
     "non_specific_travel_plans_details.arrival.month": "ctl00_SiteContentPlaceHolder_FormView1_ddlTRAVEL_DTEMonth",
@@ -67,5 +70,12 @@ form_mapping = {
 
     # Company Payment Details (when who_is_paying = "Other Company/Organization")
     "company_payment.name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayingCompany",
-    "company_payment.relation": "ctl00_SiteContentPlaceHolder_FormView1_tbxCompanyRelation"
-} 
+    "company_payment.relation": "ctl00_SiteContentPlaceHolder_FormView1_tbxCompanyRelation",
+
+    # Add mappings for the dependent fields that appear when investor_issued_visa is "Y"
+    "principal_applicant.ev_surname": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxEVPrincipleAppSurname",
+    "principal_applicant.ev_given_name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxEVPrincipleAppGivenName",
+    "principal_applicant.ev_dob.day": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBDay",
+    "principal_applicant.ev_dob.month": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBMonth",
+    "principal_applicant.ev_dob.year": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxDOBYear",
+}

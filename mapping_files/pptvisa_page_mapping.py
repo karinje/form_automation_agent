@@ -13,9 +13,10 @@ form_mapping = {
     "expiration.day": "ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_EXPIRE_DTEDay",
     "expiration.month": "ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_EXPIRE_DTEMonth", 
     "expiration.year": "ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_EXPIREYear",
-    "expiration_na": "ctl00_SiteContentPlaceHolder_FormView1_cbexPPT_EXPIRE_NA",
+    "expiration_na": "ctl00_SiteContentPlaceHolder_FormView1_cbxPPT_EXPIRE_NA",
     "lost_passport": "ctl00_SiteContentPlaceHolder_FormView1_rblLOST_PPT_IND",
     "lost_passport_details.number": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_tbxLOST_PPT_NUM",
     "lost_passport_details.country": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_ddlLOST_PPT_NATL",
-    "lost_passport_details.explanation": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_tbxLOST_PPT_EXPL"
+    "lost_passport_details.explanation": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_tbxLOST_PPT_EXPL",
+    "lost_passport_details.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_InsertButtonLostPPT"
 } 

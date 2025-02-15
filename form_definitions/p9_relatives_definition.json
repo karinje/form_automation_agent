@@ -5,18 +5,22 @@
       "type": "text",
       "value": "",
       "text_phrase": "Surnames",
-      "parent_text_phrase": "(e.g., Hernandez Garcia)",
+      "parent_text_phrase": "Father's Full Name and Date of Birth",
       "maxlength": "33",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxFATHER_SURNAME_UNK_IND",
+      "na_checkbox_text": "Do not know"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxFATHER_GIVEN_NAME",
       "type": "text",
       "value": "",
       "text_phrase": "Given Names",
-      "parent_text_phrase": "Father's Name",
+      "parent_text_phrase": "Father's Full Name and Date of Birth",
       "maxlength": "33",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxFATHER_GIVEN_NAME_UNK_IND",
+      "na_checkbox_text": "Do not know"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlFathersDOBDay",
@@ -55,9 +59,11 @@
         "30",
         "31"
       ],
-      "text_phrase": "Surnames",
-      "parent_text_phrase": "Father's Date of Birth",
-      "has_na_checkbox": true
+      "text_phrase": "Father's Date of Birth - Day",
+      "parent_text_phrase": "Father's Full Name and Date of Birth",
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxFATHER_DOB_UNK_IND",
+      "na_checkbox_text": "Do not know"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlFathersDOBMonth",
@@ -77,36 +83,62 @@
         "NOV",
         "DEC"
       ],
-      "text_phrase": "Surnames",
-      "parent_text_phrase": "Father's Date of Birth",
-      "has_na_checkbox": true
+      "text_phrase": "Father's Date of Birth - Month",
+      "parent_text_phrase": "Father's Full Name and Date of Birth",
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxFATHER_DOB_UNK_IND",
+      "na_checkbox_text": "Do not know"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxFathersDOBYear",
       "type": "text",
       "value": "",
-      "text_phrase": "Surnames",
-      "parent_text_phrase": "Father's Date of Birth",
+      "text_phrase": "Father's Date of Birth - Year",
+      "parent_text_phrase": "Father's Full Name and Date of Birth",
       "maxlength": "4",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxFATHER_DOB_UNK_IND",
+      "na_checkbox_text": "Do not know"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblFATHER_LIVE_IN_US_IND",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblFATHER_LIVE_IN_US_IND_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblFATHER_LIVE_IN_US_IND_1"
+      },
+      "text_phrase": "Is your father in the U.S.?",
+      "parent_text_phrase": "Father's Full Name and Date of Birth"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMOTHER_SURNAME",
       "type": "text",
       "value": "",
       "text_phrase": "Surnames",
-      "parent_text_phrase": "Mother's Name",
+      "parent_text_phrase": "Mother's Full Name and Date of Birth",
       "maxlength": "33",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxMOTHER_SURNAME_UNK_IND",
+      "na_checkbox_text": "Do not know"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMOTHER_GIVEN_NAME",
       "type": "text",
       "value": "",
       "text_phrase": "Given Names",
-      "parent_text_phrase": "Mother's Name",
+      "parent_text_phrase": "Mother's Full Name and Date of Birth",
       "maxlength": "33",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxMOTHER_GIVEN_NAME_UNK_IND",
+      "na_checkbox_text": "Do not know"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlMothersDOBDay",
@@ -145,9 +177,11 @@
         "30",
         "31"
       ],
-      "text_phrase": "Surnames",
-      "parent_text_phrase": "Mother's Date of Birth",
-      "has_na_checkbox": true
+      "text_phrase": "Mother's Date of Birth - Day",
+      "parent_text_phrase": "Mother's Full Name and Date of Birth",
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxMOTHER_DOB_UNK_IND",
+      "na_checkbox_text": "Do not know"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlMothersDOBMonth",
@@ -167,36 +201,22 @@
         "NOV",
         "DEC"
       ],
-      "text_phrase": "Surnames",
-      "parent_text_phrase": "Mother's Date of Birth",
-      "has_na_checkbox": true
+      "text_phrase": "Mother's Date of Birth - Month",
+      "parent_text_phrase": "Mother's Full Name and Date of Birth",
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxMOTHER_DOB_UNK_IND",
+      "na_checkbox_text": "Do not know"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMothersDOBYear",
       "type": "text",
       "value": "",
-      "text_phrase": "Surnames",
-      "parent_text_phrase": "Mother's Date of Birth",
+      "text_phrase": "Mother's Date of Birth - Year",
+      "parent_text_phrase": "Mother's Full Name and Date of Birth",
       "maxlength": "4",
-      "has_na_checkbox": true
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblFATHER_LIVE_IN_US_IND",
-      "type": "radio",
-      "value": [
-        "Y",
-        "N"
-      ],
-      "labels": [
-        "Yes",
-        "No"
-      ],
-      "button_ids": {
-        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblFATHER_LIVE_IN_US_IND_0",
-        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblFATHER_LIVE_IN_US_IND_1"
-      },
-      "text_phrase": "Is your father in the U.S.?",
-      "parent_text_phrase": ""
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxMOTHER_DOB_UNK_IND",
+      "na_checkbox_text": "Do not know"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblMOTHER_LIVE_IN_US_IND",
@@ -214,7 +234,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblMOTHER_LIVE_IN_US_IND_1"
       },
       "text_phrase": "Is your mother in the U.S.?",
-      "parent_text_phrase": ""
+      "parent_text_phrase": "Mother's Full Name and Date of Birth"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_IMMED_RELATIVE_IND",
@@ -232,25 +252,8 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_IMMED_RELATIVE_IND_1"
       },
       "text_phrase": "Do you have any immediate relatives, not including parents, in the United States?",
-      "parent_text_phrase": ""
-    },
-    {
-      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_OTHER_RELATIVE_IND",
-      "type": "radio",
-      "value": [
-        "Y",
-        "N"
-      ],
-      "labels": [
-        "Yes",
-        "No"
-      ],
-      "button_ids": {
-        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_OTHER_RELATIVE_IND_0",
-        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_OTHER_RELATIVE_IND_1"
-      },
-      "text_phrase": "Do you have any other relatives in the United States?",
-      "parent_text_phrase": ""
+      "parent_text_phrase": "",
+      "help_text_phrase": "Means fiancé/fiancée, spouse (husband/wife), child (son/daughter), or sibling (brother/sister)."
     }
   ],
   "dependencies": {
@@ -345,6 +348,24 @@
     "ctl00_SiteContentPlaceHolder_FormView1_rblUS_IMMED_RELATIVE_IND_0.Y": {
       "shows": [
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_tbxUS_REL_SURNAME",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Surnames",
+          "parent_text_phrase": "Immediate Relative Details",
+          "maxlength": "33",
+          "add_group": true
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_tbxUS_REL_GIVEN_NAME",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Given Names",
+          "parent_text_phrase": "Immediate Relative Details",
+          "maxlength": "33",
+          "add_group": true
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_ddlUS_REL_TYPE",
           "type": "dropdown",
           "value": [
@@ -354,7 +375,8 @@
             "SIBLING"
           ],
           "text_phrase": "Relationship to You",
-          "parent_text_phrase": "Immediate Relative Details"
+          "parent_text_phrase": "Immediate Relative Details",
+          "add_group": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_ddlUS_REL_STATUS",
@@ -366,26 +388,9 @@
             "OTHER/I DON'T KNOW"
           ],
           "text_phrase": "Relative's Status",
-          "parent_text_phrase": "Immediate Relative Details"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_tbxUS_REL_SURNAME",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Surnames",
           "parent_text_phrase": "Immediate Relative Details",
-          "maxlength": "33",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_tbxUS_REL_GIVEN_NAME",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Given Names",
-          "parent_text_phrase": "Immediate Relative Details",
-          "maxlength": "33",
-          "has_na_checkbox": false
-        }
+          "add_group": true
+        } 
       ],
       "hides": [
         "ctl00_SiteContentPlaceHolder_FormView1_rblUS_OTHER_RELATIVE_IND"
@@ -393,7 +398,26 @@
       "dependencies": null
     },
     "ctl00_SiteContentPlaceHolder_FormView1_rblUS_IMMED_RELATIVE_IND_1.N": {
-      "shows": [],
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_OTHER_RELATIVE_IND",
+          "type": "radio",
+          "value": [
+            "Y",
+            "N"
+          ],
+          "labels": [
+            "Yes",
+            "No"
+          ],
+          "button_ids": {
+            "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_OTHER_RELATIVE_IND_0",
+            "N": "ctl00_SiteContentPlaceHolder_FormView1_rblUS_OTHER_RELATIVE_IND_1"
+          },
+          "text_phrase": "Do you have any other relatives in the United States?",
+          "parent_text_phrase": ""
+        }
+      ],
       "hides": [],
       "dependencies": null
     },

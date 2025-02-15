@@ -29,18 +29,19 @@ form_mapping = {
     # Additional Phone
     "add_phone": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone",
     "additional_phone_number.phone": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddPhone_ctl00_tbxAddPhoneInfo",
-    
+    "additional_phone_number.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddPhone_ctl00_InsertButtonADDL_PHONE",
     # Email
     "email": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_EMAIL_ADDR",
     "add_email": "ctl00_SiteContentPlaceHolder_FormView1_rblAddEmail",
     "additional_email_address.email": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddEmail_ctl00_tbxAddEmailInfo",
-    
+    "additional_email_address.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddEmail_ctl00_InsertButtonADDL_EMAIL",
     # Social Media
     "add_social": "ctl00_SiteContentPlaceHolder_FormView1_rblAddSocial",
     "social_media.platform_select": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_ddlSocialMedia",
     "social_media.handle": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_tbxSocialMediaIdent",
-    
+    "social_media.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_InsertButtonSOCIAL_MEDIA_INFO",
     # Additional Social Media
     "additional_social_media.platform": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddSocial_ctl00_tbxAddSocialPlat",
-    "additional_social_media.handle": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddSocial_ctl00_tbxAddSocialHand"
+    "additional_social_media.handle": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddSocial_ctl00_tbxAddSocialHand",
+    "additional_social_media.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddSocial_ctl00_InsertButtonADDL_SOCIAL_MEDIA"
 } 

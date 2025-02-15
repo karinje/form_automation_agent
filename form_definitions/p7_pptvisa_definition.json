@@ -31,7 +31,8 @@
       "parent_text_phrase": "Passport Book Number",
       "maxlength": "20",
       "has_na_checkbox": true,
-      "help_text": "The Passport Book Number is commonly called the inventory control number. You may or may not have a Passport Book Number on your passport. The location of the Passport Book Number on your passport may vary depending on the country that issued your passport. Please contact your passport issuing authority if you are unable to determine whether or not your passport contains a Passport Book Number."
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxPPT_BOOK_NUM_NA",
+      "na_checkbox_text": "Does Not Apply"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_ISSUED_CNTRY",
@@ -644,6 +645,7 @@
       "text_phrase": "Expiration Date - Day",
       "parent_text_phrase": "Expiration Date",
       "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxPPT_EXPIRE_NA",
       "na_checkbox_text": "No Expiration"
     },
     {
@@ -666,6 +668,7 @@
       "text_phrase": "Expiration Date - Month",
       "parent_text_phrase": "Expiration Date",
       "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxPPT_EXPIRE_NA",
       "na_checkbox_text": "No Expiration"
     },
     {
@@ -676,6 +679,7 @@
       "parent_text_phrase": "Expiration Date",
       "maxlength": "4",
       "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxPPT_EXPIRE_NA",
       "na_checkbox_text": "No Expiration"
     },
     {
@@ -743,6 +747,7 @@
           "parent_text_phrase": "Lost Passport/Travel Document Details",
           "maxlength": "20",
           "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_cbxLOST_PPT_NUM_UNKN_IND",
           "na_checkbox_text": "Do not know",
           "add_group": true,
           "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlLostPPT_ctl00_InsertButtonLostPPT"

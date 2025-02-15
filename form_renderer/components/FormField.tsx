@@ -225,6 +225,31 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     }
   }
 
+  const renderNACheckbox = () => {
+    if (!field.has_na_checkbox || !field.na_checkbox_id) return null;
+
+    // Determine if this is a standalone field (not part of date/SSN group)
+    const isStandalone = !field.text_phrase?.includes('Date') && 
+                        !field.text_phrase?.includes('Social Security Number');
+
+    return (
+      <div className={`flex items-center ${isStandalone ? 'flex-shrink-0' : 'ml-4'}`}>
+        <Checkbox
+          id={field.na_checkbox_id}
+          checked={isNAChecked}
+          onCheckedChange={handleNACheckboxChange}
+          className={isStandalone ? 'h-6 w-6' : 'h-4 w-4'}
+        />
+        <Label 
+          htmlFor={field.na_checkbox_id}
+          className={`text-sm text-gray-500 ${isStandalone ? 'ml-3' : 'ml-2'} whitespace-nowrap`}
+        >
+          {field.na_checkbox_text || "Does Not Apply"}
+        </Label>
+      </div>
+    );
+  };
+
   return (
     <div className={`w-full ${!visible ? 'hidden' : ''}`}>
       <div className="space-y-2">
@@ -232,41 +257,16 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
           <Label htmlFor={field.name}>{field.text_phrase}</Label>
         )}
         {field.has_na_checkbox && (field.type === "text" || field.type === "textarea") ? (
-          <div className="flex items-center">
-            {renderField()}
-            <div className="ml-2 flex-shrink-0 flex items-center">
-              <Checkbox 
-                id={field.na_checkbox_id || field.name.replace('tbx', 'cbex') + '_NA'}
-                checked={isNAChecked} 
-                onCheckedChange={handleNACheckboxChange}
-                className="w-6 h-6"
-              />
-              <Label 
-                htmlFor={field.na_checkbox_id || field.name.replace('tbx', 'cbex') + '_NA'}
-                className="ml-2 text-sm text-gray-500"
-              >
-                {field.na_checkbox_text || "Does Not Apply"}
-              </Label>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
+              {renderField()}
             </div>
+            {renderNACheckbox()}
           </div>
         ) : (
           <>
             {renderField()}
-            {field.has_na_checkbox && (
-              <div className="flex items-center gap-2 mt-1">
-                <Checkbox 
-                  id={field.na_checkbox_id || field.name.replace('tbx', 'cbex') + '_NA'}
-                  checked={isNAChecked} 
-                  onCheckedChange={handleNACheckboxChange}
-                />
-                <Label 
-                  htmlFor={field.na_checkbox_id || field.name.replace('tbx', 'cbex') + '_NA'}
-                  className="text-sm text-gray-500"
-                >
-                  {field.na_checkbox_text || "Does Not Apply"}
-                </Label>
-              </div>
-            )}
+            {field.has_na_checkbox && renderNACheckbox()}
           </>
         )}
       </div>

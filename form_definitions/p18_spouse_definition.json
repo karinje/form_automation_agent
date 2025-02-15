@@ -5,7 +5,7 @@
       "type": "text",
       "value": "",
       "text_phrase": "Spouse's Surnames",
-      "parent_text_phrase": "Spouse's Name",
+      "parent_text_phrase": "Spouse's Surnames",
       "maxlength": "33",
       "has_na_checkbox": false
     },
@@ -14,7 +14,7 @@
       "type": "text",
       "value": "",
       "text_phrase": "Spouse's Given Names",
-      "parent_text_phrase": "Spouse's Name",
+      "parent_text_phrase": "Spouse's Given Names",
       "maxlength": "33",
       "has_na_checkbox": false
     },
@@ -306,16 +306,18 @@
         "ZIMBABWE"
       ],
       "text_phrase": "Spouse's Country/Region of Origin (Nationality)",
-      "parent_text_phrase": "Spouse Birth Details"
+      "parent_text_phrase": "Spouse's Country/Region of Origin (Nationality)"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSpousePOBCity",
       "type": "text",
       "value": "",
       "text_phrase": "City",
-        "parent_text_phrase": "Spouse Birth Details",
+        "parent_text_phrase": "Spouse Place of Birth",
       "maxlength": "20",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_text": "Do not know",
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexSPOUSE_POB_CITY_NA"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlSpousePOBCountry",
@@ -603,7 +605,7 @@
         "ZIMBABWE"
       ],
       "text_phrase": "Country/Region",
-      "parent_text_phrase": "Spouse Birth Details"
+      "parent_text_phrase": "Spouse Place of Birth"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType",
@@ -643,24 +645,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.Other (Specify Address)": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_LN2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Spouse's Address",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Spouse's Address",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_LN1",
           "type": "text",
           "value": "",
@@ -670,13 +654,43 @@
           "has_na_checkbox": false
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_LN2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Spouse's Address",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Spouse's Address",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexSPOUSE_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_CITY",
+          "type": "text",
+          "value": "",
+          "text_phrase": "City",
+          "parent_text_phrase": "Spouse's Address",
+          "maxlength": "20",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_STATE",
           "type": "text",
           "value": "",
           "text_phrase": "State/Province",
           "parent_text_phrase": "Spouse's Address",
           "maxlength": "20",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexSPOUSE_ADDR_STATE_NA"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlSPOUSE_ADDR_CNTRY",
@@ -937,15 +951,6 @@
           ],
           "text_phrase": "Country/Region",
           "parent_text_phrase": "Spouse's Address"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_CITY",
-          "type": "text",
-          "value": "",
-          "text_phrase": "City",
-          "parent_text_phrase": "Spouse's Address",
-          "maxlength": "20",
-          "has_na_checkbox": false
         }
       ],
       "hides": [],

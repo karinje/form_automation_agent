@@ -12,6 +12,8 @@ form_mapping = {
     "other_nationality.country": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_ddlOTHER_NATL",
     "other_nationality.has_passport": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_rblOTHER_PPT_IND",
     "other_nationality.passport_number": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_tbxOTHER_PPT_NUM",
+    "other_nationality.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_InsertButtonOTHER_NATL",
     "has_permanent_resident": "ctl00_SiteContentPlaceHolder_FormView1_rblPermResOtherCntryInd",
-    "permanent_resident_country": "ctl00_SiteContentPlaceHolder_FormView1_dtlOthPermResCntry_ctl00_ddlOthPermResCntry"
+    "permanent_resident_country": "ctl00_SiteContentPlaceHolder_FormView1_dtlOthPermResCntry_ctl00_ddlOthPermResCntry",
+    "permanent_resident.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlOthPermResCntry_ctl00_InsertButtonOTHER_PERM_RES"
 } 

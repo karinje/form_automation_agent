@@ -35,15 +35,9 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
     onChange(ssnGroup.number2Field.name, value);
     onChange(ssnGroup.number3Field.name, value);
 
-    // Update the NA checkbox state for each field if they have na_checkbox_id
+    // Update the NA checkbox state using the standardized na_checkbox_id
     if (ssnGroup.number1Field.na_checkbox_id) {
       onChange(ssnGroup.number1Field.na_checkbox_id, checked ? "true" : "false");
-    }
-    if (ssnGroup.number2Field.na_checkbox_id) {
-      onChange(ssnGroup.number2Field.na_checkbox_id, checked ? "true" : "false");
-    }
-    if (ssnGroup.number3Field.na_checkbox_id) {
-      onChange(ssnGroup.number3Field.na_checkbox_id, checked ? "true" : "false");
     }
   };
 
@@ -81,20 +75,22 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
             className="w-24"
           />
         </div>
-        <div className="flex items-center">
-          <Checkbox
-            id="ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_SSN_NA"
-            checked={isNAChecked}
-            onCheckedChange={handleNACheckboxChange}
-            className="w-6 h-6"
-          />
-          <Label 
-            htmlFor="ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_SSN_NA"
-            className="text-sm text-gray-500 ml-2"
-          >
-            {ssnGroup.number1Field.na_checkbox_text || "Does Not Apply"}
-          </Label>
-        </div>
+        {ssnGroup.number1Field.has_na_checkbox && ssnGroup.number1Field.na_checkbox_id && (
+          <div className="flex items-center">
+            <Checkbox
+              id={ssnGroup.number1Field.na_checkbox_id}
+              checked={isNAChecked}
+              onCheckedChange={handleNACheckboxChange}
+              className="w-6 h-6"
+            />
+            <Label 
+              htmlFor={ssnGroup.number1Field.na_checkbox_id}
+              className="text-sm text-gray-500 ml-2"
+            >
+              {ssnGroup.number1Field.na_checkbox_text || "Does Not Apply"}
+            </Label>
+          </div>
+        )}
       </div>
     </div>
   )

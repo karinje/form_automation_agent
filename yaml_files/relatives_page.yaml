@@ -1,24 +1,33 @@
 relatives_page:
   father_surname: "SMITH"  # Father's surname, max 33 chars
+  father_surname_na: true
   father_given_name: "JOHN"  # Father's given name, max 33 chars
+  father_given_name_na: true
   father_birth_day: "17"  # Father's birth day (01-31)
   father_birth_month: "NOV"  # Father's birth month (JAN-DEC)
   father_birth_year: "1952"  # Father's birth year (YYYY)
+  father_birth_na: true
   father_in_us: "Y"  # Is father in US? (Y/N)
   father_us_status: "U.S. CITIZEN"  # If Y: U.S. CITIZEN, U.S. LEGAL PERMANENT RESIDENT (LPR), NONIMMIGRANT, OTHER/I DON'T KNOW
-  
   mother_surname: "SMITH"  # Mother's surname, max 33 chars
+  mother_surname_na: true
   mother_given_name: "MARY"  # Mother's given name, max 33 chars
+  mother_given_name_na: true
   mother_birth_day: "17"  # Mother's birth day (01-31)
   mother_birth_month: "NOV"  # Mother's birth month (JAN-DEC)
   mother_birth_year: "1958"  # Mother's birth year (YYYY)
+  mother_birth_na: true
   mother_in_us: "Y"  # Is mother in US? (Y/N)
   mother_us_status: "U.S. CITIZEN"  # If Y: U.S. CITIZEN, U.S. LEGAL PERMANENT RESIDENT (LPR), NONIMMIGRANT, OTHER/I DON'T KNOW
   
   has_immediate_relatives: "Y"  # Do you have immediate relatives in US? (Y/N)
-  immediate_relative_type: "SPOUSE"  # If Y: SPOUSE, FIANCÉ/FIANCÉE, CHILD, SIBLING
-  immediate_relative_status: "U.S. CITIZEN"  # If Y: U.S. CITIZEN, U.S. LEGAL PERMANENT RESIDENT (LPR), NONIMMIGRANT, OTHER/I DON'T KNOW
-  immediate_relative_surname: "SMITH"  # If Y: Relative's surname, max 33 chars
-  immediate_relative_given_name: "JOHN"  # If Y: Relative's given name, max 33 chars
-  
+  immediate_relative_details:
+    - type: "SIBLING" # If Y: SIBLING, FIANCÉ/FIANCÉE, CHILD, SPOUSE
+      status: "NONIMMIGRANT" # If Y: U.S. CITIZEN, U.S. LEGAL PERMANENT RESIDENT (LPR), NONIMMIGRANT, OTHER/I DON'T KNOW
+      surname: "KARINJE" # If Y: Relative's surname, max 33 chars
+      given_name: "SAMPOORNA"  # If Y: Relative's given name, max 33 chars
+    - type: "SPOUSE" # If Y: SIBLING, FIANCÉ/FIANCÉE, CHILD, SPOUSE
+      status: "NONIMMIGRANT" # If Y: U.S. CITIZEN, U.S. LEGAL PERMANENT RESIDENT (LPR), NONIMMIGRANT, OTHER/I DON'T KNOW
+      surname: "KAUSHIK" # If Y: Relative's surname, max 33 chars
+      given_name: "RAMYA" # If Y: Relative's given name, max 33 chars
   has_other_relatives: "Y"  # Do you have other relatives in US? (Y/N) - Only shown if has_immediate_relatives is N 

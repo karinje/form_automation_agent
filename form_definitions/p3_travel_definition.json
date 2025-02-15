@@ -98,7 +98,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -131,10 +132,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -267,7 +269,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -300,10 +303,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -460,7 +464,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -493,10 +498,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -653,7 +659,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -686,10 +693,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -1115,7 +1123,7 @@
             "SPOUSE OF AN E3 (E3D)"
           ],
           "text_phrase": "Specify",
-          "parent_text_phrase": ""
+          "parent_text_phrase": "Specify"
         }
       ],
       "hides": [],
@@ -1156,26 +1164,122 @@
         "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlOtherPurpose.EXECUTIVE/MGR/ESSENTIAL EMP (E1)": {
           "shows": [
             {
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX",
               "type": "radio",
-              "value": "Y",
-              "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX_0",
-              "text_phrase": "Yes",
-              "parent_text_phrase": "Principal Applicant Information",
-              "maxlength": "",
-              "has_na_checkbox": false
-            },
-            {
-              "type": "radio",
-              "value": "N",
-              "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX_1",
-              "text_phrase": "No",
-              "parent_text_phrase": "Principal Applicant Information",
-              "maxlength": "",
-              "has_na_checkbox": false
+              "value": [
+                "Y",
+                "N"
+              ],
+              "labels": [
+                "Yes",
+                "No"
+              ],
+              "button_ids": {
+                "Y": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX_0",
+                "N": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX_1"
+              },
+              "text_phrase": "Has the principal Treaty Trader/Investor already been issued a visa? "
             }
           ],
           "hides": [],
-          "dependencies": null
+          "dependencies": {
+            "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX_0.Y": {
+              "shows": [
+                {
+                  "type": "text",
+                  "value": "",
+                  "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxEVPrincipleAppSurname",
+                  "text_phrase": "Surnames",
+                  "parent_text_phrase": "Principal Applicant Information",
+                  "maxlength": "33",
+                  "has_na_checkbox": false
+                },
+                {
+                  "type": "text",
+                  "value": "",
+                  "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxEVPrincipleAppGivenName",
+                  "text_phrase": "Given Names",
+                  "parent_text_phrase": "Principal Applicant Information",
+                  "maxlength": "33",
+                  "has_na_checkbox": false
+                },
+                {
+                  "type": "dropdown",
+                  "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBDay",
+                  "value": [
+                    "01",
+                    "02",
+                    "03",
+                    "04",
+                    "05",
+                    "06",
+                    "07",
+                    "08",
+                    "09",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                    "16",
+                    "17",
+                    "18",
+                    "19",
+                    "20",
+                    "21",
+                    "22",
+                    "23",
+                    "24",
+                    "25",
+                    "26",
+                    "27",
+                    "28",
+                    "29",
+                    "30",
+                    "31"
+                  ],
+                  "text_phrase": "Principal Applicant Date of Birth - Day",
+                  "parent_text_phrase": "Principal Applicant Information",
+                  "maxlength": "2",
+                  "has_na_checkbox": false
+                },
+                {
+                  "type": "dropdown",
+                  "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBMonth",
+                  "value": [
+                    "JAN",
+                    "FEB",
+                    "MAR",
+                    "APR",
+                    "MAY",
+                    "JUN",
+                    "JUL",
+                    "AUG",
+                    "SEP",
+                    "OCT",
+                    "NOV",
+                    "DEC"
+                  ],
+                  "text_phrase": "Principal Applicant Date of Birth - Month",
+                  "parent_text_phrase": "Principal Applicant Information",
+                  "maxlength": "3",
+                  "has_na_checkbox": false
+                },
+                {
+                  "type": "text",
+                  "value": "",
+                  "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxDOBYear",
+                  "text_phrase": "Principal Applicant Date of Birth - Year",
+                  "parent_text_phrase": "Principal Applicant Information",
+                  "maxlength": "4",
+                  "has_na_checkbox": false
+                }
+              ],
+              "hides": [],
+              "dependencies": null
+            }
+          }
         },
         "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlOtherPurpose.SPOUSE OF AN E1 (E1)": {
           "shows": [
@@ -1251,26 +1355,122 @@
         "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlOtherPurpose.EXECUTIVE/MGR/ESSENTIAL EMP (E2)": {
           "shows": [
             {
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX",
               "type": "radio",
-              "value": "Y",
-              "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX_0",
-              "text_phrase": "Yes",
-              "parent_text_phrase": "Principal Applicant Information",
-              "maxlength": "",
-              "has_na_checkbox": false
-            },
-            {
-              "type": "radio",
-              "value": "N",
-              "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX_1",
-              "text_phrase": "No",
-              "parent_text_phrase": "Principal Applicant Information",
-              "maxlength": "",
-              "has_na_checkbox": false
+              "value": [
+                "Y",
+                "N"
+              ],
+              "labels": [
+                "Yes",
+                "No"
+              ],
+              "button_ids": {
+                "Y": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX_0",
+                "N": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX_1"
+              },
+              "text_phrase": "Has the principal Treaty Trader/Investor already been issued a visa? "
             }
           ],
           "hides": [],
-          "dependencies": null
+          "dependencies": {
+            "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX_0.Y": {
+              "shows": [
+                {
+                  "type": "text",
+                  "value": "",
+                  "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxEVPrincipleAppSurname",
+                  "text_phrase": "Surnames",
+                  "parent_text_phrase": "Principal Applicant Information",
+                  "maxlength": "33",
+                  "has_na_checkbox": false
+                },
+                {
+                  "type": "text",
+                  "value": "",
+                  "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxEVPrincipleAppGivenName",
+                  "text_phrase": "Given Names",
+                  "parent_text_phrase": "Principal Applicant Information",
+                  "maxlength": "33",
+                  "has_na_checkbox": false
+                },
+                {
+                  "type": "dropdown",
+                  "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBDay",
+                  "value": [
+                    "01",
+                    "02",
+                    "03",
+                    "04",
+                    "05",
+                    "06",
+                    "07",
+                    "08",
+                    "09",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                    "16",
+                    "17",
+                    "18",
+                    "19",
+                    "20",
+                    "21",
+                    "22",
+                    "23",
+                    "24",
+                    "25",
+                    "26",
+                    "27",
+                    "28",
+                    "29",
+                    "30",
+                    "31"
+                  ],
+                  "text_phrase": "Principal Applicant Date of Birth - Day",
+                  "parent_text_phrase": "Principal Applicant Information",
+                  "maxlength": "2",
+                  "has_na_checkbox": false
+                },
+                {
+                  "type": "dropdown",
+                  "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBMonth",
+                  "value": [
+                    "JAN",
+                    "FEB",
+                    "MAR",
+                    "APR",
+                    "MAY",
+                    "JUN",
+                    "JUL",
+                    "AUG",
+                    "SEP",
+                    "OCT",
+                    "NOV",
+                    "DEC"
+                  ],
+                  "text_phrase": "Principal Applicant Date of Birth - Month",
+                  "parent_text_phrase": "Principal Applicant Information",
+                  "maxlength": "3",
+                  "has_na_checkbox": false
+                },
+                {
+                  "type": "text",
+                  "value": "",
+                  "name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxDOBYear",
+                  "text_phrase": "Principal Applicant Date of Birth - Year",
+                  "parent_text_phrase": "Principal Applicant Information",
+                  "maxlength": "4",
+                  "has_na_checkbox": false
+                }
+              ],
+              "hides": [],
+              "dependencies": null
+            }
+          }
         },
         "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlOtherPurpose.SPOUSE OF AN E2 (E2)": {
           "shows": [
@@ -1493,7 +1693,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -1526,10 +1727,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -1662,7 +1864,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -1695,10 +1898,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -1831,7 +2035,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -1864,10 +2069,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -2024,7 +2230,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -2057,10 +2264,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -2217,7 +2425,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -2250,10 +2459,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -2410,7 +2620,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -2443,10 +2654,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -3311,7 +3523,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -3344,10 +3557,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -3504,7 +3718,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -3537,10 +3752,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -3721,7 +3937,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -3754,10 +3971,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -3890,7 +4108,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -3923,10 +4142,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -4083,7 +4303,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -4116,10 +4337,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -4300,7 +4522,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -4333,10 +4556,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -4469,7 +4693,8 @@
               "text_phrase": "Sponsoring Mission/Organization",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "help_text": "Enter Embassy of your country or the name of your International Organization or U.S. military base."
             },
             {
               "type": "text",
@@ -4502,10 +4727,11 @@
               "type": "text",
               "value": "",
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMissionOrgAddress2",
-              "text_phrase": "U.S. Address (Line 2)",
+              "text_phrase": "U.S. Address (Line 2) (Optional)",
               "parent_text_phrase": "Mission/Organization Information",
               "maxlength": "40",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "type": "text",
@@ -5495,6 +5721,15 @@
           "has_na_checkbox": false
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerGivenName",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Given Names of Person Paying for Trip",
+          "parent_text_phrase": "Other Person Paying - Details",
+          "maxlength": "33",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerPhone",
           "type": "text",
           "value": "",
@@ -5502,6 +5737,30 @@
           "parent_text_phrase": "Other Person Paying - Details",
           "maxlength": "15",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPAYER_EMAIL_ADDR",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Email Address",
+          "parent_text_phrase": "Other Person Paying - Details",
+          "maxlength": "50",
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxDNAPAYER_EMAIL_ADDR_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlPayerRelationship",
+          "type": "dropdown",
+          "value": [
+            "CHILD",
+            "PARENT",
+            "SPOUSE",
+            "OTHER RELATIVE",
+            "FRIEND",
+            "OTHER"
+          ],
+          "text_phrase": "Relationship to You",
+          "parent_text_phrase": "Other Person Paying - Details"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPayerAddrSameAsInd",
@@ -5519,38 +5778,6 @@
             "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPayerAddrSameAsInd_1"
           },
           "text_phrase": "Is the address of the party paying for your trip the same as your Home or Mailing Address?"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlPayerRelationship",
-          "type": "dropdown",
-          "value": [
-            "CHILD",
-            "PARENT",
-            "SPOUSE",
-            "OTHER RELATIVE",
-            "FRIEND",
-            "OTHER"
-          ],
-          "text_phrase": "Relationship to You",
-          "parent_text_phrase": "Other Person Paying - Details"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerGivenName",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Given Names of Person Paying for Trip",
-          "parent_text_phrase": "Other Person Paying - Details",
-          "maxlength": "33",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPAYER_EMAIL_ADDR",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Surnames of Person Paying for Trip",
-          "parent_text_phrase": "Other Person Paying - Details",
-          "maxlength": "50",
-          "has_na_checkbox": false
         }
       ],
       "hides": [],
@@ -5563,13 +5790,24 @@
         "ctl00_SiteContentPlaceHolder_FormView1_rblPayerAddrSameAsInd_1.N": {
           "shows": [
             {
-              "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerPostalZIPCode",
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerStreetAddress1",
               "type": "text",
               "value": "",
-              "text_phrase": "Postal Zone/ZIP Code",
+              "text_phrase": "Street Address (Line 1)",
               "parent_text_phrase": "Other Person Paying - Address",
-              "maxlength": "10",
-              "has_na_checkbox": false
+              "maxlength": "40",
+              "has_na_checkbox": false,
+              "help_text": "Provide the street address, apartment number (if applicable), city, state or province, country, and postal zone (if applicable) of the person or organization that is paying for your travel."
+            },
+            {
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerStreetAddress2",
+              "type": "text",
+              "value": "",
+              "text_phrase": "Street Address (Line 2)",
+              "parent_text_phrase": "Other Person Paying - Address",
+              "maxlength": "40",
+              "has_na_checkbox": false,
+              "optional": true
             },
             {
               "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerCity",
@@ -5587,26 +5825,18 @@
               "text_phrase": "State/Province",
               "parent_text_phrase": "Other Person Paying - Address",
               "maxlength": "20",
-              "has_na_checkbox": false
+              "has_na_checkbox": true,
+              "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxDNAPayerStateProvince"
             },
             {
-              "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerStreetAddress1",
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerPostalZIPCode",
               "type": "text",
               "value": "",
-              "text_phrase": "Street Address (Line 1)",
+              "text_phrase": "Postal Zone/ZIP Code",
               "parent_text_phrase": "Other Person Paying - Address",
-              "maxlength": "40",
-              "has_na_checkbox": false
-            },
-            {
-              "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerStreetAddress2",
-              "type": "text",
-              "value": "",
-              "text_phrase": "Street Address (Line 2)",
-              "parent_text_phrase": "Other Person Paying - Address",
-              "maxlength": "40",
-              "has_na_checkbox": false,
-              "optional": true
+              "maxlength": "10",
+              "has_na_checkbox": true,
+              "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxDNAPayerPostalZIPCode"
             },
             {
               "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlPayerCountry",
@@ -5887,39 +6117,30 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlWhoIsPaying.Other Company/Organization": {
       "shows": [
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayingCompany",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Name of Company/Organization Paying for Trip",
+          "parent_text_phrase": "Details of Company/Organization Paying",
+          "maxlength": "33",
+          "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCompanyRelation",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Relationship to You",
+          "parent_text_phrase": "Details of Company/Organization Paying",
+          "maxlength": null,
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerPhone",
           "type": "text",
           "value": "",
           "text_phrase": "Telephone Number",
           "parent_text_phrase": "Details of Company/Organization Paying",
           "maxlength": "15",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerPostalZIPCode",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Details of Company/Organization Paying",
-          "maxlength": "10",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerCity",
-          "type": "text",
-          "value": "",
-          "text_phrase": "City",
-          "parent_text_phrase": "Details of Company/Organization Paying",
-          "maxlength": "20",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerStateProvince",
-          "type": "text",
-          "value": "",
-          "text_phrase": "State/Province",
-          "parent_text_phrase": "Details of Company/Organization Paying",
-          "maxlength": "20",
           "has_na_checkbox": false
         },
         {
@@ -5940,6 +6161,35 @@
           "maxlength": "40",
           "has_na_checkbox": false,
           "optional": true
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerCity",
+          "type": "text",
+          "value": "",
+          "text_phrase": "City",
+          "parent_text_phrase": "Details of Company/Organization Paying",
+          "maxlength": "20",
+          "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerStateProvince",
+          "type": "text",
+          "value": "",
+          "text_phrase": "State/Province",
+          "parent_text_phrase": "Details of Company/Organization Paying",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxDNAPayerStateProvince"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayerPostalZIPCode",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Details of Company/Organization Paying",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxDNAPayerPostalZIPCode"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlPayerCountry",
@@ -6200,25 +6450,8 @@
           ],
           "text_phrase": "Country/Region",
           "parent_text_phrase": "Details of Company/Organization Paying"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayingCompany",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Name of Company/Organization Paying for Trip",
-          "parent_text_phrase": "Details of Company/Organization Paying",
-          "maxlength": "33",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCompanyRelation",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Name of Company/Organization Paying for Trip",
-          "parent_text_phrase": "Details of Company/Organization Paying",
-          "maxlength": null,
-          "has_na_checkbox": false
         }
+        
       ],
       "hides": [],
       "dependencies": null
@@ -6300,7 +6533,8 @@
           "text_phrase": "Arrival Flight (if known)",
           "parent_text_phrase": "Provide a complete itinerary for your travel to the U.S.:",
           "maxlength": "20",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxArriveCity",
@@ -6386,7 +6620,8 @@
           "text_phrase": "Departure Flight (if known)",
           "parent_text_phrase": "Provide a complete itinerary for your travel to the U.S.:",
           "maxlength": "20",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDepartCity",
@@ -6402,9 +6637,11 @@
           "type": "text",
           "value": "",
           "text_phrase": "Provide the locations you plan to visit in the U.S.:",
-          "parent_text_phrase": "Provide a complete itinerary for your travel to the U.S.:",
+          "parent_text_phrase": "Locations_to_visit",
           "maxlength": "40",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlTravelLoc_ctl00_InsertButtonTravelLoc"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxStreetAddress1",

@@ -35,7 +35,8 @@
       "text_phrase": "State/Province",
       "parent_text_phrase": "Home Address",
       "maxlength": "20",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_ADDR_STATE_NA"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_ADDR_POSTAL_CD",
@@ -44,7 +45,8 @@
       "text_phrase": "Postal Zone/ZIP Code",
       "parent_text_phrase": "Home Address",
       "maxlength": "10",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_ADDR_POSTAL_CD_NA"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlCountry",
@@ -341,7 +343,8 @@
       "text_phrase": "Secondary Phone Number",
       "parent_text_phrase": "Phone",
       "maxlength": "15",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_MOBILE_TEL_NA"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_BUS_TEL",
@@ -350,7 +353,8 @@
       "text_phrase": "Work Phone Number",
       "parent_text_phrase": "Phone",
       "maxlength": "15",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexAPP_BUS_TEL_NA"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAddPhone",
