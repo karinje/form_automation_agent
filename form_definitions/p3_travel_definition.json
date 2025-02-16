@@ -6637,7 +6637,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Provide the locations you plan to visit in the U.S.:",
-          "parent_text_phrase": "Locations_to_visit",
+          "parent_text_phrase": "locations_to_visit",
           "maxlength": "40",
           "has_na_checkbox": false,
           "add_group": true,

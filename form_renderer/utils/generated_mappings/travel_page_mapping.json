@@ -18,9 +18,6 @@
     "principal_applicant.petition_number": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPRIN_APP_PETITION_NUM",
     "principal_applicant.company": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxPrincipalAppCompany",
     "investor_issued_visa": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_rblEvisaEX",
-    "principal_applicant.investor_dob.day": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBDay",
-    "principal_applicant.investor_dob.month": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBMonth",
-    "principal_applicant.investor_dob.year": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxDOBYear",
     "specific_travel_plans_details.arrival.month": "ctl00_SiteContentPlaceHolder_FormView1_ddlARRIVAL_US_DTEMonth",
     "specific_travel_plans_details.arrival.day": "ctl00_SiteContentPlaceHolder_FormView1_ddlARRIVAL_US_DTEDay",
     "specific_travel_plans_details.arrival.year": "ctl00_SiteContentPlaceHolder_FormView1_tbxARRIVAL_US_DTEYear",
@@ -31,8 +28,8 @@
     "specific_travel_plans_details.departure.year": "ctl00_SiteContentPlaceHolder_FormView1_tbxDEPARTURE_US_DTEYear",
     "specific_travel_plans_details.departure.flight": "ctl00_SiteContentPlaceHolder_FormView1_tbxDepartFlight",
     "specific_travel_plans_details.departure.city": "ctl00_SiteContentPlaceHolder_FormView1_tbxDepartCity",
-    "specific_travel_plans_details.locations_to_visit.location": "ctl00_SiteContentPlaceHolder_FormView1_dtlTravelLoc_ctl00_tbxSPECTRAVEL_LOCATION",
-    "specific_travel_plans_details.locations_to_visit.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlTravelLoc_ctl00_InsertButtonTravelLoc",
+    "locations_to_visit.location": "ctl00_SiteContentPlaceHolder_FormView1_dtlTravelLoc_ctl00_tbxSPECTRAVEL_LOCATION",
+    "locations_to_visit.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlTravelLoc_ctl00_InsertButtonTravelLoc",
     "non_specific_travel_plans_details.arrival.month": "ctl00_SiteContentPlaceHolder_FormView1_ddlTRAVEL_DTEMonth",
     "non_specific_travel_plans_details.arrival.day": "ctl00_SiteContentPlaceHolder_FormView1_ddlTRAVEL_DTEDay",
     "non_specific_travel_plans_details.arrival.year": "ctl00_SiteContentPlaceHolder_FormView1_tbxTRAVEL_DTEYear",
@@ -57,10 +54,10 @@
     "payer_details.address.country": "ctl00_SiteContentPlaceHolder_FormView1_ddlPayerCountry",
     "company_payment.name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPayingCompany",
     "company_payment.relation": "ctl00_SiteContentPlaceHolder_FormView1_tbxCompanyRelation",
-    "principal_applicant.ev_surname": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxEVPrincipleAppSurname",
-    "principal_applicant.ev_given_name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxEVPrincipleAppGivenName",
-    "principal_applicant.ev_dob.day": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBDay",
-    "principal_applicant.ev_dob.month": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBMonth",
-    "principal_applicant.ev_dob.year": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxDOBYear"
+    "ev_surname": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxEVPrincipleAppSurname",
+    "ev_given_name": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxEVPrincipleAppGivenName",
+    "ev_dob.day": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBDay",
+    "ev_dob.month": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_ddlDOBMonth",
+    "ev_dob.year": "ctl00_SiteContentPlaceHolder_FormView1_dlPrincipalAppTravel_ctl00_tbxDOBYear"
   }
 }

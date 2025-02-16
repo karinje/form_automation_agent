@@ -12,12 +12,12 @@ travel_page:
     given_name: "SANJAY"  # Principal applicant's given name
     petition_number: ""  # Petition number if applicable
     company: ""  # Company name for E1/E2 visas 
-    ev_surname: "KAUSHIK"
-    ev_given_name: "RAMYA"
-    investor_dob:
-      day: "15"  # Select from 01-31
-      month: "JAN"  # Select from JAN-DEC
-      year: "2023"  # 4-digit year
+  ev_surname: "KAUSHIK"
+  ev_given_name: "RAMYA"
+  investor_dob:
+    day: "15"  # Select from 01-31
+    month: "JAN"  # Select from JAN-DEC
+    year: "2023"  # 4-digit year
   # Mission/Organization fields (for A1, G1 visas)
   mission_org:
     name: ""  # Name of sponsoring mission/organization
@@ -29,7 +29,7 @@ travel_page:
     state: ""  # State
     zipcode: ""  # ZIP code
     phone: ""  # Phone number
-    
+
   # Specific Travel Details
   specific_travel_plans_details:
     arrival:
@@ -44,7 +44,7 @@ travel_page:
       year: "2024"  # 4-digit year
       flight: "UA101"  # Optional: Flight number if known
       city: "SAN FRANCISCO"  # U.S. departure city
-    locations_to_visit: 
+  locations_to_visit: 
       - location: "SAN FRANCISCO, CALIFORNIA"  # List locations you plan to visit
       - location: "LOS ANGELES, CALIFORNIA"  # List locations you plan to visit
 
