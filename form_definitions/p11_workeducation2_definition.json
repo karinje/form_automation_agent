@@ -16,7 +16,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPreviouslyEmployed_1"
       },
       "text_phrase": "Were you previously employed?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Were you previously employed? "
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherEduc",
@@ -34,98 +34,82 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherEduc_1"
       },
       "text_phrase": "Have you attended any educational institutions at a secondary level or above?",
-      "parent_text_phrase": ""
+      "parent_text_phrase": "",
+      "help_text": "You must answer Yes to this question if you have ever attended, for any length of time, a high school/secondary school (or its equivalent in your country) or college, university, graduate school, a doctoral program, or a vocational program."
     }
   ],
   "dependencies": {
     "ctl00_SiteContentPlaceHolder_FormView1_rblPreviouslyEmployed_0.Y": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Employment From - Date"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Employment From - Date"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "Previous Employment Details",
-          "maxlength": "4000",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerPhone",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerName",
           "type": "text",
           "value": "",
-          "text_phrase": "Telephone Number",
-          "parent_text_phrase": "Previous Employment Details",
-          "maxlength": "15",
-          "has_na_checkbox": false
+          "text_phrase": "Employer Name",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "75",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbSupervisorGivenName",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerStreetAddress1",
           "type": "text",
           "value": "",
-          "text_phrase": "Supervisor's Given Names",
-          "parent_text_phrase": "Previous Employment Details",
-          "maxlength": "33",
-          "has_na_checkbox": true
+          "text_phrase": "Employer Street Address (Line 1)",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
         },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerStreetAddress2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Employer Street Address (Line 2) (optional)",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerCity",
+          "type": "text",
+          "value": "",
+          "text_phrase": "City",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "20",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbxPREV_EMPL_ADDR_STATE",
+          "type": "text",
+          "value": "",
+          "text_phrase": "State/Province",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_cbxPREV_EMPL_ADDR_STATE_NA",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbxPREV_EMPL_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_cbxPREV_EMPL_ADDR_POSTAL_CD_NA",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
+        },  
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_DropDownList2",
           "type": "dropdown",
@@ -384,28 +368,97 @@
             "ZIMBABWE"
           ],
           "text_phrase": "Country/Region",
-          "parent_text_phrase":"*Optional"
+          "parent_text_phrase":"Employment Information",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbxPREV_EMPL_ADDR_POSTAL_CD",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerPhone",
           "type": "text",
           "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "*Optional",
-          "maxlength": "10",
-          "has_na_checkbox": false
+          "text_phrase": "Telephone Number",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "15",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbxEmpDateToYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbJobTitle",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment To - Year",
-          "parent_text_phrase": "Employment To - Date",
-          "maxlength": "4",
-          "has_na_checkbox": false
+          "text_phrase": "Job Title",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "75",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
+        }, 
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbSupervisorSurname",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Supervisor's Surname",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "33",
+          "has_na_checkbox": true,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_ddlEmpDateToMonth",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbSupervisorGivenName",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Supervisor's Given Names",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "33",
+          "has_na_checkbox": true,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Employment Date From - Day",
+          "parent_text_phrase": "Employment Information",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_ddlEmpDateFromMonth",
           "type": "dropdown",
           "value": [
             "JAN",
@@ -421,71 +474,21 @@
             "NOV",
             "DEC"
           ],
-          "text_phrase": "Employment To - Month",
-          "parent_text_phrase": "Employment To - Date"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbJobTitle",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Job Title",
-          "parent_text_phrase": "Previous Employment Details",
-          "maxlength": "75",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbxPREV_EMPL_ADDR_STATE",
-          "type": "text",
-          "value": "",
-          "text_phrase": "State/Province",
-          "parent_text_phrase": "Previous Employment Details",
-          "maxlength": "20",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerStreetAddress1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Employer Street Address (Line 1)",
-          "parent_text_phrase": "Previous Employment Details",
-          "maxlength": "40",
-          "has_na_checkbox": false
+          "text_phrase": "Employment Date From - Month",
+          "parent_text_phrase": "Employment Information",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbxEmpDateFromYear",
           "type": "text",
           "value": "",
           "text_phrase": "Employment From - Year",
-          "parent_text_phrase": "Employment From - Date",
+          "parent_text_phrase": "Employment Information",
           "maxlength": "4",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerName",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Employer Name",
-          "parent_text_phrase": "Previous Employment Details",
-          "maxlength": "75",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerCity",
-          "type": "text",
-          "value": "",
-          "text_phrase": "City",
-          "parent_text_phrase": "Previous Employment Details",
-          "maxlength": "20",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbSupervisorSurname",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Supervisor's Surname",
-          "parent_text_phrase": "Previous Employment Details",
-          "maxlength": "33",
-          "has_na_checkbox": true
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_ddlEmpDateToDay",
@@ -524,49 +527,12 @@
             "31"
           ],
           "text_phrase": "Employment To - Day",
-          "parent_text_phrase": "Employment To - Date"
+          "parent_text_phrase": "Employment Information",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbEmployerStreetAddress2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Employer Street Address (Line 2)",
-          "parent_text_phrase": "Previous Employment Details",
-          "maxlength": "40",
-          "has_na_checkbox": false,
-          "optional": true
-        }
-      ],
-      "hides": [],
-      "dependencies": null
-    },
-    "ctl00_SiteContentPlaceHolder_FormView1_rblPreviouslyEmployed_1.N": {
-      "shows": [],
-      "hides": [],
-      "dependencies": null
-    },
-    "ctl00_SiteContentPlaceHolder_FormView1_rblOtherEduc_0.Y": {
-      "shows": [
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolFromYear",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Attendance From - Year",
-          "parent_text_phrase": "Attendance From - Date",
-          "maxlength": "4",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolToYear",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Attendance To - Year",
-          "parent_text_phrase": "Attendance To - Date",
-          "maxlength": "4",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_ddlSchoolFromMonth",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_ddlEmpDateToMonth",
           "type": "dropdown",
           "value": [
             "JAN",
@@ -582,8 +548,55 @@
             "NOV",
             "DEC"
           ],
-          "text_phrase": "Attendance From - Month",
-          "parent_text_phrase":  "Attendance From - Date"
+          "text_phrase": "Employment To - Month",
+          "parent_text_phrase": "Employment Information",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbxEmpDateToYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Employment To - Year",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "4",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
+        },        
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbDescribeDuties",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Employment Information",
+          "maxlength": "4000",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
+        }
+        
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblPreviouslyEmployed_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblOtherEduc_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolName",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Name of Institution",
+          "parent_text_phrase": "Education Institutions Attended",
+          "maxlength": "75",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolAddr1",
@@ -592,7 +605,21 @@
           "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Education Institutions Attended",
           "maxlength": "40",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Education Institutions Attended",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolCity",
@@ -601,46 +628,33 @@
           "text_phrase": "City",
           "parent_text_phrase": "Education Institutions Attended",
           "maxlength": "20",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_ddlSchoolToDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Attendance To - Day",
-          "parent_text_phrase":  "Attendance To - Date"
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxEDUC_INST_ADDR_STATE",
+          "type": "text",
+          "value": "",
+          "text_phrase": "State/Province",
+          "parent_text_phrase": "Education Institutions Attended",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_cbxEDUC_INST_ADDR_STATE_NA",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxEDUC_INST_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Education Institutions Attended",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_cbxEDUC_INST_POSTAL_CD_NA",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_ddlSchoolCountry",
@@ -900,37 +914,9 @@
             "ZIMBABWE"
           ],
           "text_phrase": "Country/Region",
-          "parent_text_phrase": "Education Institutions Attended"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_ddlSchoolToMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Attendance To - Month",
-          "parent_text_phrase": "Attendance To - Date"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
           "parent_text_phrase": "Education Institutions Attended",
-          "maxlength": "40",
-          "has_na_checkbox": false,
-          "optional": true
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolCourseOfStudy",
@@ -939,34 +925,10 @@
           "text_phrase": "Course of Study",
           "parent_text_phrase": "Education Institutions Attended",
           "maxlength": "66",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxEDUC_INST_ADDR_STATE",
-          "type": "text",
-          "value": "",
-          "text_phrase": "State/Province",
-          "parent_text_phrase": "Education Institutions Attended",
-          "maxlength": "20",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolName",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Name of Institution",
-          "parent_text_phrase": "Education Institutions Attended",
-          "maxlength": "75",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxEDUC_INST_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Education Institutions Attended",
-          "maxlength": "10",
-          "has_na_checkbox": false
+          "has_na_checkbox": false,
+          "help_text": "For middle school/junior high or high school course of study please indicate 'Academic' or 'Vocational.' For all other educational levels please indicate your major or concentration.",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_ddlSchoolFromDay",
@@ -1004,8 +966,117 @@
             "30",
             "31"
           ],
-          "text_phrase": "Attendance From - Day",
-          "parent_text_phrase":  "Attendance From - Date"
+          "text_phrase": "Date of Attendance From - Day",
+          "parent_text_phrase": "Education Institutions Attended",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_ddlSchoolFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Date of Attendance From - Month",
+          "parent_text_phrase": "Education Institutions Attended",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Date of Attendance From - Year",
+          "parent_text_phrase": "Education Institutions Attended",
+          "maxlength": "4",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_ddlSchoolToDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Date of Attendance To - Day",
+          "parent_text_phrase": "Education Institutions Attended",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_ddlSchoolToMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Date of Attendance To - Month",
+          "parent_text_phrase": "Education Institutions Attended",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolToYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Date of Attendance To - Year",
+          "parent_text_phrase": "Education Institutions Attended",
+          "maxlength": "4",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_InsertButtonPrevEduc"
         }
       ],
       "hides": [],

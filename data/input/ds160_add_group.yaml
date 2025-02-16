@@ -273,19 +273,21 @@ pptvisa_page:
 
 us_contact_page:
   contact:
-    surname: "KAUSHIK"
-    given_name: "RAMYA"
-    organization: "DO NOT KNOW"
-    relationship: "SPOUSE"
+    surname: "KAUSHIK"      # Surnames of contact person in US (max 33 chars)
+    given_name: "RAMYA"   # Given names of contact person in US (max 33 chars)
+    given_name_na: false
+    organization: "AMAZON" # Organization name in US (max 33 chars)
+    organization_na: false
+    relationship: "SPOUSE" # Options: RELATIVE, SPOUSE, FRIEND, BUSINESS ASSOCIATE, EMPLOYER, SCHOOL OFFICIAL, OTHER
   address:
-    street1: "338 SPEAR STREET, UNIT 34E"
-    street2: ""
-    city: "SAN FRANCISCO"
-    state: "CALIFORNIA"
-    postal_code: "94105"
-  phone: "2066592045"
-  email: "ramya.kaushik.8@gmail.com"
-  email_na: false
+    street1: "338 SPEAR STREET, UNIT 34E"      # US Street Address Line 1 (max 40 chars)
+    street2: ""      # US Street Address Line 2 (optional, max 40 chars)
+    city: "SAN FRANCISCO"         # US City (max 20 chars)
+    state: "CALIFORNIA"        # US State (select from list of US states/territories)
+    postal_code: "94105"  # US ZIP Code (max 10 chars)
+  phone: "2066592045"          # US Phone Number (max 15 chars)
+  email: "ramya.kaushik.8@gmail.com"          # Email Address (max 50 chars)
+  email_na: false    # Set to true if no email address available 
 
 relatives_page:
   father_surname: "KARINJE ACHARYA"
@@ -322,69 +324,118 @@ relatives_page:
 
 
 workeducation1_page:
-  present_occupation: "NOT EMPLOYED"
-  other_occupation_explanation: "WORKED AS SR. DATA SCIENTIST AT INSTACART UNTIL SEPT 2022 (ON H1B). TAKING TIME OFF TO FOCUS ON MACHINE LEARNING & AI EDUCATION."
-  previous_employer: "Y"
+  present_occupation: "COMPUTER SCIENCE"
+  other_occupation_explanation: ""
   employer:
     name: "INSTACART"
-    city: "SAN FRANCISCO"
-    state: "CA"
-    postal_code: "94105"
-    country: "UNITED STATES OF AMERICA"
-    phone: "8882467822"
-    job_title: "SR DATA SCIENTIST II"
-    supervisor_surname: "CHEN"
-    supervisor_given_name: "CLAIRE"
-    employment_date_from: "01 JUNE 2021"
-    employment_date_to: "02 SEPTEMBER 2022"
+    address:
+      street1: "1234567890"  # Street Address (Line 1) - max 40 chars
+      street2: "1234567890"  # Street Address (Line 2) - max 40 chars, optional
+      city: "SAN FRANCISCO"  # City - max 20 chars
+      state: "CA"  # State/Province - max 20 chars
+      state_na: false  # Check if State/Province is not applicable
+      postal_code: "94105"  # Postal Zone/ZIP Code - max 10 chars
+      postal_code_na: false  # Check if Postal Code is not applicable
+      country: "UNITED STATES OF AMERICA"  # Country/Region - Select from dropdown list
+    phone: "8882467822"  # Phone Number - max 15 chars
+  start_date:
+    month: "JUN"  # Employment From - Month (JAN-DEC)
+    day: "01"  # Employment From - Day (01-31)
+    year: "2021"  # Employment From - Year - max 4 chars
+  monthly_salary: "25000"  # Monthly Income in Local Currency - max 15 chars
+  duties: "DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS. DEVELOP METRIC AND DASHBOARDS."  # Job duties description
 
 workeducation2_page:
   previously_employed: "Y"  # Were you previously employed?
-  previous_employment:
-    employer: "AMAZON"  # Name of previous employer
-    address:
-      street1: "410 TERRY AVE N"  # Employer street address line 1
-      street2: ""  # Optional employer street address line 2
-      city: "SEATTLE"  # City where employer is located
-      state: "WA"  # State/province where employer is located
-      postal_code: "98109"  # Postal/ZIP code
-      country: "UNITED STATES OF AMERICA"  # Country where employer is located
-    phone: "2062661000"  # Employer phone number
-    job_title: "DATA SCIENTIST"  # Previous job title
-    supervisor:
-      surname: "DU"  # Supervisor's last name
-      given_name: "ZHENG"  # Supervisor's first name
-      surname_na: false  # Check if supervisor surname not applicable
-      given_name_na: false  # Check if supervisor given name not applicable
-    start_date:
-      month: "SEP"  # Start month of employment
-      day: "01"  # Start day of employment
-      year: "2019"  # Start year of employment
-    end_date:
-      month: "MAY"  # End month of employment
-      day: "29"  # End day of employment
-      year: "2021"  # End year of employment
-    duties: "DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS. DEVELOP METRIC AND DASHBOARDS."  # Job duties description
-
+  employment_information:
+    - employer: "AMAZON"  # Name of previous employer
+      job_title: "DATA SCIENTIST"  # Previous job title
+      address:
+        street1: "410 TERRY AVE N"  # Employer street address line 1
+        street2: ""  # Optional employer street address line 2
+        city: "SEATTLE"  # City where employer is located
+        state: "WA"  # State/province where employer is located
+        state_na: true  # Check if state/province not applicable
+        postal_code: "98109"  # Postal/ZIP code
+        postal_code_na: true  # Check if postal/ZIP code not applicable
+        country: "UNITED STATES OF AMERICA"  # Country where employer is located
+      phone: "2062661000"  # Employer phone number
+      supervisor:
+        surname: "DU"  # Supervisor's last name
+        given_name: "ZHENG"  # Supervisor's first name
+        surname_na: true  # Check if supervisor surname not applicable
+        given_name_na: true  # Check if supervisor given name not applicable
+      start_date:
+        month: "SEP"  # Start month of employment
+        day: "01"  # Start day of employment
+        year: "2019"  # Start year of employment
+      end_date:
+        month: "MAY"  # End month of employment
+        day: "29"  # End day of employment
+        year: "2021"  # End year of employment
+      duties: "DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS. DEVELOP METRIC AND DASHBOARDS."  # Job duties description
+    - employer: "AMAZON"  # Name of previous employer
+      job_title: "FINANCE MANAGER"  # Previous job title
+      address:
+        street1: "410 TERRY AVE N"  # Employer street address line 1
+        street2: ""  # Optional employer street address line 2
+        city: "SEATTLE"  # City where employer is located
+        state: "WA"  # State/province where employer is located
+        state_na: true  # Check if state/province not applicable
+        postal_code: "98109"  # Postal/ZIP code
+        postal_code_na: true  # Check if postal/ZIP code not applicable
+        country: "UNITED STATES OF AMERICA"  # Country where employer is located
+      phone: "2062661000"  # Employer phone number
+      supervisor:
+        surname: "NARAYAN"  # Supervisor's last name
+        given_name: "ASHOK"  # Supervisor's first name
+        surname_na: true  # Check if supervisor surname not applicable
+        given_name_na: true  # Check if supervisor given name not applicable
+      start_date:
+        month: "JUN"  # Start month of employment
+        day: "01"  # Start day of employment
+        year: "2018"  # Start year of employment
+      end_date:
+        month: "MAY"  # End month of employment
+        day: "29"  # End day of employment
+        year: "2020"  # End year of employment
+      duties: "FINANCIAL ANALYSIS AND REPORTING"  # Job duties description
   other_education: "Y"  # Have you attended any educational institutions?
   education:
-    name: "UNIVERSITY OF FLORIDA"  # Name of educational institution
-    course: "MBA"  # Field of study
-    address:
-      street1: "GAINESVILLE"  # School street address line 1
-      street2: ""  # Optional school street address line 2
-      city: "GAINESVILLE"  # City where school is located
-      state: "FL"  # State/province where school is located
-      postal_code: "32611"  # School postal/ZIP code
-      country: "UNITED STATES OF AMERICA"  # Country where school is located
-    start_date:
-      month: "APR"  # Start month of attendance
-      day: "02"  # Start day of attendance
-      year: "2010"  # Start year of attendance
-    end_date:
-      month: "MAY"  # End month of attendance
-      day: "31"  # End day of attendance
-      year: "2011"  # End year of attendance
+    - name: "UNIVERSITY OF FLORIDA"  # Name of educational institution
+      course: "MBA"  # Field of study
+      address:
+        street1: "GAINESVILLE"  # School street address line 1
+        street2: ""  # Optional school street address line 2
+        city: "GAINESVILLE"  # City where school is located
+        state: "FL"  # State/province where school is located
+        postal_code: "32611"  # School postal/ZIP code
+        country: "UNITED STATES OF AMERICA"  # Country where school is located
+      start_date:
+        month: "APR"  # Start month of attendance
+        day: "02"  # Start day of attendance
+        year: "2010"  # Start year of attendance
+      end_date:
+        month: "MAY"  # End month of attendance
+        day: "31"  # End day of attendance
+        year: "2011"  # End year of attendance 
+    - name: "PESIT"  # Name of educational institution
+      course: "B.E"  # Field of study
+      address:
+        street1: "Mysore Road"  # School street address line 1
+        street2: ""  # Optional school street address line 2
+        city: "Bangalore"  # City where school is located
+        state: "KA"  # State/province where school is located
+        postal_code: "560020"  # School postal/ZIP code
+        country: "INDIA"  # Country where school is located
+      start_date:
+        month: "APR"  # Start month of attendance
+        day: "02"  # Start day of attendance
+        year: "2002"  # Start year of attendance
+      end_date:
+        month: "MAY"  # End month of attendance
+        day: "31"  # End day of attendance
+        year: "2006"  # End year of attendance 
 
 workeducation3_page:
   clan_tribe_ind: "N"
@@ -399,62 +450,98 @@ workeducation3_page:
     - country: "NETHERLANDS"
     - country: "CANADA"
     - country: "INDIA"
-  military_service_ind: "N"
-  specialized_skills_ind: "N"
-  organization_ind: "N"
-  insurgent_org_ind: "N"
+  military_service_ind: "Y"
+  military_service:  # Military service details if applicable
+    country: "UNITED STATES OF AMERICA"  # Country where served
+    branch: "ARMY"  # Branch of service
+    rank: "CORPORAL"  # Rank/Position
+    specialty: "INFANTRY"  # Military specialty
+    service_from:
+      month: "JAN"  # Start month of service
+      day: "01"  # Start day of service
+      year: "2010"  # Start year of service
+    service_to:
+      month: "JAN"  # End month of service
+      day: "01"  # End day of service
+      year: "2015"  # End year of service
+  organization_ind: "Y"  # Have you belonged to any professional, social, or charitable organization?
+  organization_name: "AMAZON"  # Name of organization if applicable
+  specialized_skills_ind: "Y"  # Do you have specialized skills (firearms, explosives, nuclear, biological, chemical)?
+  specialized_skills_explanation: "I have a degree in Computer Science and Engineering"  # Explanation of specialized skills if applicable
+  insurgent_org_ind: "Y"  # Have you been involved with any paramilitary/rebel/insurgent group?
+  insurgent_org_explanation: "I was involved with the Communist Party of India (Marxist)"  # Explanation of involvement if applicable 
 
 security_background1_page:
-  disease: "N"
-  disorder: "N"
-  disorder_explanation: ""
-  druguser: "N"
+  disease: "Y"
+  disease_explanation: "disease explanation"
+  disorder: "Y"
+  disorder_explanation: "disorder explanation"
+  druguser: "Y"
+  druguser_explanation: "drug use explanation"
 
 security_background2_page:
-  arrested: "N"
-  arrested_explanation: ""
-  controlled_substances: "N"
-  prostitution: "N"
-  money_laundering: "N"
-  human_trafficking: "N"
-  assisted_trafficking: "N"
-  trafficking_related: "N"
+  arrested: "Y"
+  arrested_explanation: "arrested explanation"
+  controlled_substances: "Y"
+  controlled_substances_explanation: "controlled substances explanation"
+  prostitution: "Y"
+  prostitution_explanation: "prostitution explanation"
+  money_laundering: "Y"
+  money_laundering_explanation: "money laundering explanation"
+  human_trafficking: "Y"
+  human_trafficking_explanation: "human trafficking explanation"
+  assisted_trafficking: "Y"
+  assisted_trafficking_explanation: "assisted trafficking explanation"
+  trafficking_related: "Y"
+  trafficking_related_explanation: "trafficking related explanation"
 
 security_background3_page:
-  illegal_activity: "N"
-  terrorist_activity: "N"
-  terrorist_support: "N"
-  terrorist_org: "N"
-  terrorist_relative: "N"
-  genocide: "N"
-  torture: "N"
-  extrajudicial_violence: "N"
-  child_soldier: "N"
-  religious_freedom: "N"
-  population_controls: "N"
-  transplant: "N"
+  illegal_activity: "Y"
+  illegal_activity_explanation: "illegal activity explanation"
+  terrorist_activity: "Y"
+  terrorist_activity_explanation: "terrorist activity explanation"
+  terrorist_support: "Y"
+  terrorist_support_explanation: "terrorist support explanation"
+  terrorist_org: "Y"
+  terrorist_org_explanation: "terrorist org explanation"
+  terrorist_relative: "Y"
+  terrorist_relative_explanation: "terrorist relative explanation"
+  genocide: "Y"
+  genocide_explanation: "genocide explanation"
+  torture: "Y"
+  torture_explanation: "torture explanation"
+  extrajudicial_violence: "Y"
+  extrajudicial_violence_explanation: "extrajudicial violence explanation"
+  child_soldier: "Y"
+  child_soldier_explanation: "child soldier explanation"
+  religious_freedom: "Y"
+  religious_freedom_explanation: "religious freedom explanation"
+  population_controls: "Y"
+  population_controls_explanation: "population controls explanation"
+  transplant: "Y"
+  transplant_explanation: "transplant explanation"
 
 security_background4_page:
-  removal_hearing: "N"
-  removal_hearing_explanation: ""
-  immigration_fraud: "N"
-  immigration_fraud_explanation: ""
-  fail_to_attend: "N"
-  fail_to_attend_explanation: ""
-  visa_violation: "N"
-  visa_violation_explanation: ""
-  deported: "N"
-  deported_explanation: ""
+  removal_hearing: "Y"
+  removal_hearing_explanation: "removal hearing explanation"
+  immigration_fraud: "Y"
+  immigration_fraud_explanation: "immigration fraud explanation"
+  fail_to_attend: "Y"
+  fail_to_attend_explanation: "fail to attend explanation"
+  visa_violation: "Y"
+  visa_violation_explanation: "visa violation explanation"
+  deported: "Y"
+  deported_explanation: "deported explanation"
 
 security_background5_page:
-  child_custody: "N"
-  child_custody_explanation: ""
-  voting_violation: "N"
-  voting_violation_explanation: ""
-  renounce_tax: "N"
-  renounce_tax_explanation: ""
-  school_reimbursement: "N"
-  school_reimbursement_explanation: ""
+  child_custody: "Y"
+  child_custody_explanation: "child custody explanation"
+  voting_violation: "Y"
+  voting_violation_explanation: "voting violation explanation"
+  renounce_tax: "Y"
+  renounce_tax_explanation: "renounce tax explanation"
+  school_reimbursement: "Y"
+  school_reimbursement_explanation: "school reimbursement explanation"
 
 spouse_page:
   spouse_surname: "KAUSHIK"

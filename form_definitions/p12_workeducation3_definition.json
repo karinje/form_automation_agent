@@ -4,7 +4,7 @@
       "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlLANGUAGES_ctl00_tbxLANGUAGE_NAME",
       "type": "text",
       "value": "",
-      "text_phrase": "Language Name",
+      "text_phrase": "Provide a list of languages you speak",
       "parent_text_phrase": "Language Name",
       "maxlength": "66",
       "has_na_checkbox": false,
@@ -26,7 +26,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblCLAN_TRIBE_IND_1"
       },
       "text_phrase": "Do you belong to a clan or tribe?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Do you belong to a clan or tribe?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblCOUNTRIES_VISITED_IND",
@@ -44,7 +44,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblCOUNTRIES_VISITED_IND_1"
       },
       "text_phrase": "Have you traveled to any countries/regions within the last five years?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you traveled to any countries/regions within the last five years?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblORGANIZATION_IND",
@@ -62,7 +62,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblORGANIZATION_IND_1"
       },
       "text_phrase": "Have you belonged to, contributed to, or worked for any professional, social, or charitable organization?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you belonged to, contributed to, or worked for any professional, social, or charitable organization?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblSPECIALIZED_SKILLS_IND",
@@ -80,7 +80,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblSPECIALIZED_SKILLS_IND_1"
       },
       "text_phrase": "Do you have any specialized skills or training, such as firearms, explosives, nuclear, biological, or chemical experience?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Do you have any specialized skills or training, such as firearms, explosives, nuclear, biological, or chemical experience?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblMILITARY_SERVICE_IND",
@@ -98,7 +98,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblMILITARY_SERVICE_IND_1"
       },
       "text_phrase": "Have you ever served in the military?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever served in the military?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblINSURGENT_ORG_IND",
@@ -116,7 +116,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblINSURGENT_ORG_IND_1"
       },
       "text_phrase": "Have you ever served in, been a member of, or been involved with a paramilitary unit, vigilante unit, rebel group, guerrilla group, or insurgent organization?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever served in, been a member of, or been involved with a paramilitary unit, vigilante unit, rebel group, guerrilla group, or insurgent organization?"
     }
   ],
   "dependencies": {
@@ -672,7 +672,42 @@
             "ZIMBABWE"
           ],
           "text_phrase": "Name of Country/Region",
-          "parent_text_phrase": "Military Service Details"
+          "parent_text_phrase": "Military Service Details",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_InsertButtonMILITARY_SERVICE"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_BRANCH",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Branch of Service",
+          "parent_text_phrase": "Military Service Details",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_InsertButtonMILITARY_SERVICE"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_RANK",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Rank/Position",
+          "parent_text_phrase": "Military Service Details",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_InsertButtonMILITARY_SERVICE"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_SPECIALTY",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Military Specialty",
+          "parent_text_phrase": "Military Service Details",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_InsertButtonMILITARY_SERVICE"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_ddlMILITARY_SVC_FROMDay",
@@ -711,16 +746,42 @@
             "31"
           ],
           "text_phrase": "Date of Service From - Day",
-          "parent_text_phrase": "Service From - Date"
+          "parent_text_phrase": "Military Service Details",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_InsertButtonMILITARY_SERVICE"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_BRANCH",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_ddlMILITARY_SVC_FROMMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Date of Service From - Month",
+          "parent_text_phrase": "Military Service Details",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_InsertButtonMILITARY_SERVICE"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_FROMYear",
           "type": "text",
           "value": "",
-          "text_phrase": "Branch of Service",
+          "text_phrase": "Date of Service From - Year",
           "parent_text_phrase": "Military Service Details",
-          "maxlength": "40",
-          "has_na_checkbox": false
+          "maxlength": "4",
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_InsertButtonMILITARY_SERVICE"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_ddlMILITARY_SVC_TODay",
@@ -759,27 +820,9 @@
             "31"
           ],
           "text_phrase": "Date of Service To - Day",
-          "parent_text_phrase": "Service To - Date"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_ddlMILITARY_SVC_FROMMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Date of Service From - Month",
-          "parent_text_phrase": "Service From - Date"
+          "parent_text_phrase": "Military Service Details",
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_InsertButtonMILITARY_SERVICE"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_ddlMILITARY_SVC_TOMonth",
@@ -799,44 +842,21 @@
             "DEC"
           ],
           "text_phrase": "Date of Service To - Month",
-          "parent_text_phrase": "Service To - Date"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_RANK",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Rank/Position",
           "parent_text_phrase": "Military Service Details",
-          "maxlength": "40",
-          "has_na_checkbox": false
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_InsertButtonMILITARY_SERVICE"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_TOYear",
           "type": "text",
           "value": "",
           "text_phrase": "Date of Service To - Year",
-          "parent_text_phrase": "Service To - Date",
-          "maxlength": "4",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_SPECIALTY",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Military Specialty",
           "parent_text_phrase": "Military Service Details",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_tbxMILITARY_SVC_FROMYear",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Date of Service From - Year",
-          "parent_text_phrase": "Service From - Date",
           "maxlength": "4",
-          "has_na_checkbox": false
-        }
+          "has_na_checkbox": false,
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlMILITARY_SERVICE_ctl00_InsertButtonMILITARY_SERVICE"
+        }        
       ],
       "hides": [],
       "dependencies": null

@@ -35,63 +35,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.AGRICULTURE": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -101,51 +44,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -157,12 +72,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -426,21 +361,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -450,63 +455,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.ARTIST/PERFORMER": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -516,51 +464,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -572,12 +492,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -841,21 +781,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -865,63 +875,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.BUSINESS": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -931,51 +884,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -987,12 +912,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -1256,21 +1201,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -1280,63 +1295,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.COMMUNICATIONS": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -1346,51 +1304,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -1402,12 +1332,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -1671,21 +1621,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -1695,63 +1715,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.COMPUTER SCIENCE": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -1761,51 +1724,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -1817,12 +1752,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -2086,21 +2041,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -2110,63 +2135,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.CULINARY/FOOD SERVICES": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -2176,51 +2144,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -2232,12 +2172,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -2501,21 +2461,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -2525,63 +2555,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.EDUCATION": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -2591,51 +2564,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -2647,12 +2592,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -2916,21 +2881,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -2940,63 +2975,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.ENGINEERING": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -3006,51 +2984,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -3062,12 +3012,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -3331,21 +3301,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -3355,63 +3395,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.GOVERNMENT": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -3421,51 +3404,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -3477,12 +3432,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -3746,21 +3721,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -3775,63 +3820,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.LEGAL PROFESSION": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -3841,51 +3829,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -3897,12 +3857,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -4166,21 +4146,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -4190,63 +4240,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.MEDICAL/HEALTH": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -4256,51 +4249,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -4312,12 +4277,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -4581,21 +4566,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -4605,63 +4660,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.MILITARY": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -4671,51 +4669,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -4727,12 +4697,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -4996,21 +4986,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -5020,63 +5080,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.NATURAL SCIENCE": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -5086,51 +5089,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -5142,12 +5117,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -5411,21 +5406,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -5450,63 +5515,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.PHYSICAL SCIENCES": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -5516,51 +5524,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -5572,12 +5552,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -5841,21 +5841,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -5865,63 +5935,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.RELIGIOUS VOCATION": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -5931,51 +5944,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -5987,12 +5972,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -6256,21 +6261,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -6280,63 +6355,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.RESEARCH": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -6346,51 +6364,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -6402,12 +6392,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -6671,21 +6681,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -6700,63 +6780,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.SOCIAL SCIENCE": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -6766,51 +6789,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -6822,12 +6817,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -7091,21 +7106,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -7115,63 +7200,6 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.STUDENT": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
-          "type": "dropdown",
-          "value": [
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08",
-            "09",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"
-          ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
@@ -7181,51 +7209,23 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
           "type": "text",
           "value": "",
-          "text_phrase": "State/Province",
+          "text_phrase": "Street Address (Line 1)",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
-          "type": "dropdown",
-          "value": [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APR",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-          ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
-          "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -7237,12 +7237,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -7506,21 +7526,91 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
+          "type": "dropdown",
+          "value": [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
+          "type": "dropdown",
+          "value": [
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+          ],
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
+          "has_na_checkbox": false
+        },
+        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
           "text_phrase": "Monthly Income in Local Currency (if employed)",
           "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
-          "has_na_checkbox": true
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
-          "type": "text",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "15",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],
@@ -7530,22 +7620,32 @@
     "ctl00_SiteContentPlaceHolder_FormView1_ddlPresentOccupation.OTHER": {
       "shows": [
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
           "type": "text",
           "value": "",
-          "text_phrase": "Postal Zone/ZIP Code",
+          "text_phrase": "Present Employer or School Name",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "10",
-          "has_na_checkbox": true
+          "maxlength": "75",
+          "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
-          "type": "textarea",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
+          "type": "text",
           "value": "",
-          "text_phrase": "Briefly describe your duties:",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "text_phrase": "Street Address (Line 1)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
           "has_na_checkbox": false
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Street Address (Line 2)",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "40",
+          "has_na_checkbox": false,
+          "optional": true
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchCity",
@@ -7557,12 +7657,32 @@
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "State/Province",
           "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "4",
+          "maxlength": "20",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxWORK_EDUC_ADDR_STATE_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Postal Zone/ZIP Code",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "10",
+          "has_na_checkbox": true,
+          "has_na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_POSTAL_CD_NA"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "type": "text",
+          "value": "",
+          "text_phrase": "Phone Number",
+          "parent_text_phrase": "Present employer or school address:",
+          "maxlength": "15",
           "has_na_checkbox": false
         },
         {
@@ -7826,24 +7946,6 @@
           "parent_text_phrase": "Present employer or school address:"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Monthly Income in Local Currency (if employed)",
-          "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
-          "maxlength": "15",
-          "has_na_checkbox": true
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr1",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay",
           "type": "dropdown",
           "value": [
@@ -7879,35 +7981,8 @@
             "30",
             "31"
           ],
-          "text_phrase": "Employment From - Day",
-          "parent_text_phrase": "Present employer or school address:"
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchAddr2",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "40",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpSchName",
-          "type": "text",
-          "value": "",
-          "text_phrase": "Present Employer or School Name",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "75",
-          "has_na_checkbox": false
-        },
-        {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_ADDR_STATE",
-          "type": "text",
-          "value": "",
-          "text_phrase": "State/Province",
-          "parent_text_phrase": "Present employer or school address:",
-          "maxlength": "20",
-          "has_na_checkbox": true
+          "text_phrase": "Start Date - Day",
+          "parent_text_phrase": "Start Date"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromMonth",
@@ -7926,25 +8001,36 @@
             "NOV",
             "DEC"
           ],
-          "text_phrase": "Employment From - Month",
-          "parent_text_phrase": "Present employer or school address:"
+          "text_phrase": "Start Date - Month",
+          "parent_text_phrase": "Start Date"
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxExplainOtherPresentOccupation",
-          "type": "textarea",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
+          "type": "text",
           "value": "",
-          "text_phrase": "Specify Other",
-          "parent_text_phrase": "",
-          "maxlength": "4000",
+          "text_phrase": "Start Date - Year",
+          "parent_text_phrase": "Start Date",
+          "maxlength": "4",
           "has_na_checkbox": false
         },
         {
-          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxWORK_EDUC_TEL",
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
           "type": "text",
           "value": "",
-          "text_phrase": "Phone Number",
-          "parent_text_phrase": "Present employer or school address:",
+          "text_phrase": "Monthly Income in Local Currency (if employed)",
+          "parent_text_phrase": "Monthly Income in Local Currency (if employed)",
           "maxlength": "15",
+          "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
+          "na_checkbox_text": "Does not apply"
+        },
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Briefly describe your duties:",
+          "parent_text_phrase": "Briefly describe your duties:",
+          "maxlength": "4000",
           "has_na_checkbox": false
         }
       ],

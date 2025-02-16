@@ -16,7 +16,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblDisease_1"
       },
       "text_phrase": "Do you have a communicable disease of public health significance?  (Communicable diseases of public significance include chancroid, gonorrhea, granuloma inguinale, infectious leprosy, lymphogranuloma venereum, infectious stage syphilis, active tuberculosis, and other diseases as determined by the Department of Health and Human Services.)",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Do you have a communicable disease of public health significance?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblDisorder",
@@ -34,7 +34,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblDisorder_1"
       },
       "text_phrase": "Do you have a mental or physical disorder that poses or is likely to pose a threat\n                                to the safety or welfare of yourself or others?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Do you have a mental or physical disorder that poses or is likely to pose a threat to the safety or welfare of yourself or others?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblDruguser",
@@ -52,7 +52,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblDruguser_1"
       },
       "text_phrase": "Are you or have you ever been a drug abuser or addict?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Are you or have you ever been a drug abuser or addict?"
     }
   ],
   "dependencies": {

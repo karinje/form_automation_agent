@@ -16,7 +16,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblChildCustody_1"
       },
       "text_phrase": "Have you ever withheld custody of a U.S. citizen child outside the United States from a person granted legal custody by a U.S. court?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever withheld custody of a U.S. citizen child outside the United States from a person granted legal custody by a U.S. court?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblVotingViolation",
@@ -34,7 +34,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblVotingViolation_1"
       },
       "text_phrase": "Have you voted in the United States in violation of any law or regulation?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you voted in the United States in violation of any law or regulation?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblRenounceExp",
@@ -52,7 +52,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblRenounceExp_1"
       },
       "text_phrase": "Have you ever renounced United States citizenship for the purposes of avoiding taxation?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever renounced United States citizenship for the purposes of avoiding taxation?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAttWoReimb",
@@ -70,7 +70,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAttWoReimb_1"
       },
       "text_phrase": "Have you attended a public elementary school on student (F) status or a public secondary school after November 30, 1996 without reimbursing the school?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you attended a public elementary school on student (F) status or a public secondary school after November 30, 1996 without reimbursing the school?"
     }
   ],
   "dependencies": {

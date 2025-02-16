@@ -16,7 +16,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblIllegalActivity_1"
       },
       "text_phrase": "Do you seek to engage in espionage, sabotage, export control violations, or any other illegal activity while in the United States?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Do you seek to engage in espionage, sabotage, export control violations, or any other illegal activity while in the United States?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristActivity",
@@ -34,7 +34,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristActivity_1"
       },
       "text_phrase": "Do you seek to engage in terrorist activities while in the United States or have you ever engaged in terrorist activities?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Do you seek to engage in terrorist activities while in the United States or have you ever engaged in terrorist activities?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristSupport",
@@ -52,7 +52,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristSupport_1"
       },
       "text_phrase": "Have you ever or do you intend to provide financial assistance or other support to terrorists or terrorist organizations?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever or do you intend to provide financial assistance or other support to terrorists or terrorist organizations?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristOrg",
@@ -70,7 +70,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristOrg_1"
       },
       "text_phrase": "Are you a member or representative of a terrorist organization?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Are you a member or representative of a terrorist organization?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristRel",
@@ -88,7 +88,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTerroristRel_1"
       },
       "text_phrase": "Are you the spouse, son, or daughter of an individual who has engaged in terrorist activity, including providing financial assistance or other support to terrorists or terrorist organizations, in the last five years?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Are you the spouse, son, or daughter of an individual who has engaged in terrorist activity, including providing financial assistance or other support to terrorists or terrorist organizations, in the last five years?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblGenocide",
@@ -106,7 +106,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblGenocide_1"
       },
       "text_phrase": "Have you ever ordered, incited, committed, assisted, or otherwise participated in genocide?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever ordered, incited, committed, assisted, or otherwise participated in genocide?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTorture",
@@ -124,7 +124,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTorture_1"
       },
       "text_phrase": "Have you ever committed, ordered, incited, assisted, or otherwise participated in torture?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever committed, ordered, incited, assisted, or otherwise participated in torture?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblExViolence",
@@ -142,7 +142,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblExViolence_1"
       },
       "text_phrase": "Have you committed, ordered, incited, assisted, or otherwise participated in extrajudicial killings, political killings, or other acts of violence?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you committed, ordered, incited, assisted, or otherwise participated in extrajudicial killings, political killings, or other acts of violence?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblChildSoldier",
@@ -160,7 +160,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblChildSoldier_1"
       },
       "text_phrase": "Have you ever engaged in the recruitment or the use of child soldiers?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever engaged in the recruitment or the use of child soldiers?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblReligiousFreedom",
@@ -178,7 +178,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblReligiousFreedom_1"
       },
       "text_phrase": "Have you, while serving as a government official, been responsible for or directly carried out, at any time, particularly severe violations of religious freedom?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you, while serving as a government official, been responsible for or directly carried out, at any time, particularly severe violations of religious freedom?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPopulationControls",
@@ -196,7 +196,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPopulationControls_1"
       },
       "text_phrase": "Have you ever been directly involved in the establishment or enforcement of population controls forcing a woman to undergo an abortion against her free choice or a man or a woman to undergo sterilization against his or her free will?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever been directly involved in the establishment or enforcement of population controls forcing a woman to undergo an abortion against her free choice or a man or a woman to undergo sterilization against his or her free will?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblTransplant",
@@ -214,7 +214,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblTransplant_1"
       },
       "text_phrase": "Have you ever been directly involved in the coercive transplantation of human organs or bodily tissue?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever been directly involved in the coercive transplantation of human organs or bodily tissue?"
     }
   ],
   "dependencies": {

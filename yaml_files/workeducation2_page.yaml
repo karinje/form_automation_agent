@@ -1,47 +1,91 @@
 workeducation2_page:
   previously_employed: "Y"  # Were you previously employed?
-  previous_employment:
-    employer: "AMAZON"  # Name of previous employer
-    job_title: "DATA SCIENTIST"  # Previous job title
-    address:
-      street1: "410 TERRY AVE N"  # Employer street address line 1
-      street2: ""  # Optional employer street address line 2
-      city: "SEATTLE"  # City where employer is located
-      state: "WA"  # State/province where employer is located
-      postal_code: "98109"  # Postal/ZIP code
-      country: "UNITED STATES OF AMERICA"  # Country where employer is located
-    phone: "2062661000"  # Employer phone number
-    supervisor:
-      surname: "DU"  # Supervisor's last name
-      given_name: "ZHENG"  # Supervisor's first name
-      surname_na: false  # Check if supervisor surname not applicable
-      given_name_na: false  # Check if supervisor given name not applicable
-    start_date:
-      month: "SEP"  # Start month of employment
-      day: "01"  # Start day of employment
-      year: "2019"  # Start year of employment
-    end_date:
-      month: "MAY"  # End month of employment
-      day: "29"  # End day of employment
-      year: "2021"  # End year of employment
-    duties: "DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS. DEVELOP METRIC AND DASHBOARDS."  # Job duties description
-
+  employment_information:
+    - employer: "AMAZON"  # Name of previous employer
+      job_title: "DATA SCIENTIST"  # Previous job title
+      address:
+        street1: "410 TERRY AVE N"  # Employer street address line 1
+        street2: ""  # Optional employer street address line 2
+        city: "SEATTLE"  # City where employer is located
+        state: "WA"  # State/province where employer is located
+        state_na: true  # Check if state/province not applicable
+        postal_code: "98109"  # Postal/ZIP code
+        postal_code_na: true  # Check if postal/ZIP code not applicable
+        country: "UNITED STATES OF AMERICA"  # Country where employer is located
+      phone: "2062661000"  # Employer phone number
+      supervisor:
+        surname: "DU"  # Supervisor's last name
+        given_name: "ZHENG"  # Supervisor's first name
+        surname_na: true  # Check if supervisor surname not applicable
+        given_name_na: true  # Check if supervisor given name not applicable
+      start_date:
+        month: "SEP"  # Start month of employment
+        day: "01"  # Start day of employment
+        year: "2019"  # Start year of employment
+      end_date:
+        month: "MAY"  # End month of employment
+        day: "29"  # End day of employment
+        year: "2021"  # End year of employment
+      duties: "DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS. DEVELOP METRIC AND DASHBOARDS."  # Job duties description
+    - employer: "AMAZON"  # Name of previous employer
+      job_title: "FINANCE MANAGER"  # Previous job title
+      address:
+        street1: "410 TERRY AVE N"  # Employer street address line 1
+        street2: ""  # Optional employer street address line 2
+        city: "SEATTLE"  # City where employer is located
+        state: "WA"  # State/province where employer is located
+        state_na: true  # Check if state/province not applicable
+        postal_code: "98109"  # Postal/ZIP code
+        postal_code_na: true  # Check if postal/ZIP code not applicable
+        country: "UNITED STATES OF AMERICA"  # Country where employer is located
+      phone: "2062661000"  # Employer phone number
+      supervisor:
+        surname: "NARAYAN"  # Supervisor's last name
+        given_name: "ASHOK"  # Supervisor's first name
+        surname_na: true  # Check if supervisor surname not applicable
+        given_name_na: true  # Check if supervisor given name not applicable
+      start_date:
+        month: "JUN"  # Start month of employment
+        day: "01"  # Start day of employment
+        year: "2018"  # Start year of employment
+      end_date:
+        month: "MAY"  # End month of employment
+        day: "29"  # End day of employment
+        year: "2020"  # End year of employment
+      duties: "FINANCIAL ANALYSIS AND REPORTING"  # Job duties description
   other_education: "Y"  # Have you attended any educational institutions?
   education:
-    name: "UNIVERSITY OF FLORIDA"  # Name of educational institution
-    course: "MBA"  # Field of study
-    address:
-      street1: "GAINESVILLE"  # School street address line 1
-      street2: ""  # Optional school street address line 2
-      city: "GAINESVILLE"  # City where school is located
-      state: "FL"  # State/province where school is located
-      postal_code: "32611"  # School postal/ZIP code
-      country: "UNITED STATES OF AMERICA"  # Country where school is located
-    start_date:
-      month: "APR"  # Start month of attendance
-      day: "02"  # Start day of attendance
-      year: "2010"  # Start year of attendance
-    end_date:
-      month: "MAY"  # End month of attendance
-      day: "31"  # End day of attendance
-      year: "2011"  # End year of attendance 
+    - name: "UNIVERSITY OF FLORIDA"  # Name of educational institution
+      course: "MBA"  # Field of study
+      address:
+        street1: "GAINESVILLE"  # School street address line 1
+        street2: ""  # Optional school street address line 2
+        city: "GAINESVILLE"  # City where school is located
+        state: "FL"  # State/province where school is located
+        postal_code: "32611"  # School postal/ZIP code
+        country: "UNITED STATES OF AMERICA"  # Country where school is located
+      start_date:
+        month: "APR"  # Start month of attendance
+        day: "02"  # Start day of attendance
+        year: "2010"  # Start year of attendance
+      end_date:
+        month: "MAY"  # End month of attendance
+        day: "31"  # End day of attendance
+        year: "2011"  # End year of attendance  
+    - name: "PESIT"  # Name of educational institution
+      course: "B.E"  # Field of study
+      address:
+        street1: "Mysore Road"  # School street address line 1
+        street2: ""  # Optional school street address line 2
+        city: "Bangalore"  # City where school is located
+        state: "KA"  # State/province where school is located
+        postal_code: "560020"  # School postal/ZIP code
+        country: "INDIA"  # Country where school is located
+      start_date:
+        month: "APR"  # Start month of attendance
+        day: "02"  # Start day of attendance
+        year: "2002"  # Start year of attendance
+      end_date:
+        month: "MAY"  # End month of attendance
+        day: "31"  # End day of attendance
+        year: "2006"  # End year of attendance 

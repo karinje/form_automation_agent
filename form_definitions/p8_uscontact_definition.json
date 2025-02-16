@@ -7,7 +7,10 @@
       "text_phrase": "Surnames",
       "parent_text_phrase": "Contact Person or Organization in the United States",
       "maxlength": "33",
-      "has_na_checkbox": false
+      "has_na_checkbox": true,
+      "na_checkbox_text": "Do not know",
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxUS_POC_NAME_NA",
+      "help_text": "Your U.S. Point of Contact can be any individual in the U.S. who knows you and can verify, if necessary, your identity. If you do not personally know anyone in the U.S., you may enter the name of the store, company, or organization you plan to visit during your trip."
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxUS_POC_GIVEN_NAME",
@@ -16,7 +19,10 @@
       "text_phrase": "Given Names",
       "parent_text_phrase": "Contact Person or Organization in the United States",
       "maxlength": "33",
-      "has_na_checkbox": false
+      "has_na_checkbox": true,
+      "na_checkbox_text": "Do not know",
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxUS_POC_NAME_NA"
+      
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxUS_POC_ORGANIZATION",
@@ -25,7 +31,9 @@
       "text_phrase": "Organization Name",
       "parent_text_phrase": "Contact Person or Organization in the United States",
       "maxlength": "33",
-      "has_na_checkbox": false
+      "has_na_checkbox": true,
+      "na_checkbox_text": "Do not know",
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxUS_POC_ORG_NA_IND"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlUS_POC_REL_TO_APP",
@@ -47,7 +55,7 @@
       "type": "text",
       "value": "",
       "text_phrase": "U.S. Street Address (Line 1)",
-      "parent_text_phrase": "*Optional",
+      "parent_text_phrase": "Address and Phone Number of Point of Contact",
       "maxlength": "40",
       "has_na_checkbox": false
     },
@@ -159,7 +167,8 @@
       "text_phrase": "Email Address",
       "parent_text_phrase": "Address and Phone Number of Point of Contact",
       "maxlength": "50",
-      "has_na_checkbox": true
+      "has_na_checkbox": true,
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexUS_POC_EMAIL_ADDR_NA"
     }
   ],
   "dependencies": {

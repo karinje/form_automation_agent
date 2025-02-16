@@ -16,7 +16,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblArrested_1"
       },
       "text_phrase": "Have you ever been arrested or convicted for any offense or crime, even though subject of a pardon, amnesty, or other similar action?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever been arrested or convicted for any offense or crime, even though subject of a pardon, amnesty, or other similar action?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblControlledSubstances",
@@ -34,7 +34,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblControlledSubstances_1"
       },
       "text_phrase": "Have you ever violated, or engaged in a conspiracy to violate, any law relating to controlled substances?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever violated, or engaged in a conspiracy to violate, any law relating to controlled substances?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblProstitution",
@@ -52,7 +52,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblProstitution_1"
       },
       "text_phrase": "Are you coming to the United States to engage in prostitution or unlawful commercialized vice or have you been engaged in prostitution or procuring prostitutes within the past 10 years?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Are you coming to the United States to engage in prostitution or unlawful commercialized vice or have you been engaged in prostitution or procuring prostitutes within the past 10 years?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblMoneyLaundering",
@@ -70,7 +70,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblMoneyLaundering_1"
       },
       "text_phrase": "Have you ever been involved in, or do you seek to engage in, money laundering?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever been involved in, or do you seek to engage in, money laundering?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTrafficking",
@@ -88,7 +88,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTrafficking_1"
       },
       "text_phrase": "Have you ever committed or conspired to commit a human trafficking offense in the United States or outside the United States?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever committed or conspired to commit a human trafficking offense in the United States or outside the United States?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAssistedSevereTrafficking",
@@ -106,7 +106,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAssistedSevereTrafficking_1"
       },
       "text_phrase": "Have you ever knowingly aided, abetted, assisted or colluded with an individual who has committed, or conspired to commit a severe human trafficking offense in the United States or outside the United States?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Have you ever knowingly aided, abetted, assisted or colluded with an individual who has committed, or conspired to commit a severe human trafficking offense in the United States or outside the United States?"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTraffickingRelated",
@@ -124,7 +124,7 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTraffickingRelated_1"
       },
       "text_phrase": "Are you the spouse, son, or daughter of an individual who has committed or conspired to commit a human trafficking offense in the United States or outside the United States and have you within the last five years, knowingly benefited from the trafficking activities?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Are you the spouse, son, or daughter of an individual who has committed or conspired to commit a human trafficking offense in the United States or outside the United States and have you within the last five years, knowingly benefited from the trafficking activities?"
     }
   ],
   "dependencies": {
