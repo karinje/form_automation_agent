@@ -15,6 +15,8 @@ import { Label } from "@/components/ui/label"
 import { createFormMapping } from '@/utils/yaml-mapping'
 import { debugLog } from '@/utils/consoleLogger'
 import { FormCategories } from '@/utils/helpers'
+import { Button } from "@/components/ui/button"
+import { LinkedInImport } from "@/components/LinkedInImport"
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -820,6 +822,7 @@ export default function Home() {
               {renderFormSection(formCategories.travel, 'travel')}
             </TabsContent>
             <TabsContent value="education">
+              <LinkedInImport />
               {renderFormSection(formCategories.education, 'education')}
             </TabsContent>
             <TabsContent value="security">
