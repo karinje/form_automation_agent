@@ -7,15 +7,17 @@ form_mapping = {
     "previous_travel_details.arrival.day": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_ddlPREV_US_VISIT_DTEDay",
     "previous_travel_details.length_of_stay.number": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_tbxPREV_US_VISIT_LOS",
     "previous_travel_details.length_of_stay.unit": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_ddlPREV_US_VISIT_LOS_CD",
-    
+    "previous_travel_details.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_InsertButtonPREV_US_VISIT",
     # Driver's license
     "drivers_license": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_US_DRIVER_LIC_IND",
     "license_details.number": "ctl00_SiteContentPlaceHolder_FormView1_dtlUS_DRIVER_LICENSE_ctl00_tbxUS_DRIVER_LICENSE",
+    "license_details.number_na": "ctl00_SiteContentPlaceHolder_FormView1_dtlUS_DRIVER_LICENSE_ctl00_cbxUS_DRIVER_LICENSE_NA",
     "license_details.state": "ctl00_SiteContentPlaceHolder_FormView1_dtlUS_DRIVER_LICENSE_ctl00_ddlUS_DRIVER_LICENSE_STATE",
-    
+    "license_details.add_group": "ctl00_SiteContentPlaceHolder_FormView1_dtlUS_DRIVER_LICENSE_ctl00_InsertButtonUS_DRIVER_LICENSE",
     # Previous visa
     "previous_visa": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_IND",
     "visa_number": "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_FOIL_NUMBER",
+    "visa_number_na": "ctl00_SiteContentPlaceHolder_FormView1_cbxPREV_VISA_FOIL_NUMBER_NA",
     "visa_issue_date.month": "ctl00_SiteContentPlaceHolder_FormView1_ddlPREV_VISA_ISSUED_DTEMonth",
     "visa_issue_date.day": "ctl00_SiteContentPlaceHolder_FormView1_ddlPREV_VISA_ISSUED_DTEDay",
     "visa_issue_date.year": "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_ISSUED_DTEYear",

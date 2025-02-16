@@ -16,7 +16,8 @@
         "N": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherPersonsTravelingWithYou_1"
       },
       "text_phrase": "Are there other persons traveling with you?",
-      "parent_text_phrase": "Yes"
+      "parent_text_phrase": "Yes",
+      "help_text": "You should answer Yes to this question if you are traveling with family, as part of an organized tour, or as part of a performing group or athletic team. You do not need to list individuals who are traveling with you for the purposes of employment with the same employer."
     }
   ],
   "dependencies": {
@@ -64,18 +65,22 @@
               "type": "text",
               "value": "",
               "text_phrase": "Surnames of Person Traveling With You",
-              "parent_text_phrase": "Surnames of Person Traveling With You",
+              "parent_text_phrase": "Travel Companions",
               "maxlength": "33",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "add_group": true,
+              "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_InsertButtonPrincipalPOT"
             },
             {
               "name": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_tbxGivenName",
               "type": "text",
               "value": "",
               "text_phrase": "Given Names of Person Traveling With You",
-              "parent_text_phrase": "Surnames of Person Traveling With You",
+              "parent_text_phrase": "Travel Companions",
               "maxlength": "33",
-              "has_na_checkbox": false
+              "has_na_checkbox": false,
+              "add_group": true,
+              "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_InsertButtonPrincipalPOT"
             },
             {
               "name": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_ddlTCRelationship",
@@ -90,7 +95,9 @@
                 "OTHER"
               ],
               "text_phrase": "Relationship with Person",
-              "parent_text_phrase": "Surnames of Person Traveling With You"
+              "parent_text_phrase": "Travel Companions",
+              "add_group": true,
+              "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_InsertButtonPrincipalPOT"
             }
           ],
           "hides": [],

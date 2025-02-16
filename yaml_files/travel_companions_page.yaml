@@ -2,7 +2,13 @@ travel_companions_page:
   traveling_with_others: "Y"  # Are there other persons traveling with you? (Y/N)
   group_travel: "N"  # Are you traveling as part of a group or organization? (Y/N)
   group_name: ""  # Name of group/organization if traveling as group
-  companion:  # Details of person traveling with you if not traveling as group
-    surname: "SMITH"  # Surnames of Person Traveling With You (max 33 chars)
-    given_name: "JOHN"  # Given Names of Person Traveling With You (max 33 chars) 
-    relationship: "FRIEND"  # Relationship options: PARENT/SPOUSE/CHILD/OTHER RELATIVE/FRIEND/BUSINESS ASSOCIATE/OTHER
+  travel_companions:  # Details of person traveling with you if not traveling as group
+    - surname: "SMITH"  # Surnames of Person Traveling With You (max 33 chars)
+      given_name: "JOHN"  # Given Names of Person Traveling With You (max 33 chars) 
+      relationship: "FRIEND"  # Relationship options: PARENT/SPOUSE/CHILD/OTHER RELATIVE/FRIEND/BUSINESS ASSOCIATE/OTHER
+    - surname: "JONES"  # Surnames of Person Traveling With You (max 33 chars)
+      given_name: "JANE"  # Given Names of Person Traveling With You (max 33 chars) 
+      relationship: "OTHER"  # Relationship options: PARENT/SPOUSE/CHILD/OTHER RELATIVE/FRIEND/BUSINESS ASSOCIATE/OTHER
+    - surname: "DOE"  # Surnames of Person Traveling With You (max 33 chars)
+      given_name: "JON"  # Given Names of Person Traveling With You (max 33 chars) 
+      relationship: "CHILD"  # Relationship options: PARENT/SPOUSE/CHILD/OTHER RELATIVE/FRIEND/BUSINESS ASSOCIATE/OTHER
