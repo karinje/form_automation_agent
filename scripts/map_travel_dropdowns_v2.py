@@ -4,9 +4,9 @@ import time
 import os
 from dotenv import load_dotenv
 import yaml
-from src.utils.form_handler import FormHandler
-from src.utils.form_mapping import FormMapping
-from src.utils.browser import BrowserHandler
+from backend.src.automation.form_handler import FormHandler
+from backend.src.mappings.form_mapping import FormMapping
+from backend.src.automation.browser import BrowserHandler
 import logging
 
 logging.basicConfig(level=logging.INFO)

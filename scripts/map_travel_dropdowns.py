@@ -3,9 +3,9 @@ import json
 import time
 import os
 from dotenv import load_dotenv
-from src.utils.form_handler import FormHandler
-from src.utils.form_mapping import FormMapping, FormPage
-from src.utils.browser import BrowserHandler
+from backend.src.automation.form_handler import FormHandler
+from backend.src.mappings.form_mapping import FormMapping, FormPage
+from backend.src.automation.browser import BrowserHandler
 import yaml
 import logging
 

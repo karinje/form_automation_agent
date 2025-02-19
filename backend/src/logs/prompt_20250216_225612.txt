@@ -1,0 +1,588 @@
+
+            You are a DS-160 form expert. Convert this PDF text to YAML format matching these YAML templates.
+            
+            PDF TEXT:
+            10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   1/7  Next  Online Nonimmigrant Visa Application (DS-160)  Application -   Sensitive But Unclassi fi ed(SBU)  We   do not need a printed copy   of your application at any point during your interview process. Only print this   application if you want  a copy for your own records. If you print your application,   please keep it secure.  Photo Provided:  Confirmation Number:  Your Personal Copy -- Do Not Bring to Interview  Personal, Address, Phone, and Passport/Travel Document Information  Name Provided:   KARINJE, SANJAY  Full Name in Native Language:   DOES NOT APPLY  Other Names Used:   NO  Telecode Name Used:   NO  Sex:   MALE  Marital Status:   MARRIED  Date of Birth:   17 AUGUST 1984  Place of Birth:   BANGALORE, KARNATAKA, INDIA  Country/Region of Origin (Nationality):   INDIA  Do you hold or have you held any nationality other than the one  indicated above on nationality?  NO  Are you a permanent resident of a country/region other than your  country/region of origin (nationality) above?  NO  National Identification Number:   DOES NOT APPLY  U.S. Social Security Number:   766928575  U.S. Taxpayer ID Number:   DOES NOT APPLY  Home Address:   338 SPEAR STREET, UNIT 34E  City:   SAN FRANCISCO  State/Province:   CA  Postal Zone/ZIP Code:   94105  Country/Region:   UNITED STATES OF AMERICA  Same Mailing Address?   YES  Primary Phone Number:   3524439621  Your Personal Copy -- Do Not Bring to Interview
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   2/7  Your Personal Copy -- Do Not Bring to Interview  Secondary Phone Number:   2066592045  Work Phone Number:   DOES NOT APPLY  Do you have any additional phone numbers?   NO  Email Address:   sanjay.karinje.8@gmail.com  Do you have any additional email addresses?   NO  Do you have a social media presence?  Social Media Platform: (1):   FACEBOOK  Social Media Identifier:   SANJAY KARINJE  Do you have any additional social media presence?   NO  Passport/Travel Document Type:   REGULAR  Passport/Travel Document Number:   S7754691  Passport Book Number:   DOES NOT APPLY  Country/Authority that Issued Passport/Travel Document:   INDIA  City Where Issued:   SAN FRANCISCO  State/Province Where Issued:   CA  Country/Region Where Issued:   UNITED STATES OF AMERICA  Issuance Date:   27 MARCH 2019  Expiration Date:   26 MARCH 2029  Have you ever lost a passport or had one stolen?   NO  Travel Information  The List of Purposes of Trip to the U.S.  Purpose of Trip to the U.S. (1):   TEMPORARY WORKER (H)  Specify:   SPOUSE OF AN H (H4)  Principal Applicant Name:   KAUSHIK,   RAMYA  Application Receipt/Petition Number:   LIN2134351459  Have you made specific travel plans?   NO  Intended Date of Arrival:   15 JANUARY 2023  Intended Length of Stay in U.S.:   3 YEAR(S)  Address where you will stay in the U.S.:   338 SPEAR STREET, UNIT 34E  City, State, Postal/Zip Code:   SAN FRANCISCO, CALIFORNIA 94105  Person/Entity Paying for Your Trip:   SELF  Are there other persons traveling with you?   YES  Are you traveling as part of a group or organization?   NO  Persons Traveling with You:  Name (1):   KARINJE, KABIR  Relationship to You:   CHILD  Name (2):   KAUSHIK, RAMYA  Relationship to You:   SPOUSE  Have you ever been in the U.S.?   YES  Date Arrived (1):   20 OCTOBER 2019  Length of Stay:   3 YEAR(S)  Date Arrived (2):   24 JULY 2019  Length of Stay:   4 MONTH(S)  Date Arrived (3):   29 DECEMBER 2018  Length of Stay:   1 YEAR(S)  Date Arrived (4):   27 JULY 2018  Your Personal Copy -- Do Not Bring to Interview
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   3/7  Your Personal Copy -- Do Not Bring to Interview  Length of Stay:   5 MONTH(S)  Date Arrived (5):   03 MAY 2018  Length of Stay:   2 MONTH(S)  Do you or did you hold a U.S. Driver's License?   YES  Driver's License Number (1):   WDLBKLPB81FB  State of Driver's License:   WASHINGTON  Have you ever been issued a U.S. Visa?   YES  Date Last Visa was Issued:   30 JANUARY 2018  Visa Number:   M8854325  Are you applying for the same type of visa?   YES  Are you applying in the same country where the visa above is issued  and is this country your principal country of residence?  YES  Have you been ten-printed?   YES  Has your U.S. Visa ever been lost or stolen?   NO  Has your U.S. Visa ever been cancelled or revoked?   NO  Have you ever been refused a U.S. Visa, or been refused admission to  the United States,   or withdrawn your application for admission at the  port of entry?  NO  Has anyone ever filed an immigrant petition on your behalf with the  United States Citizenship and Immigration Services?  YES  Explain:   GREEN CARD PROCESS INITIATED -  I140 APPROVED (A209 365 505)  U.S. Contact Information  Contact Person Name in the U.S.:   KAUSHIK,   RAMYA  Organization Name in the U.S.:   DO NOT KNOW  Relationship to You:   SPOUSE  U.S. Contact Address:   338 SPEAR STREET, UNIT 34E  SAN FRANCISCO,   CALIFORNIA 94105  Phone Number:   2066592045  Email Address:   ramya.kaushik.8@gmail.com  Family Information  Father's Surnames:   KARINJE ACHARYA  Father's Given Names:   SHANTHARAM  Father's Date of Birth:   17 NOVEMBER 1952  Is your father in the U.S.?   NO  Mother's Surnames:   UDUPI  Mother's Given Names:   BHARATHI  Mother's Date of Birth:   17 DECEMBER 1958  Is your mother in the U.S.?   NO  Do you have any immediate relatives, not including parents in the U.S.?   YES  Relative Name (1):   KARINJE,   SAMPOORNA  Relationship to you:   SIBLING  Status:   NONIMMIGRANT  Relative Name (2):   KARINJE,   KABIR  Relationship to you:   CHILD  Status:   U.S. CITIZEN  Relative Name (3):   KAUSHIK,   RAMYA  Relationship to you:   SPOUSE  Status:   NONIMMIGRANT  Your Personal Copy -- Do Not Bring to Interview
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   4/7  Your Personal Copy -- Do Not Bring to Interview  Spouse's Full Name:   KAUSHIK, RAMYA  Spouse's Date of Birth:   08 MAY 1985  Spouse's Country/Region of Origin (Nationality):   INDIA  Spouse's City of Birth:   HYDERABAD  Spouse's Country/Region of Birth:   INDIA  Spouse’s Address:   SAME AS HOME ADDRESS  Work/Education/Training Information  Primary Occupation:   NOT EMPLOYED  Explain:   WORKED AS SR. DATA SCIENTIST A  T INSTACART UNTIL SEPT 2022 (O  N H1B). TAKING TIME OFF TO FOC  US ON MACHINE LEARNING & AI ED  UCATION.  Were you previously employed?   YES  Employer Name (1):   INSTACART  Employer Address:   50  BEALE  ST  #600  City:   SAN FRANCISCO  State/Province:   CA  Postal Zone/Zip Code:   94105  Country/Region:   UNITED STATES OF AMERICA  Telephone Number:   8882467822  Job Title:   SR DATA SCIENTIST II  Supervisor's Surname:   CHEN  Supervisor's Given Name:   CLAIRE  Employment Date From:   01 JUNE 2021  Employment Date To:   02 SEPTEMBER 2022  Briefly describe your duties:   DESIGN & ANALYSIS OF EXPERIMEN  TS BY APPLYING STATISTICAL MET  HODS AND MACHINE LEARNING TO S  UPPORT INSTACART'S SUBSCRIPTIO  N PRODUCT. DECISION SUPPORT IN  CRITICAL AREAS RELATED TO PRI  CING, PRODUCT FEATURES AND CHU  RN ANALYSIS. DEVELOPMENT OF ME  TRICS & DASHBOARDS TO TRACK PR  OGRESS TOWARDS GOALS.  Employer Name (2):   AMAZON  Employer Address:   410  TERRY  AVE N  City:   SEATTLE  State/Province:   WA  Postal Zone/Zip Code:   98109  Country/Region:   UNITED STATES OF AMERICA  Telephone Number:   2062661000  Job Title:   DATA SCIENTIST  Supervisor's Surname:   DU  Supervisor's Given Name:   ZHENG  Employment Date From:   01 SEPTEMBER 2019  Employment Date To:   29 MAY 2021  Briefly describe your duties:   DEVELOP NOVEL ML MODELS TO ASS  ESS & IMPROVE THE QUALITY OF H  Your Personal Copy -- Do Not Bring to Interview
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   5/7  Your Personal Copy -- Do Not Bring to Interview  UMAN GENERATED LABELS FOR TRAN  SCRIPTION AND ANNOTATION TASKS  . DESIGN & ANALYZE EXPERIMENTS  . DEVELOP METRIC AND DASHBOARD  S.  Have you attended any educational institutions at a secondary level or  above?  YES  Name of Institution (1):   UNIVERSITY OF FLORIDA  Address of Institution:   GAINESVILLE  City:   GAINESVILLE  State/Province:   FL  Postal Zone/ZIP Code:   32611  Country/Region:   UNITED STATES OF AMERICA  Course of Study:   MBA  Date of Attendance From:   02 APRIL 2010  Date of Attendance To:   31 MAY 2011  Name of Institution (2):   PES UNIVERSITY  Address of Institution:   100 FEET RING ROAD BSK III STAGE  City:   BANGALORE  State/Province:   KARNATAKA  Postal Zone/ZIP Code:   560085  Country/Region:   INDIA  Course of Study:   BACHELOR OF TECHNOLOGY  Date of Attendance From:   01 JULY 2002  Date of Attendance To:   01 JULY 2006  Do you belong to a clan or tribe?   NO  Provide a List of Languages You Speak:  Language Name   (1):   ENGLISH  Language Name   (2):   KANNADA  Language Name   (3):   HINDI  Language Name   (4):   TULU  Language Name   (5):   TELUGU  Have you traveled to any countries/regions within the last five years?   YES  Provide a List of Countries/Regions Visited  Country/Region   (1):   GERMANY  Country/Region   (2):   NETHERLANDS  Country/Region   (3):   CANADA  Country/Region   (4):   INDIA  Have you belonged to, contributed to, or worked for any professional,  social, or charitable organization?  NO  Do you have any specialized skills or training, such as firearms,  explosives, nuclear, biological, or chemical experience?  NO  Have you ever served in the military?   NO  Have you ever served in, been a member of, or been involved with a  paramilitary unit, vigilante unit, rebel group, guerrilla group, or  insurgent organization?  NO  Security and Background Information  Do you have a communicable disease of public health significance? (Communicable diseases of public significance include  chancroid, gonorrhea, granuloma inguinale, infectious leprosy, lymphogranuloma venereum, infectious stage syphilis, active  tuberculosis, and others diseases as determined by the Department of Health and Human Services.)  NO  Do you have a mental or physical disorder that poses or is likely to pose a threat to the safety or welfare of yourself or others?   NO  Your Personal Copy -- Do Not Bring to Interview
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   6/7  Your Personal Copy -- Do Not Bring to Interview  Are you or have you ever been a drug abuser or addict?   NO  Have you ever been arrested or convicted for any offense or crime, even though subject of a pardon, amnesty, or other similar  action?  NO  Have you ever violated, or engaged in a conspiracy to violate, any law relating to controlled substances?   NO  Are you coming to the United States to engage in prostitution or unlawful commercialized vice or have you been engaged in  prostitution or procuring prostitutes within the past 10 years?  NO  Have you ever been involved in, or do you seek to engage in, money laundering?   NO  Have you ever committed or conspired to commit a human trafficking offense in the United States or outside the United States?   NO  Are you the spouse, son, or daughter of an individual who has committed or conspired to commit a human trafficking offense in the  United States or outside the United States and have you within the last five years, knowingly benefited from the trafficking  activities?  NO  Have you knowingly aided, abetted, assisted or colluded with an individual who has committed or conspired to commit a severe  human trafficking offense in the United States or outside the United States?  NO  Do you seek to engage in espionage, sabotage, export control violations, or any other illegal activity while in the United States?   NO  Do you seek to engage in terrorist activities while in the United States or have you ever engaged in terrorist activities?   NO  Have you ever or do you intend to provide financial assistance or other support to terrorists or terrorist organizations?   NO  Are you a member or representative of a terrorist organization?   NO  Are you the spouse, son, or daughter of an individual who has engaged in terrorist activity, including providing financial assistance  or other support to terrorists or terrorist organizations, in the last five years?  NO  Have you ever ordered, incited, committed, assisted, or otherwise participated in genocide?   NO  Have you ever committed, ordered, incited, assisted, or otherwise participated in torture?   NO  Have you committed, ordered, incited, assisted, or otherwise participated in extrajudicial killings, political killings, or other acts of  violence?  NO  Have you ever engaged in the recruitment or the use of the child soldiers?   NO  Have you, while serving as a government official, been responsible for or directly carried out, at any time, particularly severe  violations of religious freedom?  NO  Have you ever been directly involved in the establishment or enforcement of the population controls forcing a woman to undergo  an abortion against her free choice or a man or a woman to undergo sterilization against his or her free will?  NO  Have you ever been directly involved in the coercive transplantation of human organs or bodily tissue?   NO  Have you ever been the subject of a removal or deportation hearing?   NO  Have you ever sought to obtain or assist others to obtain a visa, entry into the United States, or any other United States  immigration benefit by fraud or willful misrepresentation or other unlawful means?  NO  Have you failed to attend a hearing on removability or inadmissibility within the last five years?   NO  Have you ever been unlawfully present, overstayed the amount of time granted by an immigration official or otherwise violated the  terms of a U.S. visa?  NO  Have you ever been removed or deported from any country?   NO  Have you ever withheld custody of a U.S. citizen child outside the United States from a person granted legal custody by a U.S.  court?  NO  Have you voted in the United States in violation of any law or regulation?   NO  Have you ever renounced United States citizenship for the purpose of avoiding taxation?   NO  Are you a former exchange visitor (J) who has not yet fulfilled the two-year foreign residence requirement?   NO  Have you attended a public elementary school on student (F) status or a public secondary school after November 30, 1996 without  reimbursing the school?  NO  Location Information  Location where you will be submitting your application  Current Location:   HYDERABAD, INDIA  Preparer of Application  Did anyone assist you in filling out this application?   NO  Your Personal Copy -- Do Not Bring to Interview  You electronically signed your application on   22-Oct-2022 11:58:16 (GMT-05:00).   You were required to electronically sign your application yourself,  unless otherwise exempt by regulation, even if the application was prepared by someone other than yourself. Your electronic signature certifies that you  have read and understood the questions in this application and that your answers are true and correct to the best of your knowledge and belief. The  submission of an application containing any false or misleading statements may result in the permanent refusal of a visa or the denial of entry into the  United States. All declarations made in this application are unsworn declarations made under penalty of perjury. (28 U.S.C. 1746).
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   7/7  You certified that you understand that you are required to submit your visa to the United States Immigration Officer at the port where you apply to  enter the United States, and that possession of the visa does not entitle you to enter the United States if, upon your arrival, you are found to be  inadmissible under U.S. immigration laws.   You certified that you understand that any willfully false or misleading statement or willful concealment of a  material fact made by you within the application may subject you to permanent exclusion from the United States and, if you are admitted to the United  States, may subject you to criminal prosecution and/or deportation.  The information that you have provided in your application and other information submitted with your application may be accessible to other  government agencies having statutory or other lawful authority to use such information, including for law enforcement and immigration law  enforcement purposes.   If fingerprints are collected as part of your application process, they may be used for the purpose of comparing them to other  fingerprints in the FBI’s Next Generation Identification (NGI) fingerprint system or its successor systems (including civil, criminal, and latent fingerprint  repositories).   The photograph that you provide with your application may be used for employment verification or other U.S. law purposes.
+
+            
+            YAML TEMPLATES:
+            address_phone_page:
+  add_email: Y
+  add_phone: Y
+  add_social: Y
+  additional_email:
+  - email: sanjay.karinje.7@gmail.com
+  - email: sanjay.karinje.9@gmail.com
+  additional_phone:
+  - phone: 3524439622
+  - phone: 2066592045
+  additional_social_media:
+  - handle: sanjay.karinje.8
+    platform: Facebook
+  - handle: sanjay.karinje.9
+    platform: Instagram
+  email: ''
+  home_address:
+    city: ''
+    country: ''
+    postal_code: ''
+    postal_code_na: false
+    state: ''
+    state_na: false
+    street1: ''
+    street2: ''
+  mail_address:
+    city: ''
+    country: ''
+    postal_code: ''
+    postal_code_na: false
+    state: ''
+    state_na: false
+    street1: ''
+    street2: ''
+  mail_address_same_as_home: Y
+  phone:
+    home: ''
+    mobile: ''
+    mobile_na: false
+    work: ''
+    work_na: false
+  social_media:
+    handle: ''
+    platform_select: ''
+personal_page1:
+  birth_city: NEW YORK
+  birth_country: UNITED STATES OF AMERICA
+  birth_date_dd: '01'
+  birth_date_mm: JAN
+  birth_date_yyyy: '1990'
+  birth_state_province: NEW YORK
+  birth_state_province_na: false
+  full_name_native_alphabet: ''
+  full_name_native_alphabet_na: ''
+  given_name: JOHN
+  has_other_names_used: N
+  has_telecode: N
+  marital_status: SINGLE
+  other_names:
+  - givenname: ''
+    surname: ''
+  - givenname: ''
+    surname: ''
+  sex: MALE
+  surname: SMITH
+  telecode_given: ''
+  telecode_surname: ''
+personal_page2:
+  has_other_nationality: Y
+  has_permanent_resident: Y
+  national_id: AB123456789
+  national_id_na: false
+  nationality: INDIA
+  other_nationality:
+    country: UNITED KINGDOM
+    has_passport: Y
+    passport_number: GBR123456
+  permanent_resident_country: CANADA
+  us_social_security:
+    number1: '123'
+    number2: '45'
+    number3: '6789'
+  us_social_security_na: false
+  us_taxpayer_id: '987654321'
+  us_taxpayer_id_na: false
+pptvisa_page:
+  expiration:
+    day: ''
+    month: ''
+    year: ''
+  expiration_na: false
+  issuance:
+    day: ''
+    month: ''
+    year: ''
+  issuance_country: ''
+  issuance_location:
+    city: ''
+    country: ''
+    state: ''
+  lost_passport: N
+  lost_passport_details:
+    country: ''
+    explanation: ''
+    number: ''
+  passport_book_number: ''
+  passport_book_number_na: false
+  passport_number: ''
+  passport_type: REGULAR
+previous_travel_page:
+  drivers_license: Y
+  iv_petition: Y
+  iv_petition_explanation: GREEN CARD PROCESS INITIATED - I140 APPROVED (A209 365
+    505)
+  license_details:
+  - number: WDLBKLPB81FB
+    state: WASHINGTON
+  - number: WDLBKLPB81FB
+    number_na: true
+    state: WASHINGTON
+  previous_travel_details:
+  - arrival:
+      day: '20'
+      month: OCT
+      year: '2019'
+    length_of_stay:
+      number: '3'
+      unit: Year(s)
+  - arrival:
+      day: '01'
+      month: NOV
+      year: '2020'
+    length_of_stay:
+      number: '1'
+      unit: Year(s)
+  - arrival:
+      day: 08
+      month: JAN
+      year: '2022'
+    length_of_stay:
+      number: '1'
+      unit: Year(s)
+  previous_us_travel: Y
+  previous_visa: Y
+  same_country: Y
+  same_type_visa: Y
+  ten_printed: Y
+  visa_cancelled: Y
+  visa_cancelled_explanation: CANCELLED DUE TO INELIGIBILITY
+  visa_issue_date:
+    day: '30'
+    month: JAN
+    year: '2018'
+  visa_lost: Y
+  visa_lost_details:
+    explanation: LOST IN TRAVEL
+    year: '2020'
+  visa_number: M8854325
+  visa_number_na: true
+  visa_refused: Y
+  visa_refused_explanation: REFUSED DUE TO INELIGIBILITY
+  vwp_denial: Y
+  vwp_denial_explanation: DENIED DUE TO INELIGIBILITY
+relatives_page:
+  father_birth_day: '17'
+  father_birth_month: NOV
+  father_birth_na: true
+  father_birth_year: '1952'
+  father_given_name: JOHN
+  father_given_name_na: true
+  father_in_us: Y
+  father_surname: SMITH
+  father_surname_na: true
+  father_us_status: U.S. CITIZEN
+  has_immediate_relatives: Y
+  has_other_relatives: Y
+  immediate_relative_details:
+  - given_name: SAMPOORNA
+    status: NONIMMIGRANT
+    surname: KARINJE
+    type: SIBLING
+  - given_name: RAMYA
+    status: NONIMMIGRANT
+    surname: KAUSHIK
+    type: SPOUSE
+  mother_birth_day: '17'
+  mother_birth_month: NOV
+  mother_birth_na: true
+  mother_birth_year: '1958'
+  mother_given_name: MARY
+  mother_given_name_na: true
+  mother_in_us: Y
+  mother_surname: SMITH
+  mother_surname_na: true
+  mother_us_status: U.S. CITIZEN
+retrieve_page:
+  application_id: '1234567890'
+  birth_year: '1990'
+  security_answer: My favorite childhood friend was named John
+  surname: Doe
+security_background1_page:
+  disease: N
+  disease_explanation: ''
+  disorder: N
+  disorder_explanation: ''
+  druguser: N
+  druguser_explanation: ''
+security_background2_page:
+  arrested: N
+  arrested_explanation: ''
+  assisted_trafficking: N
+  assisted_trafficking_explanation: ''
+  controlled_substances: N
+  controlled_substances_explanation: ''
+  human_trafficking: N
+  human_trafficking_explanation: ''
+  money_laundering: N
+  money_laundering_explanation: ''
+  prostitution: N
+  prostitution_explanation: ''
+  trafficking_related: N
+  trafficking_related_explanation: ''
+security_background3_page:
+  child_soldier: N
+  child_soldier_explanation: ''
+  extrajudicial_violence: N
+  extrajudicial_violence_explanation: ''
+  genocide: N
+  genocide_explanation: ''
+  illegal_activity: N
+  illegal_activity_explanation: ''
+  population_controls: N
+  population_controls_explanation: ''
+  religious_freedom: N
+  religious_freedom_explanation: ''
+  terrorist_activity: N
+  terrorist_activity_explanation: ''
+  terrorist_org: N
+  terrorist_org_explanation: ''
+  terrorist_relative: N
+  terrorist_relative_explanation: ''
+  terrorist_support: N
+  terrorist_support_explanation: ''
+  torture: N
+  torture_explanation: ''
+  transplant: N
+  transplant_explanation: ''
+security_background4_page:
+  deported: N
+  deported_explanation: ''
+  fail_to_attend: N
+  fail_to_attend_explanation: ''
+  immigration_fraud: N
+  immigration_fraud_explanation: ''
+  removal_hearing: N
+  removal_hearing_explanation: ''
+  visa_violation: N
+  visa_violation_explanation: ''
+security_background5_page:
+  child_custody: N
+  child_custody_explanation: ''
+  renounce_tax: N
+  renounce_tax_explanation: ''
+  school_reimbursement: N
+  school_reimbursement_explanation: ''
+  voting_violation: N
+  voting_violation_explanation: ''
+security_page:
+  privacy_act: true
+  security_answer: John Doe
+  security_question: What is the name of your favorite childhood friend?
+spouse_page:
+  spouse_address_city: SAN FRANCISCO
+  spouse_address_city_na: false
+  spouse_address_country: UNITED STATES OF AMERICA
+  spouse_address_line1: 338 SPEAR STREET
+  spouse_address_line2: UNIT 34E
+  spouse_address_postal_code: '94105'
+  spouse_address_postal_code_na: false
+  spouse_address_state: CALIFORNIA
+  spouse_address_type: Other (Specify Address)
+  spouse_birth_city: HYDERABAD
+  spouse_birth_country: INDIA
+  spouse_birth_day: 08
+  spouse_birth_month: MAY
+  spouse_birth_na: true
+  spouse_birth_year: '1985'
+  spouse_given_name: RAMYA
+  spouse_nationality: INDIA
+  spouse_surname: KAUSHIK
+start_page:
+  captcha: ''
+  language: English
+  location: INDIA, HYDERABAD
+travel_companions_page:
+  group_name: ''
+  group_travel: N
+  travel_companions:
+  - given_name: JOHN
+    relationship: FRIEND
+    surname: SMITH
+  - given_name: JANE
+    relationship: OTHER
+    surname: JONES
+  - given_name: JON
+    relationship: CHILD
+    surname: DOE
+  traveling_with_others: Y
+travel_page:
+  company_payment:
+    name: ''
+    relation: ''
+  ev_given_name: RAMYA
+  ev_surname: KAUSHIK
+  investor_dob:
+    day: '15'
+    month: JAN
+    year: '2023'
+  investor_issued_visa: ''
+  locations_to_visit:
+  - location: SAN FRANCISCO, CALIFORNIA
+  - location: LOS ANGELES, CALIFORNIA
+  mission_org:
+    address1: ''
+    address2: ''
+    city: ''
+    contact_given_name: ''
+    contact_surname: ''
+    name: ''
+    phone: ''
+    state: ''
+    zipcode: ''
+  non_specific_travel_plans_details:
+    arrival:
+      day: ''
+      month: ''
+      year: ''
+    duration:
+      number: ''
+      unit: ''
+  other_purpose_of_trip: SPOUSE OF AN H (H4)
+  payer_details:
+    address:
+      city: ''
+      country: ''
+      postal_code: ''
+      postal_code_na: ''
+      state: ''
+      state_na: ''
+      street1: ''
+      street2: ''
+    address_same_as_home: ''
+    email: ''
+    given_name: ''
+    phone: ''
+    relationship: ''
+    surname: ''
+  principal_applicant:
+    company: ''
+    given_name: SANJAY
+    petition_number: ''
+    surname: KARINJE
+  purpose_of_trip: TEMPORARY WORKER (H)
+  specific_travel_plans: Y
+  specific_travel_plans_details:
+    arrival:
+      city: SAN FRANCISCO
+      day: '15'
+      flight: UA100
+      month: JAN
+      year: '2023'
+    departure:
+      city: SAN FRANCISCO
+      day: '31'
+      flight: UA101
+      month: DEC
+      year: '2024'
+  stay_address:
+    city: SAN FRANCISCO
+    state: CALIFORNIA
+    street1: 338 SPEAR STREET
+    street2: UNIT 34E
+    zip: '94105'
+  who_is_paying: Self
+us_contact_page:
+  address:
+    city: ''
+    postal_code: ''
+    state: ''
+    street1: ''
+    street2: ''
+  contact:
+    given_name: ''
+    organization: ''
+    relationship: ''
+    surname: ''
+  email: ''
+  email_na: false
+  phone: ''
+workeducation1_page:
+  duties: ''
+  employer:
+    address:
+      city: SAN FRANCISCO
+      country: UNITED STATES OF AMERICA
+      postal_code: '94105'
+      postal_code_na: false
+      state: CA
+      state_na: false
+      street1: '1234567890'
+      street2: '1234567890'
+    name: INSTACART
+    phone: '8882467822'
+  monthly_salary: ''
+  monthly_salary_na: false
+  other_occupation_explanation: ''
+  present_occupation: COMPUTER SCIENCE
+  start_date:
+    day: '01'
+    month: JUN
+    year: '2021'
+workeducation2_page:
+  education:
+  - address:
+      city: GAINESVILLE
+      country: UNITED STATES OF AMERICA
+      postal_code: '32611'
+      state: FL
+      street1: GAINESVILLE
+      street2: ''
+    course: MBA
+    end_date:
+      day: '31'
+      month: MAY
+      year: '2011'
+    name: UNIVERSITY OF FLORIDA
+    start_date:
+      day: '02'
+      month: APR
+      year: '2010'
+  - address:
+      city: Bangalore
+      country: INDIA
+      postal_code: '560020'
+      state: KA
+      street1: Mysore Road
+      street2: ''
+    course: B.E
+    end_date:
+      day: '31'
+      month: MAY
+      year: '2006'
+    name: PESIT
+    start_date:
+      day: '02'
+      month: APR
+      year: '2002'
+  employment_information:
+  - address:
+      city: SEATTLE
+      country: UNITED STATES OF AMERICA
+      postal_code: '98109'
+      postal_code_na: true
+      state: WA
+      state_na: true
+      street1: 410 TERRY AVE N
+      street2: ''
+    duties: DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED
+      LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS.
+      DEVELOP METRIC AND DASHBOARDS.
+    employer: AMAZON
+    end_date:
+      day: '29'
+      month: MAY
+      year: '2021'
+    job_title: DATA SCIENTIST
+    phone: '2062661000'
+    start_date:
+      day: '01'
+      month: SEP
+      year: '2019'
+    supervisor:
+      given_name: ZHENG
+      given_name_na: true
+      surname: DU
+      surname_na: true
+  - address:
+      city: SEATTLE
+      country: UNITED STATES OF AMERICA
+      postal_code: '98109'
+      postal_code_na: true
+      state: WA
+      state_na: true
+      street1: 410 TERRY AVE N
+      street2: ''
+    duties: FINANCIAL ANALYSIS AND REPORTING
+    employer: AMAZON
+    end_date:
+      day: '29'
+      month: MAY
+      year: '2020'
+    job_title: FINANCE MANAGER
+    phone: '2062661000'
+    start_date:
+      day: '01'
+      month: JUN
+      year: '2018'
+    supervisor:
+      given_name: ASHOK
+      given_name_na: true
+      surname: NARAYAN
+      surname_na: true
+  other_education: Y
+  previously_employed: Y
+workeducation3_page:
+  clan_tribe_ind: N
+  clan_tribe_name: ''
+  countries_visited:
+  - country: GERMANY
+  - country: NETHERLANDS
+  - country: CANADA
+  - country: INDIA
+  countries_visited_ind: Y
+  insurgent_org_explanation: ''
+  insurgent_org_ind: N
+  language_name:
+  - language: ENGLISH
+  - language: HINDI
+  - language: KANNADA
+  - language: TELUGU
+  military_service:
+    branch: ''
+    country: ''
+    rank: ''
+    service_from:
+      day: ''
+      month: ''
+      year: ''
+    service_to:
+      day: ''
+      month: ''
+      year: ''
+    specialty: ''
+  military_service_ind: N
+  organization_ind: N
+  organization_name: ''
+  specialized_skills_explanation: ''
+  specialized_skills_ind: N
+
+            
+            Rules:
+                1. Use Y/N for yes/no fields
+                2. Use true/false for boolean fields (like _na fields)
+                3. Use 3-letter format for months (JAN, FEB, etc.)
+                4. Preserve any special characters in names/addresses
+                5. Use empty string "" for missing values
+                6. Keep array structures for repeated elements (other_names, travel_companions, etc.)
+                7. Include button_clicks arrays as shown in template
+                8. Maintain exact field names and hierarchy
+                9. DO NOT wrap the page sections again - they already have their page names (like personal_page1:, address_phone_page:)
+                10. Follow the instructions provided as comments in the yaml files.
+                11. Every value should be a string, except boolean values can be true/false. 
+
+            Example format:
+            personal_page1:
+                surname: "SMITH"
+                given_name: "JOHN"
+                # ... rest of fields
+
+            address_phone_page:
+                home_address:
+                    street1: "123 MAIN ST"
+                # ... rest of fields
+            

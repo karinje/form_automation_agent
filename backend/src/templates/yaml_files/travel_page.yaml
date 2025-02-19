@@ -1,0 +1,92 @@
+travel_page:
+  purpose_of_trip: "TEMPORARY WORKER (H)"  # Purpose of Trip to the U.S.
+  other_purpose_of_trip: "SPOUSE OF AN H (H4)"  # Specify visa type
+  who_is_paying: "Self"  # Person/Entity Paying for Your Trip Self, Other Company/Organization, Present Employer, Employer in the U.S., Other Person
+  specific_travel_plans: "Y"  # Have you made specific travel plans?
+  investor_issued_visa: "N" # if selection on first dropdown is "TREATY TRADER OR INVESTOR (E)" and second dropdown is EXECUTIVE/MGR/ESSENTIAL EMP (E1) or (E1)
+  
+ #Principal Applicant Details (for dependent visas)
+  investor_issued_visa: ""  # Y/N for E1/E2 executive/manager positions
+  principal_applicant:
+    surname: "KARINJE"  # Principal applicant's surname
+    given_name: "SANJAY"  # Principal applicant's given name
+    petition_number: ""  # Petition number if applicable
+    company: ""  # Company name for E1/E2 visas 
+  ev_surname: "KAUSHIK"
+  ev_given_name: "RAMYA"
+  investor_dob:
+    day: "15"  # Select from 01-31
+    month: "JAN"  # Select from JAN-DEC
+    year: "2023"  # 4-digit year
+  # Mission/Organization fields (for A1, G1 visas)
+  mission_org:
+    name: ""  # Name of sponsoring mission/organization
+    contact_surname: ""  # Contact surnames
+    contact_given_name: ""  # Contact given names
+    address1: ""  # U.S. Address line 1
+    address2: ""  # U.S. Address line 2
+    city: ""  # City
+    state: ""  # State
+    zipcode: ""  # ZIP code
+    phone: ""  # Phone number
+
+  # Specific Travel Details
+  specific_travel_plans_details:
+    arrival:
+      month: "JAN"  # Select from JAN-DEC
+      day: "15"  # Select from 01-31
+      year: "2023"  # 4-digit year
+      flight: "UA100"  # Optional: Flight number if known
+      city: "SAN FRANCISCO"  # U.S. arrival city
+    departure:
+      month: "DEC"  # Select from JAN-DEC
+      day: "31"  # Select from 01-31
+      year: "2024"  # 4-digit year
+      flight: "UA101"  # Optional: Flight number if known
+      city: "SAN FRANCISCO"  # U.S. departure city
+  locations_to_visit: 
+      - location: "SAN FRANCISCO, CALIFORNIA"  # List locations you plan to visit
+      - location: "LOS ANGELES, CALIFORNIA"  # List locations you plan to visit
+
+  # Non-specific Travel Details
+  non_specific_travel_plans_details:
+    arrival: #intended date of arrival 
+      month: ""  # Select from JAN-DEC
+      day: ""  # Select from 01-31
+      year: ""  # 4-digit year
+    duration:
+      number: ""  # Length of intended stay - number
+      unit: ""  # Select from: Year(s), Month(s), Week(s), Day(s)
+
+  # Stay Address
+  stay_address:
+    street1: "338 SPEAR STREET"  # Street address line 1
+    street2: "UNIT 34E"  # Optional: Street address line 2
+    city: "SAN FRANCISCO"  # City
+    state: "CALIFORNIA"  # U.S. state - select from state list
+    zip: "94105"  # U.S. ZIP code
+
+  # Payer Details (when who_is_paying is not Self)
+  payer_details:
+    surname: ""  # Payer's surname
+    given_name: ""  # Payer's given name
+    phone: ""  # Phone number
+    email: ""  # Email address
+    address_same_as_home: ""  # Y/N
+    relationship: ""  # Select from: CHILD, PARENT, SPOUSE, OTHER RELATIVE, FRIEND, OTHER
+    address: # if payer address is different from home address or mailing address
+      street1: ""  # Street address line 1
+      street2: ""  # Street address line 2
+      city: ""  # City
+      state: ""  # State/Province
+      state_na: ""  # N/A if state is not applicable
+      postal_code: ""  # Postal/ZIP code
+      postal_code_na: ""  # N/A if postal code is not applicable
+      country: ""  # Country
+
+  # Company Payment Details (when who_is_paying = "Other Company/Organization")
+  company_payment:
+    name: ""  # Name of Company/Organization Paying for Trip
+    relation: ""  # Relationship to Company
+
+  #

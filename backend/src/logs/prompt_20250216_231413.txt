@@ -1,0 +1,653 @@
+
+            You are a DS-160 form expert. Convert this PDF text to YAML format matching these YAML templates.
+            
+            PDF TEXT:
+            10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   1/7  Next  Online Nonimmigrant Visa Application (DS-160)  Application -   Sensitive But Unclassi fi ed(SBU)  We   do not need a printed copy   of your application at any point during your interview process. Only print this   application if you want  a copy for your own records. If you print your application,   please keep it secure.  Photo Provided:  Confirmation Number:  Your Personal Copy -- Do Not Bring to Interview  Personal, Address, Phone, and Passport/Travel Document Information  Name Provided:   KARINJE, SANJAY  Full Name in Native Language:   DOES NOT APPLY  Other Names Used:   NO  Telecode Name Used:   NO  Sex:   MALE  Marital Status:   MARRIED  Date of Birth:   17 AUGUST 1984  Place of Birth:   BANGALORE, KARNATAKA, INDIA  Country/Region of Origin (Nationality):   INDIA  Do you hold or have you held any nationality other than the one  indicated above on nationality?  NO  Are you a permanent resident of a country/region other than your  country/region of origin (nationality) above?  NO  National Identification Number:   DOES NOT APPLY  U.S. Social Security Number:   766928575  U.S. Taxpayer ID Number:   DOES NOT APPLY  Home Address:   338 SPEAR STREET, UNIT 34E  City:   SAN FRANCISCO  State/Province:   CA  Postal Zone/ZIP Code:   94105  Country/Region:   UNITED STATES OF AMERICA  Same Mailing Address?   YES  Primary Phone Number:   3524439621  Your Personal Copy -- Do Not Bring to Interview
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   2/7  Your Personal Copy -- Do Not Bring to Interview  Secondary Phone Number:   2066592045  Work Phone Number:   DOES NOT APPLY  Do you have any additional phone numbers?   NO  Email Address:   sanjay.karinje.8@gmail.com  Do you have any additional email addresses?   NO  Do you have a social media presence?  Social Media Platform: (1):   FACEBOOK  Social Media Identifier:   SANJAY KARINJE  Do you have any additional social media presence?   NO  Passport/Travel Document Type:   REGULAR  Passport/Travel Document Number:   S7754691  Passport Book Number:   DOES NOT APPLY  Country/Authority that Issued Passport/Travel Document:   INDIA  City Where Issued:   SAN FRANCISCO  State/Province Where Issued:   CA  Country/Region Where Issued:   UNITED STATES OF AMERICA  Issuance Date:   27 MARCH 2019  Expiration Date:   26 MARCH 2029  Have you ever lost a passport or had one stolen?   NO  Travel Information  The List of Purposes of Trip to the U.S.  Purpose of Trip to the U.S. (1):   TEMPORARY WORKER (H)  Specify:   SPOUSE OF AN H (H4)  Principal Applicant Name:   KAUSHIK,   RAMYA  Application Receipt/Petition Number:   LIN2134351459  Have you made specific travel plans?   NO  Intended Date of Arrival:   15 JANUARY 2023  Intended Length of Stay in U.S.:   3 YEAR(S)  Address where you will stay in the U.S.:   338 SPEAR STREET, UNIT 34E  City, State, Postal/Zip Code:   SAN FRANCISCO, CALIFORNIA 94105  Person/Entity Paying for Your Trip:   SELF  Are there other persons traveling with you?   YES  Are you traveling as part of a group or organization?   NO  Persons Traveling with You:  Name (1):   KARINJE, KABIR  Relationship to You:   CHILD  Name (2):   KAUSHIK, RAMYA  Relationship to You:   SPOUSE  Have you ever been in the U.S.?   YES  Date Arrived (1):   20 OCTOBER 2019  Length of Stay:   3 YEAR(S)  Date Arrived (2):   24 JULY 2019  Length of Stay:   4 MONTH(S)  Date Arrived (3):   29 DECEMBER 2018  Length of Stay:   1 YEAR(S)  Date Arrived (4):   27 JULY 2018  Your Personal Copy -- Do Not Bring to Interview
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   3/7  Your Personal Copy -- Do Not Bring to Interview  Length of Stay:   5 MONTH(S)  Date Arrived (5):   03 MAY 2018  Length of Stay:   2 MONTH(S)  Do you or did you hold a U.S. Driver's License?   YES  Driver's License Number (1):   WDLBKLPB81FB  State of Driver's License:   WASHINGTON  Have you ever been issued a U.S. Visa?   YES  Date Last Visa was Issued:   30 JANUARY 2018  Visa Number:   M8854325  Are you applying for the same type of visa?   YES  Are you applying in the same country where the visa above is issued  and is this country your principal country of residence?  YES  Have you been ten-printed?   YES  Has your U.S. Visa ever been lost or stolen?   NO  Has your U.S. Visa ever been cancelled or revoked?   NO  Have you ever been refused a U.S. Visa, or been refused admission to  the United States,   or withdrawn your application for admission at the  port of entry?  NO  Has anyone ever filed an immigrant petition on your behalf with the  United States Citizenship and Immigration Services?  YES  Explain:   GREEN CARD PROCESS INITIATED -  I140 APPROVED (A209 365 505)  U.S. Contact Information  Contact Person Name in the U.S.:   KAUSHIK,   RAMYA  Organization Name in the U.S.:   DO NOT KNOW  Relationship to You:   SPOUSE  U.S. Contact Address:   338 SPEAR STREET, UNIT 34E  SAN FRANCISCO,   CALIFORNIA 94105  Phone Number:   2066592045  Email Address:   ramya.kaushik.8@gmail.com  Family Information  Father's Surnames:   KARINJE ACHARYA  Father's Given Names:   SHANTHARAM  Father's Date of Birth:   17 NOVEMBER 1952  Is your father in the U.S.?   NO  Mother's Surnames:   UDUPI  Mother's Given Names:   BHARATHI  Mother's Date of Birth:   17 DECEMBER 1958  Is your mother in the U.S.?   NO  Do you have any immediate relatives, not including parents in the U.S.?   YES  Relative Name (1):   KARINJE,   SAMPOORNA  Relationship to you:   SIBLING  Status:   NONIMMIGRANT  Relative Name (2):   KARINJE,   KABIR  Relationship to you:   CHILD  Status:   U.S. CITIZEN  Relative Name (3):   KAUSHIK,   RAMYA  Relationship to you:   SPOUSE  Status:   NONIMMIGRANT  Your Personal Copy -- Do Not Bring to Interview
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   4/7  Your Personal Copy -- Do Not Bring to Interview  Spouse's Full Name:   KAUSHIK, RAMYA  Spouse's Date of Birth:   08 MAY 1985  Spouse's Country/Region of Origin (Nationality):   INDIA  Spouse's City of Birth:   HYDERABAD  Spouse's Country/Region of Birth:   INDIA  Spouse’s Address:   SAME AS HOME ADDRESS  Work/Education/Training Information  Primary Occupation:   NOT EMPLOYED  Explain:   WORKED AS SR. DATA SCIENTIST A  T INSTACART UNTIL SEPT 2022 (O  N H1B). TAKING TIME OFF TO FOC  US ON MACHINE LEARNING & AI ED  UCATION.  Were you previously employed?   YES  Employer Name (1):   INSTACART  Employer Address:   50  BEALE  ST  #600  City:   SAN FRANCISCO  State/Province:   CA  Postal Zone/Zip Code:   94105  Country/Region:   UNITED STATES OF AMERICA  Telephone Number:   8882467822  Job Title:   SR DATA SCIENTIST II  Supervisor's Surname:   CHEN  Supervisor's Given Name:   CLAIRE  Employment Date From:   01 JUNE 2021  Employment Date To:   02 SEPTEMBER 2022  Briefly describe your duties:   DESIGN & ANALYSIS OF EXPERIMEN  TS BY APPLYING STATISTICAL MET  HODS AND MACHINE LEARNING TO S  UPPORT INSTACART'S SUBSCRIPTIO  N PRODUCT. DECISION SUPPORT IN  CRITICAL AREAS RELATED TO PRI  CING, PRODUCT FEATURES AND CHU  RN ANALYSIS. DEVELOPMENT OF ME  TRICS & DASHBOARDS TO TRACK PR  OGRESS TOWARDS GOALS.  Employer Name (2):   AMAZON  Employer Address:   410  TERRY  AVE N  City:   SEATTLE  State/Province:   WA  Postal Zone/Zip Code:   98109  Country/Region:   UNITED STATES OF AMERICA  Telephone Number:   2062661000  Job Title:   DATA SCIENTIST  Supervisor's Surname:   DU  Supervisor's Given Name:   ZHENG  Employment Date From:   01 SEPTEMBER 2019  Employment Date To:   29 MAY 2021  Briefly describe your duties:   DEVELOP NOVEL ML MODELS TO ASS  ESS & IMPROVE THE QUALITY OF H  Your Personal Copy -- Do Not Bring to Interview
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   5/7  Your Personal Copy -- Do Not Bring to Interview  UMAN GENERATED LABELS FOR TRAN  SCRIPTION AND ANNOTATION TASKS  . DESIGN & ANALYZE EXPERIMENTS  . DEVELOP METRIC AND DASHBOARD  S.  Have you attended any educational institutions at a secondary level or  above?  YES  Name of Institution (1):   UNIVERSITY OF FLORIDA  Address of Institution:   GAINESVILLE  City:   GAINESVILLE  State/Province:   FL  Postal Zone/ZIP Code:   32611  Country/Region:   UNITED STATES OF AMERICA  Course of Study:   MBA  Date of Attendance From:   02 APRIL 2010  Date of Attendance To:   31 MAY 2011  Name of Institution (2):   PES UNIVERSITY  Address of Institution:   100 FEET RING ROAD BSK III STAGE  City:   BANGALORE  State/Province:   KARNATAKA  Postal Zone/ZIP Code:   560085  Country/Region:   INDIA  Course of Study:   BACHELOR OF TECHNOLOGY  Date of Attendance From:   01 JULY 2002  Date of Attendance To:   01 JULY 2006  Do you belong to a clan or tribe?   NO  Provide a List of Languages You Speak:  Language Name   (1):   ENGLISH  Language Name   (2):   KANNADA  Language Name   (3):   HINDI  Language Name   (4):   TULU  Language Name   (5):   TELUGU  Have you traveled to any countries/regions within the last five years?   YES  Provide a List of Countries/Regions Visited  Country/Region   (1):   GERMANY  Country/Region   (2):   NETHERLANDS  Country/Region   (3):   CANADA  Country/Region   (4):   INDIA  Have you belonged to, contributed to, or worked for any professional,  social, or charitable organization?  NO  Do you have any specialized skills or training, such as firearms,  explosives, nuclear, biological, or chemical experience?  NO  Have you ever served in the military?   NO  Have you ever served in, been a member of, or been involved with a  paramilitary unit, vigilante unit, rebel group, guerrilla group, or  insurgent organization?  NO  Security and Background Information  Do you have a communicable disease of public health significance? (Communicable diseases of public significance include  chancroid, gonorrhea, granuloma inguinale, infectious leprosy, lymphogranuloma venereum, infectious stage syphilis, active  tuberculosis, and others diseases as determined by the Department of Health and Human Services.)  NO  Do you have a mental or physical disorder that poses or is likely to pose a threat to the safety or welfare of yourself or others?   NO  Your Personal Copy -- Do Not Bring to Interview
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   6/7  Your Personal Copy -- Do Not Bring to Interview  Are you or have you ever been a drug abuser or addict?   NO  Have you ever been arrested or convicted for any offense or crime, even though subject of a pardon, amnesty, or other similar  action?  NO  Have you ever violated, or engaged in a conspiracy to violate, any law relating to controlled substances?   NO  Are you coming to the United States to engage in prostitution or unlawful commercialized vice or have you been engaged in  prostitution or procuring prostitutes within the past 10 years?  NO  Have you ever been involved in, or do you seek to engage in, money laundering?   NO  Have you ever committed or conspired to commit a human trafficking offense in the United States or outside the United States?   NO  Are you the spouse, son, or daughter of an individual who has committed or conspired to commit a human trafficking offense in the  United States or outside the United States and have you within the last five years, knowingly benefited from the trafficking  activities?  NO  Have you knowingly aided, abetted, assisted or colluded with an individual who has committed or conspired to commit a severe  human trafficking offense in the United States or outside the United States?  NO  Do you seek to engage in espionage, sabotage, export control violations, or any other illegal activity while in the United States?   NO  Do you seek to engage in terrorist activities while in the United States or have you ever engaged in terrorist activities?   NO  Have you ever or do you intend to provide financial assistance or other support to terrorists or terrorist organizations?   NO  Are you a member or representative of a terrorist organization?   NO  Are you the spouse, son, or daughter of an individual who has engaged in terrorist activity, including providing financial assistance  or other support to terrorists or terrorist organizations, in the last five years?  NO  Have you ever ordered, incited, committed, assisted, or otherwise participated in genocide?   NO  Have you ever committed, ordered, incited, assisted, or otherwise participated in torture?   NO  Have you committed, ordered, incited, assisted, or otherwise participated in extrajudicial killings, political killings, or other acts of  violence?  NO  Have you ever engaged in the recruitment or the use of the child soldiers?   NO  Have you, while serving as a government official, been responsible for or directly carried out, at any time, particularly severe  violations of religious freedom?  NO  Have you ever been directly involved in the establishment or enforcement of the population controls forcing a woman to undergo  an abortion against her free choice or a man or a woman to undergo sterilization against his or her free will?  NO  Have you ever been directly involved in the coercive transplantation of human organs or bodily tissue?   NO  Have you ever been the subject of a removal or deportation hearing?   NO  Have you ever sought to obtain or assist others to obtain a visa, entry into the United States, or any other United States  immigration benefit by fraud or willful misrepresentation or other unlawful means?  NO  Have you failed to attend a hearing on removability or inadmissibility within the last five years?   NO  Have you ever been unlawfully present, overstayed the amount of time granted by an immigration official or otherwise violated the  terms of a U.S. visa?  NO  Have you ever been removed or deported from any country?   NO  Have you ever withheld custody of a U.S. citizen child outside the United States from a person granted legal custody by a U.S.  court?  NO  Have you voted in the United States in violation of any law or regulation?   NO  Have you ever renounced United States citizenship for the purpose of avoiding taxation?   NO  Are you a former exchange visitor (J) who has not yet fulfilled the two-year foreign residence requirement?   NO  Have you attended a public elementary school on student (F) status or a public secondary school after November 30, 1996 without  reimbursing the school?  NO  Location Information  Location where you will be submitting your application  Current Location:   HYDERABAD, INDIA  Preparer of Application  Did anyone assist you in filling out this application?   NO  Your Personal Copy -- Do Not Bring to Interview  You electronically signed your application on   22-Oct-2022 11:58:16 (GMT-05:00).   You were required to electronically sign your application yourself,  unless otherwise exempt by regulation, even if the application was prepared by someone other than yourself. Your electronic signature certifies that you  have read and understood the questions in this application and that your answers are true and correct to the best of your knowledge and belief. The  submission of an application containing any false or misleading statements may result in the permanent refusal of a visa or the denial of entry into the  United States. All declarations made in this application are unsworn declarations made under penalty of perjury. (28 U.S.C. 1746).
+10/22/22, 10:58 AM   Consular Electronic Application Center - Print Application  https://ceac.state.gov/GenNIV/common/printapplication.aspx?PLqcJnwx87KSZNMGnMvVtgAGVIdhYcSnd8PVQyIIF20%3d   7/7  You certified that you understand that you are required to submit your visa to the United States Immigration Officer at the port where you apply to  enter the United States, and that possession of the visa does not entitle you to enter the United States if, upon your arrival, you are found to be  inadmissible under U.S. immigration laws.   You certified that you understand that any willfully false or misleading statement or willful concealment of a  material fact made by you within the application may subject you to permanent exclusion from the United States and, if you are admitted to the United  States, may subject you to criminal prosecution and/or deportation.  The information that you have provided in your application and other information submitted with your application may be accessible to other  government agencies having statutory or other lawful authority to use such information, including for law enforcement and immigration law  enforcement purposes.   If fingerprints are collected as part of your application process, they may be used for the purpose of comparing them to other  fingerprints in the FBI’s Next Generation Identification (NGI) fingerprint system or its successor systems (including civil, criminal, and latent fingerprint  repositories).   The photograph that you provide with your application may be used for employment verification or other U.S. law purposes.
+
+            
+            YAML TEMPLATES:
+            address_phone_page:
+  # Home Address
+  home_address:
+    street1: ""  # Street Address (Line 1) - max 40 chars
+    street2: ""  # Street Address (Line 2) - max 40 chars, optional
+    city: ""     # City - max 20 chars
+    state: ""    # State/Province - max 20 chars
+    state_na: false  # Check if State/Province is not applicable
+    postal_code: ""  # Postal Zone/ZIP Code - max 10 chars
+    postal_code_na: false  # Check if Postal Zone/ZIP Code is not applicable
+    country: ""  # Country/Region - Select from dropdown list
+  
+  # Mailing Address
+  mail_address_same_as_home: "Y"  # Is your Mailing Address the same as your Home Address? Y/N
+  
+  # Only shown if mail_address_same_as_home = N
+  mail_address:
+    street1: ""  # Mailing Street Address (Line 1) - max 40 chars
+    street2: ""  # Mailing Street Address (Line 2) - max 40 chars, optional
+    city: ""     # Mailing City - max 20 chars
+    state: ""    # Mailing State/Province - max 20 chars
+    state_na: false  # Check if Mailing State/Province is not applicable
+    postal_code: ""  # Mailing Postal Zone/ZIP Code - max 10 chars
+    postal_code_na: false  # Check if Mailing Postal Zone/ZIP Code is not applicable
+    country: ""  # Mailing Country/Region - Select from dropdown list
+  
+  # Contact Information
+  phone:
+    home: ""     # Primary Phone Number - max 15 chars
+    mobile: ""   # Secondary Phone Number - max 15 chars
+    mobile_na: false  # Check if Secondary Phone is not applicable
+    work: ""     # Work Phone Number - max 15 chars
+    work_na: false  # Check if Work Phone is not applicable
+  add_phone: "Y"  # Have you used any other phone numbers in the last five years? Y/N
+  additional_phone: # Additional Phone Number - max 15 chars, shown if add_phone = Y
+    - phone: 3524439622
+    - phone: 2066592045   
+  
+  # Email Address
+  email: ""  # Email Address - max 50 chars
+  add_email: "Y"  # Have you used any other email addresses in the last five years? Y/N
+  additional_email: # Additional Email Address - max 40 chars, shown if add_email = Y
+    - email: sanjay.karinje.7@gmail.com
+    - email: sanjay.karinje.9@gmail.com
+
+  # Social Media
+  social_media:
+    platform_select: ""  # Social Media Provider/Platform - Select from dropdown
+    handle: ""  # Social Media Identifier - max 50 chars
+  add_social: "Y"  # Do you wish to provide information about your presence on social media? Y/N
+  # Only shown if add_social = Y
+  additional_social_media:
+    - platform: "Facebook"  # Additional Social Media Platform - max 40 chars
+      handle: "sanjay.karinje.8"    # Additional Social Media Handle - max 40 chars
+    - platform: "Instagram"  # Additional Social Media Platform - max 40 chars
+      handle: "sanjay.karinje.9"    # Additional Social Media Handle - max 40 chars
+
+personal_page1:
+  surname: "SMITH"                      # Surnames (max 33 chars)
+  given_name: "JOHN"                    # Given Names (max 33 chars)
+  full_name_native_alphabet: ""         # Full Name in Native Alphabet (max 100 chars)
+  full_name_native_alphabet_na: ""      # Check if native alphabet name not applicable
+  has_other_names_used: "N"            # Have you ever used other names? (Y/N)
+  other_names:
+    - surname: ""               # Other Surnames Used - only if has_other_names_used is Y (max 33 chars)
+      givenname: ""
+    - surname: ""
+      givenname: ""
+  has_telecode: "N"                    # Do you have a telecode that represents your name? (Y/N)
+  telecode_surname: ""                  # Telecode Surnames - only if has_telecode is Y (max 20 chars)
+  telecode_given: ""                   # Telecode Given Names - only if has_telecode is Y (max 20 chars)
+  sex: "MALE"                          # Sex (MALE/FEMALE)
+  marital_status: "SINGLE"             # Marital Status (MARRIED/COMMON LAW MARRIAGE/CIVIL UNION/DOMESTIC PARTNERSHIP/SINGLE/WIDOWED/DIVORCED/LEGALLY SEPARATED/OTHER)
+  birth_date_mm: "JAN"                 # Date of Birth - Month (JAN-DEC)
+  birth_date_dd: "01"                  # Date of Birth - Day (01-31)
+  birth_date_yyyy: "1990"              # Date of Birth - Year (4 digits)
+  birth_city: "NEW YORK"               # City of Birth (max 20 chars)
+  birth_state_province: "NEW YORK"     # State/Province of Birth (max 20 chars)
+  birth_state_province_na: false       # Check if state/province not applicable
+  birth_country: "UNITED STATES OF AMERICA"  # Country/Region of Birth (from dropdown list) 
+
+personal_page2:
+  nationality: "INDIA"  # Country/Region of Origin (Nationality) - Select from dropdown
+  national_id: "AB123456789"  # National ID number, max 20 chars
+  national_id_na: false  # Check if no national ID
+  us_social_security:
+    number1: "123"  # First 3 digits of SSN
+    number2: "45"   # Middle 2 digits of SSN
+    number3: "6789" # Last 4 digits of SSN
+  us_social_security_na: false      # Check if no SSN
+  us_taxpayer_id: "987654321"  # U.S. Taxpayer ID Number, max 20 chars
+  us_taxpayer_id_na: false     # Check if no taxpayer ID
+  has_other_nationality: "Y"   # Do you hold other nationality? Y/N
+  other_nationality:
+    country: "UNITED KINGDOM"  # Other nationality country
+    has_passport: "Y"         # Do you have passport for other nationality? Y/N
+    passport_number: "GBR123456"  # Other nationality passport number
+  has_permanent_resident: "Y"  # Are you permanent resident of another country? Y/N
+  permanent_resident_country: "CANADA"  # Other permanent resident country 
+
+pptvisa_page:
+  passport_type: "REGULAR"  # Allowed: REGULAR, OFFICIAL, DIPLOMATIC, LAISSEZ-PASSER, OTHER
+  passport_number: ""  # Max length: 20 chars
+  passport_book_number: ""  # Max length: 20 chars, Optional (can be NA)
+  passport_book_number_na: false  # Set to true if not applicable
+  issuance_country: ""  # Country that issued passport
+  issuance_location:
+    city: ""  # Max length: 25 chars
+    state: ""  # Max length: 25 chars
+    country: ""  # Country where passport was issued
+  issuance:
+    month: ""  # Format: JAN, FEB, MAR, etc.
+    day: ""  # Format: 01-31
+    year: ""  # 4-digit year
+  expiration:
+    month: ""  # Format: JAN, FEB, MAR, etc.
+    day: ""  # Format: 01-31
+    year: ""  # 4-digit year
+  expiration_na: false  # Set to true if not applicable
+  lost_passport: "N"  # Y/N - Have you ever lost a passport or had one stolen?
+  lost_passport_details:  # Only required if lost_passport is Y
+    number: ""  # Previous passport number
+    country: ""  # Country that issued lost passport
+    explanation: ""  # Explain circumstances of loss/theft
+
+previous_travel_page:
+  previous_us_travel: "Y"  # Have you ever been in the U.S.?
+  previous_travel_details:  # Previous visits to US
+    - arrival:
+        month: "OCT"  # Date Arrived - Month (3-letter month format)
+        day: "20"     # Date Arrived - Day (2-digit format)  
+        year: "2019"  # Date Arrived - Year (4-digit format)
+      length_of_stay:
+        number: "3"   # Length of Stay
+        unit: "Year(s)"  # Length of Stay - Period (Year(s), Month(s), Week(s), Day(s))
+    - arrival:
+        month: "NOV"
+        day: "01"
+        year: "2020"
+      length_of_stay:
+        number: "1"
+        unit: "Year(s)"
+    - arrival:
+        month: "JAN"
+        day: "08"
+        year: "2022"
+      length_of_stay:
+        number: "1"
+        unit: "Year(s)"
+
+  drivers_license: "Y"  # Do you or did you ever hold a U.S. Driver's License?
+  license_details:
+    - number: "WDLBKLPB81FB" # Driver's License Number
+      state: "WASHINGTON" # State of Driver's License
+    - number: "WDLBKLPB81FB" # Driver's License Number
+      number_na: true # Do not know
+      state: "WASHINGTON" # State of Driver's License
+  previous_visa: "Y"   # Have you ever been issued a U.S. Visa?
+  visa_number: "M8854325"  # Visa Number
+  visa_number_na: true # Do not know
+  visa_issue_date:
+    month: "JAN"  # Date Last Visa Was Issued - Month   
+    day: "30"     # Date Last Visa Was Issued - Day
+    year: "2018"  # Date Last Visa Was Issued - Year
+  same_type_visa: "Y"  # Are you applying for the same type of visa?
+  ten_printed: "Y"     # Have you been ten-printed?
+  visa_lost: "Y"       # Has your U.S. Visa ever been lost or stolen?
+  visa_lost_details:
+    year: "2020"   # Year visa was lost/stolen
+    explanation: "LOST IN TRAVEL"  # Explanation of loss/theft
+
+  same_country: "Y"    # Are you applying in same country where visa was issued?
+  visa_cancelled: "Y"   # Has your U.S. Visa ever been cancelled or revoked?
+  visa_cancelled_explanation: "CANCELLED DUE TO INELIGIBILITY"  # Explanation of visa cancellation
+
+  visa_refused: "Y"     # Have you ever been refused a U.S. Visa?
+  visa_refused_explanation: "REFUSED DUE TO INELIGIBILITY"  # Explanation of visa refusal
+
+  vwp_denial: "Y"       # Have you been denied ESTA authorization?
+  vwp_denial_explanation: "DENIED DUE TO INELIGIBILITY"  # Explanation of ESTA denial
+
+  iv_petition: "Y"     # Has anyone filed immigrant petition for you?
+  iv_petition_explanation: "GREEN CARD PROCESS INITIATED - I140 APPROVED (A209 365 505)"  # Explain petition details 
+
+relatives_page:
+  father_surname: "SMITH"  # Father's surname, max 33 chars
+  father_surname_na: true
+  father_given_name: "JOHN"  # Father's given name, max 33 chars
+  father_given_name_na: true
+  father_birth_day: "17"  # Father's birth day (01-31)
+  father_birth_month: "NOV"  # Father's birth month (JAN-DEC)
+  father_birth_year: "1952"  # Father's birth year (YYYY)
+  father_birth_na: true
+  father_in_us: "Y"  # Is father in US? (Y/N)
+  father_us_status: "U.S. CITIZEN"  # If Y: U.S. CITIZEN, U.S. LEGAL PERMANENT RESIDENT (LPR), NONIMMIGRANT, OTHER/I DON'T KNOW
+  mother_surname: "SMITH"  # Mother's surname, max 33 chars
+  mother_surname_na: true
+  mother_given_name: "MARY"  # Mother's given name, max 33 chars
+  mother_given_name_na: true
+  mother_birth_day: "17"  # Mother's birth day (01-31)
+  mother_birth_month: "NOV"  # Mother's birth month (JAN-DEC)
+  mother_birth_year: "1958"  # Mother's birth year (YYYY)
+  mother_birth_na: true
+  mother_in_us: "Y"  # Is mother in US? (Y/N)
+  mother_us_status: "U.S. CITIZEN"  # If Y: U.S. CITIZEN, U.S. LEGAL PERMANENT RESIDENT (LPR), NONIMMIGRANT, OTHER/I DON'T KNOW
+  
+  has_immediate_relatives: "Y"  # Do you have immediate relatives in US? (Y/N)
+  immediate_relative_details:
+    - type: "SIBLING" # If Y: SIBLING, FIANCÉ/FIANCÉE, CHILD, SPOUSE
+      status: "NONIMMIGRANT" # If Y: U.S. CITIZEN, U.S. LEGAL PERMANENT RESIDENT (LPR), NONIMMIGRANT, OTHER/I DON'T KNOW
+      surname: "KARINJE" # If Y: Relative's surname, max 33 chars
+      given_name: "SAMPOORNA"  # If Y: Relative's given name, max 33 chars
+    - type: "SPOUSE" # If Y: SIBLING, FIANCÉ/FIANCÉE, CHILD, SPOUSE
+      status: "NONIMMIGRANT" # If Y: U.S. CITIZEN, U.S. LEGAL PERMANENT RESIDENT (LPR), NONIMMIGRANT, OTHER/I DON'T KNOW
+      surname: "KAUSHIK" # If Y: Relative's surname, max 33 chars
+      given_name: "RAMYA" # If Y: Relative's given name, max 33 chars
+  has_other_relatives: "Y"  # Do you have other relatives in US? (Y/N) - Only shown if has_immediate_relatives is N 
+
+retrieve_page:
+  application_id: "1234567890"  # Application ID to retrieve
+  surname: "Doe"  # Last name/surname
+  birth_year: "1990"  # Year of birth
+  security_answer: "My favorite childhood friend was named John"  # Answer to security question 
+
+security_background1_page:
+  disease: "N"  # Do you have a communicable disease of public health significance? (Y/N)
+  disease_explanation: ""  # Required if disease is Y
+  disorder: "N"  # Do you have a mental or physical disorder that poses a threat? (Y/N)
+  disorder_explanation: ""  # Required if disorder is Y
+  druguser: "N"  # Are you or have you ever been a drug abuser or addict? (Y/N)
+  druguser_explanation: ""  # Required if druguser is Y 
+
+security_background2_page:
+  arrested: "N"  # Have you ever been arrested or convicted for any offense? (Y/N)
+  arrested_explanation: ""  # Required if arrested is Y
+  controlled_substances: "N"  # Have you violated any law relating to controlled substances? (Y/N)
+  controlled_substances_explanation: ""  # Required if controlled_substances is Y
+  prostitution: "N"  # Have you been engaged in prostitution within past 10 years? (Y/N)
+  prostitution_explanation: ""  # Required if prostitution is Y
+  money_laundering: "N"  # Have you been involved in money laundering? (Y/N)
+  money_laundering_explanation: ""  # Required if money_laundering is Y
+  human_trafficking: "N"  # Have you committed human trafficking offense? (Y/N)
+  human_trafficking_explanation: ""  # Required if human_trafficking is Y
+  assisted_trafficking: "N"  # Have you assisted in human trafficking? (Y/N)
+  assisted_trafficking_explanation: ""  # Required if assisted_trafficking is Y
+  trafficking_related: "N"  # Are you related to someone involved in trafficking? (Y/N)
+  trafficking_related_explanation: ""  # Required if trafficking_related is Y 
+
+security_background3_page:
+  illegal_activity: "N"  # Do you seek to engage in espionage or illegal activity? (Y/N)
+  illegal_activity_explanation: ""  # Required if illegal_activity is Y
+  terrorist_activity: "N"  # Have you engaged in terrorist activities? (Y/N)
+  terrorist_activity_explanation: ""  # Required if terrorist_activity is Y
+  terrorist_support: "N"  # Have you provided support to terrorists? (Y/N)
+  terrorist_support_explanation: ""  # Required if terrorist_support is Y
+  terrorist_org: "N"  # Are you a member of a terrorist organization? (Y/N)
+  terrorist_org_explanation: ""  # Required if terrorist_org is Y
+  terrorist_relative: "N"  # Are you related to a terrorist? (Y/N)
+  terrorist_relative_explanation: ""  # Required if terrorist_relative is Y
+  genocide: "N"  # Have you participated in genocide? (Y/N)
+  genocide_explanation: ""  # Required if genocide is Y
+  torture: "N"  # Have you participated in torture? (Y/N)
+  torture_explanation: ""  # Required if torture is Y
+  extrajudicial_violence: "N"  # Have you participated in extrajudicial killings? (Y/N)
+  extrajudicial_violence_explanation: ""  # Required if extrajudicial_violence is Y
+  child_soldier: "N"  # Have you recruited child soldiers? (Y/N)
+  child_soldier_explanation: ""  # Required if child_soldier is Y
+  religious_freedom: "N"  # Have you violated religious freedom? (Y/N)
+  religious_freedom_explanation: ""  # Required if religious_freedom is Y
+  population_controls: "N"  # Have you enforced coercive population controls? (Y/N)
+  population_controls_explanation: ""  # Required if population_controls is Y
+  transplant: "N"  # Have you been involved in forced organ transplantation? (Y/N)
+  transplant_explanation: ""  # Required if transplant is Y 
+
+security_background4_page:
+  removal_hearing: "N"  # Have you been subject to removal hearing? (Y/N)
+  removal_hearing_explanation: ""  # Required if removal_hearing is Y
+  immigration_fraud: "N"  # Have you committed immigration fraud? (Y/N)
+  immigration_fraud_explanation: ""  # Required if immigration_fraud is Y
+  fail_to_attend: "N"  # Have you failed to attend a hearing? (Y/N)
+  fail_to_attend_explanation: ""  # Required if fail_to_attend is Y
+  visa_violation: "N"  # Have you violated visa terms? (Y/N)
+  visa_violation_explanation: ""  # Required if visa_violation is Y
+  deported: "N"  # Have you been deported from any country? (Y/N)
+  deported_explanation: ""  # Required if deported is Y 
+
+security_background5_page:
+  child_custody: "N"  # Have you withheld custody of US citizen child? (Y/N)
+  child_custody_explanation: ""  # Required if child_custody is Y
+  voting_violation: "N"  # Have you voted illegally in the US? (Y/N)
+  voting_violation_explanation: ""  # Required if voting_violation is Y
+  renounce_tax: "N"  # Have you renounced US citizenship to avoid tax? (Y/N)
+  renounce_tax_explanation: ""  # Required if renounce_tax is Y
+  school_reimbursement: "N"  # Have you attended public school without reimbursement? (Y/N)
+  school_reimbursement_explanation: ""  # Required if school_reimbursement is Y 
+
+security_page:
+  privacy_act: true  # Agreement to Privacy Act Statement
+  security_question: "What is the name of your favorite childhood friend?"  # Security question selection
+  security_answer: "John Doe"  # Answer to selected security question 
+
+spouse_page:
+  spouse_surname: "KAUSHIK"  # Spouse's Surnames
+  spouse_given_name: "RAMYA"  # Spouse's Given Names
+  spouse_birth_month: "MAY"  # Spouse Date of Birth - Month (JAN-DEC)
+  spouse_birth_day: "08"  # Spouse Date of Birth - Day (01-31)
+  spouse_birth_year: "1985"  # Spouse Date of Birth - Year (YYYY)
+  spouse_nationality: "INDIA"  # Spouse's Country/Region of Origin (Nationality)
+  spouse_birth_city: "HYDERABAD"  # City of birth
+  spouse_birth_na: true
+  spouse_birth_country: "INDIA"  # Country/Region of birth
+  spouse_address_type: "Other (Specify Address)"  # Changed to reveal most dependencies
+  
+  # These fields are now required since spouse_address_type is "Other (Specify Address)"
+  spouse_address_line1: "338 SPEAR STREET"  # Street Address (Line 1), max 40 chars
+  spouse_address_line2: "UNIT 34E"  # Street Address (Line 2), max 40 chars
+  spouse_address_city: "SAN FRANCISCO"  # City name
+  spouse_address_city_na: false
+  spouse_address_postal_code: "94105"  # Postal Zone/ZIP Code, max 10 chars
+  spouse_address_postal_code_na: false
+  spouse_address_state: "CALIFORNIA"  # State/Province name
+  spouse_address_country: "UNITED STATES OF AMERICA"  # Country/Region name 
+
+
+start_page:
+  language: "English"  # Language selection for the form
+  location: "INDIA, HYDERABAD"  # Embassy/Consulate location
+  captcha: ""  # Will be filled during actual form submission 
+
+travel_companions_page:
+  traveling_with_others: "Y"  # Are there other persons traveling with you? (Y/N)
+  group_travel: "N"  # Are you traveling as part of a group or organization? (Y/N)
+  group_name: ""  # Name of group/organization if traveling as group
+  travel_companions:  # Details of person traveling with you if not traveling as group
+    - surname: "SMITH"  # Surnames of Person Traveling With You (max 33 chars)
+      given_name: "JOHN"  # Given Names of Person Traveling With You (max 33 chars) 
+      relationship: "FRIEND"  # Relationship options: PARENT/SPOUSE/CHILD/OTHER RELATIVE/FRIEND/BUSINESS ASSOCIATE/OTHER
+    - surname: "JONES"  # Surnames of Person Traveling With You (max 33 chars)
+      given_name: "JANE"  # Given Names of Person Traveling With You (max 33 chars) 
+      relationship: "OTHER"  # Relationship options: PARENT/SPOUSE/CHILD/OTHER RELATIVE/FRIEND/BUSINESS ASSOCIATE/OTHER
+    - surname: "DOE"  # Surnames of Person Traveling With You (max 33 chars)
+      given_name: "JON"  # Given Names of Person Traveling With You (max 33 chars) 
+      relationship: "CHILD"  # Relationship options: PARENT/SPOUSE/CHILD/OTHER RELATIVE/FRIEND/BUSINESS ASSOCIATE/OTHER
+
+
+travel_page:
+  purpose_of_trip: "TEMPORARY WORKER (H)"  # Purpose of Trip to the U.S.
+  other_purpose_of_trip: "SPOUSE OF AN H (H4)"  # Specify visa type
+  who_is_paying: "Self"  # Person/Entity Paying for Your Trip Self, Other Company/Organization, Present Employer, Employer in the U.S., Other Person
+  specific_travel_plans: "Y"  # Have you made specific travel plans?
+  investor_issued_visa: "N" # if selection on first dropdown is "TREATY TRADER OR INVESTOR (E)" and second dropdown is EXECUTIVE/MGR/ESSENTIAL EMP (E1) or (E1)
+  
+ #Principal Applicant Details (for dependent visas)
+  investor_issued_visa: ""  # Y/N for E1/E2 executive/manager positions
+  principal_applicant:
+    surname: "KARINJE"  # Principal applicant's surname
+    given_name: "SANJAY"  # Principal applicant's given name
+    petition_number: ""  # Petition number if applicable
+    company: ""  # Company name for E1/E2 visas 
+  ev_surname: "KAUSHIK"
+  ev_given_name: "RAMYA"
+  investor_dob:
+    day: "15"  # Select from 01-31
+    month: "JAN"  # Select from JAN-DEC
+    year: "2023"  # 4-digit year
+  # Mission/Organization fields (for A1, G1 visas)
+  mission_org:
+    name: ""  # Name of sponsoring mission/organization
+    contact_surname: ""  # Contact surnames
+    contact_given_name: ""  # Contact given names
+    address1: ""  # U.S. Address line 1
+    address2: ""  # U.S. Address line 2
+    city: ""  # City
+    state: ""  # State
+    zipcode: ""  # ZIP code
+    phone: ""  # Phone number
+
+  # Specific Travel Details
+  specific_travel_plans_details:
+    arrival:
+      month: "JAN"  # Select from JAN-DEC
+      day: "15"  # Select from 01-31
+      year: "2023"  # 4-digit year
+      flight: "UA100"  # Optional: Flight number if known
+      city: "SAN FRANCISCO"  # U.S. arrival city
+    departure:
+      month: "DEC"  # Select from JAN-DEC
+      day: "31"  # Select from 01-31
+      year: "2024"  # 4-digit year
+      flight: "UA101"  # Optional: Flight number if known
+      city: "SAN FRANCISCO"  # U.S. departure city
+  locations_to_visit: 
+      - location: "SAN FRANCISCO, CALIFORNIA"  # List locations you plan to visit
+      - location: "LOS ANGELES, CALIFORNIA"  # List locations you plan to visit
+
+  # Non-specific Travel Details
+  non_specific_travel_plans_details:
+    arrival: #intended date of arrival in the US
+      month: ""  # Select from JAN-DEC
+      day: ""  # Select from 01-31
+      year: ""  # 4-digit year
+    duration:
+      number: ""  # Length of intended stay - number
+      unit: ""  # Select from: Year(s), Month(s), Week(s), Day(s)
+
+  # Stay Address
+  stay_address:
+    street1: "338 SPEAR STREET"  # Street address line 1
+    street2: "UNIT 34E"  # Optional: Street address line 2
+    city: "SAN FRANCISCO"  # City
+    state: "CALIFORNIA"  # U.S. state - select from state list
+    zip: "94105"  # U.S. ZIP code
+
+  # Payer Details (when who_is_paying is not Self)
+  payer_details:
+    surname: ""  # Payer's surname
+    given_name: ""  # Payer's given name
+    phone: ""  # Phone number
+    email: ""  # Email address
+    address_same_as_home: ""  # Y/N
+    relationship: ""  # Select from: CHILD, PARENT, SPOUSE, OTHER RELATIVE, FRIEND, OTHER
+    address: # if payer address is different from home address or mailing address
+      street1: ""  # Street address line 1
+      street2: ""  # Street address line 2
+      city: ""  # City
+      state: ""  # State/Province
+      state_na: ""  # N/A if state is not applicable
+      postal_code: ""  # Postal/ZIP code
+      postal_code_na: ""  # N/A if postal code is not applicable
+      country: ""  # Country
+
+  # Company Payment Details (when who_is_paying = "Other Company/Organization")
+  company_payment:
+    name: ""  # Name of Company/Organization Paying for Trip
+    relation: ""  # Relationship to Company
+
+  #
+
+us_contact_page:
+  contact:
+    surname: ""      # Surnames of contact person in US (max 33 chars)
+    given_name: ""   # Given names of contact person in US (max 33 chars)
+    organization: "" # Organization name in US (max 33 chars)
+    relationship: "" # Options: RELATIVE, SPOUSE, FRIEND, BUSINESS ASSOCIATE, EMPLOYER, SCHOOL OFFICIAL, OTHER
+  address:
+    street1: ""      # US Street Address Line 1 (max 40 chars)
+    street2: ""      # US Street Address Line 2 (optional, max 40 chars)
+    city: ""         # US City (max 20 chars)
+    state: ""        # US State (select from list of US states/territories)
+    postal_code: ""  # US ZIP Code (max 10 chars)
+  phone: ""          # US Phone Number (max 15 chars)
+  email: ""          # Email Address (max 50 chars)
+  email_na: false    # Set to true if no email address available 
+
+workeducation1_page:
+  present_occupation: "COMPUTER SCIENCE"  # Select from: AGRICULTURE, ARTIST/PERFORMER, BUSINESS, COMMUNICATIONS, COMPUTER SCIENCE, CULINARY/FOOD SERVICES, EDUCATION, ENGINEERING, GOVERNMENT, HOMEMAKER, LEGAL PROFESSION, MEDICAL/HEALTH, MILITARY, NATURAL SCIENCE, NOT EMPLOYED, PHYSICAL SCIENCES, RELIGIOUS VOCATION, RESEARCH, RETIRED, SOCIAL SCIENCE, STUDENT, OTHER
+  other_occupation_explanation: ""  # Required if present_occupation is OTHER or NOT EMPLOYED - max 4000 chars
+  
+  # Only shown if present_occupation is not HOMEMAKER, NOT EMPLOYED, or RETIRED
+  employer:
+    name: "INSTACART"  # Present Employer or School Name - max 75 chars
+    address:
+      street1: "1234567890"  # Street Address (Line 1) - max 40 chars
+      street2: "1234567890"  # Street Address (Line 2) - max 40 chars, optional
+      city: "SAN FRANCISCO"  # City - max 20 chars
+      state: "CA"  # State/Province - max 20 chars
+      state_na: false  # Check if State/Province is not applicable
+      postal_code: "94105"  # Postal Zone/ZIP Code - max 10 chars
+      postal_code_na: false  # Check if Postal Code is not applicable
+      country: "UNITED STATES OF AMERICA"  # Country/Region - Select from dropdown list
+    phone: "8882467822"  # Phone Number - max 15 chars
+  
+  start_date:
+    month: "JUN"  # Employment From - Month (JAN-DEC)
+    day: "01"  # Employment From - Day (01-31)
+    year: "2021"  # Employment From - Year - max 4 chars
+  
+  monthly_salary: ""  # Monthly Income in Local Currency - max 15 chars
+  monthly_salary_na: false  # Check if Monthly Salary is not applicable
+  
+  duties: ""  # Briefly describe your duties - max 4000 chars 
+
+workeducation2_page:
+  previously_employed: "Y"  # Were you previously employed?
+  employment_information:
+    - employer: "AMAZON"  # Name of previous employer
+      job_title: "DATA SCIENTIST"  # Previous job title
+      address:
+        street1: "410 TERRY AVE N"  # Employer street address line 1
+        street2: ""  # Optional employer street address line 2
+        city: "SEATTLE"  # City where employer is located
+        state: "WA"  # State/province where employer is located
+        state_na: true  # Check if state/province not applicable
+        postal_code: "98109"  # Postal/ZIP code
+        postal_code_na: true  # Check if postal/ZIP code not applicable
+        country: "UNITED STATES OF AMERICA"  # Country where employer is located
+      phone: "2062661000"  # Employer phone number
+      supervisor:
+        surname: "DU"  # Supervisor's last name
+        given_name: "ZHENG"  # Supervisor's first name
+        surname_na: true  # Check if supervisor surname not applicable
+        given_name_na: true  # Check if supervisor given name not applicable
+      start_date:
+        month: "SEP"  # Start month of employment
+        day: "01"  # Start day of employment
+        year: "2019"  # Start year of employment
+      end_date:
+        month: "MAY"  # End month of employment
+        day: "29"  # End day of employment
+        year: "2021"  # End year of employment
+      duties: "DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS. DEVELOP METRIC AND DASHBOARDS."  # Job duties description
+    - employer: "AMAZON"  # Name of previous employer
+      job_title: "FINANCE MANAGER"  # Previous job title
+      address:
+        street1: "410 TERRY AVE N"  # Employer street address line 1
+        street2: ""  # Optional employer street address line 2
+        city: "SEATTLE"  # City where employer is located
+        state: "WA"  # State/province where employer is located
+        state_na: true  # Check if state/province not applicable
+        postal_code: "98109"  # Postal/ZIP code
+        postal_code_na: true  # Check if postal/ZIP code not applicable
+        country: "UNITED STATES OF AMERICA"  # Country where employer is located
+      phone: "2062661000"  # Employer phone number
+      supervisor:
+        surname: "NARAYAN"  # Supervisor's last name
+        given_name: "ASHOK"  # Supervisor's first name
+        surname_na: true  # Check if supervisor surname not applicable
+        given_name_na: true  # Check if supervisor given name not applicable
+      start_date:
+        month: "JUN"  # Start month of employment
+        day: "01"  # Start day of employment
+        year: "2018"  # Start year of employment
+      end_date:
+        month: "MAY"  # End month of employment
+        day: "29"  # End day of employment
+        year: "2020"  # End year of employment
+      duties: "FINANCIAL ANALYSIS AND REPORTING"  # Job duties description
+  other_education: "Y"  # Have you attended any educational institutions?
+  education:
+    - name: "UNIVERSITY OF FLORIDA"  # Name of educational institution
+      course: "MBA"  # Field of study
+      address:
+        street1: "GAINESVILLE"  # School street address line 1
+        street2: ""  # Optional school street address line 2
+        city: "GAINESVILLE"  # City where school is located
+        state: "FL"  # State/province where school is located
+        postal_code: "32611"  # School postal/ZIP code
+        country: "UNITED STATES OF AMERICA"  # Country where school is located
+      start_date:
+        month: "APR"  # Start month of attendance
+        day: "02"  # Start day of attendance
+        year: "2010"  # Start year of attendance
+      end_date:
+        month: "MAY"  # End month of attendance
+        day: "31"  # End day of attendance
+        year: "2011"  # End year of attendance  
+    - name: "PESIT"  # Name of educational institution
+      course: "B.E"  # Field of study
+      address:
+        street1: "Mysore Road"  # School street address line 1
+        street2: ""  # Optional school street address line 2
+        city: "Bangalore"  # City where school is located
+        state: "KA"  # State/province where school is located
+        postal_code: "560020"  # School postal/ZIP code
+        country: "INDIA"  # Country where school is located
+      start_date:
+        month: "APR"  # Start month of attendance
+        day: "02"  # Start day of attendance
+        year: "2002"  # Start year of attendance
+      end_date:
+        month: "MAY"  # End month of attendance
+        day: "31"  # End day of attendance
+        year: "2006"  # End year of attendance 
+
+workeducation3_page:
+  language_name:  # List of languages you know
+    - language: "ENGLISH"  # Primary language
+    - language: "HINDI"  # Additional language
+    - language: "KANNADA"  # Additional language
+    - language: "TELUGU"  # Additional language
+
+  clan_tribe_ind: "N"  # Do you belong to a clan or tribe?
+  clan_tribe_name: ""  # Name of clan or tribe if applicable
+
+  countries_visited_ind: "Y"  # Have you traveled to any countries/regions within the last five years?
+  countries_visited:  # List of countries visited in last 5 years
+    - country: "GERMANY"
+    - country: "NETHERLANDS"
+    - country: "CANADA"
+    - country: "INDIA"
+
+  organization_ind: "N"  # Have you belonged to any professional, social, or charitable organization?
+  organization_name: ""  # Name of organization if applicable
+
+  specialized_skills_ind: "N"  # Do you have specialized skills (firearms, explosives, nuclear, biological, chemical)?
+  specialized_skills_explanation: ""  # Explanation of specialized skills if applicable
+
+  military_service_ind: "N"  # Have you ever served in the military?
+  military_service:  # Military service details if applicable
+    country: ""  # Country where served
+    branch: ""  # Branch of service
+    rank: ""  # Rank/Position
+    specialty: ""  # Military specialty
+    service_from:
+      month: ""  # Start month of service
+      day: ""  # Start day of service
+      year: ""  # Start year of service
+    service_to:
+      month: ""  # End month of service
+      day: ""  # End day of service
+      year: ""  # End year of service
+
+  insurgent_org_ind: "N"  # Have you been involved with any paramilitary/rebel/insurgent group?
+  insurgent_org_explanation: ""  # Explanation of involvement if applicable 
+            
+            Rules:
+                1. Use Y/N for yes/no fields
+                2. Use true/false for boolean fields (like _na fields)
+                3. Use 3-letter format for months (JAN, FEB, etc.)
+                4. Preserve any special characters in names/addresses
+                5. Use empty string "" for missing values
+                6. Keep array structures for repeated elements (other_names, travel_companions, etc.)
+                7. Include button_clicks arrays as shown in template
+                8. Maintain exact field names and hierarchy
+                9. DO NOT wrap the page sections again - they already have their page names (like personal_page1:, address_phone_page:)
+                10. Follow the instructions provided as comments in the yaml files.
+                11. Every value should be a string, except boolean values can be true/false. 
+                12. Do not include any other text in the response such as prefixing with ```yaml or ``` suffix. 
+            Example format:
+            personal_page1:
+                surname: "SMITH"
+                given_name: "JOHN"
+                # ... rest of fields
+
+            address_phone_page:
+                home_address:
+                    street1: "123 MAIN ST"
+                # ... rest of fields
+            
