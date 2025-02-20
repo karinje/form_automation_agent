@@ -249,11 +249,11 @@ export default function Home() {
             setAccordionValues(prev => ({ ...prev, [category]: `item-${index}` }));
             setTimeout(() => {
               setAccordionValues(prev => ({ ...prev, [category]: "" }));
-            }, 2000);
-          }, index * 1000);
+            }, 50);
+          }, index * 500);
         });
       }, delay);
-      delay += formCategories[category].length * 1000 + 2000;
+      delay += formCategories[category].length * (500+50) + 50;
     });
   };
 
