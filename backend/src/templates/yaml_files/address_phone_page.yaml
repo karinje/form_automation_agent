@@ -33,15 +33,15 @@ address_phone_page:
     work_na: false  # Check if Work Phone is not applicable
   add_phone: "Y"  # Have you used any other phone numbers in the last five years? Y/N
   additional_phone: # Additional Phone Number - max 15 chars, shown if add_phone = Y
-    - phone: 3524439622
-    - phone: 2066592045   
+    - add_phone_number: 3524439622
+    - add_phone_number: 2066592045   
   
   # Email Address
   email: ""  # Email Address - max 50 chars
   add_email: "Y"  # Have you used any other email addresses in the last five years? Y/N
   additional_email: # Additional Email Address - max 40 chars, shown if add_email = Y
-    - email: sanjay.karinje.7@gmail.com
-    - email: sanjay.karinje.9@gmail.com
+    - add_email_address: sanjay.karinje.7@gmail.com
+    - add_email_address: sanjay.karinje.9@gmail.com
 
   # Social Media
   social_media:
@@ -50,7 +50,7 @@ address_phone_page:
   add_social: "Y"  # Do you wish to provide information about your presence on social media? Y/N
   # Only shown if add_social = Y
   additional_social_media:
-    - platform: "Facebook"  # Additional Social Media Platform - max 40 chars
-      handle: "sanjay.karinje.8"    # Additional Social Media Handle - max 40 chars
-    - platform: "Instagram"  # Additional Social Media Platform - max 40 chars
-      handle: "sanjay.karinje.9"    # Additional Social Media Handle - max 40 chars
+    - add_platform: "Facebook"  # Additional Social Media Platform - max 40 chars
+      add_handle: "sanjay.karinje.8"    # Additional Social Media Handle - max 40 chars
+    - add_platform: "Instagram"  # Additional Social Media Platform - max 40 chars
+      add_handle: "sanjay.karinje.9"    # Additional Social Media Handle - max 40 chars

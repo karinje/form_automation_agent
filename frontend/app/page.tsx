@@ -39,6 +39,8 @@ import p6_addressphone_definition from "../form_definitions/p6_addressphone_defi
 import p7_pptvisa_definition from "../form_definitions/p7_pptvisa_definition.json"
 import p8_uscontact_definition from "../form_definitions/p8_uscontact_definition.json"
 import p9_relatives_definition from "../form_definitions/p9_relatives_definition.json"
+import startPageDefinition from "../form_definitions/p0_start_page_definition.json"
+import securityPageDefinition from "../form_definitions/p0_security_page_definition.json"
 
 declare global {
   interface Window {
@@ -69,29 +71,13 @@ export default function Home() {
   const [birthYear, setBirthYear] = useState('')
   const [isRunningDS160, setIsRunningDS160] = useState(false)
   const [arrayGroups, setArrayGroups] = useState<Record<string, Record<string, Array<Record<string, string>>>>>({});
-  // Sample secret questions - replace with actual questions later
-  const secretQuestions = [
-        "What is the given name of your mother's mother?",
-        "What is the given name of your father's father?",
-        "What is your maternal grandmother's maiden name?",
-        "What name did your family used to call you when you were a child?",
-        "In what city did you meet your spouse/significant other?",
-        "What is the name of your favorite childhood friend?",
-        "What street did you live on when you were 8 years old?",
-        "What is your oldest sibling's birthday month and year? (e.g., January 1900)",
-        "What is the middle name of your youngest child?",
-        "What is your oldest sibling's middle name?",
-        "What school did you attend when you were 11 years old?",
-        "What was your home phone number when you were a child?",
-        "What is your oldest cousin's first and last name?",
-        "What was the name of your favorite stuffed animal or toy?",
-        "In what city or town did your mother and father meet?",
-        "What was the last name of your favorite teacher?",
-        "In what city does your nearest sibling live?",
-        "What is your youngest sibling's birthday month and year? (e.g., January 1900)",
-        "In what city or town was your first job?",
-        "What was the name of your first boyfriend or girlfriend?"
-  ]
+  const securityQuestions = securityPageDefinition.fields.find(
+    f => f.name === 'ctl00_SiteContentPlaceHolder_ddlQuestions'
+  )?.value || []
+
+  const locations = startPageDefinition.fields.find(
+    f => f.name === 'ctl00_SiteContentPlaceHolder_ucLocation_ddlLocation'
+  )?.value || []
 
   const formCategories: FormCategories = {
     personal: [
@@ -121,14 +107,6 @@ export default function Home() {
       { title: "Security and Background 5", definition: p17_securityandbackground5_definition, pageName: "security_background5_page" },
     ],
   }
-
-  // Add locations array
-  const locations = [
-    'ENGLAND, LONDON',
-    'USA, NEW YORK',
-    'CANADA, TORONTO',
-    // Add more locations as needed
-  ]
 
   // Generate years for dropdown (e.g., 1940 to current year)
   const years = Array.from({ length: new Date().getFullYear() - 1940 + 1 }, (_, i) => 
@@ -290,143 +268,22 @@ export default function Home() {
     }
   };
 
-  const handleRunDS160 = async () => {
-    try {
-      if (retrieveMode === 'retrieve') {
-        if (!applicationId || !surname || !birthYear || !secretQuestion || !secretAnswer) {
-          setErrorMessage("Please fill in all retrieve fields");
-          return;
-        }
-        
-        // Update application ID format validation - more flexible
-        if (!/^[A-Z0-9]{10}$/.test(applicationId)) {
-          setErrorMessage("Application ID must be 10 characters (letters and numbers)");
-          return;
-        }
+  // First create a new function to generate YAML data
+  const generateFormYamlData = useCallback((options: {
+    location: string,
+    retrieveMode: 'new' | 'retrieve',
+    applicationId?: string,
+    surname?: string,
+    birthYear?: string,
+    secretQuestion: string,
+    secretAnswer: string
+  }) => {
+    const { location, retrieveMode, applicationId, surname, birthYear, secretQuestion, secretAnswer } = options;
 
-        // Validate birth year
-        const currentYear = new Date().getFullYear();
-        if (parseInt(birthYear) > currentYear || parseInt(birthYear) < 1900) {
-          setErrorMessage("Please enter a valid birth year");
-          return;
-        }
-      }
-      
-      const yamlData = {
-        start_page: {
-          button_clicks: retrieveMode === 'retrieve' ? [1] : [0]
-        },
-        retrieve_page: retrieveMode === 'retrieve' ? {
-          application_id: applicationId,
-          surname: surname,
-          year: birthYear,
-          security_question: secretQuestion,
-          security_answer: secretAnswer
-        } : undefined
-      };
-
-      try {
-        setIsRunningDS160(true)
-        
-        // First get all the form data converted to YAML format
-        const formYamlData: Record<string, any> = {}
-        Object.keys(formMappings).forEach(pageName => {
-          const pageFormData: Record<string, string> = {}
-          const pageMapping = formMappings[pageName]
-          
-          // Find all form fields that belong to this page
-          Object.entries(formData).forEach(([formFieldId, value]) => {
-            const yamlField = getYamlField(pageName, formFieldId)
-            if (yamlField) {
-              pageFormData[yamlField] = value
-            }
-          })
-          
-          if (Object.keys(pageFormData).length > 0) {
-            formYamlData[pageName] = {
-              ...unflattenFormData(pageFormData),
-              button_clicks: [1, 2]  // Add button_clicks to each page
-            }
-          }
-        })
-        
-        // Add start_page section
-        const startPage = {
-          language: "English",
-          location: location,
-          button_clicks: [0]
-        }
-
-        // Add retrieve_page section if in retrieve mode
-        const retrievePage = retrieveMode === 'retrieve' ? {
-          application_id: applicationId,
-          surname: surname,
-          year: birthYear,
-          security_answer: secretAnswer,
-          button_clicks: [1]
-        } : undefined
-
-        // Add security_page section if in new mode
-        const securityPage = retrieveMode === 'new' ? {
-          privacy_agreement: true,
-          security_question: "What is the name of your favorite childhood friend?",
-          security_answer: "John Doe",
-          button_clicks: [0]
-        } : undefined
-
-        // Combine all sections
-        const finalYamlData = {
-          start_page: {
-            ...startPage,
-            button_clicks: retrieveMode === 'retrieve' ? [1] : [0]
-          },
-          retrieve_page: retrieveMode === 'retrieve' ? {
-            application_id: applicationId,
-            surname: surname,
-            year: birthYear,
-            security_question: secretQuestion,
-            security_answer: secretAnswer,
-            button_clicks: [0, 1]
-          } : undefined,
-          ...(securityPage && { security_page: securityPage }),
-          ...formYamlData  // Add all the form data
-        }
-
-        // Create YAML string
-        const yamlStr = yaml.dump(finalYamlData, {
-          lineWidth: -1,
-          quotingType: '"',
-          forceQuotes: true,
-        })
-          
-        // Send to backend using the API utility
-        const result = await runDS160(yamlStr)
-        
-        if (result.status === 'error') {
-          setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${result.message}`])
-        } else {
-          console.log('DS-160 Processing Output:', result.message)
-        }
-      } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-        setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${errorMessage}`]);
-      } finally {
-        setIsRunningDS160(false)
-      }
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${errorMessage}`]);
-    }
-  }
-
-  const handleDownloadYaml = useCallback(() => {
-    console.log('Starting handleDownloadYaml with arrayGroups:', arrayGroups);
-    
     // First get all the form data converted to YAML format
     const formYamlData: Record<string, any> = {}
     Object.keys(formMappings).forEach(pageName => {
       const pageFormData: Record<string, string> = {}
-      // Find all form fields that belong to this page
       Object.entries(formData).forEach(([formFieldId, value]) => {
         const yamlField = getYamlField(pageName, formFieldId)
         if (yamlField) {
@@ -435,17 +292,14 @@ export default function Home() {
       })
 
       if (Object.keys(pageFormData).length > 0) {
-        console.log(`Processing page ${pageName}:`, { pageFormData });
         formYamlData[pageName] = {
           ...unflattenFormData(pageFormData),
           button_clicks: [1, 2]
         }
 
-        // If this page has array groups, just use them directly
+        // If this page has array groups, use them directly
         if (arrayGroups[pageName]) {
-          console.log(`Found array groups for ${pageName}:`, arrayGroups[pageName]);
           Object.entries(arrayGroups[pageName]).forEach(([groupKey, groupArray]) => {
-            console.log(`Processing group ${groupKey}:`, groupArray);
             // Create array structure
             const arrayData = groupArray.map(group => {
               // Convert flat keys to nested structure
@@ -464,10 +318,8 @@ export default function Home() {
             });
             // Add array directly
             formYamlData[pageName][groupKey] = arrayData;
-            console.log(`Added array group to ${pageName}.${groupKey}:`, arrayData);
           });
         }
-        console.log(`Final page data for ${pageName}:`, formYamlData[pageName]);
       }
     })
 
@@ -483,48 +335,60 @@ export default function Home() {
       application_id: applicationId,
       surname: surname,
       year: birthYear,
+      security_question: secretQuestion,
       security_answer: secretAnswer,
-      button_clicks: [1]
+      button_clicks: [0, 1]
     } : undefined
 
     // Add security_page section if in new mode
     const securityPage = retrieveMode === 'new' ? {
       privacy_agreement: true,
-      security_question: "What is the name of your favorite childhood friend?",
-      security_answer: "John Doe",
+      security_question: secretQuestion,
+      security_answer: secretAnswer,
       button_clicks: [0]
     } : undefined
 
     // Combine all sections
-    const finalYamlData = {
+    return {
       start_page: startPage,
       ...(retrievePage && { retrieve_page: retrievePage }),
       ...(securityPage && { security_page: securityPage }),
-      ...formYamlData // Add all the form data
+      ...formYamlData
     }
+  }, [formData, arrayGroups])
 
-    debugLog('all_pages', '[Mapping Creation] Processing YAML data');
+  // Then modify both handlers to use this function
+  const handleDownloadYaml = useCallback(() => {
+    const finalYamlData = generateFormYamlData({
+      location,
+      retrieveMode,
+      applicationId,
+      surname,
+      birthYear,
+      secretQuestion,
+      secretAnswer
+    })
+
     let yamlStr = yaml.dump(finalYamlData, {
       lineWidth: -1,
       quotingType: '"',
       forceQuotes: true,
       indent: 2,
-      flowLevel: -1, // Force block style
-      noArrayIndent: false, // Allow array indentation
-      noCompatMode: true, // Use new style
+      flowLevel: -1,
+      noArrayIndent: false,
+      noCompatMode: true,
     })
 
-    // Fix button_clicks formatting
+    // Fix button_clicks formatting and add newlines
     yamlStr = yamlStr
       .replace(/button_clicks:\s*(?:-\s*0|"\[0\]")/g, 'button_clicks: [0]')
       .replace(/button_clicks:\s*(?:-\s*1|"\[1\]")/g, 'button_clicks: [1]')
       .replace(/button_clicks:\s*(?:-\s*1\s*-\s*2|"\[1,\s*2\]"|"\[1, 2\]"|\[1\]\s*-\s*2)/g, 'button_clicks: [1, 2]')
       .replace(/button_clicks:\s*\[\s*(\d+)\s*\]\s*-\s*(\d+)/g, 'button_clicks: [$1, $2]')
-      // Add newlines between all pages (including those without _page suffix)
       .replace(/^([a-zA-Z][a-zA-Z0-9_]*(?:_page)?:)/gm, '\n$1')
-      // Remove extra newline at the start of the file
       .replace(/^\n/, '')
 
+    // Create blob and download
     const blob = new Blob([yamlStr], { type: 'text/yaml' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -534,7 +398,58 @@ export default function Home() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-  }, [formData, yamlData, location, retrieveMode, applicationId, surname, birthYear, secretAnswer, secretQuestion, arrayGroups])
+  }, [generateFormYamlData, location, retrieveMode, applicationId, surname, birthYear, secretQuestion, secretAnswer])
+
+  const handleRunDS160 = async () => {
+    try {
+      if (retrieveMode === 'retrieve') {
+        if (!applicationId || !surname || !birthYear || !secretQuestion || !secretAnswer) {
+          setErrorMessage("Please fill in all retrieve fields");
+          return;
+        }
+        
+        // Validation checks...
+      }
+
+      try {
+        setIsRunningDS160(true)
+        
+        const finalYamlData = generateFormYamlData({
+          location,
+          retrieveMode,
+          applicationId,
+          surname,
+          birthYear,
+          secretQuestion,
+          secretAnswer
+        })
+
+        // Create YAML string with same formatting as download
+        const yamlStr = yaml.dump(finalYamlData, {
+          lineWidth: -1,
+          quotingType: '"',
+          forceQuotes: true,
+        })
+          
+        // Send to backend
+        const result = await runDS160(yamlStr)
+        
+        if (result.status === 'error') {
+          setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${result.message}`])
+        } else {
+          console.log('DS-160 Processing Output:', result.message)
+        }
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${errorMessage}`]);
+      } finally {
+        setIsRunningDS160(false)
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${errorMessage}`]);
+    }
+  }
 
   const renderFormSection = (forms: typeof formCategories.personal, category: string) => (
     <Accordion 
@@ -621,177 +536,153 @@ export default function Home() {
         </div>
         
         <div className="bg-white shadow-lg rounded-lg p-8">
-          <div className="mb-6 flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <h2 className="text-lg font-semibold">Upload DS160 to fill form</h2>
-            <label
-              htmlFor="dropzone-file"
-              className={`flex items-center justify-center h-12 w-96 border-2 border-gray-300 border-dashed rounded-lg ${
-                isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-100'
-              } bg-gray-50 relative ml-4`}
-              onDrop={(e) => {
-                if (isProcessing || isProcessingLLM) return;
-                e.preventDefault();
-                const file = e.dataTransfer.files[0];
-                if (file) handleFileUpload(file);
-              }}
-              onDragOver={(e) => {
-                if (isProcessing || isProcessingLLM) return;
-                e.preventDefault();
-              }}
-            >
-              <div className="flex items-center">
-                {isConverting ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-2"></div>
-                    <span className="text-sm text-gray-500">Converting...</span>
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
-                    <span className="text-sm text-gray-500">Click to upload or drag and drop PDF files</span>
-                  </>
-                )}
-              </div>
-              <input 
-                id="dropzone-file" 
-                type="file" 
-                className="hidden" 
-                onChange={(e) => {
-                  if (isProcessing || isProcessingLLM) return;
-                  const file = e.target.files?.[0];
-                  if (file) handleFileUpload(file);
-                }}
-                disabled={isProcessing || isProcessingLLM}
-                accept=".pdf"
-              />
-            </label>
+          <div className="mb-4 flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h2 className="text-lg font-semibold whitespace-nowrap">Upload Previous DS160 to fill form</h2>
+            <div className="flex-1 flex justify-end">
+              <label 
+                htmlFor="dropzone-file" 
+                className={`flex items-center justify-center h-12 w-96 
+                           border-2 border-blue-500 border-dashed rounded-lg 
+                           ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-100'} 
+                           bg-gray-50 relative ml-8`}
+              >
+                <div className="flex items-center">
+                  {isConverting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-2"></div>
+                      <span className="text-sm text-gray-500">Converting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                      </svg>
+                      <span className="text-sm text-gray-500">Click to upload or drag and drop PDF files</span>
+                    </>
+                  )}
+                </div>
+                <input 
+                  id="dropzone-file" 
+                  type="file" 
+                  className="hidden" 
+                  onChange={(e) => {
+                    if (isProcessing || isProcessingLLM) return;
+                    const file = e.target.files?.[0];
+                    if (file) handleFileUpload(file);
+                  }}
+                  disabled={isProcessing || isProcessingLLM}
+                  accept=".pdf"
+                />
+              </label>
+            </div>
           </div>
 
-          <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <Select
-                    value={location}
-                    onValueChange={setLocation}
+          <div className="mb-4">
+            <div className="flex items-center gap-2 mb-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <Label className="text-lg font-semibold min-w-[150px]">Make Selection:</Label>
+              <Tabs 
+                value={retrieveMode} 
+                onValueChange={(value: 'new' | 'retrieve') => setRetrieveMode(value)}
+                className="flex-1"
+              >
+                <TabsList className="w-full bg-blue-50">
+                  <TabsTrigger 
+                    value="new" 
+                    className="flex-1 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
                   >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Select location" />
+                    New Application
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="retrieve" 
+                    className="flex-1 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                  >
+                    Retrieve Application
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+
+            <div className="space-y-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-2">
+                <Label className="min-w-[150px]">Location:</Label>
+                <Select value={location} onValueChange={setLocation} className="flex-1">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select location" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {locations.map((loc) => (
+                      <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-start gap-2">
+                <Label className="min-w-[150px] mt-2">Security Details:</Label>
+                <div className="flex-1 flex gap-4">
+                  <Select value={secretQuestion} onValueChange={setSecretQuestion} className="w-[70%]">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a security question" />
                     </SelectTrigger>
                     <SelectContent>
-                      {locations.map((loc) => (
-                        <SelectItem key={loc} value={loc}>
-                          {loc}
-                        </SelectItem>
+                      {securityQuestions.map((q) => (
+                        <SelectItem key={q} value={q}>{q}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-
-                  <Select
-                    value={retrieveMode}
-                    onValueChange={(value: 'new' | 'retrieve') => setRetrieveMode(value)}
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Select mode" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="new">New Application</SelectItem>
-                      <SelectItem value="retrieve">Retrieve Application</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Input 
+                    value={secretAnswer} 
+                    onChange={(e) => setSecretAnswer(e.target.value)}
+                    placeholder="Enter Answer"
+                    className="w-[30%]"
+                  />
                 </div>
-
-                <button
-                  onClick={handleRunDS160}
-                  disabled={isRunningDS160}
-                  className={`inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white 
-                    ${isRunningDS160 ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
-                >
-                  {isRunningDS160 ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Processing...
-                    </>
-                  ) : (
-                    'Upload to DS160'
-                  )}
-                </button>
               </div>
 
               {retrieveMode === 'retrieve' && (
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="application-id">Application ID</Label>
-                    <Input
-                      id="application-id"
-                      value={applicationId}
+                <div className="flex items-center gap-2">
+                  <Label className="min-w-[150px]">Retrieve Details:</Label>
+                  <div className="flex-1 grid grid-cols-3 gap-4">
+                    <Input 
+                      value={applicationId} 
                       onChange={(e) => setApplicationId(e.target.value)}
-                      placeholder="Enter application ID"
+                      placeholder="Application ID"
                     />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="surname">Surname</Label>
-                    <Input
-                      id="surname"
-                      value={surname}
-                      onChange={(e) => setSurname(e.target.value)}
-                      placeholder="Enter surname"
+                    <Input 
+                      value={surname} 
+                      onChange={(e) => setSurname(e.target.value.slice(0, 5).toUpperCase())}
+                      placeholder="Surname (5 chars)"
+                      maxLength={5}
                     />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="birth-year">Birth Year</Label>
-                    <Select
-                      value={birthYear}
-                      onValueChange={setBirthYear}
-                    >
-                      <SelectTrigger id="birth-year">
-                        <SelectValue placeholder="Select birth year" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {years.map((year) => (
-                          <SelectItem key={year} value={year}>
-                            {year}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="secret-question">Secret Question</Label>
-                    <Select
-                      value={secretQuestion}
-                      onValueChange={setSecretQuestion}
-                    >
-                      <SelectTrigger id="secret-question">
-                        <SelectValue placeholder="Select a security question" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {secretQuestions.map((question) => (
-                          <SelectItem key={question} value={question}>
-                            {question}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2 col-span-2">
-                    <Label htmlFor="secret-answer">Answer</Label>
-                    <Input
-                      id="secret-answer"
-                      value={secretAnswer}
-                      onChange={(e) => setSecretAnswer(e.target.value)}
-                      placeholder="Enter your answer"
-                      type="password"
+                    <Input 
+                      value={birthYear} 
+                      onChange={(e) => setBirthYear(e.target.value)}
+                      placeholder="Birth Year"
                     />
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+
+          <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="flex items-center justify-between">
+              <Label className="text-lg font-semibold">After filling all pages below, upload to DS160 website:</Label>
+              <Button 
+                onClick={handleRunDS160}
+                disabled={isRunningDS160}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-2 rounded-lg flex items-center gap-2 text-lg"
+              >
+                {isRunningDS160 ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  <span>Upload to DS160</span>
+                )}
+              </Button>
             </div>
           </div>
 

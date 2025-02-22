@@ -18,6 +18,7 @@ class BrowserHandler:
         self.page = None
         self.current_page: Optional[FormPage] = None
         self.playwright = None
+        self.default_timeout = 1000  # 1 seconds default timeout
         
         # Load base URL from environment
         load_dotenv()
@@ -149,27 +150,98 @@ class BrowserHandler:
             logging.error(f"Failed to check checkbox {selector}: {str(e)}")
             raise
 
-    async def fill_input(self, selector: str, value: str):
-        """Fill input field with value"""
+    async def fill_input(self, selector: str, value: str) -> None:
         try:
-            await self.page.fill(selector, value)
-            logging.info(f"Filled input {selector} with value: {value}")
+            # Wait for element to be visible
+            element = await self.page.wait_for_selector(
+                selector, 
+                timeout=self.default_timeout,
+                state="visible"
+            )
+            
+            if element:
+                # Try filling multiple times with verification
+                max_attempts = 3
+                for attempt in range(max_attempts):
+                    try:
+                        # Try direct fill
+                        await element.fill(value)
+                        await self.page.wait_for_timeout(300)  # Small wait for value to register
+                        
+                        # Verify the value was actually set using JavaScript
+                        actual_value = await self.page.evaluate(f"""() => {{
+                            const el = document.querySelector("{selector}");
+                            return el ? el.value : null;
+                        }}""")
+                        
+                        if actual_value != value:
+                            raise Exception(f"Value mismatch - expected: {value}, got: {actual_value}")
+                        
+                        # Double check with a DOM property check
+                        is_set = await self.page.evaluate(f"""() => {{
+                            const el = document.querySelector("{selector}");
+                            return el && 
+                                   el.value === "{value}" && 
+                                   !el.disabled &&
+                                   window.getComputedStyle(el).display !== 'none';
+                        }}""")
+                        
+                        if not is_set:
+                            raise Exception("Value not properly set on form")
+                            
+                        logger.info(f"Filled input {selector} with value: {value} actual_value: {actual_value}")
+                        return
+                        
+                    except Exception as e:
+                        if attempt == max_attempts - 1:
+                            # On final attempt, try forcing the value
+                            logger.warning(f"Direct fill failed after {max_attempts} attempts, trying force set")
+                            await self.page.evaluate(f"""() => {{
+                                const el = document.querySelector("{selector}");
+                                if (el) {{
+                                    el.value = "{value}";
+                                    el.setAttribute('value', "{value}");
+                                    el.dispatchEvent(new Event('input', {{ bubbles: true }}));
+                                    el.dispatchEvent(new Event('change', {{ bubbles: true }}));
+                                    el.dispatchEvent(new Event('blur', {{ bubbles: true }}));
+                                }}
+                            }}""")
+                            
+                            # Final verification
+                            actual_value = await self.page.evaluate(f"""() => {{
+                                const el = document.querySelector("{selector}");
+                                return el ? el.value : null;
+                            }}""")
+                            
+                            if actual_value != value:
+                                raise Exception(f"Force set failed - expected: {value}, got: {actual_value}")
+                                
+                        await self.page.wait_for_timeout(500)
+                        continue
+                        
+                logger.info(f"Successfully filled {selector} with {value} after {attempt + 1} attempts")
+            else:
+                logger.warning(f"Input {selector} not found")
+                raise Exception(f"Element not found: {selector}")
+            
         except Exception as e:
-            logging.error(f"Failed to fill input {selector}: {str(e)}")
+            logger.error(f"Error filling input {selector}: {str(e)}")
             raise
 
-    async def select_dropdown_option(self, selector: str, label: str):
-        """Select option from dropdown by label"""
+    async def select_dropdown_option(self, selector: str, value: str) -> None:
         try:
-            await self.page.select_option(selector, label=label)
-            logging.info(f"Selected dropdown option '{label}' for selector: {selector}")
-        except Exception as e:
-            logging.error(f"Failed to select dropdown option '{label}' for selector {selector}: {str(e)}")
-            raise 
+            element = await self.page.wait_for_selector(selector, timeout=self.default_timeout)
+            if element:
+                await element.select_option(value=value)
+            else:
+                logger.warning(f"Dropdown {selector} not found after {self.default_timeout/1000} seconds")
+        except TimeoutError:
+            logger.warning(f"Timeout waiting for dropdown {selector}")
 
-    def select_radio(self, selector: str, value: str, button_id: str):
+    async def select_radio(self, selector: str, value: str, button_id: str):
         """Select a radio button by its specific button ID"""
         try:
+            await self.page.wait_for_selector(f"#{button_id}", timeout=self.default_timeout)
             self.page.click(f"#{button_id}")
             logging.info(f"Selected radio button {button_id} with value: {value}")
         except Exception as e:
@@ -200,6 +272,7 @@ class BrowserHandler:
         """Click an element"""
         try:
             await self.page.click(selector)
+            #self.page.wait_for_selector(selector, timeout=self.default_timeout)
             logging.info(f"Clicked element: {selector}")
             return True
         except Exception as e:
@@ -269,4 +342,17 @@ class BrowserHandler:
             
         except Exception as e:
             logging.error(f"Failed to fill CAPTCHA: {str(e)}")
+            raise
+
+    async def click_radio(self, selector: str) -> None:
+        """Click a radio button with specific timeout handling"""
+        try:
+            element = await self.page.wait_for_selector(selector, timeout=self.default_timeout)
+            if element:
+                await element.click()
+                logging.info(f"Clicked radio button: {selector}")
+            else:
+                logger.warning(f"Radio button {selector} not found after {self.default_timeout/1000} seconds")
+        except Exception as e:
+            logger.error(f"Failed to click radio button {selector}: {str(e)}")
             raise

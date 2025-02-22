@@ -99,7 +99,7 @@ async def run_ds160(file: UploadFile = File(...)):
             logger.info(f"Read content length: {len(content)}")
             form_data = yaml.safe_load(content)
             logger.info(f"Parsed YAML data with keys: {list(form_data.keys() if form_data else [])}")
-            
+            logger.info(f"Parsed YAML for personal page1: {form_data['personal_page1']}")
             # Add more debug logging
             logger.info(f"Page definitions available: {list(page_definitions.keys())}")
             logger.info(f"Looking for start page with key: {FormPage.START.value}")

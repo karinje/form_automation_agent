@@ -229,22 +229,22 @@ address_phone_page:
     work_na: true
   add_phone: "Y"
   additional_phone_number: 
-    - phone: "3524439623"
-    - phone: "2066592046"   
+    - add_phone_number: "3524439623"
+    - add_phone_number: "2066592046"   
   email: "sanjay.karinje.8@gmail.com"
   add_email: "Y"
   additional_email_address: 
-    - email: "sanjay.karinje.7@gmail.com"
-    - email: "sanjay.karinje.9@gmail.com"
+    - add_email_address: "sanjay.karinje.7@gmail.com"
+    - add_email_address: "sanjay.karinje.9@gmail.com"
   social_media:
     platform_select: "FACEBOOK"
     handle: "SANJAY KARINJE"
   add_social: "Y"
   additional_social_media:
-    - platform: "FACEBOOK"
-      handle: "SANJAY KARINJE"
-    - platform: "INSTAGRAM"
-      handle: "SANJAY KARINJE"
+    - add_platform: "FACEBOOK"
+      add_handle: "SANJAY KARINJE"
+    - add_platform: "INSTAGRAM"
+      add_handle: "SANJAY KARINJE"
 
 pptvisa_page:
   passport_type: "REGULAR"
@@ -363,8 +363,8 @@ workeducation2_page:
       supervisor:
         surname: "DU"  # Supervisor's last name
         given_name: "ZHENG"  # Supervisor's first name
-        surname_na: true  # Check if supervisor surname not applicable
-        given_name_na: true  # Check if supervisor given name not applicable
+        surname_na: false  # Check if supervisor surname not applicable
+        given_name_na: false  # Check if supervisor given name not applicable
       start_date:
         month: "SEP"  # Start month of employment
         day: "01"  # Start day of employment

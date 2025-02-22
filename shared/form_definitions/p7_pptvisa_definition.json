@@ -31,7 +31,7 @@
       "parent_text_phrase": "Passport Book Number",
       "maxlength": "20",
       "has_na_checkbox": true,
-      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbxPPT_BOOK_NUM_NA",
+      "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexPPT_BOOK_NUM_NA",
       "na_checkbox_text": "Does Not Apply"
     },
     {

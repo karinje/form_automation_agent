@@ -8,7 +8,8 @@
       "parent_text_phrase": "Language Name",
       "maxlength": "66",
       "has_na_checkbox": false,
-      "add_group": true
+      "add_group": true,
+      "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlLANGUAGES_ctl00_InsertButtonLANGUAGE"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblCLAN_TRIBE_IND",
@@ -401,7 +402,8 @@
           ],
           "text_phrase": "Country/Region",
           "parent_text_phrase": "Countries Visited",
-          "add_group": true
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlCountriesVisited_ctl00_InsertButtonCountriesVisited"
         }
       ],
       "hides": [],

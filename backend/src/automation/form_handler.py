@@ -18,6 +18,7 @@ class FormHandler:
         self.current_page = None
         self.application_id = None
         self.page_errors = {}  # Track errors by page
+        self.processed_array_indices = {}  # Track which array indices we've already added groups for
         # Initialize OpenAIHandler without arguments
         self.openai_handler = OpenAIHandler()  # Changed from OpenAIHandler(self)
 
@@ -52,7 +53,7 @@ class FormHandler:
                 # Re-run retrieve page with stored application ID
                 logger.info("Re-running retrieve page process...")
                 retrieve_page_data = self.test_data[FormPage.RETRIEVE.value].copy()
-                retrieve_page_data['application_id'] = self.application_id
+                #retrieve_page_data['application_id'] = self.application_id
                 self.field_values = retrieve_page_data
                 await self.handle_retrieve_page(self.page_definitions[FormPage.RETRIEVE.value])
                 await self.browser.wait(0.5)
@@ -135,6 +136,7 @@ class FormHandler:
                         self.current_page = page_name
                         self.field_values = test_data[page_name]
                         await self.fill_form(page_definitions[page_name])
+                        await self.browser.wait(0.5)
                         await self.handle_page_navigation(page_definitions[page_name])
                         await self.browser.wait(0.5)
 
@@ -232,59 +234,24 @@ class FormHandler:
 
     async def handle_field(self, field_id: str, field_type: str, value: Any) -> None:
         try:
-            logger.info(f"Handling field {field_id} of type {field_type} with value {value}")
-            
-            # Check if element exists first
-            element = self.browser.page.locator(f"#{field_id}")
-            if not element.count():
-                logger.warning(f"Field {field_id} not found, skipping...")
-                return
-            
-            # Check if element is disabled
-            is_disabled = await self.browser.page.evaluate(f"""() => {{
-                const el = document.getElementById('{field_id}');
-                return el && (el.disabled || el.hasAttribute('disabled'));
-            }}""")
-            
-            if is_disabled:
-                logger.warning(f"Field {field_id} is disabled, skipping...")
-                return
+            selector = f"#{field_id}"
+            logger.info(f"field_id: {field_id} field_type: {field_type} value: {value}")
 
-            # Determine wait time based on page and field type
-            wait_time = 0.5  # Default wait time
-            # if self.current_page == FormPage.TRAVEL:
-            #     if field_type == 'radio':
-            #         wait_time = 3
-            #     elif field_type == 'dropdown':
-            #         wait_time = 4
-            #     elif field_type == 'checkbox':
-            #         wait_time = 2
-            #     else:  # text, textarea
-            #         wait_time = 2
+            if field_type in ['text', 'textarea']:
+                await self.browser.fill_input(selector, str(value))
+            elif field_type == 'dropdown':
+                await self.browser.select_dropdown_option(selector, str(value))
+            elif field_type == 'radio':
+                await self.browser.click_radio(selector)
+            elif field_type == 'checkbox':
+                element = await self.browser.page.wait_for_selector(selector, timeout=2000)
+                if element:
+                    current_state = await element.is_checked()
+                    if bool(value) != current_state:
+                        await self.browser.click(selector)
 
-            # Handle field based on type
-            try:
-                if field_type == 'radio':
-                    await self.browser.click(f"#{field_id}")
-                elif field_type == 'dropdown':
-                    await self.browser.select_dropdown_option(f"#{field_id}", str(value))
-                elif field_type == 'checkbox':
-                    checkbox_value = value if isinstance(value, bool) else str(value).lower() == 'true'
-                    if checkbox_value:
-                        logger.info(f"checkbox value: {checkbox_value}")
-                        await self.browser.click(f"#{field_id}")
-                else:  # text, textarea
-                    await self.browser.fill_input(f"#{field_id}", str(value))
-
-                await self.browser.wait(0.1)
-                
-            except Exception as e:
-                logger.warning(f"Failed to interact with field {field_id}: {str(e)}, skipping...")
-                return
-            
         except Exception as e:
             logger.error(f"Error handling field {field_id}: {str(e)}")
-            # Don't raise the exception, just log it and continue
             return
 
     async def handle_start_page(self, form_data: dict) -> bool:
@@ -433,42 +400,157 @@ class FormHandler:
         field_name = next((k for k, v in page_mappings.items() 
                           if (v == field_id or v == field_id.replace('$','_'))), None)
         
-        if field_name:
-            value = await self._get_nested_value(field_name)
-            if value is not None:
-                logger.info(f"Filling field {field_name} ({field_id}) with value {value}")
-                
-                # For radio buttons, get the specific button ID
-                if field_def['type'] == 'radio':
-                    field_id = field_def.get('button_ids', {}).get(str(value))
-                
-                await self.handle_field(field_id, field_def['type'], value)
-                await self.browser.wait(0.1)
-                
-                # Handle dependencies using the updated field_id for radio buttons
-                dependency_key = f"{field_id}.{value}"
-                if dependencies and dependency_key in dependencies:
-                    dependency_data = dependencies.get(dependency_key, {})
-                    for dependent_field in dependency_data.get('shows', []):
-                        if dependent_field:
-                            await self._process_field_and_dependencies(
-                                dependent_field,
-                                page_mappings,
-                                dependency_data.get('dependencies', {}),
-                                processed_fields
-                            )
+        if not field_name:
+            return
+
+        # Get the value to check if it's an array
+        value = await self._get_nested_value(field_name)
+        logger.info(f"field_name: {field_name} value: {value}")
+
+        if isinstance(value, list) and value:
+            logger.info(f"Processing array field {field_name} with {len(value)} items")
+            array_name = field_name.split('.')[0]
+            
+            # Process first element with index 0
+            await self._fill_field(field_name, field_def, value[0], page_mappings, array_index=0)
+            
+            # For remaining elements, check if fields exist before clicking add button
+            add_button_id = field_def.get('add_group_button_id')
+            if add_button_id and len(value) > 1:
+                for idx in range(1, len(value)):
+                    if array_name not in self.processed_array_indices:
+                        self.processed_array_indices[array_name] = set()
+                    
+                    if idx not in self.processed_array_indices[array_name]:
+                        # Check if first field for this index exists
+                        new_field_id = field_def['name'].replace('_ctl00_', f'_ctl{idx:02d}_')
+                        field_exists = await self.browser.page.evaluate(f"""() => {{
+                            return !!document.getElementById('{new_field_id}');
+                        }}""")
+                        
+                        if not field_exists:
+                            logger.info(f"Clicking add group button {add_button_id} for item {idx}")
+                            await self.browser.click(f"#{add_button_id}")
+                            await self.browser.wait(1)
+                        else:
+                            logger.info(f"Field for index {idx} already exists, skipping add group button")
+                        
+                        self.processed_array_indices[array_name].add(idx)
+                    
+                    # Process the field for this index
+                    transformed_field_def = self._transform_field_ids(field_def, idx)
+                    await self._fill_field(field_name, transformed_field_def, value[idx], page_mappings, array_index=idx)
+        else:
+            # Process as single value
+            await self._fill_field(field_name, field_def, value, page_mappings)
         
         processed_fields.add(field_id)
+        
+        # Process dependencies after field is filled
+        if field_def['type'] == 'radio':
+            # For radio buttons, use the button ID and value
+            button_id = field_def.get('button_ids', {}).get(str(value))
+            if button_id:
+                dependency_key = f"{button_id}.{value}"
+        else:
+            # For other fields, use the field ID and value directly
+            dependency_key = f"{field_id}.{value}"
+
+        logger.info(f"Checking dependencies for key: {dependency_key}")
+        logger.info(f"Available dependencies: {list(dependencies.keys()) if dependencies else 'None'}")
+        
+        if dependencies and dependency_key in dependencies:
+            logger.info(f"Found dependencies for {dependency_key}: {dependencies[dependency_key]}")
+            dependency_data = dependencies[dependency_key]
+            for dependent_field in dependency_data.get('shows', []):
+                if dependent_field:
+                    logger.info(f"Processing dependent field: {dependent_field}")
+                    await self._process_field_and_dependencies(
+                        dependent_field,
+                        page_mappings,
+                        dependency_data.get('dependencies', {}),
+                        processed_fields
+                    )
+        else:
+            logger.info(f"No dependencies found for {dependency_key}")
+
+    async def _fill_field(self, field_name: str, field_def: Dict[str, Any], value: Any, 
+                         page_mappings: Dict[str, str], array_index: int = None) -> None:
+        field_id = field_def['name']
+        
+        # For radio buttons, use the specific button ID
+        if field_def['type'] == 'radio' and isinstance(value, str):
+            field_id = field_def.get('button_ids', {}).get(value)
+            if not field_id:
+                logger.error(f"No button ID found for radio value {value}")
+                return
+        
+        # Get NA value - check both direct NA field and base field NA
+        na_field_name = f"{field_name}_na"
+        base_field = field_name.split('.')[0]  # Get base field name after last dot
+        base_na_field = f"{base_field}_na"
+        
+        # Try direct NA field first, then base NA field
+        na_value = await self._get_nested_value(na_field_name)
+        if na_value is None:
+            na_value = await self._get_nested_value(base_na_field)
+        
+        # If this is an array item, get the specific NA value for this index
+        if isinstance(na_value, list) and array_index is not None:
+            na_value = na_value[array_index] if array_index < len(na_value) else None
+        
+        logger.info(f"processing {field_name} with value: {value} and na_value: {na_value}")
+        
+        # Process NA checkbox if present
+        if na_value is not None:
+            # Try both direct and base NA field mappings
+            na_field_id = page_mappings.get(f"{field_name}_na") or page_mappings.get(f"{base_field}_na")
+            if na_field_id:
+                # Transform NA field ID for array items
+                if array_index is not None and array_index > 0:
+                    na_field_id = na_field_id.replace('_ctl00_', f'_ctl{array_index:02d}_')
+                
+                should_check = str(na_value).lower() == 'true'
+                logger.info(f"processing na_field_id: {na_field_id} with value: {na_value} and should_check: {should_check}")
+                await self.handle_field(na_field_id, 'checkbox', should_check)
+        
+        # Only fill value if not NA
+        if not na_value or str(na_value).lower() != 'true':
+            await self.handle_field(field_id, field_def['type'], value)
 
     async def _get_nested_value(self, field_name: str) -> Any:
-        """Get value from nested YAML structure using dot notation"""
+        """Get value from nested YAML structure using dot notation, handling arrays"""
         parts = field_name.split('.')
         value = self.field_values
+        
+        # If requesting just the array itself (e.g., license_details)
+        if len(parts) == 1:
+            return value.get(parts[0])
+        
+        # Handle array access
+        array_name = parts[0]
+        if array_name in value and isinstance(value[array_name], list):
+            array = value[array_name]
+            remaining_parts = parts[1:]
+            
+            # Extract nested values from each array item
+            result = []
+            for item in array:
+                current = item
+                for part in remaining_parts:
+                    if not isinstance(current, dict):
+                        break
+                    current = current.get(part)
+                if current is not None:
+                    result.append(current)
+            return result
+        
+        # Handle regular nested field access
         for part in parts:
-            if isinstance(value, dict):
-                value = value.get(part)
-            else:
+            if not value or not isinstance(value, dict):
                 return None
+            value = value.get(part)
+        
         return value
 
     async def handle_retrieve_page(self, form_data: dict) -> bool:
@@ -614,3 +696,17 @@ class FormHandler:
         except Exception as e:
             logger.error(f"Error processing security page: {str(e)}")
             raise
+
+    def _transform_field_ids(self, field_def: Dict[str, Any], index: int) -> Dict[str, Any]:
+        """Transform field IDs by replacing _ctl00_ with _ctlXX_ in the middle of the ID"""
+        new_def = field_def.copy()
+        
+        # Transform the main field ID
+        if 'name' in new_def:
+            new_def['name'] = new_def['name'].replace('_ctl00_', f'_ctl{index:02d}_')
+        
+        # Also transform any na_checkbox_id if present
+        if 'na_checkbox_id' in new_def:
+            new_def['na_checkbox_id'] = new_def['na_checkbox_id'].replace('_ctl00_', f'_ctl{index:02d}_')
+        
+        return new_def

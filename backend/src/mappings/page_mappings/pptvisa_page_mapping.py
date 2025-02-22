@@ -2,7 +2,7 @@ form_mapping = {
     "passport_type": "ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_TYPE",
     "passport_number": "ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_NUM",
     "passport_book_number": "ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_BOOK_NUM",
-    "passport_book_number_na": "ctl00_SiteContentPlaceHolder_FormView1_cbxPPT_BOOK_NUM_NA",
+    "passport_book_number_na": "ctl00_SiteContentPlaceHolder_FormView1_cbexPPT_BOOK_NUM_NA",
     "issuance_country": "ctl00_SiteContentPlaceHolder_FormView1_ddlPPT_ISSUED_CNTRY",
     "issuance_location.city": "ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_ISSUED_IN_CITY",
     "issuance_location.state": "ctl00_SiteContentPlaceHolder_FormView1_tbxPPT_ISSUED_IN_STATE",

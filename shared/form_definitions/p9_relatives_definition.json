@@ -354,7 +354,8 @@
           "text_phrase": "Surnames",
           "parent_text_phrase": "Immediate Relative Details",
           "maxlength": "33",
-          "add_group": true
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_InsertButtonUSRelative"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_tbxUS_REL_GIVEN_NAME",
@@ -363,7 +364,8 @@
           "text_phrase": "Given Names",
           "parent_text_phrase": "Immediate Relative Details",
           "maxlength": "33",
-          "add_group": true
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_InsertButtonUSRelative"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_ddlUS_REL_TYPE",
@@ -376,7 +378,8 @@
           ],
           "text_phrase": "Relationship to You",
           "parent_text_phrase": "Immediate Relative Details",
-          "add_group": true
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_InsertButtonUSRelative"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_ddlUS_REL_STATUS",
@@ -389,7 +392,8 @@
           ],
           "text_phrase": "Relative's Status",
           "parent_text_phrase": "Immediate Relative Details",
-          "add_group": true
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl00_InsertButtonUSRelative"
         } 
       ],
       "hides": [

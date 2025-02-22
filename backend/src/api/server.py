@@ -16,7 +16,7 @@ os.makedirs(log_dir, exist_ok=True)
 log_file = os.path.join(log_dir, 'ds160.log')
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    format='%(asctime)s - %(name)s - %(levelname)s - %(funcName)s - %(message)s',
     handlers=[
         RotatingFileHandler(log_file, maxBytes=10000000, backupCount=5),
         logging.StreamHandler()  # This will still show logs in console too

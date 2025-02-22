@@ -13,6 +13,8 @@ form_mapping = {
     "spouse_address_line2": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_LN2",
     "spouse_address_city": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_CITY",
     "spouse_address_state": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_STATE",
+    "spouse_address_state_na": "ctl00_SiteContentPlaceHolder_FormView1_cbexSPOUSE_ADDR_STATE_NA",
     "spouse_address_postal_code": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_POSTAL_CD",
+    "spouse_address_postal_code_na": "ctl00_SiteContentPlaceHolder_FormView1_cbexSPOUSE_ADDR_POSTAL_CD_NA",
     "spouse_address_country": "ctl00_SiteContentPlaceHolder_FormView1_ddlSPOUSE_ADDR_CNTRY"
 } 

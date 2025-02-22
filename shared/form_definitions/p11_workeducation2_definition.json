@@ -483,7 +483,7 @@
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbxEmpDateFromYear",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment From - Year",
+          "text_phrase": "Employment Date From - Year",
           "parent_text_phrase": "Employment Information",
           "maxlength": "4",
           "has_na_checkbox": false,
@@ -526,7 +526,7 @@
             "30",
             "31"
           ],
-          "text_phrase": "Employment To - Day",
+          "text_phrase": "Employment Date To - Day",
           "parent_text_phrase": "Employment Information",
           "add_group": true,
           "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
@@ -548,7 +548,7 @@
             "NOV",
             "DEC"
           ],
-          "text_phrase": "Employment To - Month",
+          "text_phrase": "Employment Date To - Month",
           "parent_text_phrase": "Employment Information",
           "add_group": true,
           "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
@@ -557,7 +557,7 @@
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_tbxEmpDateToYear",
           "type": "text",
           "value": "",
-          "text_phrase": "Employment To - Year",
+          "text_phrase": "Employment Date To - Year",
           "parent_text_phrase": "Employment Information",
           "maxlength": "4",
           "has_na_checkbox": false,

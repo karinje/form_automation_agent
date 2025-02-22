@@ -5,8 +5,8 @@ from pathlib import Path
 
 # Get root directory
 root_dir = Path(__file__).parent.parent
-mappings_dir = root_dir / "mapping_files"
-output_dir = root_dir / "form_renderer/utils/generated_mappings"
+mappings_dir = root_dir / "backend/src/mappings/page_mappings"  # Path to existing mappings
+output_dir = root_dir / "frontend/app/utils/generated_mappings"  # Output path for frontend
 print(f'root_dir: {root_dir}')
 print(f'mappings_dir: {mappings_dir}')
 print(f'output_dir: {output_dir}')

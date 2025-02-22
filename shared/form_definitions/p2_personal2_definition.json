@@ -529,7 +529,8 @@
           ],
           "text_phrase": "Other Country/Region of Origin (Nationality)",
           "parent_text_phrase": "Other Country/Region of Origin (Nationality)",
-          "add_group": true
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_ddlOTHER_NATL"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_rblOTHER_PPT_IND",
@@ -548,7 +549,8 @@
           },
           "text_phrase": "Do you hold a passport for the other country/region of origin (nationality) indicated above?",
           "parent_text_phrase": "Other Country/Region of Origin (Nationality)",
-          "add_group": true
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl00_InsertButtonOTHER_NATL"
         }
       ],
       "hides": [],
@@ -563,7 +565,8 @@
               "parent_text_phrase": "Other Country/Region of Origin (Nationality)",
               "maxlength": "20",
               "has_na_checkbox": false,
-              "add_group": true
+              "add_group": true,
+              "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlOTHER_NATL_ctl01_InsertButtonOTHER_NATL"
             }
           ],
           "hides":[]
@@ -836,7 +839,8 @@
           ],
           "text_phrase": "Other Permanent Resident Country/Region",
           "parent_text_phrase": "Other Permanent Resident Country/Region",
-          "add_group": true
+          "add_group": true,
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlOthPermResCntry_ctl00_InsertButtonOTHER_PERM_RES"
         }
       ],
       "hides": [],

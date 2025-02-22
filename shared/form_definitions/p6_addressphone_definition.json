@@ -790,7 +790,7 @@
           "maxlength": "15",
           "has_na_checkbox": false,
           "add_group": true,
-          "add_group_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddPhone_ctl00_InsertButtonADDL_PHONE"
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddPhone_ctl00_InsertButtonADDL_PHONE"
         }
       ],
       "hides": [],
@@ -812,7 +812,7 @@
           "maxlength": "40",
           "has_na_checkbox": false,
           "add_group": true,
-          "add_group_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddEmail_ctl00_InsertButtonADDL_EMAIL"
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddEmail_ctl00_InsertButtonADDL_EMAIL"
         }
       ],
       "hides": [],
@@ -834,7 +834,7 @@
           "maxlength": "40",
           "has_na_checkbox": false,
           "add_group": true,
-          "add_group_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_InsertButtonSOCIAL_MEDIA_INFO"
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddSocial_ctl00_InsertButtonADDL_SOCIAL_MEDIA"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddSocial_ctl00_tbxAddSocialHand",
@@ -845,7 +845,7 @@
           "maxlength": "40",
           "has_na_checkbox": false,
           "add_group": true,
-          "add_group_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlSocial_ctl00_InsertButtonSOCIAL_MEDIA_INFO"
+          "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlAddSocial_ctl00_InsertButtonADDL_SOCIAL_MEDIA"
         }
       ],
       "hides": [],
