@@ -152,7 +152,6 @@ class BrowserHandler:
 
     async def fill_input(self, selector: str, value: str) -> None:
         try:
-            # Wait for element to be visible
             element = await self.page.wait_for_selector(
                 selector, 
                 timeout=self.default_timeout,
@@ -160,68 +159,72 @@ class BrowserHandler:
             )
             
             if element:
-                # Try filling multiple times with verification
                 max_attempts = 3
                 for attempt in range(max_attempts):
                     try:
-                        # Try direct fill
+                        # 1. Set value through JavaScript first to ensure model binding
+                        await self.page.evaluate(f"""() => {{
+                            const el = document.querySelector("{selector}");
+                            if (el) {{
+                                // Set value property
+                                el.value = "{value}";
+                                // Set attribute for persistence
+                                el.setAttribute('value', "{value}");
+                                // Trigger all relevant events in correct order
+                                el.dispatchEvent(new Event('focus', {{ bubbles: true }}));
+                                el.dispatchEvent(new Event('input', {{ bubbles: true }}));
+                                el.dispatchEvent(new Event('change', {{ bubbles: true }}));
+                                el.dispatchEvent(new Event('blur', {{ bubbles: true }}));
+                                // Force any Angular/React bindings to update
+                                el.dispatchEvent(new CustomEvent('input', {{ 
+                                    bubbles: true,
+                                    detail: {{ value: "{value}" }}
+                                }}));
+                            }}
+                        }}""")
+                        
+                        await self.page.wait_for_timeout(100)  # Let events propagate
+                        
+                        # 2. Then use Playwright's fill for good measure
                         await element.fill(value)
-                        await self.page.wait_for_timeout(300)  # Small wait for value to register
+                        await self.page.wait_for_timeout(100)
                         
-                        # Verify the value was actually set using JavaScript
-                        actual_value = await self.page.evaluate(f"""() => {{
+                        # 3. Verify through multiple methods
+                        js_value = await self.page.evaluate(f"""() => {{
                             const el = document.querySelector("{selector}");
-                            return el ? el.value : null;
+                            return {{
+                                value: el.value,
+                                attribute: el.getAttribute('value'),
+                                isConnected: el.isConnected,
+                                isVisible: el.offsetParent !== null,
+                                isEnabled: !el.disabled
+                            }};
                         }}""")
                         
-                        if actual_value != value:
-                            raise Exception(f"Value mismatch - expected: {value}, got: {actual_value}")
+                        # Check all verification points
+                        if (js_value['value'] != value or 
+                            js_value['attribute'] != value or 
+                            not js_value['isConnected'] or 
+                            not js_value['isVisible'] or 
+                            not js_value['isEnabled']):
+                            raise Exception(f"Value verification failed: {js_value}")
                         
-                        # Double check with a DOM property check
-                        is_set = await self.page.evaluate(f"""() => {{
-                            const el = document.querySelector("{selector}");
-                            return el && 
-                                   el.value === "{value}" && 
-                                   !el.disabled &&
-                                   window.getComputedStyle(el).display !== 'none';
-                        }}""")
-                        
-                        if not is_set:
-                            raise Exception("Value not properly set on form")
+                        # 4. Final DOM check through Playwright
+                        dom_value = await element.input_value()
+                        if dom_value != value:
+                            raise Exception(f"DOM value mismatch: {dom_value}")
                             
-                        logger.info(f"Filled input {selector} with value: {value} actual_value: {actual_value}")
+                        logger.info(f"Successfully filled {selector} with value: {value} (verified through JS and DOM)")
                         return
                         
                     except Exception as e:
                         if attempt == max_attempts - 1:
-                            # On final attempt, try forcing the value
-                            logger.warning(f"Direct fill failed after {max_attempts} attempts, trying force set")
-                            await self.page.evaluate(f"""() => {{
-                                const el = document.querySelector("{selector}");
-                                if (el) {{
-                                    el.value = "{value}";
-                                    el.setAttribute('value', "{value}");
-                                    el.dispatchEvent(new Event('input', {{ bubbles: true }}));
-                                    el.dispatchEvent(new Event('change', {{ bubbles: true }}));
-                                    el.dispatchEvent(new Event('blur', {{ bubbles: true }}));
-                                }}
-                            }}""")
-                            
-                            # Final verification
-                            actual_value = await self.page.evaluate(f"""() => {{
-                                const el = document.querySelector("{selector}");
-                                return el ? el.value : null;
-                            }}""")
-                            
-                            if actual_value != value:
-                                raise Exception(f"Force set failed - expected: {value}, got: {actual_value}")
-                                
-                        await self.page.wait_for_timeout(500)
-                        continue
+                            raise
+                        logger.warning(f"Fill attempt {attempt + 1} failed: {str(e)}")
+                        await self.page.wait_for_timeout(200)
                         
-                logger.info(f"Successfully filled {selector} with {value} after {attempt + 1} attempts")
+                raise Exception(f"Failed to fill {selector} after {max_attempts} attempts")
             else:
-                logger.warning(f"Input {selector} not found")
                 raise Exception(f"Element not found: {selector}")
             
         except Exception as e:

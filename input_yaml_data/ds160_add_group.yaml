@@ -45,7 +45,7 @@ travel_page:
   purpose_of_trip: "TREATY TRADER OR INVESTOR (E)"  # Purpose of Trip to the U.S.
   other_purpose_of_trip: "EXECUTIVE/MGR/ESSENTIAL EMP (E1)"  # Specify visa type
   who_is_paying: "Self"  # Person/Entity Paying for Your Trip Self, Other Company/Organization, Present Employer, Employer in the U.S., Other Person
-  specific_travel_plans: "Y"  # Have you made specific travel plans?
+  specific_travel_plans: "N"  # Have you made specific travel plans?
   
  #Principal Applicant Details (for dependent visas)
   investor_issued_visa: "Y" # if selection on first dropdown is "TREATY TRADER OR INVESTOR (E)" and second dropdown is EXECUTIVE/MGR/ESSENTIAL EMP (E1) or (E1)
@@ -542,6 +542,8 @@ security_background5_page:
   renounce_tax_explanation: "renounce tax explanation"
   school_reimbursement: "Y"
   school_reimbursement_explanation: "school reimbursement explanation"
+  exchange_visitor: "Y"
+  exchange_visitor_explanation: "exchange visitor explanation"
 
 spouse_page:
   spouse_surname: "KAUSHIK"

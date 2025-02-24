@@ -7,3 +7,5 @@ security_background5_page:
   renounce_tax_explanation: ""  # Required if renounce_tax is Y
   school_reimbursement: "N"  # Have you attended public school without reimbursement? (Y/N)
   school_reimbursement_explanation: ""  # Required if school_reimbursement is Y 
+  exchange_visitor: "N"  # Are you a former exchange visitor (J) who has not yet fulfilled the two-year foreign residence requirement? (Y/N)
+  exchange_visitor_explanation: ""  # Required if exchange_visitor is Y

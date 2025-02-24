@@ -35,10 +35,11 @@ class FormHandler:
             async def handle_timeout_recovery(current_page):
                 logger.info("Detected timeout page, initiating recovery...")
                 # Click cancel button from timeout page definition
-                timeout_button = self.page_definitions[FormPage.TIMEOUT.value]['buttons'][0]
-                logger.info(f"timeout_button: {timeout_button}")
-                await self.browser.click(f"#{timeout_button['id']}")
-                await self.browser.wait(1)
+                if self.browser.page.url.endswith("SessionTimedOut.aspx"):
+                    timeout_button = self.page_definitions[FormPage.TIMEOUT.value]['buttons'][0]
+                    logger.info(f"timeout_button: {timeout_button}")
+                    await self.browser.click(f"#{timeout_button['id']}")
+                    await self.browser.wait(1)
                 
                 # Create modified start page data for retrieval
                 start_page_data = self.test_data[FormPage.START.value].copy()
@@ -53,7 +54,6 @@ class FormHandler:
                 # Re-run retrieve page with stored application ID
                 logger.info("Re-running retrieve page process...")
                 retrieve_page_data = self.test_data[FormPage.RETRIEVE.value].copy()
-                #retrieve_page_data['application_id'] = self.application_id
                 self.field_values = retrieve_page_data
                 await self.handle_retrieve_page(self.page_definitions[FormPage.RETRIEVE.value])
                 await self.browser.wait(0.5)
@@ -84,7 +84,7 @@ class FormHandler:
             page_data = test_data[second_page]  # Use YAML key
             self.field_values = page_data
             await self.handle_retrieve_page(page_definitions[second_page])  # Use 'security_page'
-            self.browser.wait(2)
+            self.browser.wait(1)
 
             # Get form mapping for URLs
             form_mapping = FormMapping()
@@ -124,10 +124,15 @@ class FormHandler:
                         # Navigate to page URL first
                         page_url = form_mapping.page_urls.get(page_name)
                         if page_url:
-                            logger.info(f"Navigating to {page_url}")
-                            await self.browser.navigate(page_url)
-                            await self.browser.page.wait_for_load_state("networkidle")
-                            await self.browser.wait(1)
+                            # Check if we're already on the correct page
+                            current_url = self.browser.page.url
+                            if not current_url.endswith(page_url.split('/')[-1]):
+                                logger.info(f"Navigating to {page_url}")
+                                await self.browser.navigate(page_url)
+                                await self.browser.page.wait_for_load_state("networkidle")
+                                await self.browser.wait(1)
+                            else:
+                                logger.info(f"Already on correct page: {page_url}")
                         else:
                             logger.warning(f"No URL found for page {page_name}")
                             break
@@ -141,7 +146,7 @@ class FormHandler:
                         await self.browser.wait(0.5)
 
                         # Add timeout detection after each page action
-                        if self.browser.page.url.endswith("SessionTimedOut.aspx"):
+                        if self.browser.page.url.endswith("SessionTimedOut.aspx") or self.browser.page.url.endswith("Default.aspx"):
                             logger.warning(f"Session timeout detected on page {page_name}")
                             await handle_timeout_recovery(self.current_page)
                             retry_count += 1
@@ -240,6 +245,7 @@ class FormHandler:
             if field_type in ['text', 'textarea']:
                 await self.browser.fill_input(selector, str(value))
             elif field_type == 'dropdown':
+                await self.browser.wait(0.5)
                 await self.browser.select_dropdown_option(selector, str(value))
             elif field_type == 'radio':
                 await self.browser.click_radio(selector)
@@ -249,6 +255,7 @@ class FormHandler:
                     current_state = await element.is_checked()
                     if bool(value) != current_state:
                         await self.browser.click(selector)
+                        await self.browser.wait(0.5)
 
         except Exception as e:
             logger.error(f"Error handling field {field_id}: {str(e)}")
@@ -266,7 +273,7 @@ class FormHandler:
                     logger.info("Navigating to DS-160 start page...")
                     await self.browser.navigate("https://ceac.state.gov/GenNIV/Default.aspx")
                     await self.browser.page.wait_for_load_state("domcontentloaded")
-                    await self.browser.wait(2)
+                    await self.browser.wait(0.5)
 
                 # Fill language and location fields
                 language = self.field_values.get('language', 'English')
@@ -274,11 +281,11 @@ class FormHandler:
                 
                 logger.info(f"Setting language to: {language}")
                 await self.browser.page.select_option('#ctl00_ddlLanguage', language)
-                await self.browser.wait(2)
+                await self.browser.wait(0.5)
                 
                 logger.info(f"Setting location to: {location}")
                 await self.browser.page.select_option('#ctl00_SiteContentPlaceHolder_ucLocation_ddlLocation', location)
-                await self.browser.wait(2)
+                await self.browser.wait(0.5)
 
                 # Handle CAPTCHA
                 captcha_base64 = await self.browser.get_captcha_image()
@@ -294,13 +301,13 @@ class FormHandler:
                 
                 logger.info(f"Got CAPTCHA solution: {captcha_text}")
                 await self.browser.fill_captcha(captcha_text)
-                await self.browser.wait(1)
+                await self.browser.wait(0.5)
 
                 # Click button
                 button_index = self.field_values['button_clicks'][0]
                 button = form_data['buttons'][button_index]
                 await self.browser.click(f"#{button['id']}")
-                await self.browser.wait(1)
+                await self.browser.wait(0.5)
 
                 # Check for CAPTCHA error
                 error_element = await self.browser.page.query_selector('.error-message')
@@ -375,7 +382,7 @@ class FormHandler:
             logger.info(f"field values: {self.field_values}")
             
             processed_fields = set()
-            
+            await self.browser.wait(0.2)
             for field_def in page_definition['fields']:
                 await self._process_field_and_dependencies(
                     field_def,
@@ -465,6 +472,7 @@ class FormHandler:
             for dependent_field in dependency_data.get('shows', []):
                 if dependent_field:
                     logger.info(f"Processing dependent field: {dependent_field}")
+                    await self.browser.wait(0.5)
                     await self._process_field_and_dependencies(
                         dependent_field,
                         page_mappings,
@@ -562,6 +570,23 @@ class FormHandler:
             raise ValueError("Browser not set")
         
         try:
+            # For new applications, get and store the application ID from security page
+            if self.test_data['start_page']['button_clicks'][0] == 0:  # New application
+                try:
+                    barcode_element = await self.browser.page.wait_for_selector(
+                        "#ctl00_SiteContentPlaceHolder_lblBarcode",
+                        timeout=2000
+                    )
+                    if barcode_element:
+                        application_id = await barcode_element.text_content()
+                        if application_id:
+                            # Update the application_id in retrieve_page data
+                            if 'retrieve_page' in self.test_data:
+                                self.test_data['retrieve_page']['application_id'] = application_id
+                                logger.info(f"Updated application ID to: {application_id}")
+                except Exception as e:
+                    logger.warning(f"Could not get application ID: {str(e)}")
+
             # Determine if this is retrieve or security page based on field values
             is_retrieve = 'application_id' in self.field_values
             
@@ -588,7 +613,7 @@ class FormHandler:
                 
                 # Wait for security fields to appear
                 logger.info("Waiting for security fields to appear...")
-                await self.browser.wait(3)  # Initial wait
+                await self.browser.wait(1)  # Initial wait
                 
                 # Wait for surname field to be visible before proceeding
                 surname_field = "#ctl00_SiteContentPlaceHolder_ApplicationRecovery1_txbSurname"
@@ -631,26 +656,26 @@ class FormHandler:
                 # Handle privacy agreement checkbox
                 if self.field_values.get('privacy_agreement'):
                     await self.browser.click("#ctl00_SiteContentPlaceHolder_chkbxPrivacyAct")
-                    await self.browser.wait(5)  # Extra wait after checkbox
+                    await self.browser.wait(1)  # Extra wait after checkbox
                     
                 # Select security question
                 security_question = self.field_values.get('security_question')
                 if security_question:
                     await self.browser.select_dropdown_option("#ctl00_SiteContentPlaceHolder_ddlQuestions", security_question)
-                    await self.browser.wait(5)
+                    await self.browser.wait(1)
                     
                 # Fill security answer
                 security_answer = self.field_values.get('security_answer')
                 if security_answer:
                     await self.browser.fill_input("#ctl00_SiteContentPlaceHolder_txtAnswer", security_answer)
-                    await self.browser.wait(5)
+                    await self.browser.wait(1)
 
             # Click continue button
             button_index = self.field_values['button_clicks'][-1]
             button_id = form_data['buttons'][button_index]['id']
             logger.info(f"Clicking retrieve/security continue button: {button_id}")
             await self.browser.click(f"#{button_id}")
-            await self.browser.wait(3)
+            await self.browser.wait(2)
                 
             logger.info("Second page completed successfully")
             return True
@@ -670,25 +695,25 @@ class FormHandler:
             # Handle privacy agreement checkbox
             if self.field_values.get('privacy_agreement'):
                 await self.browser.click("#ctl00_SiteContentPlaceHolder_chkbxPrivacyAct")
-                await self.browser.wait(5)  # Extra wait after checkbox
+                await self.browser.wait(0.5)  # Extra wait after checkbox
                 
             # Select security question
             security_question = self.field_values.get('security_question')
             if security_question:
                 await self.browser.select_dropdown_option("#ctl00_SiteContentPlaceHolder_ddlQuestions", security_question)
-                await self.browser.wait(5)
+                await self.browser.wait(0.5)
                 
             # Fill security answer
             security_answer = self.field_values.get('security_answer')
             if security_answer:
                 await self.browser.fill_input("#ctl00_SiteContentPlaceHolder_txtAnswer", security_answer)
-                await self.browser.wait(5)
+                await self.browser.wait(0.5)
 
             # Click continue button
             button_index = self.field_values['button_clicks'][-1]
             button_id = form_data['buttons'][button_index]['id']
             await self.browser.click(f"#{button_id}")
-            await self.browser.wait(3)
+            await self.browser.wait(0.5)
             
             logger.info("Security page completed successfully")
             return True

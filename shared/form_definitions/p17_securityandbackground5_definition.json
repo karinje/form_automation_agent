@@ -55,6 +55,24 @@
       "parent_text_phrase": "Have you ever renounced United States citizenship for the purposes of avoiding taxation?"
     },
     {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblExchangeVisitor",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblExchangeVisitor_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblExchangeVisitor_1"
+      },
+      "text_phrase": "Are you a former exchange visitor (J) who has not yet fulfilled the two-year foreign residence requirement?",
+      "parent_text_phrase": "Are you a former exchange visitor (J) who has not yet fulfilled the two-year foreign residence requirement?"
+    },
+    {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAttWoReimb",
       "type": "radio",
       "value": [
@@ -130,6 +148,26 @@
       "dependencies": null
     },
     "ctl00_SiteContentPlaceHolder_FormView1_rblRenounceExp_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblExchangeVisitor_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxExchangeVisitor",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblExchangeVisitor_1.N": {
       "shows": [],
       "hides": [],
       "dependencies": null

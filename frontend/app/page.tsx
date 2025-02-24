@@ -280,6 +280,22 @@ export default function Home() {
   }) => {
     const { location, retrieveMode, applicationId, surname, birthYear, secretQuestion, secretAnswer } = options;
 
+    // Handle surname and birthYear differently based on mode
+    let finalSurname, finalBirthYear;
+    
+    if (retrieveMode === 'new') {
+      // For new applications, get from personal page 1
+      const personalSurname = formData['ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_SURNAME'];
+      finalSurname = personalSurname ? personalSurname.slice(0, 5).toUpperCase() : '';
+      
+      const personalDOB = formData['ctl00_SiteContentPlaceHolder_FormView1_tbxDOBYear'];
+      finalBirthYear = personalDOB 
+    } else {
+      // For retrieve mode, use the values from input fields
+      finalSurname = surname || '';
+      finalBirthYear = birthYear || '';
+    }
+
     // First get all the form data converted to YAML format
     const formYamlData: Record<string, any> = {}
     Object.keys(formMappings).forEach(pageName => {
@@ -330,15 +346,15 @@ export default function Home() {
       button_clicks: retrieveMode === 'retrieve' ? [1] : [0]
     }
 
-    // Add retrieve_page section if in retrieve mode
-    const retrievePage = retrieveMode === 'retrieve' ? {
-      application_id: applicationId,
-      surname: surname,
-      year: birthYear,
+    // Always add retrieve_page section
+    const retrievePage = {
+      application_id: retrieveMode === 'new' ? '' : applicationId,
+      surname: finalSurname,
+      year: finalBirthYear,
       security_question: secretQuestion,
       security_answer: secretAnswer,
       button_clicks: [0, 1]
-    } : undefined
+    }
 
     // Add security_page section if in new mode
     const securityPage = retrieveMode === 'new' ? {
@@ -348,10 +364,10 @@ export default function Home() {
       button_clicks: [0]
     } : undefined
 
-    // Combine all sections
+    // Combine all sections - ALWAYS include retrieve_page
     return {
       start_page: startPage,
-      ...(retrievePage && { retrieve_page: retrievePage }),
+      retrieve_page: retrievePage,  // Always include this, not conditionally
       ...(securityPage && { security_page: securityPage }),
       ...formYamlData
     }
