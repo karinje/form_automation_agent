@@ -46,8 +46,6 @@ class OpenAIHandler:
             
             Rules:
             1. Must include these required sections in order:
-               - start_page
-               - security_page
                - personal_page1
                - personal_page2
                - travel_page
@@ -71,10 +69,25 @@ class OpenAIHandler:
                button_clicks: [1, 2]
 
             3. Other rules remain same:
-               - Use Y/N for yes/no fields
-               - Use true/false for boolean fields
+               - Make sure you pay attention to instructions that follow every yaml field after # in same line on the input yaml sample 
+               - persona_page1, personal_page2, address_phone_page, pptvisa_page, are found in "Personal, Address, Phone, and Passport/Travel Document Information" sections of the DS-160 input text 
+               - us_contact_page is found in "U.S. Contact Information" section of the DS-160 input text
+               - travel_page, travel_companions_page, previous_travel_page are found in "Travel Information" section of the DS-160 input text
+               - relatives_page, spouse_page are found in "Family Information" section of the DS-160 input text
+               - workeducation1_page, workeducation2_page, workeducation3_page are found in "Work/Education/Training Information" section of the DS-160 input text
+               - security_background1_page, security_background2_page, security_background3_page, security_background4_page, security_background5_page are found in "Security and Background" section of the DS-160 input text
+               - Use "Y"/"N" for yes/no fields
+               - Use "true"/"false" for boolean fields (yaml fields that end with _na)
+               - If you see "DOES NOT APPLY" in the input text, that usualy means the field's _na version is true. 
                - Use 3-letter format for months (JAN, FEB, etc.)
-               - etc...
+               - For day field, use 2 digits for day (01, 02, ...31 etc.)
+               - For year field, use 4 digits for year (2024, 2025, etc.)
+               - Preserve any special characters in names/addresses
+               - Use empty string "" for missing values
+               - Keep array structures for repeated elements such as other_names in personal_page2, travel_companions in travel_page, etc...
+               - Include button_clicks arrays as shown in template
+               - Maintain exact field names and hierarchy
+               
             """
 
             # Save prompt to file

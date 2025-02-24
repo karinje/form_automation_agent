@@ -1,58 +1,73 @@
 previous_travel_page:
-  previous_us_travel: "Y"  # Have you ever been in the U.S.?
+  previous_us_travel: ""  # Have you ever been in the U.S.?
   previous_travel_details:  # Previous visits to US
     - arrival:
-        month: "OCT"  # Date Arrived - Month (3-letter month format)
-        day: "20"     # Date Arrived - Day (2-digit format)  
-        year: "2019"  # Date Arrived - Year (4-digit format)
+        month: ""  # Date Arrived (1) Date Arrived - Month (3-letter month format)
+        day: ""     # Date Arrived (1) Day (2-digit format)  
+        year: ""  # Date Arrived (1) Year (4-digit format)
       length_of_stay:
-        number: "3"   # Length of Stay
-        unit: "Year(s)"  # Length of Stay - Period (Year(s), Month(s), Week(s), Day(s))
+        number: ""   # Length of Stay corresponding to Date Arrived (1)
+        unit: ""  # Length of Stay - Period (YEAR(S), MONTH(S), WEEK(S), DAY(S), LESS THAN 24 HOURS)
+    - arrival:     # Add this array element only if Date Arrived (2) details exists, if not dont even add this array element.
+        month: ""  # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Date Arrived (2) Date Arrived - Month (3-letter month format) 
+        day: ""     # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Date Arrived (2) Day (2-digit format) if it exists else leave entire section blank
+        year: ""  # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Date Arrived (2) Year (4-digit format) if it exists else leave entire section blank
+      length_of_stay:
+        number: ""  # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Length of Stay corresponding to Date Arrived (2)
+        unit: ""  # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Length of Stay - Period (YEAR(S), MONTH(S), WEEK(S), DAY(S), LESS THAN 24 HOURS)
+    - arrival:     # Add this array element only if Date Arrived (3) details exists, if not dont even add this array element.
+        month: ""  # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Date Arrived (3) Date Arrived - Month (3-letter month format) 
+        day: ""     # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Date Arrived (3) Day (2-digit format) if it exists else leave entire section blank
+        year: ""  # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Date Arrived (3) Year (4-digit format) if it exists else leave entire section blank
+      length_of_stay:
+        number: ""  # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Length of Stay corresponding to Date Arrived (3)
+        unit: ""  # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Length of Stay - Period (YEAR(S), MONTH(S), WEEK(S), DAY(S), LESS THAN 24 HOURS)
+    - arrival:     # Add this array element only if Date Arrived (4) details exists, if not dont even add this array element.
+        month: ""  # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Date Arrived (4) Date Arrived - Month (3-letter month format) if it exists else leave entire section blank
+        day: ""     # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Date Arrived (4) Day (2-digit format) if it exists else leave entire section blank
+        year: ""  # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Date Arrived (4) Year (4-digit format) if it exists else leave entire section blank
+      length_of_stay:
+        number: ""  # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Length of Stay corresponding to Date Arrived (4)
+        unit: ""  # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Length of Stay - Period (YEAR(S), MONTH(S), WEEK(S), DAY(S), LESS THAN 24 HOURS)
     - arrival:
-        month: "NOV"
-        day: "01"
-        year: "2020"
+        month: ""  # Add this only if Date Arrived (5) details exists, if not dont even add this array element. Date Arrived (5) Date Arrived - Month (3-letter month format) if it exists else leave entire section blank
+        day: ""     # Date Arrived (5) Day (2-digit format) if it exists else leave entire section blank
+        year: ""  # Date Arrived (5) Year (4-digit format) if it exists else leave entire section blank
       length_of_stay:
-        number: "1"
-        unit: "Year(s)"
-    - arrival:
-        month: "JAN"
-        day: "08"
-        year: "2022"
-      length_of_stay:
-        number: "1"
-        unit: "Year(s)"
+        number: ""  # Add this only if Date Arrived (5) details exists, if not dont even add this array element. Length of Stay corresponding to Date Arrived (5)
+        unit: ""  # Add this only if Date Arrived (5) details exists, if not dont even add this array element. Length of Stay - Period (YEAR(S), MONTH(S), WEEK(S), DAY(S), LESS THAN 24 HOURS)
 
   drivers_license: "Y"  # Do you or did you ever hold a U.S. Driver's License?
   license_details:
-    - number: "WDLBKLPB81FB" # Driver's License Number
-      state: "WASHINGTON" # State of Driver's License
-    - number: "WDLBKLPB81FB" # Driver's License Number
-      number_na: true # Do not know
-      state: "WASHINGTON" # State of Driver's License
+    - number: "" # Driver's License Number (1) Driver's License Number
+      number_na: "" # set to true if Driver's License Number (1) is not available else set to false
+      state: "" # Driver's License Number (1)State of Driver's License
+    - number: "" # Add this only if Driver's License Number (2) details exists, if not dont even add this array element. Driver's License Number (2) Driver's License Number
+      number_na: "" # Add this only if Driver's License Number (2) details exists, if not dont even add this array element. set to true if Driver's License Number (2) is not available
+      state: "" # Add this only if Driver's License Number (2) details exists, if not dont even add this array element. State of Driver's License
   previous_visa: "Y"   # Have you ever been issued a U.S. Visa?
-  visa_number: "M8854325"  # Visa Number
-  visa_number_na: true # Do not know
+  visa_number: ""  # Visa Number
+  visa_number_na: "" # Set to true if Visa Number is Do not know
   visa_issue_date:
-    month: "JAN"  # Date Last Visa Was Issued - Month   
-    day: "30"     # Date Last Visa Was Issued - Day
-    year: "2018"  # Date Last Visa Was Issued - Year
-  same_type_visa: "Y"  # Are you applying for the same type of visa?
-  ten_printed: "Y"     # Have you been ten-printed?
-  visa_lost: "Y"       # Has your U.S. Visa ever been lost or stolen?
+    month: ""  # Date Last Visa Was Issued - Month   
+    day: ""     # Date Last Visa Was Issued - Day
+    year: ""  # Date Last Visa Was Issued - Year
+  same_type_visa: ""  # Are you applying for the same type of visa?
+  ten_printed: ""     # Have you been ten-printed?
+  visa_lost: ""       # Has your U.S. Visa ever been lost or stolen?
   visa_lost_details:
-    year: "2020"   # Year visa was lost/stolen
-    explanation: "LOST IN TRAVEL"  # Explanation of loss/theft
+    year: ""   # Year visa was lost/stolen
+    explanation: ""  # Explanation of loss/theft
 
   same_country: "Y"    # Are you applying in same country where visa was issued?
   visa_cancelled: "Y"   # Has your U.S. Visa ever been cancelled or revoked?
-  visa_cancelled_explanation: "CANCELLED DUE TO INELIGIBILITY"  # Explanation of visa cancellation
+  visa_cancelled_explanation: ""  # Explanation of visa cancellation
 
   visa_refused: "Y"     # Have you ever been refused a U.S. Visa?
-  visa_refused_explanation: "REFUSED DUE TO INELIGIBILITY"  # Explanation of visa refusal
+  visa_refused_explanation: "Y"  # Explanation of visa refusal
 
   vwp_denial: "Y"       # Have you been denied ESTA authorization?
-  vwp_denial_explanation: "DENIED DUE TO INELIGIBILITY"  # Explanation of ESTA denial
+  vwp_denial_explanation: ""  # Explanation of ESTA denial
 
   iv_petition: "Y"     # Has anyone filed immigrant petition for you?
-  iv_petition_explanation: "GREEN CARD PROCESS INITIATED - I140 APPROVED (A209 365 505)"  # Explain petition details 
+  iv_petition_explanation: ""  # Explain petition details 

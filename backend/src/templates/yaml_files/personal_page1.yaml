@@ -1,23 +1,23 @@
 personal_page1:
-  surname: "SMITH"                      # Surnames (max 33 chars)
-  given_name: "JOHN"                    # Given Names (max 33 chars)
+  surname: ""                      # Surnames (max 33 chars)
+  given_name: ""                    # Given Names (max 33 chars)
   full_name_native_alphabet: ""         # Full Name in Native Alphabet (max 100 chars)
   full_name_native_alphabet_na: ""      # Check if Full Name is native alphabet  DOES NOT APPLY
-  has_other_names_used: "N"            # Have you ever used other names? (Y/N)
+  has_other_names_used: ""            # Have you ever used other names? (Y/N)
   other_names:
     - surname: ""               # Other Surnames Used - only if has_other_names_used is Y (max 33 chars)
       givenname: ""
-    - surname: ""
+    - surname: ""               # Add this second element of array only if has more than one other name. Other Surnames Used - only if has_other_names_used is Y (max 33 chars) 
       givenname: ""
-  has_telecode: "N"                    # Do you have a telecode that represents your name? (Y/N)
+  has_telecode: ""                    # Do you have a telecode that represents your name? (Y/N)
   telecode_surname: ""                  # Telecode Surnames - only if has_telecode is Y (max 20 chars)
   telecode_given: ""                   # Telecode Given Names - only if has_telecode is Y (max 20 chars)
   sex: "MALE"                          # Sex (MALE/FEMALE)
-  marital_status: "SINGLE"             # Marital Status (MARRIED/COMMON LAW MARRIAGE/CIVIL UNION/DOMESTIC PARTNERSHIP/SINGLE/WIDOWED/DIVORCED/LEGALLY SEPARATED/OTHER)
-  birth_date_mm: "JAN"                 # Date of Birth - Month (JAN-DEC)
-  birth_date_dd: "01"                  # Date of Birth - Day (01-31)
-  birth_date_yyyy: "1990"              # Date of Birth - Year (4 digits)
-  birth_city: "NEW YORK"               # City of Birth (max 20 chars)
-  birth_state_province: "NEW YORK"     # State/Province of Birth (max 20 chars)
-  birth_state_province_na: false       # Check if state/province not applicable
-  birth_country: "UNITED STATES OF AMERICA"  # Country/Region of Birth (from dropdown list) 
+  marital_status: ""             # Marital Status (MARRIED/COMMON LAW MARRIAGE/CIVIL UNION/DOMESTIC PARTNERSHIP/SINGLE/WIDOWED/DIVORCED/LEGALLY SEPARATED/OTHER)
+  birth_date_mm: ""                 # Date of Birth - Month (JAN-DEC)
+  birth_date_dd: ""                  # Date of Birth - Day (01-31)
+  birth_date_yyyy: ""              # Date of Birth - Year (4 digits)
+  birth_city: ""               # City of Birth (max 20 chars)
+  birth_state_province: ""     # State/Province of Birth (max 20 chars)
+  birth_state_province_na: ""       # Check if state/province not applicable
+  birth_country: ""  # Country/Region of Birth (from dropdown list) 

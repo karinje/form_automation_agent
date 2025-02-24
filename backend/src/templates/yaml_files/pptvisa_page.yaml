@@ -1,8 +1,8 @@
 pptvisa_page:
-  passport_type: "REGULAR"  # Allowed: REGULAR, OFFICIAL, DIPLOMATIC, LAISSEZ-PASSER, OTHER
+  passport_type: ""  # Allowed: REGULAR, OFFICIAL, DIPLOMATIC, LAISSEZ-PASSER, OTHER
   passport_number: ""  # Max length: 20 chars
   passport_book_number: ""  # Max length: 20 chars, Optional (can be NA)
-  passport_book_number_na: false  # Set to true if not applicable
+  passport_book_number_na: ""  # Set to true if not applicable
   issuance_country: ""  # Country that issued passport
   issuance_location:
     city: ""  # Max length: 25 chars
@@ -16,8 +16,8 @@ pptvisa_page:
     month: ""  # Format: JAN, FEB, MAR, etc.
     day: ""  # Format: 01-31
     year: ""  # 4-digit year
-  expiration_na: false  # Set to true if not applicable
-  lost_passport: "N"  # Y/N - Have you ever lost a passport or had one stolen?
+  expiration_na: ""  # Set to true if not applicable
+  lost_passport: ""  # Y/N - Have you ever lost a passport or had one stolen?
   lost_passport_details:  # Only required if lost_passport is Y
     number: ""  # Previous passport number
     country: ""  # Country that issued lost passport

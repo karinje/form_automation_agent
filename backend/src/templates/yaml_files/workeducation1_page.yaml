@@ -1,27 +1,27 @@
 workeducation1_page:
-  present_occupation: "COMPUTER SCIENCE"  # Select from: AGRICULTURE, ARTIST/PERFORMER, BUSINESS, COMMUNICATIONS, COMPUTER SCIENCE, CULINARY/FOOD SERVICES, EDUCATION, ENGINEERING, GOVERNMENT, HOMEMAKER, LEGAL PROFESSION, MEDICAL/HEALTH, MILITARY, NATURAL SCIENCE, NOT EMPLOYED, PHYSICAL SCIENCES, RELIGIOUS VOCATION, RESEARCH, RETIRED, SOCIAL SCIENCE, STUDENT, OTHER
+  present_occupation: ""  # Select from: AGRICULTURE, ARTIST/PERFORMER, BUSINESS, COMMUNICATIONS, COMPUTER SCIENCE, CULINARY/FOOD SERVICES, EDUCATION, ENGINEERING, GOVERNMENT, HOMEMAKER, LEGAL PROFESSION, MEDICAL/HEALTH, MILITARY, NATURAL SCIENCE, NOT EMPLOYED, PHYSICAL SCIENCES, RELIGIOUS VOCATION, RESEARCH, RETIRED, SOCIAL SCIENCE, STUDENT, OTHER
   other_occupation_explanation: ""  # Required if present_occupation is OTHER or NOT EMPLOYED - max 4000 chars
   
   # Only shown if present_occupation is not HOMEMAKER, NOT EMPLOYED, or RETIRED
   employer:
-    name: "INSTACART"  # Present Employer or School Name - max 75 chars
+    name: ""  # Present Employer or School Name - max 75 chars
     address:
-      street1: "1234567890"  # Street Address (Line 1) - max 40 chars
-      street2: "1234567890"  # Street Address (Line 2) - max 40 chars, optional
-      city: "SAN FRANCISCO"  # City - max 20 chars
-      state: "CA"  # State/Province - max 20 chars
-      state_na: false  # Check if State/Province is not applicable
-      postal_code: "94105"  # Postal Zone/ZIP Code - max 10 chars
-      postal_code_na: false  # Check if Postal Code is not applicable
-      country: "UNITED STATES OF AMERICA"  # Country/Region - Select from dropdown list
-    phone: "8882467822"  # Phone Number - max 15 chars
+      street1: ""  # Street Address (Line 1) - max 40 chars
+      street2: ""  # Street Address (Line 2) - max 40 chars, optional
+      city: ""  # City - max 20 chars
+      state: ""  # State/Province - max 20 chars
+      state_na: ""  # Check if State/Province is not applicable DOES NOT APPLY
+      postal_code: ""  # Postal Zone/ZIP Code - max 10 chars
+      postal_code_na: ""  # Check if Postal Code is not applicable DOES NOT APPLY
+      country: ""  # Country/Region - Select from dropdown list
+    phone: ""  # Phone Number - max 15 chars
   
   start_date:
-    month: "JUN"  # Employment From - Month (JAN-DEC)
-    day: "01"  # Employment From - Day (01-31)
-    year: "2021"  # Employment From - Year - max 4 chars
+    month: ""  # Employment From - Month (JAN-DEC)
+    day: ""  # Employment From - Day (01-31)
+    year: ""  # Employment From - Year - max 4 chars
   
   monthly_salary: ""  # Monthly Income in Local Currency - max 15 chars
-  monthly_salary_na: false  # Check if Monthly Salary is not applicable
+  monthly_salary_na: ""  # Check if Monthly Salary is not applicable
   
   duties: ""  # Briefly describe your duties - max 4000 chars 

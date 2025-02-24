@@ -12,4 +12,4 @@ us_contact_page:
     postal_code: ""  # US ZIP Code (max 10 chars)
   phone: ""          # US Phone Number (max 15 chars)
   email: ""          # Email Address (max 50 chars)
-  email_na: false    # Set to true if no email address available 
+  email_na: ""    # Set to true if no email address available 

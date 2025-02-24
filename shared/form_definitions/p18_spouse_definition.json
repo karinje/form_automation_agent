@@ -611,38 +611,38 @@
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType",
       "type": "dropdown",
       "value": [
-        "Same as Home Address",
-        "Same as Mailing Address",
-        "Same as U.S. Contact Address",
-        "Do Not Know",
-        "Other (Specify Address)"
+        "SAME AS HOME ADDRESS",
+        "SAME AS MAILING ADDRESS",
+        "SAME AS U.S. CONTACT ADDRESS",
+        "DO NOT KNOW",
+        "OTHER (SPECIFY ADDRESS)"
       ],
       "text_phrase": "Spouse's Address",
       "parent_text_phrase": "Spouse's Address"
     }
   ],
   "dependencies": {
-    "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.Same as Home Address": {
+    "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.SAME AS HOME ADDRESS": {
       "shows": [],
       "hides": [],
       "dependencies": null
     },
-    "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.Same as Mailing Address": {
+    "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.SAME AS MAILING ADDRESS": {
       "shows": [],
       "hides": [],
       "dependencies": null
     },
-    "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.Same as U.S. Contact Address": {
+    "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.SAME AS U.S. CONTACT ADDRESS": {
       "shows": [],
       "hides": [],
       "dependencies": null
     },
-    "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.Do Not Know": {
+    "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.DO NOT KNOW": {
       "shows": [],
       "hides": [],
       "dependencies": null
     },
-    "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.Other (Specify Address)": {
+    "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType.OTHER (SPECIFY ADDRESS)": {
       "shows": [
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_ADDR_LN1",

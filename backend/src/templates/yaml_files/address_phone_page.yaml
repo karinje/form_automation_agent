@@ -5,13 +5,13 @@ address_phone_page:
     street2: ""  # Street Address (Line 2) - max 40 chars, optional
     city: ""     # City - max 20 chars
     state: ""    # State/Province - max 20 chars
-    state_na: false  # Check if State/Province is not applicable
+    state_na: ""  # Check if State/Province is not applicable
     postal_code: ""  # Postal Zone/ZIP Code - max 10 chars
-    postal_code_na: false  # Check if Postal Zone/ZIP Code is not applicable
+    postal_code_na: ""  # Check if Postal Zone/ZIP Code is not applicable
     country: ""  # Country/Region - Select from dropdown list
   
   # Mailing Address
-  mail_address_same_as_home: "Y"  # Is your Mailing Address the same as your Home Address? Y/N
+  mail_address_same_as_home: ""  # Is your Mailing Address the same as your Home Address? Y/N
   
   # Only shown if mail_address_same_as_home = N
   mail_address:
@@ -19,29 +19,31 @@ address_phone_page:
     street2: ""  # Mailing Street Address (Line 2) - max 40 chars, optional
     city: ""     # Mailing City - max 20 chars
     state: ""    # Mailing State/Province - max 20 chars
-    state_na: false  # Check if Mailing State/Province is not applicable
+    state_na: ""  # Check if Mailing State/Province is not applicable
     postal_code: ""  # Mailing Postal Zone/ZIP Code - max 10 chars
-    postal_code_na: false  # Check if Mailing Postal Zone/ZIP Code is not applicable
+    postal_code_na: ""  # Check if Mailing Postal Zone/ZIP Code is not applicable
     country: ""  # Mailing Country/Region - Select from dropdown list
   
   # Contact Information
   phone:
     home: ""     # Primary Phone Number - max 15 chars
     mobile: ""   # Secondary Phone Number - max 15 chars
-    mobile_na: false  # Check if Secondary Phone is not applicable
+    mobile_na: ""  # Check if Secondary Phone is not applicable
     work: ""     # Work Phone Number - max 15 chars
-    work_na: false  # Check if Work Phone is not applicable
+    work_na: ""  # Check if Work Phone is not applicable
   add_phone: "Y"  # Have you used any other phone numbers in the last five years? Y/N
   additional_phone: # Additional Phone Number - max 15 chars, shown if add_phone = Y
-    - add_phone_number: 3524439622
-    - add_phone_number: 2066592045   
+    - add_phone_number: "" # First additional phone number
+    - add_phone_number: "" # Add this only if second addSecond additional phone number
+
   
   # Email Address
   email: ""  # Email Address - max 50 chars
   add_email: "Y"  # Have you used any other email addresses in the last five years? Y/N
   additional_email: # Additional Email Address - max 40 chars, shown if add_email = Y
-    - add_email_address: sanjay.karinje.7@gmail.com
-    - add_email_address: sanjay.karinje.9@gmail.com
+    - add_email_address: "" # First additional email address
+    - add_email_address: "" # Add this only if second additional email address exists, if not dont even add thsi array eleement  
+    # add as many array elements as needed if more email addresses exist in input text. 
 
   # Social Media
   social_media:
@@ -50,7 +52,8 @@ address_phone_page:
   add_social: "Y"  # Do you wish to provide information about your presence on social media? Y/N
   # Only shown if add_social = Y
   additional_social_media:
-    - add_platform: "Facebook"  # Additional Social Media Platform - max 40 chars
-      add_handle: "sanjay.karinje.8"    # Additional Social Media Handle - max 40 chars
-    - add_platform: "Instagram"  # Additional Social Media Platform - max 40 chars
-      add_handle: "sanjay.karinje.9"    # Additional Social Media Handle - max 40 chars
+    - add_platform: ""  # Additional Social Media Platform - max 40 chars
+      add_handle: ""    # Additional Social Media Handle - max 40 chars
+    - add_platform: ""  # Add this only if second additional social media platform exists, if not dont even add this array element. Additional Social Media Platform - max 40 chars
+      add_handle: ""    # Add this only if second additional social media handle exists, if not dont even add this array element. Additional Social Media Handle - max 40 chars
+    # add as many array elements as needed if more social media platforms exist in input text. 

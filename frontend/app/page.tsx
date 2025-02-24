@@ -552,46 +552,73 @@ export default function Home() {
         </div>
         
         <div className="bg-white shadow-lg rounded-lg p-8">
-          <div className="mb-4 flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <h2 className="text-lg font-semibold whitespace-nowrap">Upload Previous DS160 to fill form</h2>
-            <div className="flex-1 flex justify-end">
-              <label 
-                htmlFor="dropzone-file" 
-                className={`flex items-center justify-center h-12 w-96 
-                           border-2 border-blue-500 border-dashed rounded-lg 
-                           ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-100'} 
-                           bg-gray-50 relative ml-8`}
-              >
-                <div className="flex items-center">
-                  {isConverting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-2"></div>
-                      <span className="text-sm text-gray-500">Converting...</span>
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                      </svg>
-                      <span className="text-sm text-gray-500">Click to upload or drag and drop PDF files</span>
-                    </>
-                  )}
-                </div>
-                <input 
-                  id="dropzone-file" 
-                  type="file" 
-                  className="hidden" 
-                  onChange={(e) => {
-                    if (isProcessing || isProcessingLLM) return;
-                    const file = e.target.files?.[0];
-                    if (file) handleFileUpload(file);
-                  }}
-                  disabled={isProcessing || isProcessingLLM}
-                  accept=".pdf"
-                />
-              </label>
+          <div className="mb-4 flex flex-col bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold whitespace-nowrap">Upload Previous DS160 to fill form</h2>
+              <div className="flex-1 flex justify-end">
+                <label 
+                  htmlFor="dropzone-file" 
+                  className={`flex items-center justify-center h-12 w-96 
+                             border-2 border-blue-500 border-dashed rounded-lg 
+                             ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-100'} 
+                             bg-gray-50 relative ml-8`}
+                >
+                  <div className="flex items-center">
+                    {isConverting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-2"></div>
+                        <span className="text-sm text-gray-500">Converting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <span className="text-sm text-gray-500">Click to upload or drag and drop PDF files</span>
+                      </>
+                    )}
+                  </div>
+                  <input 
+                    id="dropzone-file" 
+                    type="file" 
+                    className="hidden" 
+                    onChange={(e) => {
+                      if (isProcessing || isProcessingLLM) return;
+                      const file = e.target.files?.[0];
+                      if (file) handleFileUpload(file);
+                    }}
+                    disabled={isProcessing || isProcessingLLM}
+                    accept=".pdf"
+                  />
+                </label>
+              </div>
             </div>
+            
+            {(extractedText || yamlOutput) && (
+              <div className="flex justify-between mt-4 text-sm">
+                <button
+                  onClick={() => {
+                    const blob = new Blob([extractedText], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    window.open(url, '_blank');
+                  }}
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >
+                  DS160 text
+                </button>
+                <button
+                  onClick={() => {
+                    const blob = new Blob([yamlOutput], { type: 'text/yaml' });
+                    const url = URL.createObjectURL(blob);
+                    window.open(url, '_blank');
+                  }}
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >
+                  DS160 yaml
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="mb-4">

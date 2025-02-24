@@ -1,18 +1,18 @@
 personal_page2:
-  nationality: "INDIA"  # Country/Region of Origin (Nationality) - Select from dropdown
-  national_id: "AB123456789"  # National ID number, max 20 chars
-  national_id_na: false  # Check if no national ID
+  nationality: ""  # Country/Region of Origin (Nationality) - Select from dropdown
+  national_id: ""  # National ID number, max 20 chars
+  national_id_na: ""  # Check if no national ID
   us_social_security:
-    number1: "123"  # First 3 digits of SSN
-    number2: "45"   # Middle 2 digits of SSN
-    number3: "6789" # Last 4 digits of SSN
-  us_social_security_na: false      # Check if no SSN
-  us_taxpayer_id: "987654321"  # U.S. Taxpayer ID Number, max 20 chars
-  us_taxpayer_id_na: false     # Check if no taxpayer ID
-  has_other_nationality: "Y"   # Do you hold other nationality? Y/N
+    number1: ""  # First 3 digits of SSN
+    number2: ""   # Middle 2 digits of SSN
+    number3: "" # Last 4 digits of SSN
+  us_social_security_na: ""      # Check if no SSN or DOES NOT APPLY
+  us_taxpayer_id: ""  # U.S. Taxpayer ID Number, max 20 chars
+  us_taxpayer_id_na: ""     # Check if no taxpayer ID
+  has_other_nationality: ""   # Do you hold other nationality? Y/N
   other_nationality:
-    country: "UNITED KINGDOM"  # Other nationality country
-    has_passport: "Y"         # Do you have passport for other nationality? Y/N
-    passport_number: "GBR123456"  # Other nationality passport number
-  has_permanent_resident: "Y"  # Are you permanent resident of another country? Y/N
-  permanent_resident_country: "CANADA"  # Other permanent resident country 
+    country: ""  # Other nationality country
+    has_passport: ""         # Do you have passport for other nationality? Y/N
+    passport_number: ""  # Other nationality passport number
+  has_permanent_resident: ""  # Are you permanent resident of another country? Y/N
+  permanent_resident_country: ""  # Other permanent resident country 

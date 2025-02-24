@@ -1,40 +1,34 @@
 workeducation3_page:
   language_name:  # List of languages you know
-    - language: "ENGLISH"  # Primary language
-    - language: "HINDI"  # Additional language
-    - language: "KANNADA"  # Additional language
-    - language: "TELUGU"  # Additional language
-
-  clan_tribe_ind: "N"  # Do you belong to a clan or tribe?
+    - language: ""  # Language Name (1)
+     #add more yaml array elements if more Language Name (x) is present
+  clan_tribe_ind: ""  # Do you belong to a clan or tribe? Y or N
   clan_tribe_name: ""  # Name of clan or tribe if applicable
 
-  countries_visited_ind: "Y"  # Have you traveled to any countries/regions within the last five years?
+  countries_visited_ind: ""  # Have you traveled to any countries/regions within the last five years? Y or N
   countries_visited:  # List of countries visited in last 5 years
-    - country: "GERMANY"
-    - country: "NETHERLANDS"
-    - country: "CANADA"
-    - country: "INDIA"
-
-  organization_ind: "N"  # Have you belonged to any professional, social, or charitable organization?
+    - country: ""  # Country Name (1)
+    #add more yaml array elements if more Country Name (x) is present
+  organization_ind: ""  # Have you belonged to any professional, social, or charitable organization? Y or N
   organization_name: ""  # Name of organization if applicable
 
-  specialized_skills_ind: "N"  # Do you have specialized skills (firearms, explosives, nuclear, biological, chemical)?
+  specialized_skills_ind: ""  # Do you have specialized skills (firearms, explosives, nuclear, biological, chemical)? Y or N
   specialized_skills_explanation: ""  # Explanation of specialized skills if applicable
 
-  military_service_ind: "N"  # Have you ever served in the military?
-  military_service:  # Military service details if applicable
+  military_service_ind: ""  # Have you ever served in the military? Y or N
+  military_service:  # Military service details if applicable only if military_service_ind is Y
     country: ""  # Country where served
     branch: ""  # Branch of service
     rank: ""  # Rank/Position
     specialty: ""  # Military specialty
     service_from:
-      month: ""  # Start month of service
+      month: ""  # Start month of service (JAN-DEC)
       day: ""  # Start day of service
       year: ""  # Start year of service
     service_to:
-      month: ""  # End month of service
-      day: ""  # End day of service
-      year: ""  # End year of service
+      month: ""  # End month of service (JAN-DEC)
+      day: ""  # End day of service (01-31)
+      year: ""  # End year of service (max 4 chars)
 
   insurgent_org_ind: "N"  # Have you been involved with any paramilitary/rebel/insurgent group?
   insurgent_org_explanation: ""  # Explanation of involvement if applicable 

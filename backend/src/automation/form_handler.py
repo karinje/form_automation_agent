@@ -675,7 +675,7 @@ class FormHandler:
             button_id = form_data['buttons'][button_index]['id']
             logger.info(f"Clicking retrieve/security continue button: {button_id}")
             await self.browser.click(f"#{button_id}")
-            await self.browser.wait(2)
+            await self.browser.wait(1)
                 
             logger.info("Second page completed successfully")
             return True
