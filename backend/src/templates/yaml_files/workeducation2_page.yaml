@@ -27,7 +27,8 @@ workeducation2_page:
         day: ""  # End day of employment (01-31)
         year: ""  # End year of employment (max 4 chars)
       duties: ""  # Job duties description
-  # Add more yaml array elements if more Employer Name (x) is present
+  # Add more yaml array elements if more than one Employment details provided or Employer Name (x) is present
+  # Add as many yaml array elements as the number of employers present in input
   other_education: ""  # Have you attended any educational institutions? "Y" or "N"
   education: # Add this yaml array element only if other_education is "Y" 
     - name: ""  # Details from Name of Institution (1) for this yaml array. Name of educational institution
@@ -47,4 +48,5 @@ workeducation2_page:
         month: ""  # End month of attendance (JAN-DEC) for instance if input text has DECEMBER input here as DEC, JANUARY input here as JAN
         day: ""  # End day of attendance (01-31)
         year: ""  # End year of attendance  
-    #add more yaml array elements if more Name of Institution (x) is present
+    # Add more yaml array elements if more than other education institutions are present in input or Name of Institution (x) is present
+    # Add as many yaml array elements as the number of educational institutions present or Name of Institution (x) is present in input

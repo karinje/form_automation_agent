@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { processLinkedIn } from '../utils/api'
+import { processLinkedIn } from '../app/utils/api'
 
 interface LinkedInImportProps {
   onDataImported?: (data: any) => void

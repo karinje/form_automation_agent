@@ -7,6 +7,10 @@ from .routes import pdf  # Import the new route
 import logging
 from logging.handlers import RotatingFileHandler
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Create logs directory if it doesn't exist
 log_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'logs')
@@ -23,6 +27,9 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+
+# Log environment variables availability
+logger.info(f"LinkedIn credentials available: Username: {'Yes' if os.environ.get('LINKEDIN_USERNAME') else 'No'}, Password: {'Yes' if os.environ.get('LINKEDIN_PASSWORD') else 'No'}")
 
 app = FastAPI(title="DS-160 Automation API")
 

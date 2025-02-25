@@ -1,12 +1,3 @@
-export async function processLinkedIn(data: any) {
-  const response = await fetch('http://localhost:8000/api/linkedin/process', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  return response.json()
-}
-
 export async function processWithOpenAI(text: string) {
   const response = await fetch('http://localhost:8000/api/pdf-to-yaml', {
     method: 'POST',
@@ -42,5 +33,33 @@ export async function runDS160(yamlStr: string) {
   } catch (error) {
     console.error('DS-160 processing error:', error)
     throw error
+  }
+}
+
+export async function processLinkedIn(url: string): Promise<any> {
+  try {
+    const response = await fetch('http://localhost:8000/api/linkedin/process', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url }),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      return {
+        status: 'error',
+        message: errorData.detail || 'Failed to process LinkedIn data',
+      }
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error('LinkedIn processing error:', error)
+    return {
+      status: 'error',
+      message: 'An error occurred while processing LinkedIn data',
+    }
   }
 } 

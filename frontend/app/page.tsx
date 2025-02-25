@@ -841,7 +841,60 @@ export default function Home() {
               {renderFormSection(formCategories.travel, 'travel')}
             </TabsContent>
             <TabsContent value="education">
-              <LinkedInImport />
+              <LinkedInImport onDataImported={(linkedInData) => {
+                if (linkedInData) {
+                  // Extract work/education data from the LinkedIn response
+                  // and update the form data state
+                  const newData = { ...formData };
+                  
+                  // Debug: Log the pages found in the LinkedIn data
+                  console.log("LinkedIn data pages:", Object.keys(linkedInData));
+                  
+                  // Process each section from LinkedIn data
+                  Object.entries(linkedInData).forEach(([pageName, pageData]) => {
+                    if (pageName.startsWith('workeducation')) {
+                      console.log(`Processing LinkedIn data for page: ${pageName}`);
+                      // Convert LinkedIn YAML data to form fields
+                      const flattenedData = flattenYamlData(pageData);
+                      
+                      // Debug: Log the flattened data
+                      console.log(`Flattened fields for ${pageName}:`, Object.keys(flattenedData));
+                      
+                      Object.entries(flattenedData).forEach(([yamlField, value]) => {
+                        const formFieldId = getFormFieldId(pageName, yamlField);
+                        if (formFieldId) {
+                          console.log(`Mapping ${pageName}.${yamlField} → ${formFieldId}`);
+                          newData[formFieldId] = String(value);
+                        } else {
+                          console.log(`⚠️ No form field mapping found for ${pageName}.${yamlField}`);
+                        }
+                      });
+                    }
+                  });
+                  
+                  // Update form data
+                  setFormData(newData);
+                  
+                  // Force form refresh
+                  setRefreshKey(prev => prev + 1);
+                  
+                  // Navigate to all education accordion items
+                  const updatedAccordionValues = { ...accordionValues };
+                  
+                  // Open all education items
+                  formCategories.education.forEach((_, index) => {
+                    updatedAccordionValues.education = `item-${index}`;
+                  });
+                  
+                  setAccordionValues(updatedAccordionValues);
+                  
+                  // Show success message
+                  setConsoleErrors([
+                    `LinkedIn data imported successfully! Filled ${Object.keys(linkedInData).length} sections.`,
+                    ...consoleErrors
+                  ]);
+                }
+              }} />
               {renderFormSection(formCategories.education, 'education')}
             </TabsContent>
             <TabsContent value="security">
