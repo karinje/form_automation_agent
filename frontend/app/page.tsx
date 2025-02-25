@@ -7,8 +7,6 @@ import DynamicForm from "@/components/DynamicForm"
 import { flattenYamlData, unflattenFormData, flattenRepeatedGroups } from './utils/yaml-helpers'
 import { getFormFieldId, getYamlField, formMappings } from './utils/mappings'
 import yaml from 'js-yaml'
-import { generatePrompt } from './prompts/pdf_to_yaml'
-import { callOpenAI } from './utils/openai'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -17,7 +15,6 @@ import { debugLog } from './utils/consoleLogger'
 import { Button } from "@/components/ui/button"
 import { LinkedInImport } from "@/components/LinkedInImport"
 import type { FormCategory, FormCategories, FormDefinition } from "@/types/form-definition"
-import { assertFormDefinition } from './utils/type-helpers'
 import { processWithOpenAI, processLinkedIn, runDS160 } from './utils/api'
 
 // Import all form definitions in alphabetical order
@@ -199,21 +196,67 @@ export default function Home() {
       };
       
       setFormData(mergedFormData);
+      
+      // Increment refreshKey to force a complete re-render of all DynamicForm components
       setRefreshKey(prev => prev + 1);
       setIsProcessingLLM(false);
 
-      // Wait for state updates before animations
+      // Wait for state updates before updating counters with silent accordion expansion
       setTimeout(() => {
         setCurrentTab('personal');
-        animateFormSections();  // This should be controlled separately
-      }, 1000);
+        updateFormCountersSilently();
+      }, 200);
       
     } catch (error) {
       console.error('[Form Load] Error loading form data:', error);
     } finally {
-      setIsProcessingLLM(false);  // Move this here
+      setIsProcessingLLM(false);
     }
   }, [formCategories]);
+
+  // Add a new function to update counters by temporarily opening accordion items
+  const updateFormCountersSilently = () => {
+    const categories = Object.keys(formCategories);
+    
+    // Save the original accordion state
+    const originalAccordionValues = {...accordionValues};
+    const originalTab = currentTab;
+    
+    // Helper function to wait a specified time
+    const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    
+    // Function to process each category sequentially
+    const processCategory = async (categoryIndex: number) => {
+      if (categoryIndex >= categories.length) {
+        // All categories processed, restore original state
+        setCurrentTab(originalTab);
+        setAccordionValues(originalAccordionValues);
+        return;
+      }
+      
+      const category = categories[categoryIndex];
+      setCurrentTab(category);
+      
+      // Wait for tab change to render
+      await wait(10);
+      
+      // Process each form in this category
+      const forms = formCategories[category];
+      for (let i = 0; i < forms.length; i++) {
+        // Open the accordion item to trigger DynamicForm's completion calculation
+        setAccordionValues(prev => ({ ...prev, [category]: `item-${i}` }));
+        
+        // Wait for render
+        await wait(10);
+      }
+      
+      // Go to next category
+      processCategory(categoryIndex + 1);
+    };
+    
+    // Start with the first category
+    processCategory(0);
+  };
 
   const animateFormSections = () => {
     const categories = Object.keys(formCategories);
