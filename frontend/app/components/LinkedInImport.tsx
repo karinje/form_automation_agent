@@ -53,7 +53,7 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
 
   return (
     <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-      <h3 className="text-lg font-medium mb-1">
+      <h3 className="text-md font-medium mb-1">
         Provide LinkedIn profile URL to automatically fill Work/Education 1/2 pages
       </h3>
       
@@ -75,7 +75,7 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
               Importing...
             </>
-          ) : 'Import Data From LinkedIn and Fill Form'}
+          ) : 'Import LinkedIn Data   and Fill Form'}
         </Button>
       </div>
       

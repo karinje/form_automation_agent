@@ -259,7 +259,7 @@ export default function Home() {
       setCurrentTab(category);
       
       // Wait for tab change to render
-      await wait(10);
+      await wait(1);
       
       // Process each form in this category
       const forms = formCategories[category];
@@ -273,7 +273,7 @@ export default function Home() {
         setAccordionValues(prev => ({ ...prev, [category]: `item-${i}` }));
         
         // Wait for render
-        await wait(10);
+        await wait(1);
       }
       
       // Go to next category
