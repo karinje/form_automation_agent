@@ -53,29 +53,29 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
 
   return (
     <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-      <h3 className="text-lg font-semibold mb-2">Import LinkedIn Data</h3>
-      <p className="text-sm text-gray-600 mb-4">
-        Enter a LinkedIn profile URL to automatically fill work and education sections
-      </p>
+      <h3 className="text-lg font-medium mb-1">
+        Provide LinkedIn profile URL to automatically fill Work/Education 1/2 pages
+      </h3>
       
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         <Input
-          placeholder="https://www.linkedin.com/in/username"
+          type="text"
           value={linkedinUrl}
           onChange={(e) => setLinkedinUrl(e.target.value)}
+          placeholder="https://www.linkedin.com/in/username"
           className="flex-1"
         />
         <Button 
           onClick={handleImport}
           disabled={isLoading || !linkedinUrl}
-          className={isLoading ? 'opacity-70' : ''}
+          className={`bg-blue-600 hover:bg-blue-700 ${isLoading ? 'opacity-70' : ''}`}
         >
           {isLoading ? (
             <>
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
               Importing...
             </>
-          ) : 'Import Data and Fill Form'}
+          ) : 'Import Data From LinkedIn and Fill Form'}
         </Button>
       </div>
       

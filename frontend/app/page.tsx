@@ -169,7 +169,7 @@ export default function Home() {
     return fullText;
   };
 
-  const handleFormDataLoad = useCallback((uploadedYamlData: Record<string, any>) => {
+  const handleFormDataLoad = useCallback((uploadedYamlData: Record<string, any>, showSuccess = true, pagesFilter?: string[]) => {
     try {
       debugLog('all_pages', '[Mapping Creation] Processing YAML data');
       
@@ -181,6 +181,11 @@ export default function Home() {
       
       const allFormFields: Record<string, string> = {};
       Object.entries(uploadedYamlData).forEach(([pageName, pageData]) => {
+        // Skip if pagesFilter is provided and this page isn't in it
+        if (pagesFilter && !pagesFilter.includes(pageName)) {
+          return;
+        }
+        
         const flattenedData = flattenYamlData(pageData);
         Object.entries(flattenedData).forEach(([yamlField, value]) => {
           const formFieldId = getFormFieldId(pageName, yamlField);
@@ -190,10 +195,10 @@ export default function Home() {
         });
       });
       
-      const mergedFormData = {
-        ...allFormFields,
-        ...arrayAwareFormData
-      };
+      // If doing partial update, preserve existing form data
+      const mergedFormData = pagesFilter 
+        ? { ...formData, ...allFormFields, ...arrayAwareFormData }
+        : { ...allFormFields, ...arrayAwareFormData };
       
       setFormData(mergedFormData);
       
@@ -201,22 +206,38 @@ export default function Home() {
       setRefreshKey(prev => prev + 1);
       setIsProcessingLLM(false);
 
-      // Wait for state updates before updating counters with silent accordion expansion
+      // Only update counters for filtered pages, or all pages if no filter
       setTimeout(() => {
-        setCurrentTab('personal');
-        updateFormCountersSilently();
+        if (!pagesFilter) {
+          setCurrentTab('personal');
+        }
+        updateFormCountersSilently(pagesFilter);
       }, 200);
       
+      if (showSuccess) {
+        setConsoleErrors([
+          'Form data loaded successfully!',
+          ...consoleErrors
+        ]);
+      }
+      
+      return true;
     } catch (error) {
       console.error('[Form Load] Error loading form data:', error);
+      return false;
     } finally {
       setIsProcessingLLM(false);
     }
   }, [formCategories]);
 
   // Add a new function to update counters by temporarily opening accordion items
-  const updateFormCountersSilently = () => {
-    const categories = Object.keys(formCategories);
+  const updateFormCountersSilently = (pagesFilter?: string[]) => {
+    // Only process categories that contain the filtered pages
+    const categories = pagesFilter 
+      ? Object.entries(formCategories)
+          .filter(([_, forms]) => forms.some(form => pagesFilter.includes(form.pageName)))
+          .map(([category]) => category)
+      : Object.keys(formCategories);
     
     // Save the original accordion state
     const originalAccordionValues = {...accordionValues};
@@ -243,6 +264,11 @@ export default function Home() {
       // Process each form in this category
       const forms = formCategories[category];
       for (let i = 0; i < forms.length; i++) {
+        // Skip forms not in the filter if one is provided
+        if (pagesFilter && !pagesFilter.includes(forms[i].pageName)) {
+          continue;
+        }
+        
         // Open the accordion item to trigger DynamicForm's completion calculation
         setAccordionValues(prev => ({ ...prev, [category]: `item-${i}` }));
         
@@ -843,40 +869,21 @@ export default function Home() {
             <TabsContent value="education">
               <LinkedInImport onDataImported={(linkedInData) => {
                 if (linkedInData) {
-                  // Extract work/education data from the LinkedIn response
-                  // and update the form data state
-                  const newData = { ...formData };
-                  
                   // Debug: Log the pages found in the LinkedIn data
                   console.log("LinkedIn data pages:", Object.keys(linkedInData));
                   
-                  // Process each section from LinkedIn data
-                  Object.entries(linkedInData).forEach(([pageName, pageData]) => {
-                    if (pageName.startsWith('workeducation')) {
-                      console.log(`Processing LinkedIn data for page: ${pageName}`);
-                      // Convert LinkedIn YAML data to form fields
-                      const flattenedData = flattenYamlData(pageData);
-                      
-                      // Debug: Log the flattened data
-                      console.log(`Flattened fields for ${pageName}:`, Object.keys(flattenedData));
-                      
-                      Object.entries(flattenedData).forEach(([yamlField, value]) => {
-                        const formFieldId = getFormFieldId(pageName, yamlField);
-                        if (formFieldId) {
-                          console.log(`Mapping ${pageName}.${yamlField} → ${formFieldId}`);
-                          newData[formFieldId] = String(value);
-                        } else {
-                          console.log(`⚠️ No form field mapping found for ${pageName}.${yamlField}`);
-                        }
-                      });
-                    }
-                  });
+                  // Create a subset of the form data with only work/education pages
+                  const workEducationYaml = {
+                    workeducation1_page: linkedInData.workeducation1_page,
+                    workeducation2_page: linkedInData.workeducation2_page
+                  };
                   
-                  // Update form data
-                  setFormData(newData);
-                  
-                  // Force form refresh
-                  setRefreshKey(prev => prev + 1);
+                  // Use existing handleFormDataLoad with pages filter
+                  handleFormDataLoad(
+                    workEducationYaml, 
+                    true, // Show default success message
+                    ['workeducation1_page', 'workeducation2_page']
+                  );
                   
                   // Navigate to all education accordion items
                   const updatedAccordionValues = { ...accordionValues };
@@ -887,12 +894,6 @@ export default function Home() {
                   });
                   
                   setAccordionValues(updatedAccordionValues);
-                  
-                  // Show success message
-                  setConsoleErrors([
-                    `LinkedIn data imported successfully! Filled ${Object.keys(linkedInData).length} sections.`,
-                    ...consoleErrors
-                  ]);
                 }
               }} />
               {renderFormSection(formCategories.education, 'education')}

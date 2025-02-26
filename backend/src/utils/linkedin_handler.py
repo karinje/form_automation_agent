@@ -139,134 +139,107 @@ class LinkedInHandler:
             password_mask = self.password[:4] + "*****" + self.password[-4:] if self.password else None
             logger.info(f"Using LinkedIn credentials - Username: {self.username}, Password: {password_mask}")
             
-            # Set up a directory for debugging screenshots
-            screenshots_dir = self.log_dir / "screenshots"
-            screenshots_dir.mkdir(exist_ok=True)
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            
             async with async_playwright() as p:
-                # Launch browser with headless=False to see the browser
-                logger.info("Launching browser in visible mode for debugging")
                 browser = await p.chromium.launch(headless=False)
-                
                 context = await browser.new_context(
                     viewport={"width": 1920, "height": 1080},
                     user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36"
                 )
-                
-                # Enable slower operations for better visibility
-                context.set_default_timeout(60000)  # 60 seconds timeout
-                
+                context.set_default_timeout(60000)
                 page = await context.new_page()
                 
                 try:
-                    # Go to LinkedIn login page
-                    logger.info("Opening LinkedIn login page")
-                    await page.goto("https://www.linkedin.com/login", wait_until="domcontentloaded")
-                    
-                    # Take screenshot of login page
-                    await page.screenshot(path=str(screenshots_dir / f"{timestamp}_login_page.png"))
-                    
-                    # Fill in credentials
-                    logger.info("Filling login credentials")
-                    await page.fill("#username", self.username)
-                    await page.fill("#password", self.password)
-                    
-                    # Take screenshot before clicking submit
-                    await page.screenshot(path=str(screenshots_dir / f"{timestamp}_before_submit.png"))
-                    
-                    # Click login button
-                    logger.info("Submitting login form")
-                    await page.click("button[type='submit']")
-                    
-                    # Wait for navigation
-                    logger.info("Waiting for login to complete")
-                    
-                    # Wait for either the feed page or security checkpoint
-                    try:
-                        await page.wait_for_url(
-                            lambda url: "feed" in url or "checkpoint" in url, 
-                            timeout=30000
-                        )
-                    except Exception as e:
-                        logger.warning(f"Timed out waiting for redirect: {str(e)}")
-                        
-                    # Take screenshot after login attempt
-                    await page.screenshot(path=str(screenshots_dir / f"{timestamp}_after_login.png"))
-                    
-                    # Check if login was successful
-                    current_url = page.url
-                    logger.info(f"Current URL after login: {current_url}")
-                    
-                    if "feed" in current_url or "checkpoint" in current_url:
-                        logger.info("Login successful")
-                    else:
-                        logger.error(f"Login failed, current URL: {current_url}")
+                    # Login process
+                    if not await self._login(page):
                         return None
                     
-                    # Navigate to the profile URL
-                    logger.info(f"Navigating to profile: {profile_url}")
+                    # Get data from both detail pages
+                    profile_data = []
                     
-                    # Use a more reliable way to navigate with better error handling
-                    try:
-                        # Navigate to the profile with longer timeout
-                        await page.goto(profile_url, wait_until="domcontentloaded", timeout=60000)
-                        logger.info("Profile page loaded (domcontentloaded)")
-                        
-                        # Take screenshot of profile page
-                        await page.screenshot(path=str(screenshots_dir / f"{timestamp}_profile_page.png"))
-                        
-                        # Wait a bit for dynamic content to load
-                        logger.info("Waiting for dynamic content to load...")
-                        await page.wait_for_timeout(5000)
-                    except Exception as e:
-                        logger.error(f"Error navigating to profile: {str(e)}")
-                        await page.screenshot(path=str(screenshots_dir / f"{timestamp}_navigation_error.png"))
+                    # Get experience details
+                    experience_url = f"{profile_url}/details/experience/"
+                    logger.info(f"Navigating to experience details: {experience_url}")
+                    await page.goto(experience_url, wait_until="domcontentloaded", timeout=60000)
+                    await page.wait_for_timeout(5000)  # Wait for dynamic content
                     
-                    # Extract full page content
-                    logger.info("Getting full page content")
-                    full_content = await page.content()
-                    
-                    # Save the full HTML content to a file
-                    html_file = self.log_dir / f"linkedin_html_{timestamp}.html"
-                    with open(html_file, 'w', encoding='utf-8') as f:
-                        f.write(full_content)
-                    logger.info(f"Saved full HTML to {html_file}")
-                    
-                    # Extract visible text content from page
-                    logger.info("Getting visible text content")
-                    text_content = await page.evaluate("""
+                    experience_content = await page.evaluate("""
                         () => {
                             return document.body.innerText;
                         }
                     """)
+                    profile_data.append("\n=== EXPERIENCE DETAILS ===\n")
+                    profile_data.append(experience_content)
                     
-                    # Add profile URL and title to the data
+                    # Get education details
+                    education_url = f"{profile_url}/details/education/"
+                    logger.info(f"Navigating to education details: {education_url}")
+                    await page.goto(education_url, wait_until="domcontentloaded", timeout=60000)
+                    await page.wait_for_timeout(5000)  # Wait for dynamic content
+                    
+                    education_content = await page.evaluate("""
+                        () => {
+                            return document.body.innerText;
+                        }
+                    """)
+                    profile_data.append("\n=== EDUCATION DETAILS ===\n")
+                    profile_data.append(education_content)
+                    
+                    # Save the full content
                     result = [
                         f"LinkedIn Profile URL: {profile_url}",
-                        f"Page Title: {await page.title()}",
-                        "\n=== PROFILE CONTENT ===\n",
-                        text_content
+                        f"Experience URL: {experience_url}",
+                        f"Education URL: {education_url}",
+                        "\n",
+                        *profile_data
                     ]
-                    
-                    # Take a final screenshot
-                    await page.screenshot(path=str(screenshots_dir / f"{timestamp}_final_state.png"))
                     
                     return "\n".join(result)
                     
                 except Exception as e:
                     logger.error(f"Error during extraction: {str(e)}")
-                    # Take screenshot of the error state
-                    await page.screenshot(path=str(screenshots_dir / f"{timestamp}_error_state.png"))
                     raise
                 finally:
-                    # Add a delay before closing to let you see the final state
-                    await page.wait_for_timeout(10000)  # 10 seconds to see the final state
+                    await page.wait_for_timeout(10000)
                     await browser.close()
                 
         except Exception as e:
             logger.error(f"Error in LinkedIn data extraction: {str(e)}", exc_info=True)
             return None
+    
+    async def _login(self, page) -> bool:
+        """Handle LinkedIn login process"""
+        try:
+            logger.info("Opening LinkedIn login page")
+            await page.goto("https://www.linkedin.com/login", wait_until="domcontentloaded")
+            
+            logger.info("Filling login credentials")
+            await page.fill("#username", self.username)
+            await page.fill("#password", self.password)
+            
+            logger.info("Submitting login form")
+            await page.click("button[type='submit']")
+            
+            try:
+                await page.wait_for_url(
+                    lambda url: "feed" in url or "checkpoint" in url, 
+                    timeout=30000
+                )
+            except Exception as e:
+                logger.warning(f"Timed out waiting for redirect: {str(e)}")
+            
+            current_url = page.url
+            logger.info(f"Current URL after login: {current_url}")
+            
+            if "feed" in current_url or "checkpoint" in current_url:
+                logger.info("Login successful")
+                return True
+            else:
+                logger.error(f"Login failed, current URL: {current_url}")
+                return False
+            
+        except Exception as e:
+            logger.error(f"Error during login: {str(e)}")
+            return False
     
     def _load_education_work_templates(self) -> str:
         """Load the education and work related YAML templates"""
@@ -351,10 +324,12 @@ class LinkedInHandler:
             2. Use "Y"/"N" for yes/no fields
             3. Use "true"/"false" for boolean fields (yaml fields that end with _na)
             4. Add button_clicks: [1, 2] at the end of each section
-            5. For dates, use day format as 2 digits (01-31), month as 3-letter format (JAN, FEB, etc.), and year as 4 digits
-            6. Make reasonable assumptions based on the LinkedIn data to fill the required fields
-            7. For occupation fields, choose the most appropriate category from those shown in the template
-            8. Use the provided address and phone information to populate contact fields for companies and educational institutions
+            5. For dates, use day format as 2 digits (01-31) if date is unavailable (if only year and month or only year is provied) use 01
+            6. For month use 3-letter format (JAN, FEB, etc.), if only year is provided an no month is included use "JAN"
+            7. For year use 4 digits such as 2020, 2021, 2022, etc.
+            8. Make reasonable assumptions based on the LinkedIn data to fill the required fields
+            9. For occupation fields, choose the most appropriate category from those shown in the template
+            9. Use the provided address and phone information to populate contact fields for companies and educational institutions
             9. For country dropdown use one of the following: ["AFGHANISTAN", "ALBANIA", "ALGERIA",
             "AMERICAN SAMOA", "ANDORRA", "ANGOLA", "ANGUILLA", "ANTIGUA AND BARBUDA", "ARGENTINA", "ARMENIA", "ARUBA", "AUSTRALIA", "AUSTRIA", "AZERBAIJAN",
             "BAHAMAS", "BAHRAIN", "BANGLADESH", "BARBADOS", "BELARUS", "BELGIUM", "BELIZE", "BENIN", "BERMUDA", "BHUTAN", "BOLIVIA", "BONAIRE", "BOSNIA-HERZEGOVINA",
@@ -541,7 +516,7 @@ class LinkedInHandler:
                                 },
                                 "phone_number": {
                                     "type": "string",
-                                    "description": "Phone number with country code in international format"
+                                    "description": "Phone number with country code but without hypen, space or any other characters"
                                 }
                             },
                             "required": ["street_address", "city", "state_province", "country"]
