@@ -402,6 +402,7 @@
           "parent_text_phrase": "Employment Information",
           "maxlength": "33",
           "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_cbxSupervisorSurname_NA",
           "add_group": true,
           "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
         },
@@ -413,6 +414,7 @@
           "parent_text_phrase": "Employment Information",
           "maxlength": "33",
           "has_na_checkbox": true,
+          "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_cbxSupervisorGivenName_NA",
           "add_group": true,
           "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEmpl_ctl00_InsertButtonPrevEmpl"
         },

@@ -9,15 +9,6 @@ interface MappingResult {
   arrayGroups: Record<string, Record<string, Array<Record<string, string>>>>;
 }
 
-// Add mapping for array fields
-const arrayFieldMappings: Record<string, string> = {
-  'arrival.month': 'ddlPREV_US_VISIT_DTEMonth',
-  'arrival.day': 'ddlPREV_US_VISIT_DTEDay',
-  'arrival.year': 'tbxPREV_US_VISIT_DTEYear',
-  'length_of_stay.number': 'tbxPREV_US_VISIT_LOS',
-  'length_of_stay.unit': 'ddlPREV_US_VISIT_LOS_CD'
-};
-
 export const createFormMapping = (yamlContent: string): MappingResult => {
   try {
     // Parse YAML content
@@ -80,16 +71,46 @@ export const createFormMapping = (yamlContent: string): MappingResult => {
           // Map first group fields to form fields
           value.forEach((item, index) => {
             Object.entries(item).forEach(([itemField, itemValue]) => {
-              // Get the mapped field ID
-              const mappedField = arrayFieldMappings[itemField];
-              const formFieldId = mappedField ? 
-                `ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_${mappedField}` : 
-                getFormFieldId(pageName, itemField);
+              // Handle NA checkbox fields within arrays
+              if (itemField.endsWith('_na')) {
+                const formFieldId = getFormFieldId(pageName, itemField);
+                if (formFieldId) {
+                  // Transform the field ID for the current index if needed
+                  const finalNaFieldId = index === 0 
+                    ? formFieldId 
+                    : formFieldId.replace(/_ctl\d+/, `_ctl${index.toString().padStart(2, '0')}`);
+                
+                  const stringValue = String(itemValue) === 'true' ? "true" : "false";
+                  formData[finalNaFieldId] = stringValue;
+                  
+                  // If checked, set the main field to N/A
+                  if (stringValue === "true") {
+                    const mainItemField = itemField.replace(/_na$/, '');
+                    const mainFormFieldId = getFormFieldId(pageName, mainItemField);
+                    if (mainFormFieldId) {
+                      const finalMainFieldId = index === 0 
+                        ? mainFormFieldId 
+                        : mainFormFieldId.replace(/_ctl\d+/, `_ctl${index.toString().padStart(2, '0')}`);
+                      formData[finalMainFieldId] = "N/A";
+                    }
+                  }
+                  
+                  debugLog('previous_travel_page', `Set NA values for array item:`, {
+                    index,
+                    checkboxField: finalNaFieldId,
+                    checkboxValue: stringValue,
+                    formData
+                  });
+                  return;
+                }
+              }
+
+              // Get the form field ID directly
+              const formFieldId = getFormFieldId(pageName, itemField);
 
               debugLog('previous_travel_page', `Getting form field ID:`, {
                 pageName,
                 itemField,
-                mappedField,
                 formFieldId
               });
 

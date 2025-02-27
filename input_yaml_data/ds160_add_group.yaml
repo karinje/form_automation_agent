@@ -176,7 +176,7 @@ previous_travel_page:
       number_na: true # Do not know
       state: "WASHINGTON" # State of Driver's License
     - number: "WDLBKLPB81FB" # Driver's License Number
-      number_na: false # Do not know
+      number_na: true # Do not know
       state: "WASHINGTON" # State of Driver's License
   previous_visa: "Y"   # Have you ever been issued a U.S. Visa?
   visa_number: "M8854325"  # Visa Number
