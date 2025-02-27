@@ -548,9 +548,9 @@ security_background5_page:
 spouse_page:
   spouse_surname: "KAUSHIK"
   spouse_given_name: "RAMYA"
-  spouse_birth_day: "08"
-  spouse_birth_month: "MAY"
-  spouse_birth_year: "1985"
+  spouse_birth_day: "17"
+  spouse_birth_month: "AUG"
+  spouse_birth_year: "1984"
   spouse_nationality: "INDIA"
   spouse_birth_city: "HYDERABAD"
   spouse_birth_city_na: true

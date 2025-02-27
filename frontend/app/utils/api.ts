@@ -62,4 +62,31 @@ export async function processLinkedIn(url: string): Promise<any> {
       message: 'An error occurred while processing LinkedIn data',
     }
   }
-} 
+}
+
+export const processI94 = async (data: {
+  givenName: string;
+  surname: string;
+  birthDate: string;
+  documentNumber: string;
+  documentCountry: string;
+}) => {
+  try {
+    const response = await fetch('http://localhost:8000/api/i94/process', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error processing I94 data:', error);
+    throw error;
+  }
+}; 

@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button"
 import { LinkedInImport } from "@/components/LinkedInImport"
 import type { FormCategory, FormCategories, FormDefinition } from "@/types/form-definition"
 import { processWithOpenAI, processLinkedIn, runDS160 } from './utils/api'
+import { I94Import } from "@/components/I94Import"
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -485,6 +486,38 @@ export default function Home() {
     URL.revokeObjectURL(url)
   }, [generateFormYamlData, location, retrieveMode, applicationId, surname, birthYear, secretQuestion, secretAnswer])
 
+  // Add new function to get filtered YAML data
+  const getFilteredYamlData = (pageFilter: string[]) => {
+    try {
+      // Use the same function as handleDownloadYaml to get complete YAML
+      const yamlData = generateFormYamlData({
+        location,
+        retrieveMode,
+        applicationId,
+        surname,
+        birthYear,
+        secretQuestion,
+        secretAnswer
+      })
+      
+      console.log('Complete yaml data:', yamlData)
+      
+      // Return only requested pages
+      const filteredData: Record<string, any> = {}
+      pageFilter.forEach(page => {
+        if (yamlData[page]) {
+          filteredData[page] = yamlData[page]
+        }
+      })
+      
+      console.log('Filtered yaml data:', filteredData)
+      return filteredData
+    } catch (error) {
+      console.error('Error filtering YAML data:', error)
+      return {}
+    }
+  }
+
   const handleRunDS160 = async () => {
     try {
       if (retrieveMode === 'retrieve') {
@@ -864,6 +897,31 @@ export default function Home() {
               {renderFormSection(formCategories.personal, 'personal')}
             </TabsContent>
             <TabsContent value="travel">
+              <I94Import 
+                formData={formData}
+                onDataImported={(i94Data) => {
+                  if (i94Data) {
+                    // Get current YAML for previous_travel_page
+                    const currentPageData = getFilteredYamlData(['previous_travel_page'])
+                    console.log('current page yaml data', currentPageData)
+                    // Create new YAML with merged previous_travel_page data
+                    const mergedYaml = {
+                      previous_travel_page: {
+                        ...currentPageData?.previous_travel_page, // Keep existing fields
+                        ...i94Data.previous_travel_page // Override with new I94 data
+                      }
+                    }
+                    //log the merged yaml
+                    console.log('merged yaml', mergedYaml)
+                    // Update form with merged data
+                    handleFormDataLoad(
+                      mergedYaml,
+                      true,
+                      ['previous_travel_page']
+                    )
+                  }
+                }} 
+              />
               {renderFormSection(formCategories.travel, 'travel')}
             </TabsContent>
             <TabsContent value="education">
