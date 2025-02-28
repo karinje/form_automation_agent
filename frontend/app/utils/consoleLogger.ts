@@ -87,7 +87,7 @@ export class ConsoleLogger {
 }
 
 export const debugLog = (pageName: string, message: string, data?: any) => {
-  if (pageName === 'previous_travel_page' || message.includes('[Mapping Creation]')) {
+  if (pageName === 'workeducation3_page') {
     if (data) {
       console.log(`[${pageName}] ${message}`, data);
     } else {

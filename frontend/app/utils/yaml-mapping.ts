@@ -152,7 +152,7 @@ export const createFormMapping = (yamlContent: string): MappingResult => {
 
     return { formData, arrayGroups };
   } catch (error) {
-    console.error('[Mapping Creation] Error creating form mapping:', error);
+    //console.error('[Mapping Creation] Error creating form mapping:', error);
     throw error;
   }
 };
@@ -161,7 +161,7 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
   const result: Record<string, any> = {};
   const arrays: Record<string, any> = {}; // temporary store for array groups
 
-  console.log("Starting unflattenFormData with data:", data);
+  //console.log("Starting unflattenFormData with data:", data);
 
   // First pass: Process each field
   Object.entries(data).forEach(([key, value]) => {
@@ -176,7 +176,7 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
       const groupName = parts[1];
       const groupPath = `${pageName}.${groupName}`;
 
-      console.log(`Found array field key: ${key}, groupPath: ${groupPath}, index: ${index}`);
+      //console.log(`Found array field key: ${key}, groupPath: ${groupPath}, index: ${index}`);
 
       if (!arrays[groupPath]) {
         arrays[groupPath] = {};
@@ -189,7 +189,7 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
         const part = parts[i];
         if (i === parts.length - 1) {
           obj[part] = value;
-          console.log(`Setting value for ${groupPath} index ${index}, key part '${part}': ${value}`);
+          //console.log(`Setting value for ${groupPath} index ${index}, key part '${part}': ${value}`);
         } else {
           obj[part] = obj[part] || {};
           obj = obj[part];
@@ -204,11 +204,11 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
         obj = obj[parts[i]];
       }
       obj[parts[parts.length - 1]] = value;
-      console.log(`Processed non-array field: ${key} => ${value}`);
+      //console.log(`Processed non-array field: ${key} => ${value}`);
     }
   });
 
-  console.log("Intermediate arrays object:", arrays);
+  //console.log("Intermediate arrays object:", arrays);
 
   // Second pass: merge arrays into result
   Object.entries(arrays).forEach(([groupPath, groupObj]) => {
@@ -224,9 +224,9 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
       arr[parseInt(k)] = groupObj[k];
     });
     obj[parts[parts.length - 1]] = arr;
-    console.log(`Merged array for groupPath: ${groupPath}`, arr);
+    //console.log(`Merged array for groupPath: ${groupPath}`, arr);
   });
 
-  console.log("Final unflattened result:", result);
+  //console.log("Final unflattened result:", result);
   return result;
 }; 

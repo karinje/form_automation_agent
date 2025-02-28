@@ -69,7 +69,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
   useEffect(() => {
     if (onDependencyChange && field.type === "dropdown" && value) {
       const key = `${field.name}.${value}`
-      console.log('Dropdown dependency initial evaluation - key:', key)
+      //console.log('Dropdown dependency initial evaluation - key:', key)
       onDependencyChange(key, field)
     }
   }, [value])  // run on mount and when value changes
@@ -81,9 +81,9 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     if (onDependencyChange) {
       const buttonId = field.button_ids?.[value]
       if (buttonId) {
-        console.log('Radio change - Button ID:', buttonId)
+        //console.log('Radio change - Button ID:', buttonId)
         const key = `${buttonId}.${value}`
-        console.log('Radio change - Constructed key:', key)
+        //console.log('Radio change - Constructed key:', key)
         onDependencyChange(key, field)
       }
     }
@@ -188,7 +188,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
               onChange(field.name, value)
               if (onDependencyChange) {
                 const key = `${field.name}.${value}`
-                console.log('Dropdown change - Constructed key:', key)
+                //console.log('Dropdown change - Constructed key:', key)
                 onDependencyChange(key, field)
               }
             }}

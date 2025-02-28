@@ -63,7 +63,7 @@ export const formMappings: Record<string, Record<string, string>> = {
 // Helper to convert YAML field to form field
 export function getFormFieldId(pageName: string, yamlField: string): string | null {
   // Log the mapping request for debugging
-  console.log(`Looking up form field ID for ${pageName}.${yamlField}`);
+  //console.log(`Looking up form field ID for ${pageName}.${yamlField}`);
   
   const mapping = formMappings[pageName]?.[yamlField];
   
