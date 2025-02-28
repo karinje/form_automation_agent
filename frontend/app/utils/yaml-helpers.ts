@@ -105,7 +105,7 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
       const groupName = parts[1];
       const groupPath = `${pageName}.${groupName}`;
 
-      console.log(`Found array field key: ${key}, groupPath: ${groupPath}, index: ${index}`);
+      //console.log(`Found array field key: ${key}, groupPath: ${groupPath}, index: ${index}`);
 
       if (!arrays[groupPath]) {
         arrays[groupPath] = {};
@@ -118,7 +118,7 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
         const part = parts[i];
         if (i === parts.length - 1) {
           obj[part] = value;
-          console.log(`Setting value for ${groupPath} at index ${index}, key part '${part}': ${value}`);
+          //console.log(`Setting value for ${groupPath} at index ${index}, key part '${part}': ${value}`);
         } else {
           obj[part] = obj[part] || {};
           obj = obj[part];
@@ -133,11 +133,11 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
         obj = obj[parts[i]];
       }
       obj[parts[parts.length - 1]] = value;
-      console.log(`Processed non-array field: ${key} => ${value}`);
+      //console.log(`Processed non-array field: ${key} => ${value}`);
     }
   });
 
-  console.log("Intermediate arrays object:", arrays);
+  //console.log("Intermediate arrays object:", arrays);
 
   // Second pass: merge array groups into result
   Object.entries(arrays).forEach(([groupPath, groupObj]) => {
@@ -154,10 +154,10 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
       arr[idx] = groupObj[k];
     });
     obj[parts[parts.length - 1]] = arr;
-    console.log(`Merged array for groupPath: ${groupPath}`, arr);
+    //console.log(`Merged array for groupPath: ${groupPath}`, arr);
   });
 
-  console.log("Final unflattened result:", result);
+  //console.log("Final unflattened result:", result);
   return result;
 };
 
@@ -169,25 +169,25 @@ export const isPreviousTravelPage = (pageName: string): boolean => {
 // New helper to "flatten" repeated groups into flat key/value pairs
 export const flattenRepeatedGroups = (repeatedGroups: Record<string, Record<string, any[]>>): Record<string, any> => {
   const result: Record<string, any> = {};
-  console.log('flattenRepeatedGroups input:', repeatedGroups);
+  //console.log('flattenRepeatedGroups input:', repeatedGroups);
   
   // Iterate over each page
   Object.entries(repeatedGroups).forEach(([pageName, pageGroups]) => {
-    console.log(`Processing page ${pageName}:`, pageGroups);
+    //console.log(`Processing page ${pageName}:`, pageGroups);
     result[pageName] = {};
     
     Object.entries(pageGroups).forEach(([groupKey, groupArray]) => {
-      console.log(`Processing group ${groupKey}:`, groupArray);
+      //console.log(`Processing group ${groupKey}:`, groupArray);
       
       // Transform each group item into proper nested structure
       result[pageName][groupKey] = groupArray.map(group => {
-        console.log('Processing group item:', group);
+        //console.log('Processing group item:', group);
         const restructured = {};
         
         Object.entries(group).forEach(([fieldKey, value]) => {
           const cleanKey = fieldKey.replace(`${groupKey}.`, '');
           const parts = cleanKey.split('.');
-          console.log(`Processing field ${fieldKey} -> ${cleanKey}:`, {parts, value});
+          //console.log(`Processing field ${fieldKey} -> ${cleanKey}:`, {parts, value});
           
           let current = restructured;
           for (let i = 0; i < parts.length - 1; i++) {
@@ -197,13 +197,13 @@ export const flattenRepeatedGroups = (repeatedGroups: Record<string, Record<stri
           current[parts[parts.length - 1]] = value;
         });
         
-        console.log('Restructured group item:', restructured);
+        //console.log('Restructured group item:', restructured);
         return restructured;
       });
-      console.log(`Final array for ${groupKey}:`, result[pageName][groupKey]);
+      //console.log(`Final array for ${groupKey}:`, result[pageName][groupKey]);
     });
   });
   
-  console.log('Final flattened result:', result);
+  //console.log('Final flattened result:', result);
   return result;
 }; 
