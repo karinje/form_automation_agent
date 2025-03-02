@@ -21,6 +21,7 @@ import { workerData } from "worker_threads"
 import { transformFieldName } from '@/utils/yaml-helpers'
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
+import { getYamlField } from '@/utils/mappings'
 
 interface DynamicFormProps {
   formDefinition: FormDefinition
@@ -32,6 +33,7 @@ interface DynamicFormProps {
   currentCategory: string
   currentIndex: number
   onNavigate: (category: string, index: number) => void
+  onArrayGroupsChange?: (pageName: string, groupKey: string, groupData: Record<string, string>) => void
 }
 
 // Add interface to track dependency hierarchy
@@ -374,7 +376,7 @@ const getEffectiveFieldCount = (fields: FormFieldType[]) => {
   return effectiveCount;
 };
 
-export default function DynamicForm({ formDefinition, formData, arrayGroups, onInputChange, onCompletionUpdate, formCategories, currentCategory, currentIndex, onNavigate }: DynamicFormProps) {
+export default function DynamicForm({ formDefinition, formData, arrayGroups, onInputChange, onCompletionUpdate, formCategories, currentCategory, currentIndex, onNavigate, onArrayGroupsChange }: DynamicFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -397,6 +399,28 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
   const [fieldGroups, setFieldGroups] = useState<FieldGroup[]>([]);
 
   const prevArrayGroupsRef = useRef(arrayGroups);  // Move useRef to component level
+
+  // Add a flag to track if we're in the initial load from arrayGroups
+  const [isInitialArrayGroupsLoad, setIsInitialArrayGroupsLoad] = useState(true);
+
+  // Add logging for page identification and initial state
+  const currentPageName = useMemo(() => {
+    const currentForm = formCategories[currentCategory]?.[currentIndex];
+    return currentForm?.pageName || 'unknown';
+  }, [formCategories, currentCategory, currentIndex]);
+  
+  useEffect(() => {
+    if (currentPageName === 'workeducation3_page') {
+      debugLog('workeducation3_page', `Component mounted/updated for page: ${currentPageName}`, {
+        currentPageName,
+        isInitialArrayGroupsLoad,
+        repeatedGroups,
+        arrayGroups,
+        repeatedGroupsCount: Object.keys(repeatedGroups).length,
+        hasArrayGroups: arrayGroups && Object.keys(arrayGroups).length > 0
+      });
+    }
+  }, [currentPageName, isInitialArrayGroupsLoad, repeatedGroups, arrayGroups]);
 
   // Update findDependency to better handle nested dependencies
   const findDependency = (deps: Record<string, Dependency> | undefined, searchKey: string): Dependency | undefined => {
@@ -873,66 +897,85 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     }
   }, [visibleFields, formData, onCompletionUpdate, orderedFields, repeatedGroups, dateGroups, dateFieldNames]);
 
-  // Modify the useEffect that handles array groups
+  // Modify the useEffect that processes arrayGroups
   useEffect(() => {
-    console.log("DynamicForm received arrayGroups:", arrayGroups);
+    if (currentPageName === 'workeducation3_page') {
+      debugLog('workeducation3_page', `ArrayGroups useEffect triggered`, {
+        pageInfo: currentPageName,
+        hasArrayGroups: arrayGroups && Object.keys(arrayGroups).length > 0,
+        arrayGroupsKeys: arrayGroups ? Object.keys(arrayGroups) : []
+      });
+    }
     if (!arrayGroups || Object.keys(arrayGroups).length === 0) {
-      console.log("Skipping processing of arrayGroups – no keys found");
+      debugLog('workeducation3_page', `No arrayGroups found, setting isInitialArrayGroupsLoad to false`);
+      setIsInitialArrayGroupsLoad(false);
       return;
     }
-    const processArrayGroups = async () => {
-      // Process each array group
-      for (const [groupKey, groups] of Object.entries(arrayGroups)) {
-        const normalizedGroupKey = normalizeTextPhrase(groupKey);
-        // Skip if we've already processed this group
-        if (processedGroups.current.has(normalizedGroupKey)) {
-          continue;
-        }
-        // Mark this group as processed immediately
-        processedGroups.current.add(normalizedGroupKey);
-        
-        const groupFields = getFieldsForGroup(groupKey, formDefinition.fields);
-        
-        // If there are additional groups, call handleAddGroup for each extra group
-        if (groups.length > 1) {
-          const addGroupButton = await waitForButton(`[data-group-id*="${normalizedGroupKey}"]`, 20);
+    
+    // Set flag to true while processing arrayGroups from props
+    debugLog('workeducation3_page', `Starting arrayGroups processing, setting isInitialArrayGroupsLoad to true`);
+    setIsInitialArrayGroupsLoad(true);
+    
+    // Use setTimeout to move state updates out of the render phase
+    setTimeout(() => {
+      const processArrayGroups = async () => {
+        // Process each array group
+        for (const [groupKey, groups] of Object.entries(arrayGroups)) {
+          const normalizedGroupKey = normalizeTextPhrase(groupKey);
+          // Skip if we've already processed this group
+          if (processedGroups.current.has(normalizedGroupKey)) {
+            continue;
+          }
+          // Mark this group as processed immediately
+          processedGroups.current.add(normalizedGroupKey);
           
-          // Only add groups if they don't already exist in repeatedGroups
-          const existingGroups = repeatedGroups[normalizedGroupKey]?.length || 0;
-          if (addGroupButton && existingGroups < groups.length) {
-            // Only add the missing groups
-            for (let i = existingGroups; i < groups.length - 1; i++) {
-              debugLog('previous_travel_page', `Clicking add group button for extra group ${i}`);
-              addGroupButton.click();
+          const groupFields = getFieldsForGroup(groupKey, formDefinition.fields);
+          
+          // If there are additional groups, call handleAddGroup for each extra group
+          if (groups.length > 1) {
+            const addGroupButton = await waitForButton(`[data-group-id*="${normalizedGroupKey}"]`, 20);
+            
+            // Only add groups if they don't already exist in repeatedGroups
+            const existingGroups = repeatedGroups[normalizedGroupKey]?.length || 0;
+            if (addGroupButton && existingGroups < groups.length) {
+              // Only add the missing groups
+              for (let i = existingGroups; i < groups.length - 1; i++) {
+                debugLog('workeducation3_page', `Clicking add group button for extra group ${i}`);
+                addGroupButton.click();
+              }
+            }
+          }
+          
+          // Now fill in fields for all groups (index 0 is the primary group; indexes > 0 are added groups).
+          for (let index = 0; index < groups.length; index++) {
+            const groupData = groups[index];
+            for (const field of groupFields) {
+              const baseFieldName = field.name;
+              const transformedName = index === 0 
+                ? baseFieldName 
+                : transformFieldName(baseFieldName, index);
+              const value = groupData[baseFieldName];
+              if (value !== undefined) {
+                debugLog('workeducation3_page', `Setting field value for group ${index}:`, {
+                  original: baseFieldName,
+                  transformed: transformedName,
+                  value
+                });
+                onInputChange(transformedName, String(value));
+              }
             }
           }
         }
         
-        // Now fill in fields for all groups (index 0 is the primary group; indexes > 0 are added groups).
-        for (let index = 0; index < groups.length; index++) {
-          const groupData = groups[index];
-          for (const field of groupFields) {
-            const baseFieldName = field.name;
-            const transformedName = index === 0 
-              ? baseFieldName 
-              : transformFieldName(baseFieldName, index);
-            const value = groupData[baseFieldName];
-            if (value !== undefined) {
-              debugLog('previous_travel_page', `Setting field value for group ${index}:`, {
-                original: baseFieldName,
-                transformed: transformedName,
-                value
-              });
-              onInputChange(transformedName, String(value));
-            }
-          }
-        }
-      }
-    };
+        // Once all processing is done, set the flag to false
+        debugLog('workeducation3_page', `Completed arrayGroups processing, setting isInitialArrayGroupsLoad to false`);
+        setIsInitialArrayGroupsLoad(false);
+      };
 
-    // Call the async function
-    processArrayGroups();
-  }, [arrayGroups]); // Only depend on arrayGroups
+      // Call the async function
+      processArrayGroups();
+    }, 0);
+  }, [arrayGroups, currentPageName]); // Added currentPageName for logging
 
   // Add this after the handleDependencyChange function
   useEffect(() => {
@@ -955,9 +998,19 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     setFieldGroups(groups);
   }, [formDefinition.fields]);
 
-  // Update the handleAddGroup function to handle nested dependencies
+  // Modify handleAddGroup to correctly format the group data for parent component
   const handleAddGroup = (phraseGroup: FieldGroup) => {
     const groupKey = normalizeTextPhrase(phraseGroup.parentTextPhrase);
+    
+    if (currentPageName === 'workeducation3_page') {
+      debugLog('workeducation3_page', `handleAddGroup called for: ${groupKey}`, {
+        isInitialLoad: isInitialArrayGroupsLoad,
+        parentTextPhrase: phraseGroup.parentTextPhrase,
+        fieldsCount: phraseGroup.fields.length,
+        currentPage: currentPageName,
+        phraseGroup
+      });
+    }
     
     setRepeatedGroups(prev => {
       const currentGroups = prev[groupKey] || [];
@@ -1113,27 +1166,234 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
       // Add new dependency chains
       setDependencyChains(prev => [...prev, ...newDependencyChains]);
       
-      return {
+      // Create updated structure 
+      const updatedGroups = {
         ...prev,
         [groupKey]: [...(prev[groupKey] || []), newClonedFields]
       };
+      
+      // Only update parent's arrayGroups if NOT in initial load, but use setTimeout
+      if (!isInitialArrayGroupsLoad && onArrayGroupsChange) {
+        setTimeout(() => {
+          const pageName = Object.values(formCategories)
+            .flat()
+            .find(form => form.definition === formDefinition)?.pageName;
+          
+          if (pageName) {
+            if (pageName === 'workeducation3_page') {
+              debugLog('workeducation3_page', `Updating parent's arrayGroups for: ${groupKey}`, {
+                pageName, 
+                groupKey,
+                fieldCount: updatedGroups[groupKey].length
+              });
+            }
+            
+            // FIXED: Convert form fields to YAML format for all groups
+            const allGroupsData = [];
+            
+            // Include both original fields (if present) and added groups
+            // First, get the original fields (from the form, not from repeatedGroups)
+            const originalFields = phraseGroup.fields.reduce((acc, field) => {
+              const baseValue = formData[field.name] || '';
+              if (baseValue) {
+                // Get the YAML field name
+                const yamlField = getYamlField(pageName, field.name);
+                if (currentPageName === 'workeducation3_page') {
+                  debugLog('workeducation3_page', `yamlField:`, {
+                    yamlField
+                  });
+                }
+                if (yamlField) {
+                  // Extract the property name (after the last dot)
+                  //const propName = yamlField.split('.').pop() || yamlField;
+                  acc[yamlField] = baseValue;
+                }
+              }
+              return acc;
+            }, {} as Record<string, string>);
+            
+            // Add the original fields as first group if they exist
+            if (Object.keys(originalFields).length > 0) {
+              allGroupsData.push(originalFields);
+            }
+            
+            // Now add all the repeated groups
+            updatedGroups[groupKey].forEach(groupFields => {
+              const groupData = {} as Record<string, string>;
+              
+              groupFields.forEach(field => {
+                // Get base field name by removing control number
+                const baseFieldName = field.name.replace(/_ctl\d+/, '_ctl00');
+                const yamlField = getYamlField(pageName, baseFieldName);
+                
+                if (yamlField) {
+                  // Extract just the property name (after the last dot)
+                  //const propName = yamlField.split('.').pop() || yamlField;
+                  groupData[yamlField] = formData[field.name] || '';
+                }
+              });
+              
+              // Only add non-empty groups
+              if (Object.keys(groupData).length > 0) {
+                allGroupsData.push(groupData);
+              }
+            });
+            
+            if (currentPageName === 'workeducation3_page') {
+              debugLog('workeducation3_page', `Converted form data to YAML format:`, {
+                pageName,
+                groupKey,
+                allGroupsData
+              });
+            }
+            
+            onArrayGroupsChange(pageName, groupKey, allGroupsData);
+          }
+        }, 0);
+      }
+      
+      return updatedGroups;
     });
   };
 
-  // Synchronous handleRemoveGroup matching the GitHub version:
-  const handleRemoveGroup = (phraseGroup: FieldGroup, e: React.MouseEvent) => {
+  // Update handleRemoveGroup to remove the specific group by index
+  const handleRemoveGroup = (phraseGroup: FieldGroup, cloneIndex: number, e: React.MouseEvent) => {
     const groupKey = normalizeTextPhrase(phraseGroup.parentTextPhrase);
+    
+    if (currentPageName === 'workeducation3_page') {
+      debugLog(currentPageName, `handleRemoveGroup called for: ${groupKey} at index ${cloneIndex}`, {
+        isInitialLoad: isInitialArrayGroupsLoad,
+        parentTextPhrase: phraseGroup.parentTextPhrase,
+        currentPage: currentPageName
+      });
+    }
+    
     const currentGroups = repeatedGroups[groupKey] || [];
-    if (currentGroups.length > 0) {
-      // Remove the last group (pop)
+    if (currentGroups.length > 0 && cloneIndex < currentGroups.length) {
+      // Instead of removing the specific index, we'll shift values down
+      // and remove the last one
+      
+      // Step 1: Shift all values from higher indices to lower indices
+      // For example: if removing index 1 (ctl02), shift values from:
+      // ctl03 → ctl02, ctl04 → ctl03, etc.
+      for (let i = cloneIndex; i < currentGroups.length - 1; i++) {
+        const currentFields = currentGroups[i];
+        const nextFields = currentGroups[i + 1];
+        
+        // Copy values from the next higher group to current group
+        currentFields.forEach(field => {
+          // Find the corresponding field in the next group
+          const matchingNextField = nextFields.find(nextField => {
+            // Match by removing control number (ctl01, ctl02, etc.) and comparing
+            const baseNameCurrent = field.name.replace(/(_ctl)\d+/, '$1');
+            const baseNameNext = nextField.name.replace(/(_ctl)\d+/, '$1');
+            return baseNameCurrent === baseNameNext;
+          });
+          
+          if (matchingNextField) {
+            // Copy the value down
+            if (formData[matchingNextField.name]) {
+              if (currentPageName === 'workeducation3_page') {
+                debugLog('workeducation3_page', `Shifting values: ${matchingNextField.name} → ${field.name}`, {
+                  fromValue: formData[matchingNextField.name],
+                  toField: field.name
+                });
+              }
+              onInputChange(field.name, formData[matchingNextField.name]);
+            } else {
+              // Clear the field if next group doesn't have a value
+              onInputChange(field.name, '');
+            }
+          }
+        });
+      }
+      
+      // Step 2: Clear values in the last group
+      const lastGroup = currentGroups[currentGroups.length - 1];
+      lastGroup.forEach(field => {
+        if (formData[field.name]) {
+          onInputChange(field.name, '');
+        }
+        
+        // Also remove from visibleFields to update the denominator
+        if (visibleFields.has(field.name)) {
+          setVisibleFields(prev => {
+            const next = new Set(prev);
+            next.delete(field.name);
+            return next;
+          });
+        }
+      });
+      
+      // Step 3: Remove the last group from repeatedGroups
       const updatedGroups = currentGroups.slice(0, -1);
-      setRepeatedGroups(prev => ({
-        ...prev,
-        [groupKey]: updatedGroups
-      }));
-      debugLog('previous_travel_page', `Removed last group for phrase ${groupKey}`, updatedGroups);
+      
+      setRepeatedGroups(prev => {
+        const result = {
+          ...prev,
+          [groupKey]: updatedGroups
+        };
+        
+        // // Only update parent's arrayGroups if NOT in initial load
+        // if (!isInitialArrayGroupsLoad && onArrayGroupsChange) {
+        //   setTimeout(() => {
+        //     const pageName = Object.values(formCategories)
+        //       .flat()
+        //       .find(form => form.definition === formDefinition)?.pageName;
+            
+        //     if (pageName) {
+        //       // Create array data for remaining groups (same as before)
+        //       const allGroupsData: Record<string, string>[] = [];
+              
+        //       // Original fields (first group)
+        //       const originalFields = phraseGroup.fields.reduce((acc, field) => {
+        //         const yamlField = getYamlField(pageName, field.name);
+        //         if (yamlField && formData[field.name]) {
+        //           acc[yamlField] = formData[field.name];
+        //         }
+        //         return acc;
+        //       }, {} as Record<string, string>);
+              
+        //       // Add original fields if they exist
+        //       if (Object.keys(originalFields).length > 0) {
+        //         allGroupsData.push(originalFields);
+        //       }
+              
+        //       // Add all remaining repeated groups with their values
+        //       updatedGroups.forEach(fields => {
+        //         const groupData = {} as Record<string, string>;
+                
+        //         fields.forEach(field => {
+        //           const baseFieldName = field.name.replace(/_ctl\d+/, '_ctl00');
+        //           const yamlField = getYamlField(pageName, baseFieldName);
+        //           const fieldValue = formData[field.name];
+                  
+        //           if (yamlField && fieldValue) {
+        //             groupData[yamlField] = fieldValue;
+        //           }
+        //         });
+                
+        //         if (Object.keys(groupData).length > 0) {
+        //           allGroupsData.push(groupData);
+        //         }
+        //       });
+              
+        //       onArrayGroupsChange(pageName, groupKey, allGroupsData);
+        //     }
+        //   }, 0);
+        // }
+        
+        return result;
+      });
+      
+      if (currentPageName === 'workeducation3_page') {
+        debugLog(currentPageName, `Removed group at index ${cloneIndex} (via shifting values and removing last group)`, updatedGroups);
+      }
+      
     } else {
-      debugLog('previous_travel_page', `No extra group exists for phrase ${groupKey} to remove`);
+      if (currentPageName === 'workeducation3_page') {
+        debugLog(currentPageName, `No extra group exists for phrase ${groupKey} to remove`);
+      }
     }
   };
 
@@ -1173,6 +1433,125 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
       </div>
     );
   };
+
+  // Simplified useEffect to update arrayGroups when field values change
+  useEffect(() => {
+    if (currentPageName === 'workeducation3_page') {
+      console.log('useEffect formData investigation', currentPageName, isInitialArrayGroupsLoad, onArrayGroupsChange, repeatedGroups);
+    }
+    if (isInitialArrayGroupsLoad || !onArrayGroupsChange) {
+      if (currentPageName === 'workeducation3_page') {
+        console.log('useEffect formData investigation', 'returning early');
+      }
+      return;
+    }
+    
+    // Only proceed if we have some repeatedGroups
+    if (Object.keys(repeatedGroups).length === 0) {
+      if (currentPageName === 'workeducation3_page') {
+        console.log('useEffect formData investigation', 'returning early because no repeatedGroups');
+      }
+      return;
+    }
+    
+    // Find the current page name
+    const pageName = Object.values(formCategories)
+      .flat()
+      .find(form => form.definition === formDefinition)?.pageName;
+      
+    if (!pageName) {
+      if (currentPageName === 'workeducation3_page') {
+        console.log('useEffect formData investigation', 'returning early because no pageName', pageName);
+      }
+      return;
+    }
+    
+    if (currentPageName === 'workeducation3_page') {
+      console.log('useEffect formData investigation repeatedGroups & fieldGroups', repeatedGroups, fieldGroups);
+    }
+
+    // Update all groups with current values from formData
+    Object.keys(repeatedGroups).forEach(groupKey => {
+      if (currentPageName === 'workeducation3_page') {
+        console.log('useEffect formData processing groupKey:', groupKey);
+      }
+      
+      // Get all the fields in this group directly from repeatedGroups
+      const allFields = repeatedGroups[groupKey].flat();
+      
+      // We need unique field names to avoid duplicates when converting to YAML
+      const uniqueBaseFields = new Set<string>();
+      allFields.forEach(field => {
+        // Get the base field name by removing control numbers
+        const baseFieldName = field.name.replace(/_ctl\d+/, '_ctl00');
+        uniqueBaseFields.add(baseFieldName);
+      });
+      
+      // Convert to array of unique base fields
+      const baseFieldsArray = Array.from(uniqueBaseFields);
+      
+      if (currentPageName === 'workeducation3_page') {
+        console.log('useEffect formData unique base fields:', baseFieldsArray);
+      }
+      
+      // Get all array group data with current values
+      const allGroupsData: Record<string, string>[] = [];
+      
+      // Get original fields (first group)
+      const originalFields = {} as Record<string, string>;
+      
+      // Iterate through the unique base fields
+      baseFieldsArray.forEach(baseFieldName => {
+        const yamlField = getYamlField(pageName, baseFieldName);
+        // Check if this field has a value in the original (non-repeated) form
+        const originalFieldValue = formData[baseFieldName];
+        
+        if (yamlField && originalFieldValue) {
+          originalFields[yamlField] = originalFieldValue;
+        }
+      });
+      
+      // Add original fields if they exist
+      if (Object.keys(originalFields).length > 0) {
+        allGroupsData.push(originalFields);
+      }
+      
+      // Process repeated groups
+      repeatedGroups[groupKey].forEach(fields => {
+        const groupData = {} as Record<string, string>;
+        
+        // Process each field in this group
+        fields.forEach(field => {
+          const baseFieldName = field.name.replace(/_ctl\d+/, '_ctl00');
+          const yamlField = getYamlField(pageName, baseFieldName);
+          const fieldValue = formData[field.name];
+          
+          if (yamlField && fieldValue) {
+            groupData[yamlField] = fieldValue;
+          }
+        });
+        
+        // Only add non-empty groups
+        if (Object.keys(groupData).length > 0) {
+          allGroupsData.push(groupData);
+        }
+      });
+      
+      if (currentPageName === 'workeducation3_page') {
+        console.log('allGroupsData pageName, groupKey, allGroupsData', pageName, groupKey, allGroupsData);
+      }
+      
+      // Only update if we have some data
+      if (allGroupsData.length > 0) {
+        if (pageName === 'workeducation3_page') {
+          debugLog('workeducation3_page', `allGroupsData from useEffect:`, {
+            allGroupsData
+          });
+        }
+        onArrayGroupsChange(pageName, groupKey, allGroupsData);
+      }
+    });
+  }, [formData]);
 
   return (
     <FormProvider {...form}>
@@ -1306,7 +1685,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                             size="sm"
                             data-group-id={normalizeTextPhrase(phraseGroup.parentTextPhrase)}
                             onClick={() => {
-                              debugLog('previous_travel_page', 'Adding group with phraseGroup:', phraseGroup);
+                              debugLog('workeducation3_page', 'Adding group with phraseGroup:', phraseGroup);
                               handleAddGroup(phraseGroup);
                             }}
                             className="bg-white border-2 border-gray-300 hover:bg-gray-50 text-gray-700"
@@ -1377,7 +1756,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                             <Button
                               variant="destructive"
                               size="sm"
-                              onClick={(e) => handleRemoveGroup(phraseGroup, e)}
+                              onClick={(e) => handleRemoveGroup(phraseGroup, cloneIdx, e)}
                               className="bg-white border-2 border-red-300 hover:bg-red-50 text-red-700"
                             >
                               Remove

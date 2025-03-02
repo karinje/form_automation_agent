@@ -77,6 +77,25 @@ export function getFormFieldId(pageName: string, yamlField: string): string | nu
 
 // Helper to convert form field to YAML field
 export const getYamlField = (pageName: string, formFieldId: string): string => {
-  const pageMapping = formMappings[pageName]
-  return Object.entries(pageMapping).find(([_, value]) => value === formFieldId)?.[0] || ''
+  // Normalize field ID by replacing any _ctl01, _ctl02, etc. with _ctl00
+  const normalizedFieldId = formFieldId.replace(/_ctl\d+/, '_ctl00');
+  
+  const pageMapping = formMappings[pageName];
+  if (!pageMapping) {
+    console.log(`No mapping found for page: ${pageName}`);
+    return '';
+  }
+  
+  // Find the YAML field that maps to this form field ID
+  const match = Object.entries(pageMapping).find(([_, value]) => value === normalizedFieldId);
+  
+  if (!match) {
+    // For debugging
+    if (pageName === 'workeducation3_page') {
+      console.log(`No YAML field found for ${normalizedFieldId} in ${pageName}`);
+    }
+    return '';
+  }
+  
+  return match[0];
 } 

@@ -285,25 +285,6 @@ export default function Home() {
     processCategory(0);
   };
 
-  const animateFormSections = () => {
-    const categories = Object.keys(formCategories);
-    let delay = 0;
-    categories.forEach((category) => {
-      setTimeout(() => {
-        setCurrentTab(category);
-        const forms = formCategories[category];
-        forms.forEach((_, index) => {
-          setTimeout(() => {
-            setAccordionValues(prev => ({ ...prev, [category]: `item-${index}` }));
-            setTimeout(() => {
-              setAccordionValues(prev => ({ ...prev, [category]: "" }));
-            }, 50);
-          }, index * 500);
-        });
-      }, delay);
-      delay += formCategories[category].length * (500+50) + 50;
-    });
-  };
 
   const handleFileUpload = async (file: File) => {
     if (file.type === "application/pdf") {
@@ -346,9 +327,10 @@ export default function Home() {
     surname?: string,
     birthYear?: string,
     secretQuestion: string,
-    secretAnswer: string
+    secretAnswer: string,
+    currentArrayGroups: Record<string, Record<string, Array<Record<string, string>>>>
   }) => {
-    const { location, retrieveMode, applicationId, surname, birthYear, secretQuestion, secretAnswer } = options;
+    const { location, retrieveMode, applicationId, surname, birthYear, secretQuestion, secretAnswer, currentArrayGroups } = options;
 
     // Handle surname and birthYear differently based on mode
     let finalSurname, finalBirthYear;
@@ -384,8 +366,8 @@ export default function Home() {
         }
 
         // If this page has array groups, use them directly
-        if (arrayGroups[pageName]) {
-          Object.entries(arrayGroups[pageName]).forEach(([groupKey, groupArray]) => {
+        if (currentArrayGroups[pageName]) {
+          Object.entries(currentArrayGroups[pageName]).forEach(([groupKey, groupArray]) => {
             // Create array structure
             const arrayData = groupArray.map(group => {
               // Convert flat keys to nested structure
@@ -452,7 +434,8 @@ export default function Home() {
       surname,
       birthYear,
       secretQuestion,
-      secretAnswer
+      secretAnswer,
+      currentArrayGroups: arrayGroups
     })
 
     let yamlStr = yaml.dump(finalYamlData, {
@@ -474,17 +457,52 @@ export default function Home() {
       .replace(/^([a-zA-Z][a-zA-Z0-9_]*(?:_page)?:)/gm, '\n$1')
       .replace(/^\n/, '')
 
-    // Create blob and download
+    // Save to server, with fallback to browser download
+    const filename = 'form_data.yaml';
+    
+    try {
+      // Always attempt server-side save first
+      fetch('/api/save-yaml', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          yamlStr,
+          path: filename
+        }),
+      }).then(response => {
+        if (!response.ok) {
+          console.warn('Server-side YAML saving failed, falling back to browser download');
+          // Create blob and download
+          downloadYamlToDevice(yamlStr, filename);
+        } else {
+          console.log('YAML saved successfully on server at logs/form_data.yaml');
+          // Optionally show a notification to the user
+          setConsoleErrors(prev => [...prev, 'YAML saved successfully at logs/form_data.yaml']);
+        }
+      }).catch(error => {
+        console.error('Error saving YAML to server:', error);
+        downloadYamlToDevice(yamlStr, filename);
+      });
+    } catch (error) {
+      console.error('Failed to save YAML:', error);
+      downloadYamlToDevice(yamlStr, filename);
+    }
+  }, [generateFormYamlData, location, retrieveMode, applicationId, surname, birthYear, secretQuestion, secretAnswer, arrayGroups])
+
+  // Helper function for browser download fallback
+  const downloadYamlToDevice = (yamlStr: string, filename: string) => {
     const blob = new Blob([yamlStr], { type: 'text/yaml' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'form_data.yaml'
+    a.download = filename
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-  }, [generateFormYamlData, location, retrieveMode, applicationId, surname, birthYear, secretQuestion, secretAnswer])
+  }
 
   // Add new function to get filtered YAML data
   const getFilteredYamlData = (pageFilter: string[]) => {
@@ -497,7 +515,8 @@ export default function Home() {
         surname,
         birthYear,
         secretQuestion,
-        secretAnswer
+        secretAnswer,
+        currentArrayGroups: arrayGroups
       })
       
       console.log('Complete yaml data:', yamlData)
@@ -539,7 +558,8 @@ export default function Home() {
           surname,
           birthYear,
           secretQuestion,
-          secretAnswer
+          secretAnswer,
+          currentArrayGroups: arrayGroups
         })
 
         // Create YAML string with same formatting as download
@@ -588,6 +608,15 @@ export default function Home() {
         
         const groupsForPage = form.pageName ? arrayGroups[form.pageName] || {} : {};
         
+        // Add debug logging for workeducation3_page
+        // if (form.pageName === 'workeducation3_page') {
+        //   debugLog('workeducation3_page', `Rendering form with arrayGroups:`, {
+        //     pageName: form.pageName,
+        //     groupsForPage,
+        //     hasArrayGroups: Object.keys(groupsForPage).length > 0
+        //   });
+        // }
+        
         return (
           <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
             <AccordionTrigger className="w-full hover:no-underline [&>svg]:h-8 [&>svg]:w-8 [&>svg]:shrink-0 [&>svg]:text-gray-500 p-0">
@@ -622,6 +651,45 @@ export default function Home() {
                   setCurrentTab(category)
                   setAccordionValues(prev => ({ ...prev, [category]: `item-${index}` }))
                 }}
+                onArrayGroupsChange={(pageName, groupKey, groupData) => {
+                  // Only do detailed logging for workeducation3_page
+                  if (pageName === 'workeducation3_page') {
+                    debugLog('workeducation3_page', `onArrayGroupsChange called from DynamicForm:`, {
+                      pageName,
+                      groupKey,
+                      groupData
+                    });
+                  }
+                  
+                  setArrayGroups(prev => {
+                    const updated = { ...prev };
+                    
+                    // Initialize the page object if it doesn't exist
+                    if (!updated[pageName]) {
+                      updated[pageName] = {};
+                    }
+                    if (pageName === 'workeducation3_page') {
+                      console.log('updated before groupdata', updated)
+                    }
+                    // Update the group data
+                    updated[pageName][groupKey] = [...groupData];
+                    
+                    // Log the updated state for debugging
+                    if (pageName === 'workeducation3_page') {
+                      debugLog('workeducation3_page', `Updated arrayGroups state:`, {
+                        updated,
+                        groupData,
+                        pageName,
+                        groupKey
+                      });
+                    }
+                    
+                    return updated;
+                  });
+                  if (pageName === 'workeducation3_page') {
+                    console.log('arrayGroups finally', arrayGroups)
+                  }
+                }}
               />
             </AccordionContent>
           </AccordionItem>
@@ -629,7 +697,6 @@ export default function Home() {
       })}
     </Accordion>
   )
-
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {(isProcessing || isProcessingLLM) && (

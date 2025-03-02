@@ -4,10 +4,12 @@ type LogEntry = {
   data: any[];
 };
 
+type ConsoleMethodType = 'log' | 'error' | 'warn' | 'info';
+
 export class ConsoleLogger {
   private static instance: ConsoleLogger;
   private logs: LogEntry[] = [];
-  private originalMethods: Record<string, Function> = {};
+  private originalMethods: Record<ConsoleMethodType, Function> = {} as Record<ConsoleMethodType, Function>;
 
   private constructor() {
     this.initializeLogger();
@@ -21,11 +23,12 @@ export class ConsoleLogger {
   }
 
   private initializeLogger() {
-    const methodsToOverride = ['log', 'error', 'warn', 'info'] as const;
+    const methodsToOverride: ConsoleMethodType[] = ['log', 'error', 'warn', 'info'];
 
     methodsToOverride.forEach(method => {
       this.originalMethods[method] = console[method];
-      console[method] = (...args: any[]) => {
+      // Use type assertion to ensure TypeScript knows what we're doing
+      console[method as keyof Console] = (...args: any[]) => {
         this.capture(method, args);
         this.originalMethods[method].apply(console, args);
       };
@@ -42,26 +45,34 @@ export class ConsoleLogger {
 
   downloadLogs() {
     const logData = JSON.stringify(this.logs, null, 2);
+    const filename = 'console_debug.json';
     
-    // Always save to the same file
-    fetch('/api/save-logs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        logs: this.logs,
-        path: 'console_debug.json'
-      }),
-    }).then(response => {
-      if (!response.ok) {
-        // Fallback to browser download if server save fails
-        this.downloadToDevice(logData, 'console_debug.json');
-      }
-    }).catch(() => {
-      // Fallback to browser download if fetch fails
-      this.downloadToDevice(logData, 'console_debug.json');
-    });
+    try {
+      // Always attempt server-side save first
+      fetch('/api/save-logs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          logs: this.logs,
+          path: filename
+        }),
+      }).then(response => {
+        if (!response.ok) {
+          console.warn('Server-side log saving failed, falling back to browser download');
+          this.downloadToDevice(logData, filename);
+        } else {
+          console.log('Logs saved successfully on server');
+        }
+      }).catch(error => {
+        console.error('Error saving logs to server:', error);
+        this.downloadToDevice(logData, filename);
+      });
+    } catch (error) {
+      console.error('Failed to save logs:', error);
+      this.downloadToDevice(logData, filename);
+    }
   }
 
   private downloadToDevice(data: string, filename: string) {
@@ -70,7 +81,9 @@ export class ConsoleLogger {
     const a = document.createElement('a');
     a.href = url;
     a.download = filename;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
 
@@ -79,9 +92,12 @@ export class ConsoleLogger {
   }
 
   destroy() {
-    Object.entries(this.originalMethods).forEach(([method, originalFn]) => {
-      console[method] = originalFn;
+    const methodsToRestore: ConsoleMethodType[] = ['log', 'error', 'warn', 'info'];
+    
+    methodsToRestore.forEach(method => {
+      console[method as keyof Console] = this.originalMethods[method] as any;
     });
+    
     this.logs = [];
   }
 }

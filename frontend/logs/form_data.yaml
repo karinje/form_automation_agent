@@ -1,0 +1,577 @@
+start_page:
+  language: "English"
+  location: "ENGLAND, LONDON"
+  button_clicks: [0]
+
+retrieve_page:
+  application_id: ""
+  surname: "KARIN"
+  year: "1984"
+  security_question: ""
+  security_answer: ""
+  button_clicks: [0, 1]
+
+security_page:
+  privacy_agreement: true
+  security_question: ""
+  security_answer: ""
+  button_clicks: [0]
+
+personal_page1:
+  surname: "KARINJE"
+  given_name: "SANJAY"
+  full_name_native_alphabet: "N/A"
+  full_name_native_alphabet_na: "true"
+  has_other_names_used: "Y"
+  has_telecode: "N"
+  telecode_surname: ""
+  telecode_given: ""
+  sex: "MALE"
+  marital_status: "MARRIED"
+  birth_date_mm: "AUG"
+  birth_date_dd: "17"
+  birth_date_yyyy: "1984"
+  birth_city: "BANGALORE"
+  birth_state_province: "N/A"
+  birth_state_province_na: "true"
+  birth_country: "INDIA"
+  other_names:
+    - surname: "KARINJEA"
+      givenname: "SANJAYA"
+    - surname: "KARINJEB"
+      givenname: "SANJAYB"
+  button_clicks: [1, 2]
+
+personal_page2:
+  nationality: "INDIA"
+  has_other_nationality: "N"
+  other_nationality:
+    country: ""
+    has_passport: "N"
+    passport_number: ""
+  has_permanent_resident: "N"
+  permanent_resident_country: ""
+  national_id: "N/A"
+  national_id_na: "true"
+  us_social_security:
+    number1: "766"
+    number2: "92"
+    number3: "8575"
+  us_social_security_na: "false"
+  us_taxpayer_id: "766928575"
+  us_taxpayer_id_na: "false"
+  button_clicks: [1, 2]
+
+travel_page:
+  purpose_of_trip: "TREATY TRADER OR INVESTOR (E)"
+  other_purpose_of_trip: "EXECUTIVE/MGR/ESSENTIAL EMP (E1)"
+  who_is_paying: "Self"
+  specific_travel_plans: "N"
+  investor_issued_visa: "Y"
+  principal_applicant:
+    surname: "KAUSHIK"
+    given_name: "RAMYA"
+    petition_number: "A209365505"
+    company: "AMAZON"
+  ev_surname: "KAUSHIK"
+  ev_given_name: "RAMYA"
+  ev_dob:
+    day: "15"
+    month: "JAN"
+    year: "2023"
+  mission_org:
+    name: "AMAZON"
+    contact_surname: "KAUSHIK"
+    contact_given_name: "RAMYA"
+    address1: "410 TERRY AVE N"
+    address2: ""
+    city: "SEATTLE"
+    state: "WA"
+    zipcode: "98109"
+    phone: "2062661000"
+  specific_travel_plans_details:
+    arrival:
+      month: "JAN"
+      day: "15"
+      year: "2026"
+      flight: "UA100"
+      city: "SAN FRANCISCO"
+    departure:
+      month: "DEC"
+      day: "31"
+      year: "2027"
+      flight: "UA101"
+      city: "SAN FRANCISCO"
+  non_specific_travel_plans_details:
+    arrival:
+      month: "JAN"
+      day: "15"
+      year: "2023"
+    duration:
+      number: "3"
+      unit: "Year(s)"
+  stay_address:
+    street1: "338 SPEAR STREET"
+    street2: "UNIT 34E"
+    city: "SAN FRANCISCO"
+    state: "CALIFORNIA"
+    zip: "94105"
+  payer_details:
+    surname: "KAUSHIK"
+    given_name: "RAMYA"
+    phone: "2066592045"
+    email: "ramya.kaushik.8@gmail.com"
+    address_same_as_home: "N"
+    relationship: "SPOUSE"
+    address:
+      street1: "338 SPEAR STREET, UNIT 34E"
+      street2: ""
+      city: "SAN FRANCISCO"
+      state: "CA"
+      postal_code: "94105"
+      country: "UNITED STATES OF AMERICA"
+  company_payment:
+    name: "AMAZON"
+    relation: "SPOUSE"
+  locations_to_visit:
+    - location: "SAN FRANCISCO, CALIFORNIA"
+    - location: "LOS ANGELES, CALIFORNIA"
+  button_clicks: [1, 2]
+
+travel_companions_page:
+  traveling_with_others: "Y"
+  group_travel: "N"
+  travel_companions:
+    - surname: "KARINJE"
+      given_name: "KABIR"
+      relationship: "CHILD"
+    - surname: "KAUSHIK"
+      given_name: "RAMYA"
+      relationship: "SPOUSE"
+    - surname: "KARINJE"
+      given_name: "SAMPOORNA"
+      relationship: "OTHER"
+  button_clicks: [1, 2]
+
+previous_travel_page:
+  previous_us_travel: "Y"
+  drivers_license: "Y"
+  previous_visa: "Y"
+  visa_number: "N/A"
+  visa_number_na: "true"
+  visa_issue_date:
+    month: "JAN"
+    day: "30"
+    year: "2018"
+  same_type_visa: "Y"
+  ten_printed: "Y"
+  visa_lost: "Y"
+  visa_lost_details:
+    year: "2020"
+    explanation: "LOST IN TRAVEL"
+  same_country: "Y"
+  visa_cancelled: "Y"
+  visa_cancelled_explanation: "CANCELLED DUE TO INELIGIBILITY"
+  visa_refused: "Y"
+  visa_refused_explanation: "REFUSED DUE TO INELIGIBILITY"
+  vwp_denial: "Y"
+  vwp_denial_explanation: "DENIED DUE TO INELIGIBILITY"
+  iv_petition: "Y"
+  iv_petition_explanation: "GREEN CARD PROCESS INITIATED - I140 APPROVED (A209 365 505)"
+  previous_travel_details:
+    - arrival:
+        month: "OCT"
+        day: "20"
+        year: "2019"
+      length_of_stay:
+        number: "3"
+        unit: "Year(s)"
+    - arrival:
+        month: "NOV"
+        day: "01"
+        year: "2020"
+      length_of_stay:
+        number: "1"
+        unit: "Year(s)"
+    - arrival:
+        month: "JAN"
+        day: "08"
+        year: "2022"
+      length_of_stay:
+        number: "1"
+        unit: "Year(s)"
+  license_details:
+    - number: "WDLBKLPB81FB"
+      number_na: "true"
+      state: "WASHINGTON"
+    - number: "WDLBKLPB81FB"
+      number_na: "true"
+      state: "WASHINGTON"
+  button_clicks: [1, 2]
+
+address_phone_page:
+  home_address:
+    street1: "338 SPEAR STREET, UNIT 34E"
+    street2: ""
+    city: "SAN FRANCISCO"
+    state: "CA"
+    state_na: "false"
+    postal_code: "94105"
+    country: "UNITED STATES OF AMERICA"
+  mail_address_same_as_home: "N"
+  mail_address:
+    street1: "338 SPEAR STREET, UNIT 34E"
+    street2: ""
+    city: "SAN FRANCISCO"
+    state: "CA"
+    postal_code: "94105"
+    country: "UNITED STATES OF AMERICA"
+  phone:
+    home: "3524439621"
+    mobile: "2066592045"
+    mobile_na: "false"
+    work: "N/A"
+    work_na: "true"
+  add_phone: "Y"
+  email: "sanjay.karinje.8@gmail.com"
+  add_email: "Y"
+  social_media:
+    platform_select: "FACEBOOK"
+    handle: "SANJAY KARINJE"
+  add_social: "Y"
+  additional_phone_number:
+    - add_phone_number: "3524439623"
+    - add_phone_number: "2066592046"
+  additional_email_address:
+    - add_email_address: "sanjay.karinje.7@gmail.com"
+    - add_email_address: "sanjay.karinje.9@gmail.com"
+  additional_social_media:
+    - add_platform: "FACEBOOK"
+      add_handle: "SANJAY KARINJE"
+    - add_platform: "INSTAGRAM"
+      add_handle: "SANJAY KARINJE"
+  button_clicks: [1, 2]
+
+pptvisa_page:
+  passport_type: "REGULAR"
+  passport_number: "S7754691"
+  passport_book_number: "N/A"
+  passport_book_number_na: "true"
+  issuance_country: "INDIA"
+  issuance_location:
+    city: "SAN FRANCISCO"
+    state: "CA"
+    country: "UNITED STATES OF AMERICA"
+  issuance:
+    month: "MAR"
+    day: "27"
+    year: "2019"
+  expiration:
+    month: "N/A"
+    day: "N/A"
+    year: "N/A"
+  expiration_na: "true"
+  lost_passport: "Y"
+  lost_passport_details:
+    number: "S7754692"
+    country: "INDIA"
+    explanation: "STOLEN IN MEXICO"
+  button_clicks: [1, 2]
+
+us_contact_page:
+  contact:
+    surname: "KAUSHIK"
+    given_name: "RAMYA"
+    organization: "AMAZON"
+    relationship: "SPOUSE"
+  address:
+    street1: "338 SPEAR STREET, UNIT 34E"
+    street2: ""
+    city: "SAN FRANCISCO"
+    state: "CALIFORNIA"
+    postal_code: "94105"
+  phone: "2066592045"
+  email: "ramya.kaushik.8@gmail.com"
+  email_na: "false"
+  button_clicks: [1, 2]
+
+relatives_page:
+  father_surname: "N/A"
+  father_surname_na: "true"
+  father_given_name: "N/A"
+  father_given_name_na: "true"
+  father_birth_day: "N/A"
+  father_birth_month: "N/A"
+  father_birth_year: "N/A"
+  father_birth_na: "true"
+  father_in_us: "Y"
+  father_us_status: "U.S. CITIZEN"
+  mother_surname: "N/A"
+  mother_surname_na: "true"
+  mother_given_name: "N/A"
+  mother_given_name_na: "true"
+  mother_birth_day: "N/A"
+  mother_birth_month: "N/A"
+  mother_birth_year: "N/A"
+  mother_birth_na: "true"
+  mother_in_us: "Y"
+  mother_us_status: "U.S. CITIZEN"
+  has_immediate_relatives: "Y"
+  has_other_relatives: "Y"
+  immediate_relative_details:
+    - type: "SIBLING"
+      status: "NONIMMIGRANT"
+      surname: "KARINJE"
+      given_name: "SAMPOORNA"
+    - type: "SPOUSE"
+      status: "NONIMMIGRANT"
+      surname: "KAUSHIK"
+      given_name: "RAMYA"
+  button_clicks: [1, 2]
+
+workeducation1_page:
+  present_occupation: "COMPUTER SCIENCE"
+  other_occupation_explanation: ""
+  employer:
+    name: "INSTACART"
+    address:
+      street1: "1234567890"
+      street2: "1234567890"
+      city: "SAN FRANCISCO"
+      state: "CA"
+      postal_code: "94105"
+      country: "UNITED STATES OF AMERICA"
+    phone: "8882467822"
+  start_date:
+    month: "JUN"
+    day: "01"
+    year: "2021"
+  monthly_salary: "25000"
+  duties: "DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS. DEVELOP METRIC AND DASHBOARDS."
+  button_clicks: [1, 2]
+
+workeducation2_page:
+  previously_employed: "Y"
+  other_education: "Y"
+  employment_information:
+    - employer: "AMAZON"
+      job_title: "DATA SCIENTIST"
+      address:
+        street1: "410 TERRY AVE N"
+        street2: ""
+        city: "SEATTLE"
+        state: "WA"
+        state_na: "true"
+        postal_code: "98109"
+        postal_code_na: "true"
+        country: "UNITED STATES OF AMERICA"
+      phone: "2062661000"
+      supervisor:
+        surname: "DU"
+        given_name: "ZHENG"
+        surname_na: "false"
+        given_name_na: "false"
+      start_date:
+        month: "SEP"
+        day: "01"
+        year: "2019"
+      end_date:
+        month: "MAY"
+        day: "29"
+        year: "2021"
+      duties: "DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS. DEVELOP METRIC AND DASHBOARDS."
+    - employer: "AMAZON"
+      job_title: "FINANCE MANAGER"
+      address:
+        street1: "410 TERRY AVE N"
+        street2: ""
+        city: "SEATTLE"
+        state: "WA"
+        state_na: "true"
+        postal_code: "98109"
+        postal_code_na: "true"
+        country: "UNITED STATES OF AMERICA"
+      phone: "2062661000"
+      supervisor:
+        surname: "NARAYAN"
+        given_name: "ASHOK"
+        surname_na: "true"
+        given_name_na: "true"
+      start_date:
+        month: "JUN"
+        day: "01"
+        year: "2018"
+      end_date:
+        month: "MAY"
+        day: "29"
+        year: "2020"
+      duties: "FINANCIAL ANALYSIS AND REPORTING"
+  education:
+    - name: "UNIVERSITY OF FLORIDA"
+      course: "MBA"
+      address:
+        street1: "GAINESVILLE"
+        street2: ""
+        city: "GAINESVILLE"
+        state: "FL"
+        postal_code: "32611"
+        country: "UNITED STATES OF AMERICA"
+      start_date:
+        month: "APR"
+        day: "02"
+        year: "2010"
+      end_date:
+        month: "MAY"
+        day: "31"
+        year: "2011"
+    - name: "PESIT"
+      course: "B.E"
+      address:
+        street1: "Mysore Road"
+        street2: ""
+        city: "Bangalore"
+        state: "KA"
+        postal_code: "560020"
+        country: "INDIA"
+      start_date:
+        month: "APR"
+        day: "02"
+        year: "2002"
+      end_date:
+        month: "MAY"
+        day: "31"
+        year: "2006"
+  button_clicks: [1, 2]
+
+workeducation3_page:
+  clan_tribe_ind: "N"
+  countries_visited_ind: "Y"
+  military_service_ind: "Y"
+  military_service:
+    country: "UNITED STATES OF AMERICA"
+    branch: "ARMY"
+    rank: "CORPORAL"
+    specialty: "INFANTRY"
+    service_from:
+      month: "JAN"
+      day: "01"
+      year: "2010"
+    service_to:
+      month: "JAN"
+      day: "01"
+      year: "2015"
+  organization_ind: "Y"
+  organization_name: "AMAZON"
+  specialized_skills_ind: "Y"
+  specialized_skills_explanation: "I have a degree in Computer Science and Engineering"
+  insurgent_org_ind: "Y"
+  insurgent_org_explanation: "I was involved with the Communist Party of India (Marxist)"
+  language_name:
+    - language: "ENGLISH"
+    - language: "KANNADA"
+    - language: "TELUGU"
+  countries_visited:
+    - country: "GERMANY"
+    - country: "CANADA"
+    - country: "INDIA"
+    - country: "ANGUILLA"
+  button_clicks: [1, 2]
+
+security_background1_page:
+  disease: "Y"
+  disease_explanation: "disease explanation"
+  disorder: "Y"
+  disorder_explanation: "disorder explanation"
+  druguser: "Y"
+  druguser_explanation: "drug use explanation"
+  button_clicks: [1, 2]
+
+security_background2_page:
+  arrested: "Y"
+  arrested_explanation: "arrested explanation"
+  controlled_substances: "Y"
+  controlled_substances_explanation: "controlled substances explanation"
+  prostitution: "Y"
+  prostitution_explanation: "prostitution explanation"
+  money_laundering: "Y"
+  money_laundering_explanation: "money laundering explanation"
+  human_trafficking: "Y"
+  human_trafficking_explanation: "human trafficking explanation"
+  assisted_trafficking: "Y"
+  assisted_trafficking_explanation: "assisted trafficking explanation"
+  trafficking_related: "Y"
+  trafficking_related_explanation: "trafficking related explanation"
+  button_clicks: [1, 2]
+
+security_background3_page:
+  illegal_activity: "Y"
+  illegal_activity_explanation: "illegal activity explanation"
+  terrorist_activity: "Y"
+  terrorist_activity_explanation: "terrorist activity explanation"
+  terrorist_support: "Y"
+  terrorist_support_explanation: "terrorist support explanation"
+  terrorist_org: "Y"
+  terrorist_org_explanation: "terrorist org explanation"
+  terrorist_relative: "Y"
+  terrorist_relative_explanation: "terrorist relative explanation"
+  genocide: "Y"
+  genocide_explanation: "genocide explanation"
+  torture: "Y"
+  torture_explanation: "torture explanation"
+  extrajudicial_violence: "Y"
+  extrajudicial_violence_explanation: "extrajudicial violence explanation"
+  child_soldier: "Y"
+  child_soldier_explanation: "child soldier explanation"
+  religious_freedom: "Y"
+  religious_freedom_explanation: "religious freedom explanation"
+  population_controls: "Y"
+  population_controls_explanation: "population controls explanation"
+  transplant: "Y"
+  transplant_explanation: "transplant explanation"
+  button_clicks: [1, 2]
+
+security_background4_page:
+  removal_hearing: "Y"
+  removal_hearing_explanation: "removal hearing explanation"
+  immigration_fraud: "Y"
+  immigration_fraud_explanation: "immigration fraud explanation"
+  fail_to_attend: "Y"
+  fail_to_attend_explanation: "fail to attend explanation"
+  visa_violation: "Y"
+  visa_violation_explanation: "visa violation explanation"
+  deported: "Y"
+  deported_explanation: "deported explanation"
+  button_clicks: [1, 2]
+
+security_background5_page:
+  child_custody: "Y"
+  child_custody_explanation: "child custody explanation"
+  voting_violation: "Y"
+  voting_violation_explanation: "voting violation explanation"
+  renounce_tax: "Y"
+  renounce_tax_explanation: "renounce tax explanation"
+  school_reimbursement: "Y"
+  school_reimbursement_explanation: "school reimbursement explanation"
+  exchange_visitor: "Y"
+  exchange_visitor_explanation: "exchange visitor explanation"
+  button_clicks: [1, 2]
+
+spouse_page:
+  spouse_birth_month: "AUG"
+  spouse_birth_day: "17"
+  spouse_birth_year: "1984"
+  spouse_surname: "KAUSHIK"
+  spouse_given_name: "RAMYA"
+  spouse_nationality: "INDIA"
+  spouse_birth_city: "N/A"
+  spouse_birth_city_na: "true"
+  spouse_birth_country: "INDIA"
+  spouse_address_type: "Same as Home Address"
+  spouse_address_line1: "338 SPEAR STREET, UNIT 34E"
+  spouse_address_line2: ""
+  spouse_address_city: "SAN FRANCISCO"
+  spouse_address_postal_code: "94105"
+  spouse_address_postal_code_na: "false"
+  spouse_address_state: "CALIFORNIA"
+  spouse_address_country: "UNITED STATES OF AMERICA"
+  button_clicks: [1, 2]
