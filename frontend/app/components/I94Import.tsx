@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { countryList } from '../utils/country-codes'
 import { processI94 } from '../utils/api'
 import { handleFormDataLoad } from '../utils/form-helpers'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { ChevronDown } from "lucide-react"
 
 interface I94ImportProps {
   formData: Record<string, string>
@@ -21,6 +23,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
   const [birthDate, setBirthDate] = useState('')
   const [documentNumber, setDocumentNumber] = useState('')
   const [documentCountry, setDocumentCountry] = useState('')
+  const [isExpanded, setIsExpanded] = useState(false)
 
   // Initialize form data from personal page and passport info
   useEffect(() => {
@@ -116,8 +119,6 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
       const countryName = country.split(' (')[0]  // Remove code in parentheses
       const score = getSimilarityScore(ds160Country, countryName)
       
-      //console.log(`Country match score: "${ds160Country}" vs "${countryName}": ${score}`)
-      
       if (score > bestScore) {
         bestScore = score
         bestMatch = country
@@ -149,6 +150,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
       if (result.status === 'success' && result.data) {
         if (onDataImported) {
           onDataImported(result.data)
+          setIsExpanded(false) // Collapse after successful import
         }
       } else {
         throw new Error(result.message || 'Failed to import I94 data')
@@ -161,75 +163,116 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
     }
   }
 
+  // Custom toggle handler to manage expand/collapse
+  const handleToggle = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
-    <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-md font-medium">
-          Import previous 5 US visits info from I94 website
-        </h3>
-        <Button 
-          onClick={handleImport}
-          disabled={isLoading || !givenName || !surname || !birthDate || !documentNumber || !documentCountry}
-          className="bg-blue-600 hover:bg-blue-700"
-        >
-          {isLoading ? (
-            <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              Importing...
-            </>
-          ) : 'Import Data'}
-        </Button>
-      </div>
-      
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label>Given Name</Label>
-          <Input
-            value={givenName}
-            onChange={(e) => setGivenName(e.target.value)}
-            placeholder="Given Name"
-          />
-        </div>
-        <div>
-          <Label>Surname</Label>
-          <Input
-            value={surname}
-            onChange={(e) => setSurname(e.target.value)}
-            placeholder="Surname"
-          />
-        </div>
-        <div>
-          <Label>Birth Date (MM/DD/YYYY)</Label>
-          <Input
-            value={birthDate}
-            onChange={(e) => setBirthDate(e.target.value)}
-            placeholder="MM/DD/YYYY"
-          />
-        </div>
-        <div>
-          <Label>Document Number</Label>
-          <Input
-            value={documentNumber}
-            onChange={(e) => setDocumentNumber(e.target.value)}
-            placeholder="Document Number"
-          />
-        </div>
-        <div className="col-span-2">
-          <Label>Document Country of Issuance</Label>
-          <Select value={documentCountry} onValueChange={setDocumentCountry}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select country" />
-            </SelectTrigger>
-            <SelectContent>
-              {countryList.map((country) => (
-                <SelectItem key={country} value={country}>
-                  {country}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+    <div className="mb-6">
+      <Accordion 
+        type="single" 
+        collapsible 
+        value={isExpanded ? "item-0" : ""} 
+        onValueChange={(val) => setIsExpanded(val === "item-0")}
+        className="border border-gray-200 rounded-lg overflow-hidden shadow-sm"
+      >
+        <AccordionItem value="item-0" className="border-0">
+          <div className="flex items-center justify-between bg-gray-50 px-6 py-4">
+            {/* Replace AccordionTrigger with custom header */}
+            <div 
+              className="flex-1 flex items-center cursor-pointer"
+              onClick={handleToggle}
+            >
+              <h3 className="text-lg font-semibold text-gray-900 leading-none">
+                Import previous 5 US visits info from I94 website
+              </h3>
+            </div>
+            
+            {/* Import button */}
+            <Button 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleImport();
+              }}
+              disabled={isLoading || !givenName || !surname || !birthDate || !documentNumber || !documentCountry}
+              className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-6 py-2 text-base"
+            >
+              {isLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Processing...
+                </>
+              ) : 'Import Data & Fill Form'}
+            </Button>
+            
+            {/* Chevron positioned to align with other accordion arrows */}
+            <div 
+              className="ml-6 cursor-pointer"
+              onClick={handleToggle}
+            >
+              <ChevronDown 
+                className={`h-8 w-8 shrink-0 text-gray-500 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+              />
+            </div>
+          </div>
+          <AccordionContent className="p-6 bg-white border-t border-gray-200">
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <Label className="text-base font-medium mb-2 block">Given Name</Label>
+                <Input
+                  value={givenName}
+                  onChange={(e) => setGivenName(e.target.value)}
+                  placeholder="Given Name"
+                  className="py-2 text-base"
+                />
+              </div>
+              <div>
+                <Label className="text-base font-medium mb-2 block">Surname</Label>
+                <Input
+                  value={surname}
+                  onChange={(e) => setSurname(e.target.value)}
+                  placeholder="Surname"
+                  className="py-2 text-base"
+                />
+              </div>
+              <div>
+                <Label className="text-base font-medium mb-2 block">Birth Date (MM/DD/YYYY)</Label>
+                <Input
+                  value={birthDate}
+                  onChange={(e) => setBirthDate(e.target.value)}
+                  placeholder="MM/DD/YYYY"
+                  className="py-2 text-base"
+                />
+              </div>
+              <div>
+                <Label className="text-base font-medium mb-2 block">Document Number</Label>
+                <Input
+                  value={documentNumber}
+                  onChange={(e) => setDocumentNumber(e.target.value)}
+                  placeholder="Document Number"
+                  className="py-2 text-base"
+                />
+              </div>
+              <div className="col-span-2">
+                <Label className="text-base font-medium mb-2 block">Document Country of Issuance</Label>
+                <Select value={documentCountry} onValueChange={setDocumentCountry}>
+                  <SelectTrigger className="py-2 text-base">
+                    <SelectValue placeholder="Select country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {countryList.map((country) => (
+                      <SelectItem key={country} value={country}>
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   )
 } 

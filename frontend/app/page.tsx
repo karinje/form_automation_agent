@@ -17,6 +17,7 @@ import { LinkedInImport } from "@/components/LinkedInImport"
 import type { FormCategory, FormCategories, FormDefinition } from "@/types/form-definition"
 import { processWithOpenAI, processLinkedIn, runDS160 } from './utils/api'
 import { I94Import } from "@/components/I94Import"
+import { DocumentUpload } from "@/components/DocumentUpload"
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -963,32 +964,21 @@ export default function Home() {
             <TabsContent value="personal">
               {renderFormSection(formCategories.personal, 'personal')}
             </TabsContent>
-            <TabsContent value="travel">
-              <I94Import 
-                formData={formData}
-                onDataImported={(i94Data) => {
-                  if (i94Data) {
-                    // Get current YAML for previous_travel_page
-                    const currentPageData = getFilteredYamlData(['previous_travel_page'])
-                    console.log('current page yaml data', currentPageData)
-                    // Create new YAML with merged previous_travel_page data
-                    const mergedYaml = {
-                      previous_travel_page: {
-                        ...currentPageData?.previous_travel_page, // Keep existing fields
-                        ...i94Data.previous_travel_page // Override with new I94 data
-                      }
-                    }
-                    //log the merged yaml
-                    console.log('merged yaml', mergedYaml)
-                    // Update form with merged data
-                    handleFormDataLoad(
-                      mergedYaml,
-                      true,
-                      ['previous_travel_page']
-                    )
-                  }
-                }} 
-              />
+            <TabsContent value="travel" className="mt-6">
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-4">Travel Information</h2>
+                <I94Import 
+                  formData={formData}
+                  onDataImported={(data) => {
+                    // Handle imported data
+                  }} 
+                />
+                <DocumentUpload 
+                  onExtractData={(data) => {
+                    // Handle extracted data
+                  }} 
+                />
+              </div>
               {renderFormSection(formCategories.travel, 'travel')}
             </TabsContent>
             <TabsContent value="education">
