@@ -36,10 +36,8 @@ personal_page1:
   birth_state_province_na: "true"
   birth_country: "INDIA"
   other_names:
-    - surname: "KARINJEA"
-      givenname: "SANJAYA"
-    - surname: "KARINJEB"
-      givenname: "SANJAYB"
+    surname: "KARINJEB"
+    givenname: "SANJAYB"
   button_clicks: [1, 2]
 
 personal_page2:
@@ -134,23 +132,16 @@ travel_page:
     name: "AMAZON"
     relation: "SPOUSE"
   locations_to_visit:
-    - location: "SAN FRANCISCO, CALIFORNIA"
-    - location: "LOS ANGELES, CALIFORNIA"
+    location: "LOS ANGELES, CALIFORNIA"
   button_clicks: [1, 2]
 
 travel_companions_page:
   traveling_with_others: "Y"
   group_travel: "N"
   travel_companions:
-    - surname: "KARINJE"
-      given_name: "KABIR"
-      relationship: "CHILD"
-    - surname: "KAUSHIK"
-      given_name: "RAMYA"
-      relationship: "SPOUSE"
-    - surname: "KARINJE"
-      given_name: "SAMPOORNA"
-      relationship: "OTHER"
+    surname: "KARINJE"
+    given_name: "SAMPOORNA"
+    relationship: "OTHER"
   button_clicks: [1, 2]
 
 previous_travel_page:
@@ -181,25 +172,39 @@ previous_travel_page:
   previous_travel_details:
     - arrival:
         month: "OCT"
-        day: "20"
-        year: "2019"
+        day: "24"
+        year: "2024"
+      length_of_stay:
+        number: "5"
+        unit: "MONTH(S)"
+    - arrival:
+        month: "JUL"
+        day: "16"
+        year: "2024"
       length_of_stay:
         number: "3"
-        unit: "Year(s)"
+        unit: "MONTH(S)"
     - arrival:
-        month: "NOV"
-        day: "01"
-        year: "2020"
+        month: "APR"
+        day: "11"
+        year: "2024"
       length_of_stay:
-        number: "1"
-        unit: "Year(s)"
+        number: "3"
+        unit: "MONTH(S)"
     - arrival:
-        month: "JAN"
-        day: "08"
-        year: "2022"
+        month: "DEC"
+        day: "28"
+        year: "2023"
       length_of_stay:
-        number: "1"
-        unit: "Year(s)"
+        number: "4"
+        unit: "MONTH(S)"
+    - arrival:
+        month: "AUG"
+        day: "18"
+        year: "2023"
+      length_of_stay:
+        number: "4"
+        unit: "MONTH(S)"
   license_details:
     - number: "WDLBKLPB81FB"
       number_na: "true"
@@ -207,7 +212,9 @@ previous_travel_page:
     - number: "WDLBKLPB81FB"
       number_na: "true"
       state: "WASHINGTON"
-  button_clicks: [1, 2]
+  button_clicks:
+    - button_clicks: "1"
+    - button_clicks: "2"
 
 address_phone_page:
   home_address:
@@ -240,16 +247,12 @@ address_phone_page:
     handle: "SANJAY KARINJE"
   add_social: "Y"
   additional_phone_number:
-    - add_phone_number: "3524439623"
-    - add_phone_number: "2066592046"
+    add_phone_number: "2066592046"
   additional_email_address:
-    - add_email_address: "sanjay.karinje.7@gmail.com"
-    - add_email_address: "sanjay.karinje.9@gmail.com"
+    add_email_address: "sanjay.karinje.9@gmail.com"
   additional_social_media:
-    - add_platform: "FACEBOOK"
-      add_handle: "SANJAY KARINJE"
-    - add_platform: "INSTAGRAM"
-      add_handle: "SANJAY KARINJE"
+    add_platform: "INSTAGRAM"
+    add_handle: "SANJAY KARINJE"
   button_clicks: [1, 2]
 
 pptvisa_page:
@@ -319,14 +322,10 @@ relatives_page:
   has_immediate_relatives: "Y"
   has_other_relatives: "Y"
   immediate_relative_details:
-    - type: "SIBLING"
-      status: "NONIMMIGRANT"
-      surname: "KARINJE"
-      given_name: "SAMPOORNA"
-    - type: "SPOUSE"
-      status: "NONIMMIGRANT"
-      surname: "KAUSHIK"
-      given_name: "RAMYA"
+    type: "SPOUSE"
+    status: "NONIMMIGRANT"
+    surname: "KAUSHIK"
+    given_name: "RAMYA"
   button_clicks: [1, 2]
 
 workeducation1_page:
@@ -354,93 +353,50 @@ workeducation2_page:
   previously_employed: "Y"
   other_education: "Y"
   employment_information:
-    - employer: "AMAZON"
-      job_title: "DATA SCIENTIST"
-      address:
-        street1: "410 TERRY AVE N"
-        street2: ""
-        city: "SEATTLE"
-        state: "WA"
-        state_na: "true"
-        postal_code: "98109"
-        postal_code_na: "true"
-        country: "UNITED STATES OF AMERICA"
-      phone: "2062661000"
-      supervisor:
-        surname: "DU"
-        given_name: "ZHENG"
-        surname_na: "false"
-        given_name_na: "false"
-      start_date:
-        month: "SEP"
-        day: "01"
-        year: "2019"
-      end_date:
-        month: "MAY"
-        day: "29"
-        year: "2021"
-      duties: "DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS. DEVELOP METRIC AND DASHBOARDS."
-    - employer: "AMAZON"
-      job_title: "FINANCE MANAGER"
-      address:
-        street1: "410 TERRY AVE N"
-        street2: ""
-        city: "SEATTLE"
-        state: "WA"
-        state_na: "true"
-        postal_code: "98109"
-        postal_code_na: "true"
-        country: "UNITED STATES OF AMERICA"
-      phone: "2062661000"
-      supervisor:
-        surname: "NARAYAN"
-        given_name: "ASHOK"
-        surname_na: "true"
-        given_name_na: "true"
-      start_date:
-        month: "JUN"
-        day: "01"
-        year: "2018"
-      end_date:
-        month: "MAY"
-        day: "29"
-        year: "2020"
-      duties: "FINANCIAL ANALYSIS AND REPORTING"
+    employer: "AMAZON"
+    job_title: "FINANCE MANAGER"
+    address:
+      street1: "410 TERRY AVE N"
+      street2: ""
+      city: "SEATTLE"
+      state: "N/A"
+      state_na: "true"
+      postal_code: "N/A"
+      postal_code_na: "true"
+      country: "UNITED STATES OF AMERICA"
+    phone: "2062661000"
+    supervisor:
+      surname: "N/A"
+      given_name: "N/A"
+      surname_na: "true"
+      given_name_na: "true"
+    start_date:
+      month: "JUN"
+      day: "01"
+      year: "2018"
+    end_date:
+      month: "MAY"
+      day: "29"
+      year: "2020"
+    duties: "FINANCIAL ANALYSIS AND REPORTING"
   education:
-    - name: "UNIVERSITY OF FLORIDA"
-      course: "MBA"
-      address:
-        street1: "GAINESVILLE"
-        street2: ""
-        city: "GAINESVILLE"
-        state: "FL"
-        postal_code: "32611"
-        country: "UNITED STATES OF AMERICA"
-      start_date:
-        month: "APR"
-        day: "02"
-        year: "2010"
-      end_date:
-        month: "MAY"
-        day: "31"
-        year: "2011"
-    - name: "PESIT"
-      course: "B.E"
-      address:
-        street1: "Mysore Road"
-        street2: ""
-        city: "Bangalore"
-        state: "KA"
-        postal_code: "560020"
-        country: "INDIA"
-      start_date:
-        month: "APR"
-        day: "02"
-        year: "2002"
-      end_date:
-        month: "MAY"
-        day: "31"
-        year: "2006"
+    name: "PESIT"
+    course: "B.E"
+    address:
+      street1: "Mysore Road"
+      street2: ""
+      city: "Bangalore"
+      state: "KA"
+      postal_code: "560020"
+      country: "INDIA"
+    start_date:
+      month: "APR"
+      day: "02"
+      year: "2002"
+    end_date:
+      month: "MAY"
+      day: "31"
+      year: "2006"
   button_clicks: [1, 2]
 
 workeducation3_page:
@@ -467,14 +423,9 @@ workeducation3_page:
   insurgent_org_ind: "Y"
   insurgent_org_explanation: "I was involved with the Communist Party of India (Marxist)"
   language_name:
-    - language: "ENGLISH"
-    - language: "KANNADA"
-    - language: "TELUGU"
+    language: "TELUGU"
   countries_visited:
-    - country: "GERMANY"
-    - country: "CANADA"
-    - country: "INDIA"
-    - country: "ANGUILLA"
+    country: "INDIA"
   button_clicks: [1, 2]
 
 security_background1_page:
