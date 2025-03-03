@@ -1,45 +1,198 @@
 "use client"
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/accordion"
-import { ChevronDown, Upload } from "lucide-react"
+import { ChevronDown, Upload, CheckCircle2, Users } from "lucide-react"
 
 interface DocumentUploadProps {
   onExtractData?: (data: any) => void
+  formData: Record<string, string> // Add formData prop to check address country
 }
 
-export function DocumentUpload({ onExtractData }: DocumentUploadProps) {
+export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
+  
+  // File state
   const [licenseFile, setLicenseFile] = useState<File | null>(null)
   const [visaFile, setVisaFile] = useState<File | null>(null)
   const [i797File, setI797File] = useState<File | null>(null)
+  const [travelTicketFile, setTravelTicketFile] = useState<File | null>(null)
+  
+  // Address selection state
+  const [selectedAddress, setSelectedAddress] = useState<'home' | 'mailing' | null>(null)
+  
+  // Travel companions selection state
+  const [selectedCompanions, setSelectedCompanions] = useState<string[]>([])
+  
+  // Drag state
   const [isDraggingLicense, setIsDraggingLicense] = useState(false)
   const [isDraggingVisa, setIsDraggingVisa] = useState(false)
   const [isDraggingI797, setIsDraggingI797] = useState(false)
+  const [isDraggingTravelTicket, setIsDraggingTravelTicket] = useState(false)
+  
+  // We'll keep these state variables but won't show the buttons
+  const [isLicenseNA, setIsLicenseNA] = useState(false)
+  const [isVisaNA, setIsVisaNA] = useState(false)
+  const [isI797NA, setIsI797NA] = useState(false)
+  const [isTravelTicketNA, setIsTravelTicketNA] = useState(false)
+  
+  // Check if addresses are in the US
+  const homeAddressInUS = formData['ctl00_SiteContentPlaceHolder_FormView1_ddlCountry'] === 'UNITED STATES OF AMERICA'
+  const mailingAddressSameAsHome = formData['ctl00_SiteContentPlaceHolder_FormView1_rblMailingAddrSame'] === 'Y'
+  const mailingAddressInUS = mailingAddressSameAsHome 
+    ? homeAddressInUS 
+    : formData['ctl00_SiteContentPlaceHolder_FormView1_ddlMailCountry'] === 'UNITED STATES OF AMERICA'
+  
+  const showAddressSelection = homeAddressInUS || mailingAddressInUS
+  
+  // Check for relatives info
+  const hasFather = formData['ctl00_SiteContentPlaceHolder_FormView1_tbxFATHER_SURNAME'] || ''
+  const hasMother = formData['ctl00_SiteContentPlaceHolder_FormView1_tbxMOTHER_SURNAME'] || ''
+  
+  // Get other immediate relatives from formData
+  const getImmediateRelatives = () => {
+    const relatives: {id: string, name: string, relation: string}[] = []
+    
+    // Only add father if surname exists
+    if (hasFather) {
+      const fatherGivenName = formData['ctl00_SiteContentPlaceHolder_FormView1_tbxFATHER_GIVEN_NAME'] || ''
+      const fatherSurname = formData['ctl00_SiteContentPlaceHolder_FormView1_tbxFATHER_SURNAME'] || ''
+      if (fatherGivenName || fatherSurname) {
+        relatives.push({
+          id: 'father',
+          name: `${fatherGivenName} ${fatherSurname}`.trim(),
+          relation: 'Father'
+        })
+      }
+    }
+    
+    // Only add mother if surname exists
+    if (hasMother) {
+      const motherGivenName = formData['ctl00_SiteContentPlaceHolder_FormView1_tbxMOTHER_GIVEN_NAME'] || ''
+      const motherSurname = formData['ctl00_SiteContentPlaceHolder_FormView1_tbxMOTHER_SURNAME'] || ''
+      if (motherGivenName || motherSurname) {
+        relatives.push({
+          id: 'mother',
+          name: `${motherGivenName} ${motherSurname}`.trim(),
+          relation: 'Mother'
+        })
+      }
+    }
+    
+    // Check for spouse from spouse page
+    const spouseGivenName = formData['ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_GIVEN_NAME'] || ''
+    const spouseSurname = formData['ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_SURNAME'] || ''
+    if (spouseGivenName || spouseSurname) {
+      relatives.push({
+        id: 'spouse',
+        name: `${spouseGivenName} ${spouseSurname}`.trim(),
+        relation: 'Spouse'
+      })
+    }
+    
+    // Check for immediate relatives
+    const hasImmediateRelatives = formData['ctl00_SiteContentPlaceHolder_FormView1_rblUS_IMMED_RELATIVE_IND'] === 'Y'
+    
+    if (hasImmediateRelatives) {
+      // Find all immediate relatives in the formData
+      // The pattern for immediate relatives fields is:
+      // ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl{INDEX}_tbxUS_REL_SURNAME
+      // ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl{INDEX}_tbxUS_REL_GIVEN_NAME
+      // ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl{INDEX}_ddlUS_REL_TYPE
+      
+      // Start with index 00
+      let index = 0
+      let indexStr = index.toString().padStart(2, '0')
+      
+      // Check if first immediate relative exists
+      let relativeSurname = formData[`ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl${indexStr}_tbxUS_REL_SURNAME`]
+      let relativeGivenName = formData[`ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl${indexStr}_tbxUS_REL_GIVEN_NAME`]
+      let relativeType = formData[`ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl${indexStr}_ddlUS_REL_TYPE`]
+      
+      // Loop through all immediate relatives
+      while (relativeSurname || relativeGivenName) {
+        if (relativeSurname || relativeGivenName) {
+          // Use the relationship type if available, otherwise use a generic name
+          const relation = relativeType || 'Relative'
+          
+          relatives.push({
+            id: `immediate_relative_${index}`,
+            name: `${relativeGivenName || ''} ${relativeSurname || ''}`.trim(),
+            relation: relation
+          })
+        }
+        
+        // Move to the next index
+        index++
+        indexStr = index.toString().padStart(2, '0')
+        
+        // Check if next immediate relative exists
+        relativeSurname = formData[`ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl${indexStr}_tbxUS_REL_SURNAME`]
+        relativeGivenName = formData[`ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl${indexStr}_tbxUS_REL_GIVEN_NAME`]
+        relativeType = formData[`ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl${indexStr}_ddlUS_REL_TYPE`]
+      }
+    }
+    
+    return relatives
+  }
+  
+  const immediateRelatives = getImmediateRelatives()
+  const showCompanionsSelection = immediateRelatives.length > 0
 
   // Custom toggle handler to manage expand/collapse
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
   };
+  
+  const handleAddressSelect = (addressType: 'home' | 'mailing') => {
+    setSelectedAddress(addressType === selectedAddress ? null : addressType);
+  };
+  
+  const handleCompanionToggle = (companionId: string) => {
+    setSelectedCompanions(prev => {
+      if (prev.includes(companionId)) {
+        return prev.filter(id => id !== companionId);
+      } else {
+        return [...prev, companionId];
+      }
+    });
+  };
 
   const handleExtractData = async () => {
-    if (!licenseFile && !visaFile && !i797File) {
-      console.error('At least one document is required')
+    if (
+      (!licenseFile && !isLicenseNA) || 
+      (!visaFile && !isVisaNA) || 
+      (!i797File && !isI797NA) ||
+      (!travelTicketFile && !isTravelTicketNA) ||
+      (showAddressSelection && !selectedAddress)
+    ) {
+      console.error('All documents must be uploaded or marked as not applicable')
       return
     }
 
     try {
       setIsLoading(true)
       
+      // Get selected companions data
+      const companionsData = immediateRelatives
+        .filter(relative => selectedCompanions.includes(relative.id))
+        .map(relative => ({
+          name: relative.name,
+          relation: relative.relation
+        }))
+      
       // Here you would implement the actual extraction logic
       // For example, send files to an API endpoint
       console.log('Extracting data from files:', {
-        license: licenseFile?.name,
-        visa: visaFile?.name,
-        i797: i797File?.name
+        license: licenseFile?.name || 'N/A',
+        visa: visaFile?.name || 'N/A',
+        i797: i797File?.name || 'N/A',
+        travelTicket: travelTicketFile?.name || 'N/A',
+        selectedAddress: selectedAddress || 'N/A',
+        travelCompanions: companionsData
       })
       
       // Mock response for now
@@ -98,13 +251,14 @@ export function DocumentUpload({ onExtractData }: DocumentUploadProps) {
   const handleDrop = (
     e: React.DragEvent<HTMLDivElement>,
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
-    setIsDragging: React.Dispatch<React.SetStateAction<boolean>>
+    setIsDragging: React.Dispatch<React.SetStateAction<boolean>>,
+    isDisabled: boolean
   ) => {
     e.preventDefault()
     e.stopPropagation()
     setIsDragging(false)
     
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+    if (!isDisabled && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       setFile(e.dataTransfer.files[0])
       e.dataTransfer.clearData()
     }
@@ -116,66 +270,88 @@ export function DocumentUpload({ onExtractData }: DocumentUploadProps) {
     file, 
     setFile,
     isDragging,
-    setIsDragging
+    setIsDragging,
+    isNA,
+    setIsNA
   }: {
     id: string,
     label: string, 
     file: File | null, 
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
     isDragging: boolean,
-    setIsDragging: React.Dispatch<React.SetStateAction<boolean>>
-  }) => (
-    <div className="flex items-center justify-between">
-      <Label className="text-base font-medium">{label}</Label>
-      <div className="w-[400px]">
-        <div 
-          className={`flex items-center justify-center h-12 border-2 border-dashed rounded-lg px-4 cursor-pointer transition-colors
-            ${isDragging ? 'border-blue-500 bg-blue-50' : file ? 'border-blue-500' : 'border-blue-300'} hover:bg-blue-50`}
-          onDragEnter={(e) => handleDragEnter(e, setIsDragging)}
-          onDragLeave={(e) => handleDragLeave(e, setIsDragging)}
-          onDragOver={handleDragOver}
-          onDrop={(e) => handleDrop(e, setFile, setIsDragging)}
-          onClick={() => document.getElementById(id)?.click()}
-        >
-          {file ? (
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center gap-2 text-gray-700">
-                <svg className="w-5 h-5 flex-shrink-0 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="font-medium truncate">{file.name}</span>
-              </div>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setFile(null)
-                }}
-                className="text-gray-500 hover:text-red-500 p-1 h-auto flex-shrink-0"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </Button>
+    setIsDragging: React.Dispatch<React.SetStateAction<boolean>>,
+    isNA: boolean,
+    setIsNA: React.Dispatch<React.SetStateAction<boolean>>
+  }) => {
+    const isDisabled = isNA;
+    
+    return (
+      <div className="flex items-center justify-between">
+        <Label className="text-base font-medium flex-shrink-0 min-w-[230px]">{label}</Label>
+        <div className="flex-1 flex justify-end">
+          <div className="w-[400px]">
+            <div 
+              className={`flex items-center justify-center h-12 border-2 border-dashed rounded-lg px-4 cursor-pointer transition-colors
+                ${isDisabled ? 'bg-gray-100 border-gray-300 cursor-not-allowed opacity-60' : 
+                isDragging ? 'border-blue-500 bg-blue-50' : 
+                file ? 'border-blue-500' : 'border-blue-300'} 
+                ${!isDisabled && 'hover:bg-blue-50'}`}
+              onDragEnter={(e) => !isDisabled && handleDragEnter(e, setIsDragging)}
+              onDragLeave={(e) => !isDisabled && handleDragLeave(e, setIsDragging)}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, setFile, setIsDragging, isDisabled)}
+              onClick={() => !isDisabled && document.getElementById(id)?.click()}
+            >
+              {file ? (
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <svg className="w-5 h-5 flex-shrink-0 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium truncate">{file.name}</span>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setFile(null)
+                    }}
+                    className="text-gray-500 hover:text-red-500 p-1 h-auto flex-shrink-0"
+                    disabled={isDisabled}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 text-gray-500">
+                  <Upload className="h-5 w-5 text-gray-400 flex-shrink-0" />
+                  <span className="text-sm font-medium whitespace-nowrap">Click to upload or drag and drop</span>
+                </div>
+              )}
+              <input
+                id={id}
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                className="hidden"
+                onChange={(e) => handleFileChange(e, setFile)}
+                disabled={isDisabled}
+              />
             </div>
-          ) : (
-            <div className="flex items-center gap-3 text-gray-500">
-              <Upload className="h-5 w-5 text-gray-400 flex-shrink-0" />
-              <span className="text-sm font-medium whitespace-nowrap">Click to upload or drag and drop</span>
-            </div>
-          )}
-          <input
-            id={id}
-            type="file"
-            accept=".pdf,.jpg,.jpeg,.png"
-            className="hidden"
-            onChange={(e) => handleFileChange(e, setFile)}
-          />
+          </div>
         </div>
       </div>
-    </div>
-  ), []);
+    );
+  }, []);
+
+  // Get the first name only
+  const getFirstName = (fullName: string) => {
+    // Split the name by spaces and get the first part
+    const parts = fullName.trim().split(' ')
+    return parts[0] || fullName
+  }
 
   return (
     <div className="mb-6">
@@ -194,7 +370,7 @@ export function DocumentUpload({ onExtractData }: DocumentUploadProps) {
               onClick={handleToggle}
             >
               <h3 className="text-lg font-semibold text-gray-900 leading-none">
-                Upload applicable documents to fill form
+                Upload documents or select not applicable to fill form
               </h3>
             </div>
             
@@ -204,7 +380,13 @@ export function DocumentUpload({ onExtractData }: DocumentUploadProps) {
                 e.stopPropagation();
                 handleExtractData();
               }}
-              disabled={isLoading || (!licenseFile && !visaFile && !i797File)}
+              disabled={isLoading || (
+                (!licenseFile && !isLicenseNA) || 
+                (!visaFile && !isVisaNA) || 
+                (!i797File && !isI797NA) ||
+                (!travelTicketFile && !isTravelTicketNA) ||
+                (showAddressSelection && !selectedAddress)
+              )}
               className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-6 py-2 text-base"
             >
               {isLoading ? (
@@ -235,6 +417,8 @@ export function DocumentUpload({ onExtractData }: DocumentUploadProps) {
                 setFile={setLicenseFile}
                 isDragging={isDraggingLicense}
                 setIsDragging={setIsDraggingLicense}
+                isNA={isLicenseNA}
+                setIsNA={setIsLicenseNA}
               />
               
               {/* Previous US Visa Upload */}
@@ -245,6 +429,8 @@ export function DocumentUpload({ onExtractData }: DocumentUploadProps) {
                 setFile={setVisaFile}
                 isDragging={isDraggingVisa}
                 setIsDragging={setIsDraggingVisa}
+                isNA={isVisaNA}
+                setIsNA={setIsVisaNA}
               />
               
               {/* I797 Upload */}
@@ -255,7 +441,105 @@ export function DocumentUpload({ onExtractData }: DocumentUploadProps) {
                 setFile={setI797File}
                 isDragging={isDraggingI797}
                 setIsDragging={setIsDraggingI797}
+                isNA={isI797NA}
+                setIsNA={setIsI797NA}
               />
+              
+              {/* US Travel Ticket Upload */}
+              <FileUploadZone
+                id="travel-ticket-upload"
+                label="Upload US Travel Ticket:"
+                file={travelTicketFile}
+                setFile={setTravelTicketFile}
+                isDragging={isDraggingTravelTicket}
+                setIsDragging={setIsDraggingTravelTicket}
+                isNA={isTravelTicketNA}
+                setIsNA={setIsTravelTicketNA}
+              />
+              
+              {/* US Address Selection - only show if either home or mailing address is in the US */}
+              {showAddressSelection && (
+                <div className="flex items-center justify-between">
+                  <Label className="text-base font-medium flex-shrink-0 min-w-[230px]">Address where you'll stay in the US:</Label>
+                  <div className="flex-1 flex justify-end">
+                    <div className="w-[400px] flex gap-4">
+                      {homeAddressInUS && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleAddressSelect('home')}
+                          className={`flex items-center gap-2 ${
+                            selectedAddress === 'home' 
+                              ? 'border-green-500 bg-green-50 text-green-700' 
+                              : 'border-gray-300 text-gray-700'
+                          }`}
+                        >
+                          {selectedAddress === 'home' && (
+                            <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          )}
+                          Home Address
+                        </Button>
+                      )}
+                      {mailingAddressInUS && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleAddressSelect('mailing')}
+                          className={`flex items-center gap-2 ${
+                            selectedAddress === 'mailing' 
+                              ? 'border-green-500 bg-green-50 text-green-700' 
+                              : 'border-gray-300 text-gray-700'
+                          }`}
+                        >
+                          {selectedAddress === 'mailing' && (
+                            <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          )}
+                          Mailing Address
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Travel Companions Selection - show if relatives exist */}
+              {showCompanionsSelection && (
+                <div className="flex items-center justify-between">
+                  <Label className="text-base font-medium flex-shrink-0 min-w-[230px]">Travel companions:</Label>
+                  <div className="flex-1 flex justify-end">
+                    <div className="w-[400px] flex flex-wrap gap-2">
+                      {immediateRelatives.map(relative => (
+                        <Button
+                          key={relative.id}
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleCompanionToggle(relative.id)}
+                          className={`flex items-center gap-2 ${
+                            selectedCompanions.includes(relative.id)
+                              ? 'border-green-500 bg-green-50 text-green-700' 
+                              : 'border-gray-300 text-gray-700'
+                          }`}
+                          title={`${relative.name} (${relative.relation})`}
+                        >
+                          {selectedCompanions.includes(relative.id) && (
+                            <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          )}
+                          {getFirstName(relative.name)}
+                        </Button>
+                      ))}
+                      {immediateRelatives.length === 0 && (
+                        <div className="text-gray-500 text-sm italic flex items-center">
+                          <Users className="h-4 w-4 mr-2" />
+                          No family members found in your application
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </AccordionContent>
         </AccordionItem>

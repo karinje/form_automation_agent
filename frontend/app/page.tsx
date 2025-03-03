@@ -966,7 +966,6 @@ export default function Home() {
             </TabsContent>
             <TabsContent value="travel" className="mt-6">
               <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-4">Travel Information</h2>
                 <I94Import 
                   formData={formData}
                   onDataImported={(i94Data) => {
@@ -993,6 +992,7 @@ export default function Home() {
                   }} 
                 />
                 <DocumentUpload 
+                  formData={formData}
                   onExtractData={(data) => {
                     // Handle extracted data
                   }} 
