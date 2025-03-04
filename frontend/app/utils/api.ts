@@ -89,4 +89,43 @@ export const processI94 = async (data: {
     console.error('Error processing I94 data:', error);
     throw error;
   }
-}; 
+};
+
+export async function processDocuments(
+  files: {
+    license?: File,
+    visa?: File,
+    travelTicket?: File
+  },
+  metadata: {
+    yamlData?: any
+  }
+) {
+  try {
+    const formData = new FormData();
+    
+    // Add files to FormData
+    if (files.license) formData.append('license', files.license);
+    if (files.visa) formData.append('visa', files.visa);
+    if (files.travelTicket) formData.append('travelTicket', files.travelTicket);
+    
+    // Add metadata
+    formData.append('metadata', JSON.stringify(metadata));
+    
+    // Change to absolute URL to match other API calls
+    const response = await fetch('http://localhost:8000/api/documents/process', {
+      method: 'POST',
+      body: formData,
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to process documents: ${errorText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error processing documents:', error);
+    throw error;
+  }
+} 

@@ -4,7 +4,8 @@ import { useState, useCallback, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/accordion"
-import { ChevronDown, Upload, CheckCircle2, Users } from "lucide-react"
+import { ChevronDown, Upload, CheckCircle2, Users, XCircle } from "lucide-react"
+import { processDocuments } from '../utils/api'
 
 interface DocumentUploadProps {
   onExtractData?: (data: any) => void
@@ -15,10 +16,9 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
   const [isLoading, setIsLoading] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
   
-  // File state
+  // File state - REMOVED i797File
   const [licenseFile, setLicenseFile] = useState<File | null>(null)
   const [visaFile, setVisaFile] = useState<File | null>(null)
-  const [i797File, setI797File] = useState<File | null>(null)
   const [travelTicketFile, setTravelTicketFile] = useState<File | null>(null)
   
   // Address selection state
@@ -27,16 +27,18 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
   // Travel companions selection state
   const [selectedCompanions, setSelectedCompanions] = useState<string[]>([])
   
-  // Drag state
+  // Add state for "None" selection
+  const [noCompanions, setNoCompanions] = useState(false)
+  
+  // Drag state - REMOVED isDraggingI797
   const [isDraggingLicense, setIsDraggingLicense] = useState(false)
   const [isDraggingVisa, setIsDraggingVisa] = useState(false)
-  const [isDraggingI797, setIsDraggingI797] = useState(false)
   const [isDraggingTravelTicket, setIsDraggingTravelTicket] = useState(false)
   
   // We'll keep these state variables but won't show the buttons
+  // REMOVED isI797NA
   const [isLicenseNA, setIsLicenseNA] = useState(false)
   const [isVisaNA, setIsVisaNA] = useState(false)
-  const [isI797NA, setIsI797NA] = useState(false)
   const [isTravelTicketNA, setIsTravelTicketNA] = useState(false)
   
   // Check if addresses are in the US
@@ -140,7 +142,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
   }
   
   const immediateRelatives = getImmediateRelatives()
-  const showCompanionsSelection = immediateRelatives.length > 0
+  const showCompanionsSelection = true // Always show companions section so "None" is always available
 
   // Custom toggle handler to manage expand/collapse
   const handleToggle = () => {
@@ -151,59 +153,144 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
     setSelectedAddress(addressType === selectedAddress ? null : addressType);
   };
   
+  // Modified to handle "None" selection
   const handleCompanionToggle = (companionId: string) => {
-    setSelectedCompanions(prev => {
-      if (prev.includes(companionId)) {
-        return prev.filter(id => id !== companionId);
-      } else {
-        return [...prev, companionId];
-      }
-    });
+    if (noCompanions) {
+      // If "None" was previously selected, deselect it and select the new companion
+      setNoCompanions(false);
+      setSelectedCompanions([companionId]);
+    } else {
+      setSelectedCompanions(prev => {
+        if (prev.includes(companionId)) {
+          return prev.filter(id => id !== companionId);
+        } else {
+          return [...prev, companionId];
+        }
+      });
+    }
+  };
+  
+  // Handler for the "None" button
+  const handleNoneSelection = () => {
+    if (noCompanions) {
+      // If "None" is already selected, deselect it
+      setNoCompanions(false);
+    } else {
+      // Select "None" and clear all other companions
+      setNoCompanions(true);
+      setSelectedCompanions([]);
+    }
   };
 
   const handleExtractData = async () => {
-    if (
-      (!licenseFile && !isLicenseNA) || 
-      (!visaFile && !isVisaNA) || 
-      (!i797File && !isI797NA) ||
-      (!travelTicketFile && !isTravelTicketNA) ||
-      (showAddressSelection && !selectedAddress)
-    ) {
-      console.error('All documents must be uploaded or marked as not applicable')
-      return
-    }
-
     try {
       setIsLoading(true)
       
-      // Get selected companions data
-      const companionsData = immediateRelatives
-        .filter(relative => selectedCompanions.includes(relative.id))
-        .map(relative => ({
-          name: relative.name,
-          relation: relative.relation
-        }))
+      // Prepare files object for upload - REMOVED i797
+      const files: any = {}
+      if (licenseFile) files.license = licenseFile
+      if (visaFile) files.visa = visaFile
+      if (travelTicketFile) files.travelTicket = travelTicketFile
       
-      // Here you would implement the actual extraction logic
-      // For example, send files to an API endpoint
-      console.log('Extracting data from files:', {
-        license: licenseFile?.name || 'N/A',
-        visa: visaFile?.name || 'N/A',
-        i797: i797File?.name || 'N/A',
-        travelTicket: travelTicketFile?.name || 'N/A',
-        selectedAddress: selectedAddress || 'N/A',
-        travelCompanions: companionsData
-      })
-      
-      // Mock response for now
-      const mockData = {
-        success: true,
-        message: 'Data extracted successfully',
-        // Additional extracted data would go here
+      // Prepare metadata with YAML-friendly structures
+      const metadata: any = {
+        yamlData: {} // This will hold our YAML-ready data
       }
       
-      if (onExtractData) {
-        onExtractData(mockData)
+      // If home address is selected, format data for YAML
+      if (selectedAddress === 'home') {
+        metadata.yamlData.us_contact_page = {
+          contact_type: "HOME_ADDRESS",
+          address: {
+            street1: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_ADDR_LN1'] || '',
+            street2: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_ADDR_LN2'] || '',
+            city: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_ADDR_CITY'] || '',
+            state: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_ADDR_STATE'] || '',
+            postal_code: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxAPP_ADDR_POSTAL_CD'] || '',
+            country: formData['ctl00_SiteContentPlaceHolder_FormView1_ddlCountry'] || ''
+          }
+        }
+      } 
+      // If mailing address is selected
+      else if (selectedAddress === 'mailing') {
+        metadata.yamlData.us_contact_page = {
+          contact_type: "MAILING_ADDRESS",
+          address: {
+            street1: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_LN1'] || '',
+            street2: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_LN2'] || '',
+            city: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_CITY'] || '',
+            state: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_STATE'] || '',
+            postal_code: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxMAILING_ADDR_POSTAL_CD'] || '',
+            country: formData['ctl00_SiteContentPlaceHolder_FormView1_ddlMailCountry'] || ''
+          }
+        }
+      }
+      
+      // Modified for companions handling with "None" option
+      if (noCompanions) {
+        metadata.yamlData.travel_companions_page = {
+          traveling_with_others: "N",
+          travel_companions: [{ note: "None Chosen" }]
+        }
+      } else if (selectedCompanions.length > 0) {
+        metadata.yamlData.travel_companions_page = {
+          traveling_with_others: "Y",
+          travel_companions: selectedCompanions.map(id => {
+            const relative = immediateRelatives.find(r => r.id === id);
+            if (!relative) return null;
+            
+            // Format based on relative type
+            if (relative.id === 'father') {
+              return {
+                type: "FATHER",
+                surname: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxFATHER_SURNAME'] || '',
+                given_name: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxFATHER_GIVEN_NAME'] || '',
+                relationship: "PARENT"
+              };
+            } 
+            else if (relative.id === 'mother') {
+              return {
+                type: "MOTHER",
+                surname: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxMOTHER_SURNAME'] || '',
+                given_name: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxMOTHER_GIVEN_NAME'] || '',
+                relationship: "PARENT"
+              };
+            }
+            else if (relative.id === 'spouse') {
+              return {
+                type: "SPOUSE",
+                surname: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_SURNAME'] || '',
+                given_name: formData['ctl00_SiteContentPlaceHolder_FormView1_tbxSPOUSE_GIVEN_NAME'] || '',
+                relationship: "SPOUSE"
+              };
+            }
+            // For immediate relatives
+            else if (relative.id.startsWith('immediate_relative_')) {
+              const index = relative.id.split('_').pop();
+              const indexStr = index?.padStart(2, '0');
+              const relType = formData[`ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl${indexStr}_ddlUS_REL_TYPE`] || '';
+              
+              return {
+                type: relType,
+                surname: formData[`ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl${indexStr}_tbxUS_REL_SURNAME`] || '',
+                given_name: formData[`ctl00_SiteContentPlaceHolder_FormView1_dlUSRelatives_ctl${indexStr}_tbxUS_REL_GIVEN_NAME`] || '',
+                relationship: relType === "SPOUSE" ? "SPOUSE" : 
+                              relType === "CHILD" ? "CHILD" : 
+                              relType === "SIBLING" ? "OTHER RELATIVE" : "OTHER RELATIVE"
+              };
+            }
+            
+            return null;
+          }).filter(Boolean)
+        }
+      }
+      
+      // Call the API
+      const response = await processDocuments(files, metadata)
+      
+      // If successful and handler is provided, call it with the response data
+      if (response.status === 'success' && onExtractData) {
+        onExtractData(response.data)
       }
       
     } catch (error) {
@@ -381,11 +468,8 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                 handleExtractData();
               }}
               disabled={isLoading || (
-                (!licenseFile && !isLicenseNA) || 
-                (!visaFile && !isVisaNA) || 
-                (!i797File && !isI797NA) ||
-                (!travelTicketFile && !isTravelTicketNA) ||
-                (showAddressSelection && !selectedAddress)
+                !licenseFile && !visaFile && !travelTicketFile && 
+                !selectedAddress && selectedCompanions.length === 0
               )}
               className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-6 py-2 text-base"
             >
@@ -431,18 +515,6 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                 setIsDragging={setIsDraggingVisa}
                 isNA={isVisaNA}
                 setIsNA={setIsVisaNA}
-              />
-              
-              {/* I797 Upload */}
-              <FileUploadZone
-                id="i797-upload"
-                label="Upload I797 for current visa:"
-                file={i797File}
-                setFile={setI797File}
-                isDragging={isDraggingI797}
-                setIsDragging={setIsDraggingI797}
-                isNA={isI797NA}
-                setIsNA={setIsI797NA}
               />
               
               {/* US Travel Ticket Upload */}
@@ -504,42 +576,62 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                 </div>
               )}
               
-              {/* Travel Companions Selection - show if relatives exist */}
-              {showCompanionsSelection && (
-                <div className="flex items-center justify-between">
-                  <Label className="text-base font-medium flex-shrink-0 min-w-[230px]">Travel companions:</Label>
-                  <div className="flex-1 flex justify-end">
-                    <div className="w-[400px] flex flex-wrap gap-2">
-                      {immediateRelatives.map(relative => (
-                        <Button
-                          key={relative.id}
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleCompanionToggle(relative.id)}
-                          className={`flex items-center gap-2 ${
-                            selectedCompanions.includes(relative.id)
-                              ? 'border-green-500 bg-green-50 text-green-700' 
-                              : 'border-gray-300 text-gray-700'
-                          }`}
-                          title={`${relative.name} (${relative.relation})`}
-                        >
-                          {selectedCompanions.includes(relative.id) && (
-                            <CheckCircle2 className="h-4 w-4 text-green-500" />
-                          )}
-                          {getFirstName(relative.name)}
-                        </Button>
-                      ))}
-                      {immediateRelatives.length === 0 && (
-                        <div className="text-gray-500 text-sm italic flex items-center">
-                          <Users className="h-4 w-4 mr-2" />
-                          No family members found in your application
-                        </div>
+              {/* Travel Companions Selection - ALWAYS show */}
+              <div className="flex items-center justify-between">
+                <Label className="text-base font-medium flex-shrink-0 min-w-[230px]">Travel companions:</Label>
+                <div className="flex-1 flex justify-end">
+                  <div className="w-[400px] flex flex-wrap gap-2">
+                    {/* Add None button first */}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleNoneSelection}
+                      className={`flex items-center gap-2 ${
+                        noCompanions
+                          ? 'border-red-500 bg-red-50 text-red-700' 
+                          : 'border-gray-300 text-gray-700'
+                      }`}
+                      title="No travel companions"
+                    >
+                      {noCompanions && (
+                        <XCircle className="h-4 w-4 text-red-500" />
                       )}
-                    </div>
+                      None
+                    </Button>
+                    
+                    {/* Only show relatives if "None" is not selected */}
+                    {!noCompanions && immediateRelatives.map(relative => (
+                      <Button
+                        key={relative.id}
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleCompanionToggle(relative.id)}
+                        className={`flex items-center gap-2 ${
+                          selectedCompanions.includes(relative.id)
+                            ? 'border-green-500 bg-green-50 text-green-700' 
+                            : 'border-gray-300 text-gray-700'
+                        }`}
+                        title={`${relative.name} (${relative.relation})`}
+                        disabled={noCompanions}
+                      >
+                        {selectedCompanions.includes(relative.id) && (
+                          <CheckCircle2 className="h-4 w-4 text-green-500" />
+                        )}
+                        {getFirstName(relative.name)}
+                      </Button>
+                    ))}
+                    
+                    {immediateRelatives.length === 0 && !noCompanions && (
+                      <div className="text-gray-500 text-sm italic flex items-center">
+                        <Users className="h-4 w-4 mr-2" />
+                        No family members found in your application
+                      </div>
+                    )}
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>

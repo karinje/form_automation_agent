@@ -5,6 +5,7 @@ from .routes import ds160
 from .routes import linkedin
 from .routes import pdf  # Import the new route
 from .routes import i94
+from .routes import documents
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -76,6 +77,7 @@ app.include_router(ds160.router, prefix="/api/ds160", tags=["ds160"])
 app.include_router(linkedin.router, prefix="/api/linkedin", tags=["linkedin"])
 app.include_router(pdf.router, prefix="/api")
 app.include_router(i94.router, prefix="/api/i94", tags=["i94"])
+app.include_router(documents.router, prefix="/api/documents", tags=["documents"])
 
 @app.get("/")
 async def root():

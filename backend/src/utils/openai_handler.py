@@ -226,3 +226,38 @@ class OpenAIHandler:
             # Clean up
             if loop and not loop.is_closed():
                 loop.close() 
+
+    async def extract_text_from_image(self, image_path: str) -> Optional[str]:
+        """Extract text from an image using GPT-4 Vision"""
+        try:
+            import base64
+            
+            # Read and encode the image
+            with open(image_path, "rb") as image_file:
+                base64_image = base64.b64encode(image_file.read()).decode('utf-8')
+            
+            # Call the OpenAI Vision API
+            response = await self.client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": "Extract all text from this document image. Focus on obtaining key information like names, dates, addresses, ID numbers, visa details, travel information, etc. Format the output as plain text."},
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/jpeg;base64,{base64_image}"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                max_tokens=1500
+            )
+            
+            return response.choices[0].message.content
+            
+        except Exception as e:
+            logger.error(f"Error extracting text from image: {str(e)}")
+            return None 
