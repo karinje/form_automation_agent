@@ -186,7 +186,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
     try {
       setIsLoading(true)
       
-      // Prepare files object for upload - REMOVED i797
+      // Prepare files object for upload
       const files: any = {}
       if (licenseFile) files.license = licenseFile
       if (visaFile) files.visa = visaFile
@@ -288,9 +288,9 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
       // Call the API
       const response = await processDocuments(files, metadata)
       
-      // If successful and handler is provided, call it with the response data
+      // If successful and handler is provided, pass the YAML data directly
       if (response.status === 'success' && onExtractData) {
-        onExtractData(response.data)
+        onExtractData(response.data);  // Pass the YAML structure directly
       }
       
     } catch (error) {
@@ -457,7 +457,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
               onClick={handleToggle}
             >
               <h3 className="text-lg font-semibold text-gray-900 leading-none">
-                Upload documents or select not applicable to fill form
+                Upload documents to import data
               </h3>
             </div>
             

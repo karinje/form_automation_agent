@@ -167,8 +167,8 @@ class DocumentHandler:
                 stay_address: # select this address from YAML DATA section above
                     street1: ""  # Street address line 1
                     street2: ""  # Optional: Street address line 2
-                    city: ""  # City
-                    state: ""  # U.S. state - select from state list
+                    city: ""  # City 
+                    state: ""  # U.S. state - full state name not abbreviation
                     zip: ""  # U.S. ZIP code
 
             travel_companions_page:

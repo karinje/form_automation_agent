@@ -18,6 +18,7 @@ import type { FormCategory, FormCategories, FormDefinition } from "@/types/form-
 import { processWithOpenAI, processLinkedIn, runDS160 } from './utils/api'
 import { I94Import } from "@/components/I94Import"
 import { DocumentUpload } from "@/components/DocumentUpload"
+import { PassportUpload } from "@/components/PassportUpload"
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -698,6 +699,45 @@ export default function Home() {
       })}
     </Accordion>
   )
+
+  // Handler for document extraction
+  const handleDocumentExtraction = (extractedData: any) => {
+    if (extractedData) {
+      // Get current YAML for travel-related pages
+      const currentPageData = getFilteredYamlData([
+        'travel_page', 
+        'travel_companions_page', 
+        'previous_travel_page'
+      ]);
+      
+      // Create merged YAML with both existing and new data
+      const mergedYaml = {
+        travel_page: {
+          ...currentPageData?.travel_page,
+          ...extractedData.travel_page
+        },
+        travel_companions_page: {
+          ...currentPageData?.travel_companions_page,
+          ...extractedData.travel_companions_page
+        },
+        previous_travel_page: {
+          ...currentPageData?.previous_travel_page,
+          ...extractedData.previous_travel_page
+        }
+      };
+      
+      // Update form with merged data
+      handleFormDataLoad(
+        mergedYaml,
+        true,
+        ['travel_page', 'travel_companions_page', 'previous_travel_page']
+      );
+      
+      // Navigate to travel section
+      setCurrentTab('travel');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {(isProcessing || isProcessingLLM) && (
@@ -962,6 +1002,66 @@ export default function Home() {
               })}
             </TabsList>
             <TabsContent value="personal">
+              <div className="mb-6">
+                <PassportUpload 
+                  formData={formData}
+                  onExtractData={(passportData) => {
+                    if (passportData) {
+                      // Get current YAML for personal pages
+                      const currentPageData = getFilteredYamlData([
+                        'personal_page1', 
+                        'personal_page2',
+                        'address_phone_page',
+                        'pptvisa_page', 
+                        'relatives_page',
+                        'spouse_page'
+                      ]);
+                      
+                      // Create merged YAML with both existing and new data
+                      const mergedYaml = {
+                        personal_page1: {
+                          ...currentPageData?.personal_page1,
+                          ...passportData.personal_page1
+                        },
+                        personal_page2: {
+                          ...currentPageData?.personal_page2,
+                          ...passportData.personal_page2
+                        },
+                        address_phone_page: {
+                          ...currentPageData?.address_phone_page,
+                          ...passportData.address_phone_page
+                        },
+                        pptvisa_page: {
+                          ...currentPageData?.pptvisa_page,
+                          ...passportData.pptvisa_page
+                        },
+                        relatives_page: {
+                          ...currentPageData?.relatives_page,
+                          ...passportData.relatives_page
+                        },
+                        spouse_page: {
+                          ...currentPageData?.spouse_page,
+                          ...passportData.spouse_page
+                        }
+                      };
+                      
+                      // Update form with merged data
+                      handleFormDataLoad(
+                        mergedYaml,
+                        true,
+                        [
+                          'personal_page1', 
+                          'personal_page2',
+                          'address_phone_page',
+                          'pptvisa_page', 
+                          'relatives_page',
+                          'spouse_page'
+                        ]
+                      );
+                    }
+                  }} 
+                />
+              </div>
               {renderFormSection(formCategories.personal, 'personal')}
             </TabsContent>
             <TabsContent value="travel" className="mt-6">
@@ -993,9 +1093,7 @@ export default function Home() {
                 />
                 <DocumentUpload 
                   formData={formData}
-                  onExtractData={(data) => {
-                    // Handle extracted data
-                  }} 
+                  onExtractData={handleDocumentExtraction} 
                 />
               </div>
               {renderFormSection(formCategories.travel, 'travel')}

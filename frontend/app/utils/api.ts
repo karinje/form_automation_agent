@@ -128,4 +128,40 @@ export async function processDocuments(
     console.error('Error processing documents:', error);
     throw error;
   }
+}
+
+export async function processPassport(
+  files: {
+    passportFirst?: File,
+    passportLast?: File
+  },
+  metadata: {
+    yamlData?: any
+  }
+) {
+  try {
+    const formData = new FormData();
+    
+    // Add files to FormData
+    if (files.passportFirst) formData.append('passportFirst', files.passportFirst);
+    if (files.passportLast) formData.append('passportLast', files.passportLast);
+    
+    // Add metadata
+    formData.append('metadata', JSON.stringify(metadata));
+    
+    const response = await fetch('http://localhost:8000/api/passport/process', {
+      method: 'POST',
+      body: formData,
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to process passport: ${errorText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error processing passport:', error);
+    throw error;
+  }
 } 

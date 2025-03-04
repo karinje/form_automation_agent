@@ -6,6 +6,7 @@ from .routes import linkedin
 from .routes import pdf  # Import the new route
 from .routes import i94
 from .routes import documents
+from .routes import passport
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -78,7 +79,7 @@ app.include_router(linkedin.router, prefix="/api/linkedin", tags=["linkedin"])
 app.include_router(pdf.router, prefix="/api")
 app.include_router(i94.router, prefix="/api/i94", tags=["i94"])
 app.include_router(documents.router, prefix="/api/documents", tags=["documents"])
-
+app.include_router(passport.router, prefix="/api/passport", tags=["passport"])
 @app.get("/")
 async def root():
     return {"message": "DS-160 Backend API"}

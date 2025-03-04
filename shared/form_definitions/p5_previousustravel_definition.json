@@ -419,7 +419,7 @@
             "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_TYPE_IND_1"
           },
           "text_phrase": "Are you applying for the same type of visa?",
-          "parent_text_phrase": "Are you applying for the same type of visa?"
+          "parent_text_phrase": "Previous Visa Details"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxPREV_VISA_ISSUED_DTEYear",
@@ -465,7 +465,7 @@
             "N": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_LOST_IND_1"
           },
           "text_phrase": "Has your U.S. Visa ever been lost or stolen?",
-          "parent_text_phrase": "Previous Visa Details"
+          "parent_text_phrase": "Has your U.S. Visa ever been lost or stolen?"
         },
         {
           "name": "ctl00_SiteContentPlaceHolder_FormView1_rblPREV_VISA_SAME_CNTRY_IND",
@@ -495,7 +495,7 @@
               "type": "textarea",
               "value": "",
               "text_phrase": "Explain",
-              "parent_text_phrase": "",
+              "parent_text_phrase": "Has your U.S. Visa ever been cancelled or revoked?",
               "maxlength": "4000",
               "has_na_checkbox": false
             }
@@ -535,7 +535,7 @@
               "type": "textarea",
               "value": "",
               "text_phrase": "Explain",
-              "parent_text_phrase": "Previous Visa Lost Details",
+              "parent_text_phrase": "Has your U.S. Visa ever been lost or stolen?",
               "maxlength": "4000",
               "has_na_checkbox": false
             },
@@ -544,7 +544,7 @@
               "type": "text",
               "value": "",
               "text_phrase": "Previous Visa Lost Year",
-              "parent_text_phrase": "Previous Visa Lost Details",
+              "parent_text_phrase": "Has your U.S. Visa ever been lost or stolen?",
               "maxlength": "4",
               "has_na_checkbox": false
             }
