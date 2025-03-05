@@ -10,6 +10,7 @@ import { processI94 } from '../utils/api'
 import { handleFormDataLoad } from '../utils/form-helpers'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ChevronDown } from "lucide-react"
+import { countFieldsByPage } from '../utils/field-counter'
 
 interface I94ImportProps {
   formData: Record<string, string>
@@ -24,6 +25,9 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
   const [documentNumber, setDocumentNumber] = useState('')
   const [documentCountry, setDocumentCountry] = useState('')
   const [isExpanded, setIsExpanded] = useState(false)
+  const [extractionProgress, setExtractionProgress] = useState<string[]>([])
+  const [extractionStatus, setExtractionStatus] = useState<'idle' | 'extracting' | 'filling' | 'complete'>('idle')
+  const [fieldCounts, setFieldCounts] = useState<Record<string, number>>({})
 
   // Initialize form data from personal page and passport info
   useEffect(() => {
@@ -137,6 +141,9 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
 
     try {
       setIsLoading(true)
+      setExtractionStatus('extracting')
+      setExtractionProgress(['Connecting to CBP I-94 website...', 'Retrieving travel history...'])
+      
       const result = await processI94({
         givenName,
         surname,
@@ -148,6 +155,21 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
       console.log('I94 import result:', result)
       
       if (result.status === 'success' && result.data) {
+        setExtractionStatus('complete')
+        setExtractionProgress(prev => [...prev, 'I-94 data retrieval complete'])
+        
+        // Use the shared utility function
+        const counts = countFieldsByPage(result.data)
+        setFieldCounts(counts)
+        
+        // Add field counts to progress messages
+        const countMessages = Object.entries(counts).map(([page, count]) => {
+          const readablePage = page.replace('_page', '').replace(/_/g, ' ')
+          return `${readablePage}: ${count} fields`
+        })
+        
+        setExtractionProgress(prev => [...prev, ...countMessages])
+        
         if (onDataImported) {
           onDataImported(result.data)
           setIsExpanded(false) // Collapse after successful import
@@ -158,6 +180,8 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
       
     } catch (error) {
       console.error('I94 import error:', error)
+      setExtractionProgress(prev => [...prev, `Error: ${error.message || 'Unknown error'}`])
+      setExtractionStatus('idle')
     } finally {
       setIsLoading(false)
     }
@@ -273,6 +297,40 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+      {extractionStatus !== 'idle' && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <div className="flex flex-col items-center">
+              {extractionStatus !== 'complete' && (
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+              )}
+              
+              <h3 className="text-lg font-semibold mb-4">
+                {extractionStatus === 'extracting' ? 'Retrieving Travel History' : 
+                 extractionStatus === 'filling' ? 'Filling Form Fields' : 
+                 'Data Retrieval Complete'}
+              </h3>
+              
+              <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
+                {extractionProgress.map((msg, idx) => (
+                  <div key={idx} className="text-sm">
+                    {msg}
+                  </div>
+                ))}
+              </div>
+              
+              {extractionStatus === 'complete' && (
+                <Button 
+                  onClick={() => setExtractionStatus('idle')}
+                  className="mt-4"
+                >
+                  Close
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 } 

@@ -611,11 +611,11 @@
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType",
       "type": "dropdown",
       "value": [
-        "SAME AS HOME ADDRESS",
-        "SAME AS MAILING ADDRESS",
-        "SAME AS U.S. CONTACT ADDRESS",
-        "DO NOT KNOW",
-        "OTHER (SPECIFY ADDRESS)"
+        "Same as Home Address",
+        "Same as Mailing Address",
+        "Same as U.S. Contact Address",
+        "Do Not Know",
+        "Other (Specify Address)"
       ],
       "text_phrase": "Spouse's Address",
       "parent_text_phrase": "Spouse's Address"

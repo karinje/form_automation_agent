@@ -55,11 +55,11 @@
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlWhoIsPaying",
       "type": "dropdown",
       "value": [
-        "SELF",
-        "OTHER PERSON",
-        "PRESENT EMPLOYER",
-        "EMPLOYER IN THE U.S.",
-        "OTHER COMPANY/ORGANIZATION"
+        "Self",
+        "Other Person",
+        "Present Employer",
+        "Employer in the U.S.",
+        "Other Company/Organization"
       ],
       "text_phrase": "Person/Entity Paying for Your Trip",
       "parent_text_phrase": "Person/Entity Paying for Your Trip"
@@ -6808,10 +6808,10 @@
           "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlTRAVEL_LOS_CD",
           "type": "dropdown",
           "value": [
-            "YEAR(S)",
-            "MONTH(S)",
-            "WEEK(S)",
-            "DAY(S)"
+            "Year(s)",
+            "Month(s)",
+            "Week(s)",
+            "Day(s)"
           ],
           "text_phrase": "Inteded Length of Stay - Period",
           "parent_text_phrase": "Intended travel plans"

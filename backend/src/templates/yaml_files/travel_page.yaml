@@ -1,7 +1,7 @@
 travel_page:
   purpose_of_trip: ""  # Purpose of Trip to the U.S.
   other_purpose_of_trip: ""  # Specify visa type
-  who_is_paying: ""  # Person/Entity Paying for Your Trip SELF, OTHER COMPANY/ORGANIZATION, PRESENT EMPLOYER, EMPLOYER IN THE U.S., OTHER PERSON
+  who_is_paying: ""  # Person/Entity Paying for Your Trip - choose one from (case sensitive): Self, Other Company/Organization, Present Employer, Employer in the U.S., Other Person
   specific_travel_plans: ""  # Have you made specific travel plans?
   investor_issued_visa: "" # if selection on first dropdown is "TREATY TRADER OR INVESTOR (E)" and second dropdown is EXECUTIVE/MGR/ESSENTIAL EMP (E1) or (E1)
   
@@ -56,7 +56,7 @@ travel_page:
       year: ""  # Intended Date of Arrival from input text 4-digit year
     duration: # Length of intended stay from input text
       number: ""  # Length of intended stay - number
-      unit: ""  # Select from: YEAR(S), MONTH(S), WEEK(S), DAY(S)
+      unit: ""  # Select from: Year(s), Month(s), Week(s), Day(s). Make sure to enter value exactly case sensitive
 
   # Stay Address
   stay_address:

@@ -13,5 +13,6 @@ form_mapping = {
     "start_date.day": "ctl00_SiteContentPlaceHolder_FormView1_ddlEmpDateFromDay", 
     "start_date.year": "ctl00_SiteContentPlaceHolder_FormView1_tbxEmpDateFromYear",
     "monthly_salary": "ctl00_SiteContentPlaceHolder_FormView1_tbxCURR_MONTHLY_SALARY",
+    "monthly_salary_na": "ctl00_SiteContentPlaceHolder_FormView1_cbxCURR_MONTHLY_SALARY_NA",
     "duties": "ctl00_SiteContentPlaceHolder_FormView1_tbxDescribeDuties"
 } 

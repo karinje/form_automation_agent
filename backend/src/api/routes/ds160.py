@@ -1,12 +1,15 @@
 from fastapi import FastAPI, UploadFile, File, APIRouter, Request, HTTPException
+from fastapi.responses import StreamingResponse
 import tempfile
 import subprocess
 import os
 import sys
 import json
+import asyncio
 from pathlib import Path
 import logging
 import yaml
+from typing import AsyncGenerator
 
 # Add the project root to Python path
 src_path = Path(__file__).parent.parent.parent
@@ -23,6 +26,9 @@ router = APIRouter()
 # Load form definitions
 page_definitions = {}
 form_definitions_dir = Path(__file__).parent.parent.parent.parent.parent / 'shared/form_definitions'
+
+# Create a global message queue for progress updates
+progress_queue = asyncio.Queue()
 
 # Load all form definitions
 def load_form_definitions():
@@ -88,39 +94,64 @@ def load_form_definitions():
 # Load definitions when module is imported
 load_form_definitions()
 
+async def process_ds160_with_updates(content: bytes) -> AsyncGenerator[str, None]:
+    """Process DS-160 form and yield progress updates"""
+    try:
+        # Parse YAML content
+        form_data = yaml.safe_load(content)
+        logger.info(f"Parsed YAML data with keys: {list(form_data.keys() if form_data else [])}")
+        
+        # Initialize handlers
+        browser_handler = BrowserHandler(headless=False)
+        form_handler = FormHandler(progress_queue)  # Pass the queue to FormHandler
+        
+        # Start processing in background task
+        process_task = asyncio.create_task(
+            form_handler.process_with_browser(browser_handler, form_data, page_definitions)
+        )
+        
+        # Stream updates from the queue
+        yield json.dumps({"status": "info", "message": "Starting DS-160 form processing..."})
+        
+        while True:
+            try:
+                # Get message with timeout to check if process has completed
+                message = await asyncio.wait_for(progress_queue.get(), timeout=1.0)
+                yield json.dumps(message)
+                progress_queue.task_done()
+                
+                # Break if we receive completion message
+                if message.get("status") == "complete":
+                    break
+                    
+            except asyncio.TimeoutError:
+                # Check if the process task is done
+                if process_task.done():
+                    # Get the result or exception
+                    try:
+                        result = process_task.result()
+                        yield json.dumps({"status": "complete", "message": "DS-160 processing completed successfully"})
+                    except Exception as e:
+                        logger.error(f"Process task failed: {str(e)}")
+                        yield json.dumps({"status": "error", "message": f"Processing failed: {str(e)}"})
+                    break
+        
+    except Exception as e:
+        logger.error(f"Error in DS-160 processing: {str(e)}", exc_info=True)
+        yield json.dumps({"status": "error", "message": f"Processing failed: {str(e)}"})
+
 @router.post("/run-ds160")
 async def run_ds160(file: UploadFile = File(...)):
     try:
         logger.info(f"Received DS-160 request with filename: {file.filename}")
+        content = await file.read()
         
-        # Read and parse YAML content
-        try:
-            content = await file.read()
-            logger.info(f"Read content length: {len(content)}")
-            form_data = yaml.safe_load(content)
-            logger.info(f"Parsed YAML data with keys: {list(form_data.keys() if form_data else [])}")
-            logger.info(f"Parsed YAML for personal page1: {form_data['personal_page1']}")
-            # Add more debug logging
-            logger.info(f"Page definitions available: {list(page_definitions.keys())}")
-            logger.info(f"Looking for start page with key: {FormPage.START.value}")
+        # Return a streaming response
+        return StreamingResponse(
+            process_ds160_with_updates(content),
+            media_type="text/event-stream"
+        )
             
-            # Initialize handlers
-            browser_handler = BrowserHandler(headless=False)
-            form_handler = FormHandler()
-            
-            async with browser_handler as browser:
-                form_handler.set_browser(browser)
-                logger.info("Starting form processing")
-                await form_handler.process_form_pages(form_data, page_definitions)
-                
-            return {"status": "success", "message": "DS-160 form processing completed"}
-            
-        except Exception as e:
-            logger.error(f"Error during form processing: {str(e)}", exc_info=True)
-            raise HTTPException(status_code=500, detail=f"Form processing failed: {str(e)}")
-            
-    except HTTPException:
-        raise
     except Exception as e:
         logger.error(f"Unexpected error in DS-160 processing: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")

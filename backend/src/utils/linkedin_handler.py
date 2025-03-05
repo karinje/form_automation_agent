@@ -473,16 +473,15 @@ class LinkedInHandler:
             logger.error(f"Error extracting organizations: {str(e)}")
             return []
     
-    async def _lookup_organization_address(self, org_name: str, org_type: str) -> Optional[Dict[str, str]]:
-        """Look up the address and phone number of a company or educational institution using GPT"""
+    async def _lookup_organization_address(self, org_name: str, location: str = None) -> Optional[Dict]:
+        """Look up contact information for an organization with location hint"""
         try:
-            prompt = f"""
-            Find the address details and phone number for this {"company" if org_type == "company" else "educational institution"}: {org_name}
+            # Modify prompt to include location if provided
+            prompt = f"Find the contact information for {org_name}"
+            if location and location.strip():
+                prompt += f" in {location}"
             
-            Return the complete contact information including street address, city, state/province, postal code, country, and phone number.
-            If you can't find the exact address or phone, provide the most reasonable estimate based on their headquarters location.
-            For phone numbers, include country code and full number in international format.
-            """
+            prompt += ". Include the street address, city, state/province, postal code, country, and phone number if available."
             
             # Define the function for GPT to call
             tools = [

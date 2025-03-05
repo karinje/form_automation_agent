@@ -121,35 +121,35 @@ class I94Handler:
                     year: ""   # Date Arrived (1) Year (4-digit format 2020, 2021, 2022, 2023, etc)
                 length_of_stay:
                     number: ""   # Length of Stay corresponding to Date Arrived (1)
-                    unit: ""  # Length of Stay - Period (YEAR(S), MONTH(S), WEEK(S), DAY(S), LESS THAN 24 HOURS)
+                    unit: ""  # Length of Stay - Period (Year(s), Month(s), Week(s), Day(s), Less than 24 Hours) case sensitive so pick exactly from options provided
                 - arrival:     # Add this array element only if Date Arrived (2) details exists, if not dont even add this array element.
                     month: ""  # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Date Arrived (2) Date Arrived - Month (3-letter month format) 
                     day: ""     # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Date Arrived (2) Day (2-digit format) if it exists else leave entire section blank
                     year: ""  # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Date Arrived (2) Year (4-digit format) if it exists else leave entire section blank
                 length_of_stay:
                     number: ""  # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Length of Stay corresponding to Date Arrived (2)
-                    unit: ""  # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Length of Stay - Period (YEAR(S), MONTH(S), WEEK(S), DAY(S), LESS THAN 24 HOURS)
+                    unit: ""  # Add this only if Date Arrived (2) details exists, if not dont even add this array element. Length of Stay - Period (Year(s), Month(s), Week(s), Day(s), Less than 24 Hours) case sensitive so pick exactly from options provided
                 - arrival:     # Add this array element only if Date Arrived (3) details exists, if not dont even add this array element.
                     month: ""  # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Date Arrived (3) Date Arrived - Month (3-letter month format) 
                     day: ""     # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Date Arrived (3) Day (2-digit format) if it exists else leave entire section blank
                     year: ""  # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Date Arrived (3) Year (4-digit format) if it exists else leave entire section blank
                 length_of_stay:
                     number: ""  # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Length of Stay corresponding to Date Arrived (3)
-                    unit: ""  # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Length of Stay - Period (YEAR(S), MONTH(S), WEEK(S), DAY(S), LESS THAN 24 HOURS)
+                    unit: ""  # Add this only if Date Arrived (3) details exists, if not dont even add this array element. Length of Stay - Period (Year(s), Month(s), Week(s), Day(s), Less than 24 Hours) case sensitive so pick exactly from options provided
                 - arrival:     # Add this array element only if Date Arrived (4) details exists, if not dont even add this array element.
                     month: ""  # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Date Arrived (4) Date Arrived - Month (3-letter month format) if it exists else leave entire section blank
                     day: ""     # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Date Arrived (4) Day (2-digit format) if it exists else leave entire section blank
                     year: ""  # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Date Arrived (4) Year (4-digit format) if it exists else leave entire section blank
                 length_of_stay:
                     number: ""  # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Length of Stay corresponding to Date Arrived (4)
-                    unit: ""  # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Length of Stay - Period (YEAR(S), MONTH(S), WEEK(S), DAY(S), LESS THAN 24 HOURS)
+                    unit: ""  # Add this only if Date Arrived (4) details exists, if not dont even add this array element. Length of Stay - Period (Year(s), Month(s), Week(s), Day(s), Less than 24 Hours) case sensitive so pick exactly from options provided
                 - arrival:
                     month: ""  # Add this only if Date Arrived (5) details exists, if not dont even add this array element. Date Arrived (5) Date Arrived - Month (3-letter month format) if it exists else leave entire section blank
                     day: ""     # Date Arrived (5) Day (2-digit format) if it exists else leave entire section blank
                     year: ""  # Date Arrived (5) Year (4-digit format) if it exists else leave entire section blank
                 length_of_stay:
                     number: ""  # Add this only if Date Arrived (5) details exists, if not dont even add this array element. Length of Stay corresponding to Date Arrived (5)
-                    unit: ""  # Add this only if Date Arrived (5) details exists, if not dont even add this array element. Length of Stay - Period (YEAR(S), MONTH(S), WEEK(S), DAY(S), LESS THAN 24 HOURS)
+                    unit: ""  # Add this only if Date Arrived (5) details exists, if not dont even add this array element. Length of Stay - Period (Year(s), Month(s), Week(s), Day(s), Less than 24 Hours) case sensitive so pick exactly from options provided
             #if number of visits is less than 5, only include as many array elements dont include array elements and then leave them empty
             previous_visa: "Y"   # Have you ever been issued a U.S. Visa? If any arrival dates are found in input, mark "Y" else leave empty "" 
 

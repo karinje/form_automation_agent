@@ -8,19 +8,27 @@ from utils.openai_handler import OpenAIHandler
 import time
 from mappings.page_mappings.personal_page1_mapping import form_mapping as personal_page1_mapping
 # Import other page mappings...
+import asyncio
 
 logger = logging.getLogger(__name__)
 
 class FormHandler:
-    def __init__(self):
+    def __init__(self, progress_queue=None):
         self.field_values = {}
         self.browser = None
         self.current_page = None
         self.application_id = None
         self.page_errors = {}  # Track errors by page
-        self.processed_array_indices = {}  # Track which array indices we've already added groups for
+        self.processed_array_indices = {}
+        self.completed_pages = set()  # Track successfully completed pages
+        self.errored_pages = set()  # Track pages with errors
+        self.skipped_pages = set()  # Track skipped pages
         # Initialize OpenAIHandler without arguments
         self.openai_handler = OpenAIHandler()  # Changed from OpenAIHandler(self)
+        
+        # Add progress queue
+        self.progress_queue = progress_queue
+        self.page_completion_messages_sent = set()  # Track pages where completion message was already sent
 
     def set_browser(self, browser):
         self.browser = browser
@@ -70,21 +78,25 @@ class FormHandler:
                         await self.browser.wait(1)
 
             # Handle start/retrieve/security pages first
+            await self.send_progress("Starting DS-160 process...")
             logger.info("Processing start page...")
             page_data = test_data['start_page']  # Use YAML key
             self.field_values = page_data
             await self.handle_start_page(page_definitions[FormPage.START.value])  # Use 'start_page'
-            self.browser.wait(0.5)
+            await self.send_progress("Start page completed successfully")
+            await self.browser.wait(0.5)
 
             # Handle either retrieve or security page
             is_new_application = page_data['button_clicks'][0] == 0
             second_page = FormPage.SECURITY.value if is_new_application else FormPage.RETRIEVE.value
             
+            await self.send_progress(f"Processing {second_page}...")
             logger.info(f"Processing {second_page}...")
             page_data = test_data[second_page]  # Use YAML key
             self.field_values = page_data
             await self.handle_retrieve_page(page_definitions[second_page])  # Use 'security_page'
-            self.browser.wait(1)
+            await self.send_progress(f"{second_page} completed successfully")
+            await self.browser.wait(1)
 
             # Get form mapping for URLs
             form_mapping = FormMapping()
@@ -119,6 +131,8 @@ class FormHandler:
                     try:
                         if page_name not in test_data:
                             logger.warning(f"Skipping {page_name} - not found in test data")
+                            await self.send_progress(f"Skipping {page_name} - not found in test data")
+                            self.skipped_pages.add(page_name)
                             break
 
                         # Navigate to page URL first
@@ -128,26 +142,50 @@ class FormHandler:
                             current_url = self.browser.page.url
                             if not current_url.endswith(page_url.split('/')[-1]):
                                 logger.info(f"Navigating to {page_url}")
+                                #await self.send_progress(f"Navigating to {page_name}...")
                                 await self.browser.navigate(page_url)
                                 await self.browser.page.wait_for_load_state("networkidle")
-                                await self.browser.wait(1)
+                                await self.browser.wait(0.3)
                             else:
                                 logger.info(f"Already on correct page: {page_url}")
                         else:
                             logger.warning(f"No URL found for page {page_name}")
+                            await self.send_progress(f"Error: No URL found for page {page_name}")
                             break
 
                         logger.info(f"Processing {page_name}...")
+                        await self.send_progress(f"Processing {page_name}...")
                         self.current_page = page_name
                         self.field_values = test_data[page_name]
+                        
+                        # Fill form and handle navigation
                         await self.fill_form(page_definitions[page_name])
-                        await self.browser.wait(0.5)
-                        await self.handle_page_navigation(page_definitions[page_name])
-                        await self.browser.wait(0.5)
+                        await self.browser.wait(0.3)
+                        
+                        # Check for validation errors after filling form
+                        if page_name in self.page_errors:
+                            # Add page to errored pages, not completed pages
+                            self.errored_pages.add(page_name)
+                            await self.send_progress(
+                                f"Validation errors on {page_name}: {len(self.page_errors[page_name])} issues found", 
+                                status="warning"
+                            )
+                            # Still try to navigate to the next page
+                            await self.handle_page_navigation(page_definitions[page_name])
+                            await self.browser.wait(0.5)
+                        else:
+                            # Only mark as completed if no validation errors
+                            await self.handle_page_navigation(page_definitions[page_name])
+                            await self.browser.wait(0.5)
+                            self.completed_pages.add(page_name)
+                            if page_name not in self.page_completion_messages_sent:
+                                await self.send_progress(f"Completed {page_name} successfully")
+                                self.page_completion_messages_sent.add(page_name)
 
                         # Add timeout detection after each page action
                         if self.browser.page.url.endswith("SessionTimedOut.aspx") or self.browser.page.url.endswith("Default.aspx"):
                             logger.warning(f"Session timeout detected on page {page_name}")
+                            await self.send_progress(f"Session timeout detected on {page_name}, recovering...")
                             await handle_timeout_recovery(self.current_page)
                             retry_count += 1
                             continue
@@ -161,25 +199,65 @@ class FormHandler:
                             
                             if retry_count < max_retries - 1:
                                 logger.warning(f"Timeout detected, attempt {retry_count + 1} of {max_retries}")
+                                await self.send_progress(f"Timeout detected on {page_name}, attempt {retry_count + 1} of {max_retries}")
                                 await handle_timeout_recovery(self.current_page)
                                 retry_count += 1
                                 continue
+                        
+                        # Add to errored pages
+                        self.errored_pages.add(page_name)
+                        await self.send_progress(f"Error on {page_name}: {str(e)}", status="error")
                         raise  # Re-raise other exceptions
 
                 if retry_count == max_retries:
+                    self.errored_pages.add(page_name)
+                    await self.send_progress(f"Failed to recover from timeout on {page_name} after {max_retries} attempts", status="error")
                     raise Exception(f"Failed to recover from timeout after {max_retries} attempts")
 
-            # After processing all pages, log error summary if any errors occurred
+            # Generate completion summary
+            total_pages = len(page_sequence)
+            completed_count = len(self.completed_pages)
+            errored_count = len(self.errored_pages)
+            skipped_count = len(self.skipped_pages)
+            
+            summary = f"DS-160 Processing Summary: {completed_count}/{total_pages} pages completed successfully"
+            if errored_count > 0:
+                summary += f", {errored_count} pages had errors"
+            if skipped_count > 0:
+                summary += f", {skipped_count} pages were skipped"
+            
+            # Determine overall status
+            overall_status = "success" if errored_count <= 2 else "warning"
+            
+            # Send summary message
+            await self.send_progress(summary, status=overall_status)
+            
+            # After processing all pages, send detailed error summary if errors occurred
             if self.page_errors:
-                logger.error("\n    === FORM VALIDATION ERROR SUMMARY ===")
+                error_summary = "=== FORM VALIDATION ERROR SUMMARY ===\n"
                 for page, errors in self.page_errors.items():
-                    logger.error(f"\nPage: {page}")
+                    error_summary += f"\nPage: {page}\n"
                     for i, error in enumerate(errors, 1):
-                        logger.error(f"{i}. {error}")
-                logger.error("\n===================================")
+                        error_summary += f"{i}. {error}\n"
+                error_summary += "\n=== END OF ERROR SUMMARY ==="
+                
+                logger.error(error_summary)
+                await self.send_progress(f"Form completed with validation errors:\n{error_summary}", status="warning")
+            else:
+                await self.send_progress("DS-160 form completed successfully with no errors!", status="success")
+
+            # Send final completion message
+            await self.send_progress("DS-160 processing complete", status="complete", 
+                                    summary={
+                                        "total": total_pages,
+                                        "completed": completed_count,
+                                        "errors": errored_count,
+                                        "skipped": skipped_count
+                                    })
 
         except Exception as e:
             logger.error(f"Error processing forms: {str(e)}")
+            await self.send_progress(f"Error processing forms: {str(e)}", status="error")
             raise
 
     async def handle_page_navigation(self, page_definition: dict) -> None:
@@ -264,13 +342,15 @@ class FormHandler:
     async def handle_start_page(self, form_data: dict) -> bool:
         """Handle start page with CAPTCHA validation and retry logic"""
         logger.info("Starting to process start page...")
+        await self.send_progress("Loading DS-160 start page...")
         
-        max_retries = 5
+        max_retries = 8
         for attempt in range(max_retries):
             try:
                 # First ensure we're on the start page and it's fully loaded
                 if not self.browser.page.url.endswith("Default.aspx"):
                     logger.info("Navigating to DS-160 start page...")
+                    await self.send_progress("Navigating to DS-160 start page...")
                     await self.browser.navigate("https://ceac.state.gov/GenNIV/Default.aspx")
                     await self.browser.page.wait_for_load_state("domcontentloaded")
                     await self.browser.wait(0.5)
@@ -280,10 +360,12 @@ class FormHandler:
                 location = self.field_values.get('location', 'HYDERABAD, INDIA')
                 
                 logger.info(f"Setting language to: {language}")
+                await self.send_progress(f"Setting language to: {language}")
                 await self.browser.page.select_option('#ctl00_ddlLanguage', language)
                 await self.browser.wait(0.5)
                 
                 logger.info(f"Setting location to: {location}")
+                await self.send_progress(f"Setting location to: {location}")
                 await self.browser.page.select_option('#ctl00_SiteContentPlaceHolder_ucLocation_ddlLocation', location)
                 await self.browser.wait(0.5)
 
@@ -291,14 +373,18 @@ class FormHandler:
                 captcha_base64 = await self.browser.get_captcha_image()
                 if not captcha_base64:
                     logger.error("Failed to get CAPTCHA image")
+                    #await self.send_progress("Failed to get CAPTCHA image, retrying...", status="warning")
                     continue
                 
                 logger.info("Got CAPTCHA image, sending to OpenAI for solving...")
+                #await self.send_progress("Solving CAPTCHA with OpenAI...", status="info")
                 captcha_text = await self.openai_handler.solve_captcha(captcha_base64)
                 if not captcha_text:
                     logger.error("Failed to get CAPTCHA solution from OpenAI")
+                    #await self.send_progress("Failed to get CAPTCHA solution, retrying...", status="warning")
                     continue
                 
+                # Don't send the actual CAPTCHA value to frontend
                 logger.info(f"Got CAPTCHA solution: {captcha_text}")
                 await self.browser.fill_captcha(captcha_text)
                 await self.browser.wait(0.5)
@@ -306,6 +392,7 @@ class FormHandler:
                 # Click button
                 button_index = self.field_values['button_clicks'][0]
                 button = form_data['buttons'][button_index]
+                #await self.send_progress("Submitting CAPTCHA and proceeding...")
                 await self.browser.click(f"#{button['id']}")
                 await self.browser.wait(0.5)
 
@@ -315,20 +402,25 @@ class FormHandler:
                     error_text = await error_element.text_content()
                     if error_text and ("CAPTCHA" in error_text or "code" in error_text.lower()):
                         logger.warning(f"CAPTCHA attempt {attempt + 1} failed. Error: {error_text}")
+                        await self.send_progress(f"CAPTCHA verification failed (attempt {attempt + 1}): {error_text}", status="warning")
                         if attempt < max_retries - 1:
                             continue
                         raise Exception("Max CAPTCHA retries exceeded")
 
                 logger.info("CAPTCHA validation successful")
+                await self.send_progress("CAPTCHA validation successful")
                 return True
 
             except Exception as e:
                 logger.error(f"Error during start page handling (attempt {attempt + 1}): {str(e)}")
+                await self.send_progress(f"Error on start page (attempt {attempt + 1}): {str(e)}", status="warning")
                 if attempt < max_retries - 1:
                     logger.info("Retrying entire start page process...")
+                    await self.send_progress("Retrying start page process...", status="info")
                     await self.browser.page.reload()
                     await self.browser.wait(1)
                 else:
+                    await self.send_progress(f"Failed to process start page after {max_retries} attempts", status="error")
                     raise Exception(f"Failed to process start page after {max_retries} attempts")
 
         return False
@@ -565,10 +657,6 @@ class FormHandler:
         """Handle either retrieve or security page process"""
         logger.info("Starting to process retrieve/security page...")
         
-        if not self.browser:
-            logger.error("Browser not initialized")
-            raise ValueError("Browser not set")
-        
         try:
             # For new applications, get and store the application ID from security page
             if self.test_data['start_page']['button_clicks'][0] == 0:  # New application
@@ -584,6 +672,13 @@ class FormHandler:
                             if 'retrieve_page' in self.test_data:
                                 self.test_data['retrieve_page']['application_id'] = application_id
                                 logger.info(f"Updated application ID to: {application_id}")
+                                
+                                # Send the application ID to the frontend
+                                await self.send_progress(
+                                    f"Retrieved application ID: {application_id}",
+                                    status="application_id",
+                                    application_id=application_id
+                                )
                 except Exception as e:
                     logger.warning(f"Could not get application ID: {str(e)}")
 
@@ -701,7 +796,7 @@ class FormHandler:
             security_question = self.field_values.get('security_question')
             if security_question:
                 await self.browser.select_dropdown_option("#ctl00_SiteContentPlaceHolder_ddlQuestions", security_question)
-                await self.browser.wait(0.5)
+                await self.browser.wait(1)
                 
             # Fill security answer
             security_answer = self.field_values.get('security_answer')
@@ -735,3 +830,28 @@ class FormHandler:
             new_def['na_checkbox_id'] = new_def['na_checkbox_id'].replace('_ctl00_', f'_ctl{index:02d}_')
         
         return new_def
+
+    # Add a helper method to send progress updates
+    async def send_progress(self, message, status="info", application_id=None, summary=None):
+        """Send progress update to queue if available"""
+        if self.progress_queue:
+            # Skip captcha value messages
+            if "CAPTCHA solution:" in message:
+                return
+                
+            progress_data = {"status": status, "message": message}
+            if application_id:
+                progress_data["application_id"] = application_id
+            if summary:
+                progress_data["summary"] = summary
+            await self.progress_queue.put(progress_data)
+            
+    # Add a new method to run with browser context manager
+    async def process_with_browser(self, browser_handler, test_data, page_definitions):
+        """Process form with a browser context manager and report progress"""
+        async with browser_handler as browser:
+            self.set_browser(browser)
+            await self.send_progress("Browser initialized and ready")
+            await self.process_form_pages(test_data, page_definitions)
+            await self.send_progress("DS-160 form processing completed", status="complete")
+        return True

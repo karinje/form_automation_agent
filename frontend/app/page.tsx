@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useRef } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import DynamicForm from "@/components/DynamicForm"
@@ -19,6 +19,7 @@ import { processWithOpenAI, processLinkedIn, runDS160 } from './utils/api'
 import { I94Import } from "@/components/I94Import"
 import { DocumentUpload } from "@/components/DocumentUpload"
 import { PassportUpload } from "@/components/PassportUpload"
+import { countFieldsByPage } from './utils/field-counter'
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -47,6 +48,21 @@ declare global {
     pdfjsLib: any;
   }
 }
+
+// Add these new types to manage DS-160 progress states
+type DS160Status = 'idle' | 'processing' | 'success' | 'error';
+type ProgressMessage = {
+  status: 'info' | 'warning' | 'error' | 'success' | 'complete' | 'application_id';
+  message: string;
+  timestamp?: string;
+  application_id?: string;
+  summary?: {
+    total: number;
+    completed: number;
+    errors: number;
+    skipped: number;
+  };
+};
 
 export default function Home() {
   const [formData, setFormData] = useState<Record<string, string>>({})
@@ -172,8 +188,61 @@ export default function Home() {
     return fullText;
   };
 
-  const handleFormDataLoad = useCallback((uploadedYamlData: Record<string, any>, showSuccess = true, pagesFilter?: string[]) => {
+  // Replace the existing countFieldsInYaml function with this more thorough version
+  const countFieldsInYaml = (yamlData: any): Record<string, number> => {
+    const counts: Record<string, number> = {};
+    
+    if (!yamlData) return counts;
+    
+    // Helper function to count fields recursively
+    const countRecursive = (obj: any): number => {
+      if (!obj || typeof obj !== 'object') return 0;
+      
+      let fieldCount = 0;
+      
+      // Count all properties and their nested fields
+      Object.entries(obj).forEach(([key, value]) => {
+        // Count this field
+        fieldCount++;
+        
+        // If it's an array, count fields in each array item
+        if (Array.isArray(value)) {
+          value.forEach(item => {
+            if (typeof item === 'object' && item !== null) {
+              fieldCount += countRecursive(item);
+            }
+          });
+        } 
+        // If it's an object, recursively count its fields
+        else if (typeof value === 'object' && value !== null) {
+          fieldCount += countRecursive(value);
+        }
+      });
+      
+      return fieldCount;
+    };
+    
+    // Count fields for each top-level page section
+    Object.entries(yamlData).forEach(([pageKey, pageData]) => {
+      if (pageData && typeof pageData === 'object') {
+        counts[pageKey] = countRecursive(pageData);
+      }
+    });
+    
+    return counts;
+  };
+
+  // Update the handleFormDataLoad function to properly fill the form data
+  const handleFormDataLoad = (
+    uploadedYamlData: Record<string, any>, 
+    showSuccess = true,
+    pagesFilter?: string[]
+  ) => {
     try {
+      setIsProcessing(true);
+      setProcessingProgress(['Processing form data...']);
+      
+      // IMPORTANT: Add the actual form filling logic
       debugLog('all_pages', '[Mapping Creation] Processing YAML data');
       
       setYamlData(uploadedYamlData);
@@ -207,114 +276,194 @@ export default function Home() {
       
       // Increment refreshKey to force a complete re-render of all DynamicForm components
       setRefreshKey(prev => prev + 1);
-      setIsProcessingLLM(false);
-
-      // Only update counters for filtered pages, or all pages if no filter
-      setTimeout(() => {
-        if (!pagesFilter) {
-          setCurrentTab('personal');
-        }
-        updateFormCountersSilently(pagesFilter);
-      }, 200);
       
-      if (showSuccess) {
-        setConsoleErrors([
-          'Form data loaded successfully!',
-          ...consoleErrors
-        ]);
+      // After processing, count and display the field stats
+      const fieldCounts = countFieldsByPage(uploadedYamlData);
+      
+      // Display field counts in progress
+      const countMessages = Object.entries(fieldCounts)
+        .filter(([page]) => !pagesFilter || pagesFilter.includes(page))
+        .map(([page, count]) => {
+          const readablePage = page.replace('_page', '').replace(/_/g, ' ');
+          return `${readablePage}: ${count} fields`;
+        });
+      
+      setProcessingProgress(prev => [
+        ...prev, 
+        'Form data loaded successfully',
+        ...countMessages,
+        'Filling form with extracted data...'
+      ]);
+      
+      // Only update counters for filtered pages, or all pages if no filter
+      if (!pagesFilter) {
+        setCurrentTab('personal');
       }
       
-      return true;
+      // Allow some time for the progress to be shown, then close progress and update counters
+      setTimeout(() => {
+        setIsProcessing(false);
+        setProcessingProgress([]);
+        updateFormCountersSilently(pagesFilter);
+        
+        if (showSuccess) {
+          setConsoleErrors([
+            'Form data loaded successfully!',
+            ...consoleErrors
+          ]);
+        }
+      }, 2000);
+      
     } catch (error) {
-      console.error('[Form Load] Error loading form data:', error);
-      return false;
+      console.error('Error loading form data:', error);
+      setErrorMessage(`Error loading form data: ${error.message || 'Unknown error'}`);
+      setIsProcessing(false);
+      setProcessingProgress([]);
     } finally {
       setIsProcessingLLM(false);
     }
-  }, [formCategories]);
-
-  // Add a new function to update counters by temporarily opening accordion items
-  const updateFormCountersSilently = (pagesFilter?: string[]) => {
-    // Only process categories that contain the filtered pages
-    const categories = pagesFilter 
-      ? Object.entries(formCategories)
-          .filter(([_, forms]) => forms.some(form => pagesFilter.includes(form.pageName)))
-          .map(([category]) => category)
-      : Object.keys(formCategories);
-    
-    // Save the original accordion state
-    const originalAccordionValues = {...accordionValues};
-    const originalTab = currentTab;
-    
-    // Helper function to wait a specified time
-    const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-    
-    // Function to process each category sequentially
-    const processCategory = async (categoryIndex: number) => {
-      if (categoryIndex >= categories.length) {
-        // All categories processed, restore original state
-        setCurrentTab(originalTab);
-        setAccordionValues(originalAccordionValues);
-        return;
-      }
-      
-      const category = categories[categoryIndex];
-      setCurrentTab(category);
-      
-      // Wait for tab change to render
-      await wait(1);
-      
-      // Process each form in this category
-      const forms = formCategories[category];
-      for (let i = 0; i < forms.length; i++) {
-        // Skip forms not in the filter if one is provided
-        if (pagesFilter && !pagesFilter.includes(forms[i].pageName)) {
-          continue;
-        }
-        
-        // Open the accordion item to trigger DynamicForm's completion calculation
-        setAccordionValues(prev => ({ ...prev, [category]: `item-${i}` }));
-        
-        // Wait for render
-        await wait(1);
-      }
-      
-      // Go to next category
-      processCategory(categoryIndex + 1);
-    };
-    
-    // Start with the first category
-    processCategory(0);
   };
 
+  // Add processing progress state
+  const [processingProgress, setProcessingProgress] = useState<string[]>([]);
 
+  // Modify the isProcessing display to show progress
+  {isProcessing && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center max-w-md w-full">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+        <p className="text-lg font-semibold mb-4">
+          Processing Data
+        </p>
+        
+        <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
+          {processingProgress.map((msg, idx) => (
+            <div key={idx} className="text-sm">
+              {msg}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
+
+  // Add new state for extraction progress in the Home component
+  const [extractionProgress, setExtractionProgress] = useState<string[]>([])
+  const [extractionStatus, setExtractionStatus] = useState<'idle' | 'extracting' | 'processing' | 'filling' | 'complete'>('idle')
+
+  // Add new state variables at the top of the component with other state variables
+  const [formFillComplete, setFormFillComplete] = useState(false);
+
+  // Add this function before handleFileUpload
+  const sanitizeYaml = (yamlString: string): string => {
+    // Fix common YAML syntax issues that could cause parsing errors
+    return yamlString
+      // Fix multiline strings with double quotes by replacing them with block scalar notation
+      .replace(/: "([^"]*\n[^"]*)"/g, (match, content) => {
+        if (content.trim()) {
+          return `: |-\n${content.split('\n').map(line => `    ${line}`).join('\n')}`;
+        }
+        return ': ""'; // Just return empty string if content is empty
+      })
+      // Remove any trailing whitespace on lines
+      .split('\n').map(line => line.trimRight()).join('\n')
+      // Ensure empty string values are properly formatted
+      .replace(/:\s*""\s*$/gm, ': ""')
+      // Fix any hanging quotes that might be causing issues
+      .replace(/:\s+"([^"]*)$/gm, ': "$1"');
+  };
+
+  // Update the handleFileUpload function
   const handleFileUpload = async (file: File) => {
     if (file.type === "application/pdf") {
       try {
+        // Reset states
+        setErrorMessage("");
+        setExtractionStatus('extracting');
+        setExtractionProgress(['Starting DS-160 PDF extraction...']);
+        setFormFillComplete(false); // Reset form fill status
+        
         // First phase: PDF to text
         setIsConverting(true);
+        setExtractionProgress(prev => [...prev, 'Converting PDF to text...']);
         const fullText = await extractTextFromPdf(file);
         setExtractedText(fullText);
         setIsConverting(false);
+        
+        // Add progress update with text length as a simple metric
+        const textSizeKb = Math.round(fullText.length / 1024);
+        setExtractionProgress(prev => [...prev, `Extracted ${textSizeKb}KB of text from PDF`]);
 
         // Second phase: OpenAI processing
         setIsProcessingLLM(true);
+        setExtractionStatus('processing');
+        setExtractionProgress(prev => [...prev, 'Sending extracted text to AI for processing...']);
         const { text: yamlOutput } = await processWithOpenAI(fullText);
         setYamlOutput(yamlOutput);
+        setExtractionProgress(prev => [...prev, 'Received structured data from AI']);
 
         // Third phase: Form filling
         try {
-          const parsedYaml = yaml.load(yamlOutput) as Record<string, any>;
-          await handleFormDataLoad(parsedYaml);
+          setExtractionStatus('filling');
+          setExtractionProgress(prev => [...prev, 'Preparing to fill form fields...']);
+          
+          // Sanitize the YAML string before parsing
+          const sanitizedYaml = sanitizeYaml(yamlOutput);
+          
+          // Try parsing with safe options
+          let parsedYaml;
+          try {
+            parsedYaml = yaml.load(sanitizedYaml, { 
+              schema: yaml.FAILSAFE_SCHEMA,
+              json: true 
+            }) as Record<string, any>;
+          } catch (parseError) {
+            console.error('First parsing attempt failed:', parseError);
+            
+            // Try a more aggressive cleanup if the first attempt fails
+            const harshSanitized = sanitizedYaml
+              .replace(/: "[^"]*\n[^"]*"/g, ': ""')
+              .replace(/\n\s+\n/g, '\n\n');
+              
+            setExtractionProgress(prev => [...prev, 'First parsing attempt failed, trying alternative approach...']);
+            parsedYaml = yaml.load(harshSanitized, { schema: yaml.FAILSAFE_SCHEMA }) as Record<string, any>;
+          }
+          
+          // Count fields to show progress
+          const fieldCounts = countFieldsByPage(parsedYaml);
+          setExtractionProgress(prev => [...prev, 'Filling form with extracted data...']);
+          
+          // Update form data using handleFormDataLoad instead of formManageRef
+          handleFormDataLoad(parsedYaml);
+          
+          // Add count information to progress messages
+          Object.entries(fieldCounts).forEach(([page, count]) => {
+            const pageName = page.replace('_page', '').replace(/_/g, ' ');
+            setExtractionProgress(prev => [
+              ...prev, 
+              `${pageName}: ${count} fields extracted`
+            ]);
+          });
+          
+          // Set a timer to mark form filling as complete and change status to complete
+          setTimeout(() => {
+            setExtractionProgress(prev => [...prev, 'Form filling complete!']);
+            setExtractionStatus('complete');
+            setFormFillComplete(true);
+            setIsProcessingLLM(false);
+          }, 5000); // 5 second delay to allow form to expand/populate
+          
         } catch (error) {
-          console.error('Error parsing YAML:', error);
-          setErrorMessage('Error parsing the generated YAML data');
+          console.error('Error processing YAML:', error);
+          setExtractionStatus('error');
+          setExtractionProgress(prev => [...prev, `Error: ${error instanceof Error ? error.message : String(error)}`]);
+          setIsProcessingLLM(false);
         }
-      } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-        setErrorMessage(errorMessage);
-        console.error('PDF to YAML conversion error:', error);
-      } finally {
+        
+      } catch (error) {
+        console.error('Error processing PDF:', error);
+        setErrorMessage(error instanceof Error ? error.message : String(error));
+        setExtractionStatus('error');
         setIsConverting(false);
         setIsProcessingLLM(false);
       }
@@ -440,6 +589,21 @@ export default function Home() {
       currentArrayGroups: arrayGroups
     })
 
+    // Process button_clicks before serializing
+    Object.keys(finalYamlData).forEach(key => {
+      if (finalYamlData[key] && typeof finalYamlData[key] === 'object' && finalYamlData[key].button_clicks) {
+        // Ensure button_clicks is a simple array
+        if (Array.isArray(finalYamlData[key].button_clicks)) {
+          if (typeof finalYamlData[key].button_clicks[0] === 'object') {
+            // Convert from [{button_clicks: "1"}, {button_clicks: "2"}] to [1, 2]
+            finalYamlData[key].button_clicks = finalYamlData[key].button_clicks.map(item => 
+              parseInt(item.button_clicks || "0", 10)
+            );
+          }
+        }
+      }
+    });
+
     let yamlStr = yaml.dump(finalYamlData, {
       lineWidth: -1,
       quotingType: '"',
@@ -539,6 +703,17 @@ export default function Home() {
     }
   }
 
+  const [ds160Status, setDS160Status] = useState<DS160Status>('idle');
+  const [progressMessages, setProgressMessages] = useState<ProgressMessage[]>([]);
+  const progressEndRef = useRef<HTMLDivElement>(null);
+  
+  // Add this effect to scroll to bottom of progress messages
+  useEffect(() => {
+    if (progressEndRef.current) {
+      progressEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [progressMessages]);
+
   const handleRunDS160 = async () => {
     try {
       if (retrieveMode === 'retrieve') {
@@ -546,12 +721,12 @@ export default function Home() {
           setErrorMessage("Please fill in all retrieve fields");
           return;
         }
-        
-        // Validation checks...
       }
 
       try {
-        setIsRunningDS160(true)
+        // Clear previous progress messages
+        setProgressMessages([]);
+        setDS160Status('processing');
         
         const finalYamlData = generateFormYamlData({
           location,
@@ -562,34 +737,130 @@ export default function Home() {
           secretQuestion,
           secretAnswer,
           currentArrayGroups: arrayGroups
-        })
+        });
+
+        // Process button_clicks before serializing - SAME FIX AS IN handleDownloadYaml
+        Object.keys(finalYamlData).forEach(key => {
+          if (finalYamlData[key] && typeof finalYamlData[key] === 'object' && finalYamlData[key].button_clicks) {
+            // Ensure button_clicks is a simple array
+            if (Array.isArray(finalYamlData[key].button_clicks)) {
+              if (typeof finalYamlData[key].button_clicks[0] === 'object') {
+                // Convert from [{button_clicks: "1"}, {button_clicks: "2"}] to [1, 2]
+                finalYamlData[key].button_clicks = finalYamlData[key].button_clicks.map(item => 
+                  parseInt(item.button_clicks || "0", 10)
+                );
+              }
+            }
+          }
+        });
 
         // Create YAML string with same formatting as download
         const yamlStr = yaml.dump(finalYamlData, {
           lineWidth: -1,
           quotingType: '"',
           forceQuotes: true,
-        })
-          
-        // Send to backend
-        const result = await runDS160(yamlStr)
+        });
+
+        // Use the runDS160 function from api.ts instead of making a direct fetch
+        const result = await runDS160(yamlStr);
         
         if (result.status === 'error') {
-          setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${result.message}`])
-        } else {
-          console.log('DS-160 Processing Output:', result.message)
+          setProgressMessages(prev => [
+            ...prev, 
+            { 
+              status: 'error', 
+              message: result.message,
+              timestamp: new Date().toLocaleTimeString()
+            }
+          ]);
+          setDS160Status('error');
+          return;
+        }
+        
+        // If using the utility function, we need to handle the streaming part here
+        // The remaining code should work with the Stream response from the backend
+        const response = await fetch('http://localhost:8000/api/ds160/run-ds160', {
+          method: 'POST',
+          body: (() => {
+            const formData = new FormData();
+            formData.append('file', new Blob([yamlStr], { type: 'text/yaml' }), 'form_data.yaml');
+            return formData;
+          })(),
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Server responded with status: ${response.status}`);
+        }
+        
+        // Process the streaming response
+        const reader = response.body?.getReader();
+        if (!reader) {
+          throw new Error('Response body is null');
+        }
+        
+        // Read the stream
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          
+          // Convert the chunk to string
+          const chunk = new TextDecoder().decode(value);
+          
+          // Process each line of the chunk (there might be multiple messages)
+          const lines = chunk.split('\n').filter(line => line.trim());
+          for (const line of lines) {
+            try {
+              const message = JSON.parse(line) as ProgressMessage;
+              message.timestamp = new Date().toLocaleTimeString();
+              
+              // Handle application ID specially
+              if (message.status === 'application_id' && 'application_id' in message) {
+                // Store the application ID for future use
+                setApplicationId(message.application_id);
+                
+                // Update the message status to be a regular info message (but keep the application ID)
+                message.status = 'info';
+                message.message = `Retrieved application ID: ${message.application_id}`;
+              }
+              
+              setProgressMessages(prev => [...prev, message]);
+              
+              // Handle completion or error
+              if (message.status === 'complete') {
+                setDS160Status('success');
+              } else if (message.status === 'error') {
+                setDS160Status('error');
+              }
+            } catch (e) {
+              console.error('Failed to parse message:', line, e);
+            }
+          }
         }
       } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-        setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${errorMessage}`]);
-      } finally {
-        setIsRunningDS160(false)
+        setProgressMessages(prev => [
+          ...prev, 
+          { 
+            status: 'error', 
+            message: `DS-160 Processing Error: ${errorMessage}`,
+            timestamp: new Date().toLocaleTimeString()
+          }
+        ]);
+        setDS160Status('error');
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      setConsoleErrors(prev => [...prev, `DS-160 Processing Error: ${errorMessage}`]);
+      setProgressMessages(prev => [
+        ...prev, 
+        { 
+          status: 'error', 
+          message: `DS-160 Processing Error: ${errorMessage}`,
+          timestamp: new Date().toLocaleTimeString()
+        }
+      ]);
+      setDS160Status('error');
     }
-  }
+  };
 
   const renderFormSection = (forms: typeof formCategories.personal, category: string) => (
     <Accordion 
@@ -714,15 +985,18 @@ export default function Home() {
       const mergedYaml = {
         travel_page: {
           ...currentPageData?.travel_page,
-          ...extractedData.travel_page
+          ...extractedData.travel_page,
+          button_clicks: [1, 2]
         },
         travel_companions_page: {
           ...currentPageData?.travel_companions_page,
-          ...extractedData.travel_companions_page
+          ...extractedData.travel_companions_page,
+          button_clicks: [1, 2]
         },
         previous_travel_page: {
           ...currentPageData?.previous_travel_page,
-          ...extractedData.previous_travel_page
+          ...extractedData.previous_travel_page,
+          button_clicks: [1, 2]
         }
       };
       
@@ -736,6 +1010,60 @@ export default function Home() {
       // Navigate to travel section
       setCurrentTab('travel');
     }
+  };
+
+  // Add this function definition right before or after handleFormDataLoad
+  const updateFormCountersSilently = (pagesFilter?: string[]) => {
+    // Only process categories that contain the filtered pages
+    const categories = pagesFilter 
+      ? Object.entries(formCategories)
+          .filter(([_, forms]) => forms.some(form => pagesFilter.includes(form.pageName)))
+          .map(([category]) => category)
+      : Object.keys(formCategories);
+    
+    // Save the original accordion state
+    const originalAccordionValues = {...accordionValues};
+    const originalTab = currentTab;
+    
+    // Helper function to wait a specified time
+    const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    
+    // Function to process each category sequentially
+    const processCategory = async (categoryIndex: number) => {
+      if (categoryIndex >= categories.length) {
+        // All categories processed, restore original state
+        setCurrentTab(originalTab);
+        setAccordionValues(originalAccordionValues);
+        return;
+      }
+      
+      const category = categories[categoryIndex];
+      setCurrentTab(category);
+      
+      // Wait for tab change to render
+      await wait(1);
+      
+      // Process each form in this category
+      const forms = formCategories[category];
+      for (let i = 0; i < forms.length; i++) {
+        // Skip forms not in the filter if one is provided
+        if (pagesFilter && !pagesFilter.includes(forms[i].pageName)) {
+          continue;
+        }
+        
+        // Open the accordion item to trigger DynamicForm's completion calculation
+        setAccordionValues(prev => ({ ...prev, [category]: `item-${i}` }));
+        
+        // Wait for render
+        await wait(1);
+      }
+      
+      // Go to next category
+      processCategory(categoryIndex + 1);
+    };
+    
+    // Start with the first category
+    processCategory(0);
   };
 
   return (
@@ -1077,7 +1405,8 @@ export default function Home() {
                       const mergedYaml = {
                         previous_travel_page: {
                           ...currentPageData?.previous_travel_page, // Keep existing fields
-                          ...i94Data.previous_travel_page // Override with new I94 data
+                          ...i94Data.previous_travel_page, // Override with new I94 data
+                          button_clicks: [1, 2] // Explicitly set button_clicks in correct format
                         }
                       }
                       //log the merged yaml
@@ -1226,6 +1555,156 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Full-screen DS-160 progress overlay */}
+      {ds160Status === 'processing' && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center max-w-2xl w-full max-h-[90vh]">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500 mb-6"></div>
+            <h2 className="text-2xl font-bold mb-4">Processing DS-160 Form</h2>
+            
+            {/* Progress messages container with scrolling */}
+            <div className="w-full border border-gray-200 rounded-lg bg-gray-50 p-4 max-h-[60vh] overflow-y-auto mb-4">
+              {progressMessages.length === 0 ? (
+                <p className="text-gray-500 italic text-center">Waiting for updates...</p>
+              ) : (
+                <div className="space-y-2">
+                  {progressMessages.map((msg, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`p-2 rounded text-sm ${
+                        msg.status === 'error' ? 'bg-red-100 text-red-800' :
+                        msg.status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
+                        msg.status === 'success' ? 'bg-green-100 text-green-800' :
+                        msg.status === 'complete' ? 'bg-blue-100 text-blue-800 font-bold' :
+                        'bg-gray-100 text-gray-800'
+                      }`}
+                    >
+                      <div className="flex items-start">
+                        <span className="text-xs text-gray-500 mr-2">[{msg.timestamp}]</span>
+                        <span>{msg.message}</span>
+                      </div>
+                    </div>
+                  ))}
+                  <div ref={progressEndRef} />
+                </div>
+              )}
+            </div>
+            
+            {/* Button to cancel/close */}
+            <button
+              onClick={() => setDS160Status('idle')}
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Success or Error Modal */}
+      {(ds160Status === 'success' || ds160Status === 'error') && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div className={`flex items-center ${ds160Status === 'success' ? 'text-green-600' : 'text-red-600'} mb-4`}>
+              {ds160Status === 'success' ? (
+                <svg className="w-8 h-8 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg className="w-8 h-8 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              )}
+              <h2 className="text-2xl font-bold">
+                {ds160Status === 'success' ? 'DS-160 Completed Successfully' : 'DS-160 Processing Error'}
+              </h2>
+            </div>
+            
+            {/* Show application ID for new applications */}
+            {ds160Status === 'success' && applicationId && (
+              <div className="bg-blue-50 border border-blue-300 p-4 rounded-lg mb-4">
+                <div className="flex items-center">
+                  <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div>
+                    <p className="font-medium">Application ID</p>
+                    <p className="text-lg font-bold tracking-wider">{applicationId}</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Save this ID to retrieve your application in the future.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Process summary from backend, if available */}
+            {progressMessages.find(msg => msg.summary)?.summary && (
+              <div className={`p-3 rounded-lg mb-4 ${
+                progressMessages.find(msg => msg.summary)?.summary?.errors ?? 0 <= 2 
+                  ? 'bg-green-50 border border-green-200' 
+                  : 'bg-yellow-50 border border-yellow-200'
+              }`}>
+                <h3 className="font-medium mb-1">Form Completion Summary</h3>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>Pages completed:</div>
+                  <div className="font-medium">{progressMessages.find(msg => msg.summary)?.summary?.completed}</div>
+                  <div>Pages with errors:</div>
+                  <div className="font-medium">{progressMessages.find(msg => msg.summary)?.summary?.errors}</div>
+                  <div>Pages skipped:</div>
+                  <div className="font-medium">{progressMessages.find(msg => msg.summary)?.summary?.skipped}</div>
+                  <div>Total pages:</div>
+                  <div className="font-medium">{progressMessages.find(msg => msg.summary)?.summary?.total}</div>
+                </div>
+              </div>
+            )}
+            
+            {/* Show progress messages - with scrolling preserved */}
+            <div className="border border-gray-200 rounded-lg bg-gray-50 p-4 overflow-y-auto flex-1 mb-4">
+              <div className="space-y-2">
+                {progressMessages.map((msg, idx) => (
+                  <div 
+                    key={idx} 
+                    className={`p-2 rounded text-sm ${
+                      msg.status === 'error' ? 'bg-red-100 text-red-800' :
+                      msg.status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
+                      msg.status === 'success' ? 'bg-green-100 text-green-800' :
+                      msg.status === 'complete' ? 'bg-blue-100 text-blue-800 font-bold' :
+                      'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    <div className="flex items-start">
+                      <span className="text-xs text-gray-500 mr-2">[{msg.timestamp}]</span>
+                      <span>{msg.message}</span>
+                    </div>
+                  </div>
+                ))}
+                <div ref={progressEndRef} />
+              </div>
+            </div>
+            
+            {/* Action buttons */}
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setDS160Status('idle')}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
+              >
+                Close
+              </button>
+              
+              {ds160Status === 'success' && (
+                <button
+                  onClick={handleDownloadYaml}
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg"
+                >
+                  Download YAML
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      
       {consoleErrors.length > 0 && (
         <div className="fixed bottom-0 right-0 p-4 m-4 bg-black bg-opacity-75 text-white rounded-lg max-w-lg">
           <div className="flex justify-between items-center mb-2">
@@ -1246,6 +1725,45 @@ export default function Home() {
                 {error}
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Extraction Progress Modal */}
+      {extractionStatus !== 'idle' && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <div className="flex flex-col items-center">
+              {(extractionStatus !== 'complete' || !formFillComplete) && (
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+              )}
+              
+              <h3 className="text-lg font-semibold mb-4">
+                {extractionStatus === 'extracting' ? 'Extracting DS-160 PDF' : 
+                 extractionStatus === 'processing' ? 'Processing with AI' :
+                 extractionStatus === 'filling' && !formFillComplete ? 'Filling Form Fields' : 
+                 extractionStatus === 'complete' && formFillComplete ? 'Form Filling Complete' :
+                 'Processing...'}
+              </h3>
+              
+              <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
+                {extractionProgress.map((msg, idx) => (
+                  <div key={idx} className="text-sm">
+                    {msg}
+                  </div>
+                ))}
+              </div>
+              
+              {/* Only show Done button when extraction is complete AND form filling is complete */}
+              {extractionStatus === 'complete' && formFillComplete && (
+                <Button 
+                  onClick={() => setExtractionStatus('idle')}
+                  className="mt-4"
+                >
+                  Done
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       )}

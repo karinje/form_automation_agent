@@ -18,7 +18,8 @@ class BrowserHandler:
         self.page = None
         self.current_page: Optional[FormPage] = None
         self.playwright = None
-        self.default_timeout = 1000  # 1 seconds default timeout
+        self.default_timeout = 1000  # 1 second default timeout
+        self.page_timeout = 5000  # 5 seconds page timeout
         
         # Load base URL from environment
         load_dotenv()
@@ -30,6 +31,8 @@ class BrowserHandler:
         self.browser = await self.playwright.chromium.launch(headless=self.headless)
         self.context = await self.browser.new_context()
         self.page = await self.context.new_page()
+        # Set default timeout after page is initialized
+        self.page.set_default_timeout(self.page_timeout)
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -157,9 +160,8 @@ class BrowserHandler:
                 timeout=self.default_timeout,
                 state="visible"
             )
-            
             if element:
-                max_attempts = 3
+                max_attempts = 2
                 for attempt in range(max_attempts):
                     try:
                         # 1. Set value through JavaScript first to ensure model binding

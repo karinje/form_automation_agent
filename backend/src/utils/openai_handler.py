@@ -87,7 +87,7 @@ class OpenAIHandler:
                - Keep array structures for repeated elements such as other_names in personal_page2, travel_companions in travel_page, etc...
                - Include button_clicks arrays as shown in template
                - Maintain exact field names and hierarchy
-               
+               - If instructions case sensitive, make sure you follows same case as in options provided. So choose Self instead of SELF for instance. 
             """
 
             # Save prompt to file

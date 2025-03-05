@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/accordion"
 import { ChevronDown, Upload, CheckCircle2 } from "lucide-react"
 import { processPassport } from '../utils/api'
+import { countFieldsByPage } from '../utils/field-counter'
 
 interface PassportUploadProps {
   onExtractData?: (data: any) => void
@@ -33,9 +34,16 @@ export function PassportUpload({ onExtractData, formData }: PassportUploadProps)
     setIsExpanded(!isExpanded);
   };
 
+  // Add the same progress states at the top of the component
+  const [extractionProgress, setExtractionProgress] = useState<string[]>([])
+  const [extractionStatus, setExtractionStatus] = useState<'idle' | 'extracting' | 'filling' | 'complete'>('idle')
+  const [fieldCounts, setFieldCounts] = useState<Record<string, number>>({})
+
   const handleExtractData = async () => {
     try {
       setIsLoading(true)
+      setExtractionStatus('extracting')
+      setExtractionProgress(['Extracting data from passport pages...'])
       
       // Prepare files object for upload
       const files: any = {}
@@ -50,13 +58,40 @@ export function PassportUpload({ onExtractData, formData }: PassportUploadProps)
       // Call the API
       const response = await processPassport(files, metadata)
       
-      // If successful and handler is provided, pass the YAML data directly
-      if (response.status === 'success' && onExtractData) {
-        onExtractData(response.data);
+      // Update extraction progress with field counts
+      if (response.status === 'success') {
+        setExtractionStatus('complete')
+        setExtractionProgress(prev => [...prev, 'Passport data extraction complete'])
+        
+        // Count fields per page section
+        const counts = countFieldsByPage(response.data)
+        
+        setFieldCounts(counts)
+        
+        // Add field counts to progress messages
+        const countMessages = Object.entries(counts).map(([page, count]) => {
+          const readablePage = page.replace('_page', '').replace(/_/g, ' ')
+          return `${readablePage}: ${count} fields`
+        })
+        
+        setExtractionProgress(prev => [...prev, ...countMessages])
+        
+        // If we're going to fill form, update status
+        if (onExtractData) {
+          setExtractionStatus('filling')
+          setExtractionProgress(prev => [...prev, 'Filling form with passport data...'])
+          
+          // Small delay before filling to show the message
+          setTimeout(() => {
+            onExtractData(response.data)
+            setExtractionStatus('idle')
+          }, 1000)
+        }
       }
-      
     } catch (error) {
       console.error('Error extracting passport data:', error)
+      setExtractionProgress(prev => [...prev, `Error: ${error.message || 'Unknown error'}`])
+      setExtractionStatus('idle')
     } finally {
       setIsLoading(false)
     }

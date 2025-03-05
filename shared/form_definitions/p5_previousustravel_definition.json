@@ -201,11 +201,11 @@
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPREV_US_VISIT_ctl00_ddlPREV_US_VISIT_LOS_CD",
           "type": "dropdown",
           "value": [
-            "YEAR(S)",
-            "MONTH(S)",
-            "WEEK(S)",
-            "DAY(S)",
-            "LESS THAN 24 HOURS"
+            "Year(s)",
+            "Month(s)",
+            "Week(s)",
+            "Day(s)",
+            "Less than 24 Hours"
           ],
           "text_phrase": "Length of Stay - Period",
           "parent_text_phrase": "Previous Travel Details",

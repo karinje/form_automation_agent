@@ -8,7 +8,7 @@ spouse_page:
   spouse_birth_city: ""  # City of birth
   spouse_birth_na:  "" # Set to true if City of birth is not available DOES NOT APPLY
   spouse_birth_country: ""  # Country/Region of birth
-  spouse_address_type: ""  # Choose from the following: SAME AS HOME ADDRESS, SAME AS MAILING ADDRESS, SAME AS U.S. CONTACT ADDRESS, DO NOT KNOW, OTHER (SPECIFY ADDRESS)
+  spouse_address_type: ""  # Choose from the following exactly case sensitive: Same as Home Address, Same as Mailing Address, Same as U.S. Contact Address, Do Not Know, Other (Specify Address)
   
   # These fields are now required since spouse_address_type is "Other (Specify Address)"
   spouse_address_line1: ""  # Street Address (Line 1), max 40 chars

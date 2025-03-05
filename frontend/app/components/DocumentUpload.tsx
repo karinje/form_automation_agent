@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/accordion"
 import { ChevronDown, Upload, CheckCircle2, Users, XCircle } from "lucide-react"
 import { processDocuments } from '../utils/api'
+import { countFieldsByPage } from '../utils/field-counter'
 
 interface DocumentUploadProps {
   onExtractData?: (data: any) => void
@@ -182,9 +183,17 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
     }
   };
 
+  // Add state for progress at the top of the DocumentUpload component
+  const [extractionProgress, setExtractionProgress] = useState<string[]>([])
+  const [extractionStatus, setExtractionStatus] = useState<'idle' | 'extracting' | 'filling' | 'complete'>('idle')
+  const [fieldCounts, setFieldCounts] = useState<Record<string, number>>({})
+
+  // Update the handleExtractData function
   const handleExtractData = async () => {
     try {
       setIsLoading(true)
+      setExtractionStatus('extracting')
+      setExtractionProgress(['Extracting data from uploaded documents...'])
       
       // Prepare files object for upload
       const files: any = {}
@@ -288,13 +297,39 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
       // Call the API
       const response = await processDocuments(files, metadata)
       
-      // If successful and handler is provided, pass the YAML data directly
-      if (response.status === 'success' && onExtractData) {
-        onExtractData(response.data);  // Pass the YAML structure directly
+      // Update extraction progress with field counts
+      if (response.status === 'success') {
+        setExtractionStatus('complete')
+        setExtractionProgress(prev => [...prev, 'Data extraction complete'])
+        
+        // Use the shared utility function
+        const counts = countFieldsByPage(response.data);
+        setFieldCounts(counts)
+        
+        // Add field counts to progress messages
+        const countMessages = Object.entries(counts).map(([page, count]) => {
+          const readablePage = page.replace('_page', '').replace(/_/g, ' ')
+          return `${readablePage}: ${count} fields`
+        })
+        
+        setExtractionProgress(prev => [...prev, ...countMessages])
+        
+        // If we're going to fill form, update status
+        if (onExtractData) {
+          setExtractionStatus('filling')
+          setExtractionProgress(prev => [...prev, 'Filling form with extracted data...'])
+          
+          // Small delay before filling to show the message
+          setTimeout(() => {
+            onExtractData(response.data)
+            setExtractionStatus('idle')
+          }, 1000)
+        }
       }
-      
     } catch (error) {
       console.error('Error extracting data:', error)
+      setExtractionProgress(prev => [...prev, `Error: ${error.message || 'Unknown error'}`])
+      setExtractionStatus('idle')
     } finally {
       setIsLoading(false)
     }
@@ -636,6 +671,42 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+
+      {/* Then add a progress modal inside the component's return */}
+      {extractionStatus !== 'idle' && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <div className="flex flex-col items-center">
+              {extractionStatus !== 'complete' && (
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+              )}
+              
+              <h3 className="text-lg font-semibold mb-4">
+                {extractionStatus === 'extracting' ? 'Extracting Document Data' : 
+                 extractionStatus === 'filling' ? 'Filling Form Fields' : 
+                 'Extraction Complete'}
+              </h3>
+              
+              <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
+                {extractionProgress.map((msg, idx) => (
+                  <div key={idx} className="text-sm">
+                    {msg}
+                  </div>
+                ))}
+              </div>
+              
+              {extractionStatus === 'complete' && (
+                <Button 
+                  onClick={() => setExtractionStatus('idle')}
+                  className="mt-4"
+                >
+                  Close
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 } 
