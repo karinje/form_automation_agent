@@ -185,6 +185,7 @@ class DocumentHandler:
                       relationship: ""  # Relationship options: PARENT/SPOUSE/CHILD/OTHER RELATIVE/FRIEND/BUSINESS ASSOCIATE/OTHER
 
             previous_travel_page:
+                previous_us_travel: ""  # Have you ever been in the U.S.? If drivers license is included in docouments then select "Y" else select "N"
                 drivers_license: "Y"  # Do you or did you ever hold a U.S. Driver's License? If drivers license is available in documents above select "Y" else select "N"
                 license_details:
                     - number: "" # Driver's License Number (1) Driver's License Number
@@ -211,7 +212,9 @@ class DocumentHandler:
             10. If the selected companions are available, use them in the travel_companions_page section
             11. Extract previous travel information like visa numbers, dates of entry/exit from the documents if available
             12. Only generate YAML structure without any comments or explanations before or after 
-            
+            13. For zip code use 5 digits
+            14. For state select full state name not abbreviation and use uppercase for state
+            15. If none chosen for travel companions then populate travel_companions_page section with empty array
             Output format:
             travel_page:
               # travel fields from template

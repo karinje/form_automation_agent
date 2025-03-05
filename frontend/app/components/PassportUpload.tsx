@@ -39,6 +39,9 @@ export function PassportUpload({ onExtractData, formData }: PassportUploadProps)
   const [extractionStatus, setExtractionStatus] = useState<'idle' | 'extracting' | 'filling' | 'complete'>('idle')
   const [fieldCounts, setFieldCounts] = useState<Record<string, number>>({})
 
+  // Add a new state for tracking form fill completion
+  const [processingComplete, setProcessingComplete] = useState(false);
+
   const handleExtractData = async () => {
     try {
       setIsLoading(true)
@@ -84,8 +87,9 @@ export function PassportUpload({ onExtractData, formData }: PassportUploadProps)
           // Small delay before filling to show the message
           setTimeout(() => {
             onExtractData(response.data)
-            setExtractionStatus('idle')
-          }, 1000)
+            setExtractionStatus('complete')
+            setProcessingComplete(true)
+          }, 2000)
         }
       }
     } catch (error) {
@@ -307,6 +311,44 @@ export function PassportUpload({ onExtractData, formData }: PassportUploadProps)
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+
+      {/* Add if it doesn't exist yet */}
+      {extractionStatus !== 'idle' && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <div className="flex flex-col items-center">
+              {(extractionStatus !== 'complete' || !processingComplete) && (
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+              )}
+              
+              <h3 className="text-lg font-semibold mb-4">
+                {extractionStatus === 'extracting' ? 'Extracting Passport Data' : 
+                 extractionStatus === 'filling' && !processingComplete ? 'Filling Form Fields' : 
+                 extractionStatus === 'complete' && processingComplete ? 'Passport Processing Complete' :
+                 'Processing...'}
+              </h3>
+              
+              <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
+                {extractionProgress.map((msg, idx) => (
+                  <div key={idx} className="text-sm">
+                    {msg}
+                  </div>
+                ))}
+              </div>
+              
+              {/* Only show Done button when extraction is complete AND processing is complete */}
+              {extractionStatus === 'complete' && processingComplete && (
+                <Button 
+                  onClick={() => setExtractionStatus('idle')}
+                  className="mt-4"
+                >
+                  Done
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

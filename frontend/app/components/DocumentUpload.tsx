@@ -188,6 +188,9 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
   const [extractionStatus, setExtractionStatus] = useState<'idle' | 'extracting' | 'filling' | 'complete'>('idle')
   const [fieldCounts, setFieldCounts] = useState<Record<string, number>>({})
 
+  // Add a new state for tracking form fill completion
+  const [processingComplete, setProcessingComplete] = useState(false);
+
   // Update the handleExtractData function
   const handleExtractData = async () => {
     try {
@@ -322,7 +325,8 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
           // Small delay before filling to show the message
           setTimeout(() => {
             onExtractData(response.data)
-            setExtractionStatus('idle')
+            setExtractionStatus('complete')
+            setProcessingComplete(true)
           }, 1000)
         }
       }
@@ -677,14 +681,15 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
             <div className="flex flex-col items-center">
-              {extractionStatus !== 'complete' && (
+              {(extractionStatus !== 'complete' || !processingComplete) && (
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
               )}
               
               <h3 className="text-lg font-semibold mb-4">
                 {extractionStatus === 'extracting' ? 'Extracting Document Data' : 
-                 extractionStatus === 'filling' ? 'Filling Form Fields' : 
-                 'Extraction Complete'}
+                 extractionStatus === 'filling' && !processingComplete ? 'Filling Form Fields' : 
+                 extractionStatus === 'complete' && processingComplete ? 'Document Processing Complete' :
+                 'Processing...'}
               </h3>
               
               <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
@@ -695,12 +700,13 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                 ))}
               </div>
               
-              {extractionStatus === 'complete' && (
+              {/* Only show Done button when extraction is complete AND processing is complete */}
+              {extractionStatus === 'complete' && processingComplete && (
                 <Button 
                   onClick={() => setExtractionStatus('idle')}
                   className="mt-4"
                 >
-                  Close
+                  Done
                 </Button>
               )}
             </div>
