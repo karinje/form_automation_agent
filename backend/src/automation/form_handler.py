@@ -160,23 +160,23 @@ class FormHandler:
                         
                         # Fill form and handle navigation
                         await self.fill_form(page_definitions[page_name])
-                        await self.browser.wait(0.3)
+                        await self.browser.wait(0.1)
                         
-                        # Check for validation errors after filling form
-                        if page_name in self.page_errors:
+                        # Process navigation and detect errors
+                        has_errors = await self.handle_page_navigation(page_definitions[page_name])
+                        await self.browser.wait(0.1)
+                        
+                        # Handle the result based on whether errors were detected
+                        if has_errors:
                             # Add page to errored pages, not completed pages
                             self.errored_pages.add(page_name)
                             await self.send_progress(
                                 f"Validation errors on {page_name}: {len(self.page_errors[page_name])} issues found", 
                                 status="warning"
                             )
-                            # Still try to navigate to the next page
-                            await self.handle_page_navigation(page_definitions[page_name])
-                            await self.browser.wait(0.5)
+                            # We continue to the next page even with errors
                         else:
                             # Only mark as completed if no validation errors
-                            await self.handle_page_navigation(page_definitions[page_name])
-                            await self.browser.wait(0.5)
                             self.completed_pages.add(page_name)
                             if page_name not in self.page_completion_messages_sent:
                                 await self.send_progress(f"Completed {page_name} successfully")
@@ -260,9 +260,11 @@ class FormHandler:
             await self.send_progress(f"Error processing forms: {str(e)}", status="error")
             raise
 
-    async def handle_page_navigation(self, page_definition: dict) -> None:
-        """Handle standard page navigation including continue page handling"""
+    async def handle_page_navigation(self, page_definition: dict) -> bool:
+        """Handle standard page navigation including continue page handling
+        Returns True if errors were found, False otherwise"""
         try:
+            has_errors = False
             button_clicks = self.field_values.get('button_clicks', [])
             for i, button_index in enumerate(button_clicks):
                 button = page_definition['buttons'][button_index]
@@ -293,7 +295,8 @@ class FormHandler:
                         self.page_errors[self.current_page] = []
                     self.page_errors[self.current_page].extend(error_messages)
                     logger.warning(f"Validation errors found on {self.current_page}: {error_messages}")
-                    return  # Don't proceed if there are errors
+                    has_errors = True
+                    # Continue with navigation despite errors
 
                 # Handle continue page between clicks
                 if i < len(button_clicks) - 1:
@@ -310,6 +313,8 @@ class FormHandler:
                             await self.browser.wait(1)
                     except Exception as e:
                         logger.info(f"Not on continue page or error clicking continue: {str(e)}")
+
+            return has_errors  # Return whether any errors were found
 
         except Exception as e:
             logger.error(f"Error during page navigation: {str(e)}")
@@ -564,7 +569,7 @@ class FormHandler:
             for dependent_field in dependency_data.get('shows', []):
                 if dependent_field:
                     logger.info(f"Processing dependent field: {dependent_field}")
-                    await self.browser.wait(0.5)
+                    await self.browser.wait(0.2)
                     await self._process_field_and_dependencies(
                         dependent_field,
                         page_mappings,

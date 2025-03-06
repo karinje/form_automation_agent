@@ -27,9 +27,6 @@ router = APIRouter()
 page_definitions = {}
 form_definitions_dir = Path(__file__).parent.parent.parent.parent.parent / 'shared/form_definitions'
 
-# Create a global message queue for progress updates
-progress_queue = asyncio.Queue()
-
 # Load all form definitions
 def load_form_definitions():
     try:
@@ -94,8 +91,11 @@ def load_form_definitions():
 # Load definitions when module is imported
 load_form_definitions()
 
-async def process_ds160_with_updates(content: bytes) -> AsyncGenerator[str, None]:
+async def process_ds160_with_updates(content: bytes, queue: asyncio.Queue = None) -> AsyncGenerator[str, None]:
     """Process DS-160 form and yield progress updates"""
+    # Use the provided queue or create a new one if none was provided
+    progress_queue = queue or asyncio.Queue()
+    
     try:
         # Parse YAML content
         form_data = yaml.safe_load(content)
@@ -103,7 +103,7 @@ async def process_ds160_with_updates(content: bytes) -> AsyncGenerator[str, None
         
         # Initialize handlers
         browser_handler = BrowserHandler(headless=False)
-        form_handler = FormHandler(progress_queue)  # Pass the queue to FormHandler
+        form_handler = FormHandler(progress_queue)  # Pass the request-specific queue
         
         # Start processing in background task
         process_task = asyncio.create_task(
@@ -146,9 +146,12 @@ async def run_ds160(file: UploadFile = File(...)):
         logger.info(f"Received DS-160 request with filename: {file.filename}")
         content = await file.read()
         
-        # Return a streaming response
+        # Create a fresh queue for each request
+        request_queue = asyncio.Queue()
+        
+        # Return a streaming response with the request-specific queue
         return StreamingResponse(
-            process_ds160_with_updates(content),
+            process_ds160_with_updates(content, request_queue),
             media_type="text/event-stream"
         )
             

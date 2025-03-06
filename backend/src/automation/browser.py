@@ -185,11 +185,11 @@ class BrowserHandler:
                             }}
                         }}""")
                         
-                        await self.page.wait_for_timeout(100)  # Let events propagate
+                        await self.page.wait_for_timeout(10)  # Let events propagate
                         
                         # 2. Then use Playwright's fill for good measure
                         await element.fill(value)
-                        await self.page.wait_for_timeout(100)
+                        await self.page.wait_for_timeout(10)
                         
                         # 3. Verify through multiple methods
                         js_value = await self.page.evaluate(f"""() => {{

@@ -714,8 +714,29 @@ export default function Home() {
     }
   }, [progressMessages]);
 
+  // Add this new reset function in your component
+  const resetDS160State = () => {
+    console.log("Resetting DS-160 state");
+    setProgressMessages([]);
+    // Only reset applicationId if we're not in retrieve mode
+    if (retrieveMode !== 'retrieve') {
+      setApplicationId('');
+    }
+    setDS160Status('idle');
+    // Reset any other relevant state variables here
+  };
+
+  // Modify the start of handleRunDS160
   const handleRunDS160 = async () => {
+    if (isRunningDS160) return; // Prevent multiple concurrent requests
+    
     try {
+      setIsRunningDS160(true);
+      // Call the reset function at the beginning
+      setProgressMessages([]);
+      console.log("Inside handleRunDS160 progressMessages reset to", progressMessages);
+      resetDS160State();
+      
       if (retrieveMode === 'retrieve') {
         if (!applicationId || !surname || !birthYear || !secretQuestion || !secretAnswer) {
           setErrorMessage("Please fill in all retrieve fields");
@@ -723,130 +744,140 @@ export default function Home() {
         }
       }
 
-      try {
-        // Clear previous progress messages
-        setProgressMessages([]);
-        setDS160Status('processing');
-        
-        const finalYamlData = generateFormYamlData({
-          location,
-          retrieveMode,
-          applicationId,
-          surname,
-          birthYear,
-          secretQuestion,
-          secretAnswer,
-          currentArrayGroups: arrayGroups
-        });
+      // Set to processing AFTER reset
+      setDS160Status('processing');
+      
+      const finalYamlData = generateFormYamlData({
+        location,
+        retrieveMode,
+        applicationId,
+        surname,
+        birthYear,
+        secretQuestion,
+        secretAnswer,
+        currentArrayGroups: arrayGroups
+      });
 
-        // Process button_clicks before serializing - SAME FIX AS IN handleDownloadYaml
-        Object.keys(finalYamlData).forEach(key => {
-          if (finalYamlData[key] && typeof finalYamlData[key] === 'object' && finalYamlData[key].button_clicks) {
-            // Ensure button_clicks is a simple array
-            if (Array.isArray(finalYamlData[key].button_clicks)) {
-              if (typeof finalYamlData[key].button_clicks[0] === 'object') {
-                // Convert from [{button_clicks: "1"}, {button_clicks: "2"}] to [1, 2]
-                finalYamlData[key].button_clicks = finalYamlData[key].button_clicks.map(item => 
-                  parseInt(item.button_clicks || "0", 10)
-                );
-              }
-            }
-          }
-        });
-
-        // Create YAML string with same formatting as download
-        const yamlStr = yaml.dump(finalYamlData, {
-          lineWidth: -1,
-          quotingType: '"',
-          forceQuotes: true,
-        });
-
-        // Use the runDS160 function from api.ts instead of making a direct fetch
-        const result = await runDS160(yamlStr);
-        
-        if (result.status === 'error') {
-          setProgressMessages(prev => [
-            ...prev, 
-            { 
-              status: 'error', 
-              message: result.message,
-              timestamp: new Date().toLocaleTimeString()
-            }
-          ]);
-          setDS160Status('error');
-          return;
-        }
-        
-        // If using the utility function, we need to handle the streaming part here
-        // The remaining code should work with the Stream response from the backend
-        const response = await fetch('http://localhost:8000/api/ds160/run-ds160', {
-          method: 'POST',
-          body: (() => {
-            const formData = new FormData();
-            formData.append('file', new Blob([yamlStr], { type: 'text/yaml' }), 'form_data.yaml');
-            return formData;
-          })(),
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Server responded with status: ${response.status}`);
-        }
-        
-        // Process the streaming response
-        const reader = response.body?.getReader();
-        if (!reader) {
-          throw new Error('Response body is null');
-        }
-        
-        // Read the stream
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          
-          // Convert the chunk to string
-          const chunk = new TextDecoder().decode(value);
-          
-          // Process each line of the chunk (there might be multiple messages)
-          const lines = chunk.split('\n').filter(line => line.trim());
-          for (const line of lines) {
-            try {
-              const message = JSON.parse(line) as ProgressMessage;
-              message.timestamp = new Date().toLocaleTimeString();
-              
-              // Handle application ID specially
-              if (message.status === 'application_id' && 'application_id' in message) {
-                // Store the application ID for future use
-                setApplicationId(message.application_id);
-                
-                // Update the message status to be a regular info message (but keep the application ID)
-                message.status = 'info';
-                message.message = `Retrieved application ID: ${message.application_id}`;
-              }
-              
-              setProgressMessages(prev => [...prev, message]);
-              
-              // Handle completion or error
-              if (message.status === 'complete') {
-                setDS160Status('success');
-              } else if (message.status === 'error') {
-                setDS160Status('error');
-              }
-            } catch (e) {
-              console.error('Failed to parse message:', line, e);
+      // Process button_clicks before serializing
+      Object.keys(finalYamlData).forEach(key => {
+        if (finalYamlData[key] && typeof finalYamlData[key] === 'object' && finalYamlData[key].button_clicks) {
+          // Ensure button_clicks is a simple array
+          if (Array.isArray(finalYamlData[key].button_clicks)) {
+            if (typeof finalYamlData[key].button_clicks[0] === 'object') {
+              // Convert from [{button_clicks: "1"}, {button_clicks: "2"}] to [1, 2]
+              finalYamlData[key].button_clicks = finalYamlData[key].button_clicks.map(item => 
+                parseInt(item.button_clicks || "0", 10)
+              );
             }
           }
         }
-      } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-        setProgressMessages(prev => [
-          ...prev, 
-          { 
-            status: 'error', 
-            message: `DS-160 Processing Error: ${errorMessage}`,
-            timestamp: new Date().toLocaleTimeString()
+      });
+
+      // Create YAML string
+      const yamlStr = yaml.dump(finalYamlData, {
+        lineWidth: -1,
+        quotingType: '"',
+        forceQuotes: true,
+      });
+
+      // Get streaming response
+      const response = await runDS160(yamlStr);
+      
+      // Process the streaming response
+      const reader = response.body?.getReader();
+      console.log("Inside handleRunDS160 reader", reader) 
+      if (!reader) {
+        throw new Error('Response body is null');
+      }
+      
+      // Read the stream
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        console.log("Inside handleRunDS160 value", new TextDecoder().decode(value))
+        // Convert the chunk to string
+        const chunk = new TextDecoder().decode(value);
+        
+        // Fix: Use a proper JSON stream parsing approach
+        // This handles cases where multiple JSON objects are concatenated without delimiters
+        let buffer = chunk;
+        while (buffer.length > 0) {
+          try {
+            // Try to find the end of a complete JSON object
+            let endPos = 0;
+            let bracketCount = 0;
+            let inString = false;
+            let escapeNext = false;
+            
+            for (let i = 0; i < buffer.length; i++) {
+              const char = buffer[i];
+              
+              if (escapeNext) {
+                escapeNext = false;
+                continue;
+              }
+              
+              if (char === '\\' && inString) {
+                escapeNext = true;
+                continue;
+              }
+              
+              if (char === '"' && !escapeNext) {
+                inString = !inString;
+              }
+              
+              if (!inString) {
+                if (char === '{') bracketCount++;
+                if (char === '}') {
+                  bracketCount--;
+                  if (bracketCount === 0) {
+                    endPos = i + 1;
+                    break;
+                  }
+                }
+              }
+            }
+            
+            if (endPos === 0) {
+              // Incomplete JSON object, wait for more data
+              break;
+            }
+            
+            // Extract a complete JSON object
+            const jsonStr = buffer.substring(0, endPos);
+            buffer = buffer.substring(endPos);
+            
+            // Parse the complete JSON object
+            const message = JSON.parse(jsonStr) as ProgressMessage;
+            message.timestamp = new Date().toLocaleTimeString();
+            
+            // Handle message as before
+            if (message.status === 'application_id' && 'application_id' in message) {
+              setApplicationId(message.application_id);
+              message.status = 'info';
+              message.message = `Retrieved application ID: ${message.application_id}`;
+            }
+            
+            setProgressMessages(prev => [...prev, message]);
+            
+            if (message.status === 'complete') {
+              setDS160Status('success');
+            } else if (message.status === 'error') {
+              setDS160Status('error');
+            }
+          } catch (e) {
+            console.error('Failed to parse JSON chunk:', e);
+            
+            // If parsing fails, try to find the next JSON object
+            const nextStart = buffer.indexOf('{"status":', 1);
+            if (nextStart > 0) {
+              buffer = buffer.substring(nextStart);
+            } else {
+              // No more valid JSON in this chunk
+              break;
+            }
           }
-        ]);
-        setDS160Status('error');
+        }
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
@@ -859,6 +890,8 @@ export default function Home() {
         }
       ]);
       setDS160Status('error');
+    } finally {
+      setIsRunningDS160(false);
     }
   };
 
@@ -1590,13 +1623,24 @@ export default function Home() {
               )}
             </div>
             
-            {/* Button to cancel/close */}
-            <button
-              onClick={() => setDS160Status('idle')}
-              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg"
-            >
-              Cancel
-            </button>
+            {/* Action buttons */}
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={resetDS160State}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
+              >
+                Close
+              </button>
+              
+              {ds160Status === 'success' && (
+                <button
+                  onClick={handleDownloadYaml}
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg"
+                >
+                  Download YAML
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -1686,7 +1730,7 @@ export default function Home() {
             {/* Action buttons */}
             <div className="flex justify-end space-x-4">
               <button
-                onClick={() => setDS160Status('idle')}
+                onClick={resetDS160State}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
               >
                 Close

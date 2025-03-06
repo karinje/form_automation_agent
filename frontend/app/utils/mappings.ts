@@ -92,7 +92,7 @@ export const getYamlField = (pageName: string, formFieldId: string): string => {
   if (!match) {
     // For debugging
     if (pageName === 'workeducation3_page') {
-      console.log(`No YAML field found for ${normalizedFieldId} in ${pageName}`);
+      //console.log(`No YAML field found for ${normalizedFieldId} in ${pageName}`);
     }
     return '';
   }
