@@ -7,6 +7,7 @@ import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/acco
 import { ChevronDown, Upload, CheckCircle2 } from "lucide-react"
 import { processPassport } from '../utils/api'
 import { countFieldsByPage } from '../utils/field-counter'
+import { StopwatchTimer } from './StopwatchTimer'
 
 interface PassportUploadProps {
   onExtractData?: (data: any) => void
@@ -327,6 +328,14 @@ export function PassportUpload({ onExtractData, formData }: PassportUploadProps)
                  extractionStatus === 'complete' && processingComplete ? 'Passport Processing Complete' :
                  'Processing...'}
               </h3>
+              
+              {/* Add StopwatchTimer component */}
+              {extractionStatus !== 'complete' && (
+                <StopwatchTimer 
+                  isRunning={extractionStatus !== 'idle' && !processingComplete} 
+                  estimatedTime="up to 1 minute"
+                />
+              )}
               
               <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
                 {extractionProgress.map((msg, idx) => (

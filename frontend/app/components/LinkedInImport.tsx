@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { processLinkedIn } from '../utils/api'
 import { countFieldsByPage } from '../utils/field-counter'
+import { StopwatchTimer } from './StopwatchTimer'
 
 interface LinkedInImportProps {
   onDataImported?: (data: any) => void
@@ -18,6 +19,7 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
   const [extractionProgress, setExtractionProgress] = useState<string[]>([])
   const [extractionStatus, setExtractionStatus] = useState<'idle' | 'extracting' | 'filling' | 'complete'>('idle')
   const [fieldCounts, setFieldCounts] = useState<Record<string, number>>({})
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const handleImport = async () => {
     if (!linkedinUrl) {
@@ -152,6 +154,11 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
                  extractionStatus === 'filling' ? 'Filling Form with LinkedIn Data' : 
                  'Data Extraction Complete'}
               </h3>
+              
+              <StopwatchTimer 
+                isRunning={extractionStatus !== 'idle' && extractionStatus !== 'complete'} 
+                estimatedTime="up to 2 minutes"
+              />
               
               <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
                 {extractionProgress.map((msg, idx) => (

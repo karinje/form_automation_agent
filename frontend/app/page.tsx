@@ -20,6 +20,7 @@ import { I94Import } from "@/components/I94Import"
 import { DocumentUpload } from "@/components/DocumentUpload"
 import { PassportUpload } from "@/components/PassportUpload"
 import { countFieldsByPage } from './utils/field-counter'
+import { StopwatchTimer } from './components/StopwatchTimer'
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -373,15 +374,24 @@ export default function Home() {
       .replace(/:\s+"([^"]*)$/gm, ': "$1"');
   };
 
-  // Update the handleFileUpload function
+  // Add this to your state variables at the top
+  const [fileInputKey, setFileInputKey] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Then modify your handleFileUpload function to reset the input at the end
   const handleFileUpload = async (file: File) => {
     if (file.type === "application/pdf") {
       try {
-        // Reset states
+        // Call reset function at the start of file processing
+        resetExtractionState();
+        
+        // Then continue with the normal process
         setErrorMessage("");
         setExtractionStatus('extracting');
         setExtractionProgress(['Starting DS-160 PDF extraction...']);
-        setFormFillComplete(false); // Reset form fill status
+        setFormFillComplete(false);
+        setYamlOutput(""); 
+        setExtractedText(""); 
         
         // First phase: PDF to text
         setIsConverting(true);
@@ -451,6 +461,11 @@ export default function Home() {
             setExtractionStatus('complete');
             setFormFillComplete(true);
             setIsProcessingLLM(false);
+            // Reset the file input
+            setFileInputKey(prev => prev + 1);
+            if (fileInputRef.current) {
+              fileInputRef.current.value = '';
+            }
           }, 5000); // 5 second delay to allow form to expand/populate
           
         } catch (error) {
@@ -1099,16 +1114,35 @@ export default function Home() {
     processCategory(0);
   };
 
+  const resetExtractionState = () => {
+    setExtractionStatus('idle');
+    setExtractionProgress([]);
+    setFormFillComplete(false);
+    setYamlOutput("");
+    setExtractedText("");
+    setFileInputKey(prev => prev + 1);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {(isProcessing || isProcessingLLM) && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
+          <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center max-w-md w-full">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
             <p className="text-lg font-semibold">
               {isProcessing ? 'Processing PDF...' : 'Processing with AI...'}
             </p>
-            <p className="text-sm text-gray-500">
+            
+            {/* Add StopwatchTimer to start whenever processing begins */}
+            <StopwatchTimer 
+              isRunning={isProcessing || isProcessingLLM} 
+              estimatedTime="up to 2 minutes"
+            />
+            
+            <p className="text-sm text-gray-500 mt-2">
               {isProcessing ? 'Converting document to form data' : 'This typically takes 1-2 minutes'}
             </p>
           </div>
@@ -1127,42 +1161,48 @@ export default function Home() {
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold whitespace-nowrap">Upload Previous DS160 to fill form</h2>
               <div className="flex-1 flex justify-end">
-                <label 
-                  htmlFor="dropzone-file" 
-                  className={`flex items-center justify-center h-12 w-96 
-                             border-2 border-blue-500 border-dashed rounded-lg 
-                             ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-100'} 
-                             bg-gray-50 relative ml-8`}
-                >
-                  <div className="flex items-center">
-                    {isConverting ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-2"></div>
-                        <span className="text-sm text-gray-500">Converting...</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg className="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
-                        <span className="text-sm text-gray-500">Click to upload or drag and drop PDF files</span>
-                      </>
-                    )}
-                  </div>
-                  <input 
-                    id="dropzone-file" 
-                    type="file" 
-                    className="hidden" 
-                    onChange={(e) => {
-                      if (isProcessing || isProcessingLLM) return;
-                      const file = e.target.files?.[0];
-                      if (file) handleFileUpload(file);
-                    }}
-                    disabled={isProcessing || isProcessingLLM}
-                    accept=".pdf"
-                  />
-                </label>
+                <div className="flex items-center">
+                  <label 
+                    htmlFor="dropzone-file" 
+                    className={`flex items-center justify-center h-12 w-96 
+                              border-2 border-blue-500 border-dashed rounded-lg 
+                              ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-100'} 
+                              bg-gray-50 relative`}
+                  >
+                    <div className="flex items-center">
+                      {isConverting ? (
+                        <>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-2"></div>
+                          <span className="text-sm text-gray-500">Converting...</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          </svg>
+                          <span className="text-sm text-gray-500">Click to upload or drag and drop PDF files</span>
+                        </>
+                      )}
+                    </div>
+                    <input 
+                      id="dropzone-file" 
+                      type="file" 
+                      className="hidden" 
+                      key={fileInputKey}
+                      ref={fileInputRef}
+                      onChange={(e) => {
+                        if (isProcessing || isProcessingLLM) return;
+                        const file = e.target.files?.[0];
+                        if (file) handleFileUpload(file);
+                      }}
+                      disabled={isProcessing || isProcessingLLM}
+                      accept=".pdf"
+                    />
+                  </label>
+                  
+                  
+                </div>
               </div>
             </div>
             
@@ -1595,6 +1635,12 @@ export default function Home() {
             <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500 mb-6"></div>
             <h2 className="text-2xl font-bold mb-4">Processing DS-160 Form</h2>
             
+            {/* Add StopwatchTimer */}
+            <StopwatchTimer 
+              isRunning={ds160Status === 'processing'} 
+              estimatedTime="up to 3 minutes"
+            />
+            
             {/* Progress messages container with scrolling */}
             <div className="w-full border border-gray-200 rounded-lg bg-gray-50 p-4 max-h-[60vh] overflow-y-auto mb-4">
               {progressMessages.length === 0 ? (
@@ -1789,6 +1835,14 @@ export default function Home() {
                  extractionStatus === 'complete' && formFillComplete ? 'Form Filling Complete' :
                  'Processing...'}
               </h3>
+              
+              {/* Add StopwatchTimer */}
+              {extractionStatus !== 'complete' && (
+                <StopwatchTimer 
+                  isRunning={extractionStatus !== 'idle' && !formFillComplete} 
+                  estimatedTime="up to 2 minutes"
+                />
+              )}
               
               <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
                 {extractionProgress.map((msg, idx) => (

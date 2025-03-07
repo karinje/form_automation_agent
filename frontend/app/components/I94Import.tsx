@@ -11,6 +11,7 @@ import { handleFormDataLoad } from '../utils/form-helpers'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ChevronDown } from "lucide-react"
 import { countFieldsByPage } from '../utils/field-counter'
+import { StopwatchTimer } from './StopwatchTimer'
 
 interface I94ImportProps {
   formData: Record<string, string>
@@ -28,6 +29,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
   const [extractionProgress, setExtractionProgress] = useState<string[]>([])
   const [extractionStatus, setExtractionStatus] = useState<'idle' | 'extracting' | 'filling' | 'complete'>('idle')
   const [fieldCounts, setFieldCounts] = useState<Record<string, number>>({})
+  const [processingComplete, setProcessingComplete] = useState(false)
 
   // Initialize form data from personal page and passport info
   useEffect(() => {
@@ -156,6 +158,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
       
       if (result.status === 'success' && result.data) {
         setExtractionStatus('complete')
+        setProcessingComplete(true)
         setExtractionProgress(prev => [...prev, 'I-94 data retrieval complete'])
         
         // Use the shared utility function
@@ -307,9 +310,18 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
               
               <h3 className="text-lg font-semibold mb-4">
                 {extractionStatus === 'extracting' ? 'Retrieving Travel History' : 
-                 extractionStatus === 'filling' ? 'Filling Form Fields' : 
-                 'Data Retrieval Complete'}
+                 extractionStatus === 'filling' && !processingComplete ? 'Filling Form Fields' : 
+                 extractionStatus === 'complete' && processingComplete ? 'Data Retrieval Complete' :
+                 'Processing...'}
               </h3>
+              
+              {/* Add StopwatchTimer component */}
+              {extractionStatus !== 'complete' && (
+                <StopwatchTimer 
+                  isRunning={extractionStatus !== 'idle' && !processingComplete} 
+                  estimatedTime="up to 1 minute"
+                />
+              )}
               
               <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
                 {extractionProgress.map((msg, idx) => (
