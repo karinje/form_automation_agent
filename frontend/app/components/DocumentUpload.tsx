@@ -487,21 +487,17 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
         collapsible 
         value={isExpanded ? "item-0" : ""} 
         onValueChange={(val) => setIsExpanded(val === "item-0")}
-        className="border border-gray-200 rounded-lg overflow-hidden shadow-sm"
+        className="border border-gray-200 border-l-4 border-l-blue-500 bg-blue-50 rounded-lg overflow-hidden shadow-sm"
       >
         <AccordionItem value="item-0" className="border-0">
-          <div className="flex items-center justify-between bg-gray-50 px-6 py-4">
-            {/* Custom header */}
-            <div 
-              className="flex-1 flex items-center cursor-pointer"
-              onClick={handleToggle}
-            >
-              <h3 className="text-lg font-semibold text-gray-900 leading-none">
-                Upload documents to import data
-              </h3>
+          <div className="flex items-center justify-between bg-blue-50 px-6 py-4">
+            <div className="flex-1 flex items-center cursor-pointer" onClick={handleToggle}>
+              <div>
+                <h3 className="text-lg font-semibold">Upload documents to import data</h3>
+                <p className="text-sm text-gray-500">Travel information will be automatically filled</p>
+              </div>
             </div>
             
-            {/* Extract Data button */}
             <Button 
               onClick={(e) => {
                 e.stopPropagation();
@@ -521,11 +517,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
               ) : 'Extract Data & Fill Form'}
             </Button>
             
-            {/* Chevron for expand/collapse */}
-            <div 
-              className="ml-6 cursor-pointer"
-              onClick={handleToggle}
-            >
+            <div className="ml-6 cursor-pointer" onClick={handleToggle}>
               <ChevronDown 
                 className={`h-8 w-8 shrink-0 text-gray-500 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
               />

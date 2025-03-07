@@ -21,6 +21,7 @@ import { DocumentUpload } from "@/components/DocumentUpload"
 import { PassportUpload } from "@/components/PassportUpload"
 import { countFieldsByPage } from './utils/field-counter'
 import { StopwatchTimer } from './components/StopwatchTimer'
+import { Upload } from "lucide-react"
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
@@ -1371,7 +1372,7 @@ export default function Home() {
     
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        {/* Increase the width from max-w-md to max-w-2xl */}
+        {/* Modal content */}
         <div className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">DS-160 Upload Configuration</h2>
@@ -1459,7 +1460,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Retrieve-specific fields - improved layout */}
+            {/* Retrieve-specific fields */}
             {retrieveMode === 'retrieve' && (
               <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <Label className="block mb-2">Retrieve Details:</Label>
@@ -1512,6 +1513,17 @@ export default function Home() {
     );
   };
 
+  // First, I'll add a function to check if all forms are complete
+  const areAllFormsComplete = () => {
+    return !Object.entries(formCategories).some(([category, forms]) => {
+      return forms.some((form, index) => {
+        const formId = `${category}-${index}`;
+        const status = completionStatus[formId];
+        return !status || status.completed < status.total;
+      });
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {(isProcessing || isProcessingLLM) && (
@@ -1543,7 +1555,7 @@ export default function Home() {
         </div>
         
         <div className="bg-white shadow-lg rounded-lg p-8">
-          <div className="mb-4 flex flex-col bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <div className="mb-4 flex flex-col bg-blue-50 border-l-4 border-l-blue-500 border border-gray-200 rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold whitespace-nowrap">Import Data From Previous DS160 form</h2>
@@ -1558,21 +1570,11 @@ export default function Home() {
                               ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-100'} 
                               bg-gray-50 relative`}
                   >
-                    <div className="flex items-center">
-                      {isConverting ? (
-                        <>
-                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-2"></div>
-                          <span className="text-sm text-gray-500">Converting...</span>
-                        </>
-                      ) : (
-                        <>
-                          <svg className="w-6 h-6 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                          </svg>
-                          <span className="text-sm text-gray-500">Click to upload or drag and drop PDF files</span>
-                        </>
-                      )}
+                    <div className="flex items-center gap-2 text-center">
+                      <Upload className="h-6 w-6 text-blue-500" />
+                      <span className="text-gray-600">
+                        Click to upload or drag & drop DS160 PDF
+                      </span>
                     </div>
                     <input 
                       id="dropzone-file" 
@@ -1622,7 +1624,7 @@ export default function Home() {
           </div>
 
           {/* Fix the layout of the "Continue to Upload" section */}
-          <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div className="mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
             <div className="flex items-center justify-between">
               <div>
                 <Label className="text-lg font-semibold">Ready to upload to the DS160 website?</Label>
@@ -1630,7 +1632,10 @@ export default function Home() {
               </div>
               <Button 
                 onClick={validateAndShowUploadModal}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
+                disabled={!areAllFormsComplete()}
+                className={`${!areAllFormsComplete() 
+                  ? 'bg-gray-400 hover:bg-gray-400 cursor-not-allowed' 
+                  : 'bg-green-600 hover:bg-green-700'} text-white px-6 py-2 rounded-lg`}
               >
                 Continue to Upload
               </Button>
@@ -1776,40 +1781,47 @@ export default function Home() {
               </div>
               {renderFormSection(formCategories.personal, 'personal')}
             </TabsContent>
-            <TabsContent value="travel" className="mt-6">
-              <div className="mb-6">
+            <TabsContent value="travel">
+              {/* Remove extra margin/padding here if it exists */}
+              <div className="space-y-6"> {/* Use a consistent container with consistent spacing */}
                 <I94Import 
-                  formData={formData}
+                  formData={formData} 
                   onDataImported={(i94Data) => {
                     if (i94Data) {
-                      // Get current YAML for previous_travel_page
-                      const currentPageData = getFilteredYamlData(['previous_travel_page'])
-                      //console.log('current page yaml data', currentPageData)
-                      // Create new YAML with merged previous_travel_page data
-                      const mergedYaml = {
-                        previous_travel_page: {
-                          ...currentPageData?.previous_travel_page, // Keep existing fields
-                          ...i94Data.previous_travel_page, // Override with new I94 data
-                          button_clicks: [1, 2] // Explicitly set button_clicks in correct format
-                        }
-                      }
-                      //log the merged yaml
-                      //console.log('merged yaml', mergedYaml)
-                      // Update form with merged data
+                      // Use the function with appropriate filter
                       handleFormDataLoad(
-                        mergedYaml,
+                        i94Data,
                         true,
                         ['previous_travel_page']
-                      )
+                      );
+                      
+                      // Navigate to the travel tab and open appropriate accordions
+                      setCurrentTab('travel');
+                      const updatedAccordionValues = { ...accordionValues };
+                      
+                      // Find the index of the previous_travel form
+                      const previousTravelIndex = formCategories.travel.findIndex(
+                        form => form.pageName === 'previous_travel_page'
+                      );
+                      
+                      if (previousTravelIndex >= 0) {
+                        updatedAccordionValues.travel = `item-${previousTravelIndex}`;
+                        setAccordionValues(updatedAccordionValues);
+                      }
                     }
-                  }} 
+                  }}
                 />
                 <DocumentUpload 
+                  onExtractData={(docData) => {
+                    // Handle document data
+                    if (docData) {
+                      handleFormDataLoad(docData, true);
+                    }
+                  }}
                   formData={formData}
-                  onExtractData={handleDocumentExtraction} 
                 />
+                {renderFormSection(formCategories.travel, 'travel')}
               </div>
-              {renderFormSection(formCategories.travel, 'travel')}
             </TabsContent>
             <TabsContent value="education">
               <LinkedInImport onDataImported={(linkedInData) => {
@@ -1844,12 +1856,11 @@ export default function Home() {
               {renderFormSection(formCategories.education, 'education')}
             </TabsContent>
             <TabsContent value="security">
-              <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="mb-6 p-4 bg-blue-50 border-l-4 border-l-blue-500 border border-gray-200 rounded-lg">
                 <div className="flex items-center justify-between gap-4">
-                  <div className="flex-grow">
-                    <p className="text-base font-medium text-gray-800 my-auto">
-                      Select default answer for all Security and Background Questions:
-                    </p>
+                  <div>
+                    <p className="text-lg font-semibold">Select default answer for all Security and Background Questions</p>
+                    <p className="text-sm text-gray-500">All questions will be updated at once</p>
                   </div>
                   <div className="min-w-[200px]">
                     <Tabs

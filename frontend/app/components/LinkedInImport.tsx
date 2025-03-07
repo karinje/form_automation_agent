@@ -102,84 +102,89 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
   }
 
   return (
-    <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-      <h3 className="text-md font-medium mb-1">
-        Provide LinkedIn profile URL to automatically fill Work/Education 1/2 pages
-      </h3>
-      
-      <div className="flex gap-2">
-        <Input
-          type="text"
-          value={linkedinUrl}
-          onChange={(e) => setLinkedinUrl(e.target.value)}
-          placeholder="https://www.linkedin.com/in/username"
-          className="flex-1"
-        />
-        <Button 
-          onClick={handleImport}
-          disabled={isLoading || !linkedinUrl}
-          className={`bg-blue-600 hover:bg-blue-700 ${isLoading ? 'opacity-70' : ''}`}
-        >
-          {isLoading ? (
-            <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              Importing...
-            </>
-          ) : 'Import LinkedIn Data   and Fill Form'}
-        </Button>
-      </div>
-      
-      {error && (
-        <div className="mt-2 text-sm text-red-600">
-          {error}
-        </div>
-      )}
-      
-      {success && (
-        <div className="mt-2 text-sm text-green-600">
-          LinkedIn data successfully imported and form updated!
-        </div>
-      )}
-      
-      {extractionStatus !== 'idle' && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-            <div className="flex flex-col items-center">
-              {extractionStatus !== 'complete' && (
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-              )}
-              
-              <h3 className="text-lg font-semibold mb-4">
-                {extractionStatus === 'extracting' ? 'Extracting LinkedIn Data' : 
-                 extractionStatus === 'filling' ? 'Filling Form with LinkedIn Data' : 
-                 'Data Extraction Complete'}
-              </h3>
-              
-              <StopwatchTimer 
-                isRunning={extractionStatus !== 'idle' && extractionStatus !== 'complete'} 
-                estimatedTime="up to 2 minutes"
-              />
-              
-              <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
-                {extractionProgress.map((msg, idx) => (
-                  <div key={idx} className="text-sm">
-                    {msg}
-                  </div>
-                ))}
-              </div>
-              
-              {extractionStatus === 'complete' && (
-                <Button 
-                  onClick={() => setExtractionStatus('idle')}
-                  className="mt-4"
-                >
-                  Close
-                </Button>
-              )}
-            </div>
+    <div className="mb-6 p-4 bg-blue-50 border-l-4 border-l-blue-500 border border-gray-200 rounded-lg">
+      <div className="flex flex-col">
+        <div className="flex items-center justify-between mb-2">
+          <div>
+            <h3 className="text-lg font-semibold">Provide LinkedIn profile URL to automatically fill Work/Education pages</h3>
+            <p className="text-sm text-gray-500">Work and education history will be imported</p>
           </div>
         </div>
-      )}
+        
+        <div className="flex gap-2">
+          <Input
+            type="text"
+            value={linkedinUrl}
+            onChange={(e) => setLinkedinUrl(e.target.value)}
+            placeholder="https://www.linkedin.com/in/username"
+            className="flex-1"
+          />
+          <Button 
+            onClick={handleImport}
+            disabled={isLoading || !linkedinUrl}
+            className={`bg-blue-600 hover:bg-blue-700 ${isLoading ? 'opacity-70' : ''}`}
+          >
+            {isLoading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Importing...
+              </>
+            ) : 'Import LinkedIn Data'}
+          </Button>
+        </div>
+        
+        {error && (
+          <div className="mt-2 text-sm text-red-600">
+            {error}
+          </div>
+        )}
+        
+        {success && (
+          <div className="mt-2 text-sm text-green-600">
+            LinkedIn data successfully imported and form updated!
+          </div>
+        )}
+        
+        {extractionStatus !== 'idle' && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+              <div className="flex flex-col items-center">
+                {extractionStatus !== 'complete' && (
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+                )}
+                
+                <h3 className="text-lg font-semibold mb-4">
+                  {extractionStatus === 'extracting' ? 'Extracting LinkedIn Data' : 
+                   extractionStatus === 'filling' ? 'Filling Form with LinkedIn Data' : 
+                   'Data Extraction Complete'}
+                </h3>
+                
+                <StopwatchTimer 
+                  isRunning={extractionStatus !== 'idle' && extractionStatus !== 'complete'} 
+                  estimatedTime="up to 2 minutes"
+                />
+                
+                <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
+                  {extractionProgress.map((msg, idx) => (
+                    <div key={idx} className="text-sm">
+                      {msg}
+                    </div>
+                  ))}
+                </div>
+                
+                {extractionStatus === 'complete' && (
+                  <Button 
+                    onClick={() => setExtractionStatus('idle')}
+                    className="mt-4"
+                  >
+                    Close
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 } 

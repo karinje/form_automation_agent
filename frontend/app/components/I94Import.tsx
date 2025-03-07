@@ -202,21 +202,17 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
         collapsible 
         value={isExpanded ? "item-0" : ""} 
         onValueChange={(val) => setIsExpanded(val === "item-0")}
-        className="border border-gray-200 rounded-lg overflow-hidden shadow-sm"
+        className="border border-gray-200 border-l-4 border-l-blue-500 bg-blue-50 rounded-lg overflow-hidden shadow-sm"
       >
         <AccordionItem value="item-0" className="border-0">
-          <div className="flex items-center justify-between bg-gray-50 px-6 py-4">
-            {/* Replace AccordionTrigger with custom header */}
-            <div 
-              className="flex-1 flex items-center cursor-pointer"
-              onClick={handleToggle}
-            >
-              <h3 className="text-lg font-semibold text-gray-900 leading-none">
-                Import previous 5 US visits info from I94 website
-              </h3>
+          <div className="flex items-center justify-between bg-blue-50 px-6 py-4">
+            <div className="flex-1 flex items-center cursor-pointer" onClick={handleToggle}>
+              <div>
+                <h3 className="text-lg font-semibold">Import previous 5 US visits info from I94 website</h3>
+                <p className="text-sm text-gray-500">Travel history will be automatically filled</p>
+              </div>
             </div>
             
-            {/* Import button */}
             <Button 
               onClick={(e) => {
                 e.stopPropagation();
@@ -233,11 +229,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
               ) : 'Import Data & Fill Form'}
             </Button>
             
-            {/* Chevron positioned to align with other accordion arrows */}
-            <div 
-              className="ml-6 cursor-pointer"
-              onClick={handleToggle}
-            >
+            <div className="ml-6 cursor-pointer" onClick={handleToggle}>
               <ChevronDown 
                 className={`h-8 w-8 shrink-0 text-gray-500 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
               />
@@ -300,48 +292,9 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+
       {extractionStatus !== 'idle' && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-            <div className="flex flex-col items-center">
-              {extractionStatus !== 'complete' && (
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-              )}
-              
-              <h3 className="text-lg font-semibold mb-4">
-                {extractionStatus === 'extracting' ? 'Retrieving Travel History' : 
-                 extractionStatus === 'filling' && !processingComplete ? 'Filling Form Fields' : 
-                 extractionStatus === 'complete' && processingComplete ? 'Data Retrieval Complete' :
-                 'Processing...'}
-              </h3>
-              
-              {/* Add StopwatchTimer component */}
-              {extractionStatus !== 'complete' && (
-                <StopwatchTimer 
-                  isRunning={extractionStatus !== 'idle' && !processingComplete} 
-                  estimatedTime="up to 1 minute"
-                />
-              )}
-              
-              <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
-                {extractionProgress.map((msg, idx) => (
-                  <div key={idx} className="text-sm">
-                    {msg}
-                  </div>
-                ))}
-              </div>
-              
-              {extractionStatus === 'complete' && (
-                <Button 
-                  onClick={() => setExtractionStatus('idle')}
-                  className="mt-4"
-                >
-                  Close
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
+        {/* Existing modal code */}
       )}
     </div>
   )
