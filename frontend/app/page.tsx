@@ -1126,6 +1126,392 @@ export default function Home() {
     }
   };
 
+  // Change the useEffect that loads data to use sessionStorage
+  useEffect(() => {
+    try {
+      // First check if we have saved YAML data
+      const savedYamlData = sessionStorage.getItem('ds160_yaml_data');
+      
+      if (savedYamlData) {
+        // Parse the saved YAML data
+        const parsedYaml = JSON.parse(savedYamlData);
+        
+        // Use handleFormDataLoad to properly reconstruct the form
+        // This will rebuild dependencies, visible fields, etc.
+        handleFormDataLoad(parsedYaml, false); // false = don't show success message
+        
+        // Load UI state
+        const savedCurrentTab = sessionStorage.getItem('ds160_current_tab');
+        if (savedCurrentTab) {
+          setCurrentTab(savedCurrentTab);
+        }
+        
+        const savedAccordionValues = sessionStorage.getItem('ds160_accordion_values');
+        if (savedAccordionValues) {
+          setAccordionValues(JSON.parse(savedAccordionValues));
+        }
+        
+        // Load other state values
+        const savedRetrieveMode = sessionStorage.getItem('ds160_retrieve_mode');
+        if (savedRetrieveMode === 'new' || savedRetrieveMode === 'retrieve') {
+          setRetrieveMode(savedRetrieveMode);
+        }
+        
+        const savedLocation = sessionStorage.getItem('ds160_location');
+        if (savedLocation) {
+          setLocation(savedLocation);
+        }
+        
+        const savedSecretQuestion = sessionStorage.getItem('ds160_secret_question');
+        if (savedSecretQuestion) {
+          setSecretQuestion(savedSecretQuestion);
+        }
+        
+        const savedSecretAnswer = sessionStorage.getItem('ds160_secret_answer');
+        if (savedSecretAnswer) {
+          setSecretAnswer(savedSecretAnswer);
+        }
+        
+        const savedApplicationId = sessionStorage.getItem('ds160_application_id');
+        if (savedApplicationId) {
+          setApplicationId(savedApplicationId);
+        }
+        
+        const savedSurname = sessionStorage.getItem('ds160_surname');
+        if (savedSurname) {
+          setSurname(savedSurname);
+        }
+        
+        const savedBirthYear = sessionStorage.getItem('ds160_birth_year');
+        if (savedBirthYear) {
+          setBirthYear(savedBirthYear);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading saved form data:', error);
+    }
+  }, []);
+
+  // Change all the save useEffects to use sessionStorage
+  useEffect(() => {
+    if (Object.keys(yamlData).length > 0) {
+      sessionStorage.setItem('ds160_yaml_data', JSON.stringify(yamlData));
+    }
+  }, [yamlData]);
+
+  useEffect(() => {
+    sessionStorage.setItem('ds160_current_tab', currentTab);
+  }, [currentTab]);
+
+  useEffect(() => {
+    if (Object.keys(accordionValues).length > 0) {
+      sessionStorage.setItem('ds160_accordion_values', JSON.stringify(accordionValues));
+    }
+  }, [accordionValues]);
+
+  useEffect(() => {
+    sessionStorage.setItem('ds160_retrieve_mode', retrieveMode);
+  }, [retrieveMode]);
+
+  useEffect(() => {
+    sessionStorage.setItem('ds160_location', location);
+  }, [location]);
+
+  useEffect(() => {
+    if (secretQuestion) {
+      sessionStorage.setItem('ds160_secret_question', secretQuestion);
+    }
+  }, [secretQuestion]);
+
+  useEffect(() => {
+    if (secretAnswer) {
+      sessionStorage.setItem('ds160_secret_answer', secretAnswer);
+    }
+  }, [secretAnswer]);
+
+  useEffect(() => {
+    if (applicationId) {
+      sessionStorage.setItem('ds160_application_id', applicationId);
+    }
+  }, [applicationId]);
+
+  useEffect(() => {
+    if (surname) {
+      sessionStorage.setItem('ds160_surname', surname);
+    }
+  }, [surname]);
+
+  useEffect(() => {
+    if (birthYear) {
+      sessionStorage.setItem('ds160_birth_year', birthYear);
+    }
+  }, [birthYear]);
+
+  // Update the clearSavedData function to clear from sessionStorage
+  const clearSavedData = () => {
+    // Clear sessionStorage
+    sessionStorage.removeItem('ds160_yaml_data');
+    sessionStorage.removeItem('ds160_current_tab');
+    sessionStorage.removeItem('ds160_accordion_values');
+    sessionStorage.removeItem('ds160_retrieve_mode');
+    sessionStorage.removeItem('ds160_location');
+    sessionStorage.removeItem('ds160_secret_question');
+    sessionStorage.removeItem('ds160_secret_answer');
+    sessionStorage.removeItem('ds160_application_id');
+    sessionStorage.removeItem('ds160_surname');
+    sessionStorage.removeItem('ds160_birth_year');
+    
+    // Reset state
+    setFormData({});
+    setArrayGroups({});
+    setYamlData({});
+    setCurrentTab('personal');
+    setAccordionValues({});
+    setRetrieveMode('new');
+    setLocation('ENGLAND, LONDON');
+    setSecretQuestion('');
+    setSecretAnswer('');
+    setApplicationId('');
+    setSurname('');
+    setBirthYear('');
+    
+    // Reset form completion status
+    const initialStatus: Record<string, { completed: number, total: number }> = {};
+    Object.entries(formCategories).forEach(([category, forms]) => {
+      forms.forEach((form, index) => {
+        const formId = `${category}-${index}`;
+        const total = form.definition.fields.length;
+        initialStatus[formId] = { completed: 0, total };
+      });
+    });
+    setCompletionStatus(initialStatus);
+    
+    // Force a refresh
+    setRefreshKey(prev => prev + 1);
+  }
+
+  // First, let's add a state for the new upload modal
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [incompletePages, setIncompletePages] = useState<string[]>([]);
+
+  // Add a function to validate form completion before showing the upload modal
+  const validateAndShowUploadModal = () => {
+    // Check if all forms are completed
+    const incomplete: string[] = [];
+    
+    Object.entries(formCategories).forEach(([category, forms]) => {
+      forms.forEach((form, index) => {
+        const formId = `${category}-${index}`;
+        const status = completionStatus[formId];
+        
+        if (!status || status.completed < status.total) {
+          incomplete.push(`${category} - ${form.title}`);
+        }
+      });
+    });
+    
+    if (incomplete.length > 0) {
+      // Show error with incomplete pages
+      setIncompletePages(incomplete);
+      // You might want to add an error state or message here
+    } else {
+      // All forms are complete, show the upload modal
+      setShowUploadModal(true);
+      setIncompletePages([]);
+    }
+  };
+
+  // Now we need to create a new Upload Modal component
+  // Add this component inside your Home component
+
+  const UploadConfigModal = () => {
+    if (!showUploadModal) return null;
+    
+    // Add local state to prevent focus loss when typing
+    const [localValues, setLocalValues] = useState({
+      secretQuestion: secretQuestion,
+      secretAnswer: secretAnswer,
+      applicationId: applicationId,
+      surname: surname,
+      birthYear: birthYear,
+      location: location
+    });
+
+    // Effect to sync parent state to local state when modal opens
+    useEffect(() => {
+      setLocalValues({
+        secretQuestion: secretQuestion,
+        secretAnswer: secretAnswer,
+        applicationId: applicationId,
+        surname: surname,
+        birthYear: birthYear,
+        location: location
+      });
+    }, [showUploadModal]);
+    
+    // Use one handler for all inputs to update local state
+    const handleInputChange = (field: string, value: string) => {
+      setLocalValues(prev => ({ ...prev, [field]: value }));
+    };
+    
+    // Handle the final upload and commit all values to parent state
+    const handleUploadClick = () => {
+      // First update the parent state with local values
+      setSecretQuestion(localValues.secretQuestion);
+      setSecretAnswer(localValues.secretAnswer);
+      setApplicationId(localValues.applicationId);
+      setSurname(localValues.surname);
+      setBirthYear(localValues.birthYear);
+      setLocation(localValues.location);
+      
+      // Then run the DS-160 upload
+      handleRunDS160();
+      setShowUploadModal(false); // Close the modal
+    };
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        {/* Increase the width from max-w-md to max-w-2xl */}
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold">DS-160 Upload Configuration</h2>
+            <button
+              onClick={() => setShowUploadModal(false)}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          <div className="space-y-4">
+            {/* New/Retrieve toggle */}
+            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <Label className="text-base font-medium mb-2">Make Selection:</Label>
+              <Tabs 
+                value={retrieveMode} 
+                onValueChange={(value: 'new' | 'retrieve') => setRetrieveMode(value)}
+                className="flex-1 mt-1"
+              >
+                <TabsList className="w-full bg-blue-50">
+                  <TabsTrigger 
+                    value="new" 
+                    className="flex-1 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                  >
+                    New Application
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="retrieve" 
+                    className="flex-1 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                  >
+                    Retrieve Application
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+
+            {/* Location selector */}
+            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <Label className="block mb-2">Location:</Label>
+              <Select 
+                value={localValues.location} 
+                onValueChange={(value) => handleInputChange('location', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select location" />
+                </SelectTrigger>
+                <SelectContent>
+                  {locations.map((loc) => (
+                    <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Security question/answer - with improved layout */}
+            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <Label className="block mb-2">Security Details:</Label>
+              <div className="flex flex-col gap-3">
+                <div className="w-full">
+                  <Select 
+                    value={localValues.secretQuestion} 
+                    onValueChange={(value) => handleInputChange('secretQuestion', value)}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a security question" />
+                    </SelectTrigger>
+                    <SelectContent className="max-w-xl">
+                      {securityQuestions.map((q) => (
+                        <SelectItem key={q} value={q} className="whitespace-normal">
+                          {q}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Input 
+                  value={localValues.secretAnswer}
+                  onChange={(e) => handleInputChange('secretAnswer', e.target.value)}
+                  placeholder="Enter your answer"
+                  className="w-full"
+                />
+              </div>
+            </div>
+
+            {/* Retrieve-specific fields - improved layout */}
+            {retrieveMode === 'retrieve' && (
+              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <Label className="block mb-2">Retrieve Details:</Label>
+                <div className="grid sm:grid-cols-3 gap-4">
+                  <Input 
+                    value={localValues.applicationId}
+                    onChange={(e) => handleInputChange('applicationId', e.target.value)}
+                    placeholder="Application ID"
+                    className="w-full"
+                  />
+                  <Input 
+                    value={localValues.surname}
+                    onChange={(e) => {
+                      const upperValue = e.target.value.slice(0, 5).toUpperCase();
+                      handleInputChange('surname', upperValue);
+                    }}
+                    placeholder="Surname (5 chars)"
+                    maxLength={5}
+                    className="w-full"
+                  />
+                  <Input 
+                    value={localValues.birthYear}
+                    onChange={(e) => handleInputChange('birthYear', e.target.value)}
+                    placeholder="Birth Year"
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            )}
+            
+            <div className="flex justify-end pt-4">
+              <Button 
+                onClick={handleUploadClick}
+                disabled={isRunningDS160}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2"
+              >
+                {isRunningDS160 ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  <span>Upload to DS160</span>
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {(isProcessing || isProcessingLLM) && (
@@ -1159,7 +1545,10 @@ export default function Home() {
         <div className="bg-white shadow-lg rounded-lg p-8">
           <div className="mb-4 flex flex-col bg-gray-50 border border-gray-200 rounded-lg p-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold whitespace-nowrap">Upload Previous DS160 to fill form</h2>
+              <div>
+                <h2 className="text-lg font-semibold whitespace-nowrap">Import Data From Previous DS160 form</h2>
+                <p className="text-sm text-gray-500">Below fields will be automatically filled after import</p>
+              </div>
               <div className="flex-1 flex justify-end">
                 <div className="flex items-center">
                   <label 
@@ -1232,112 +1621,34 @@ export default function Home() {
             )}
           </div>
 
-          <div className="mb-4">
-            <div className="flex items-center gap-2 mb-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <Label className="text-lg font-semibold min-w-[150px]">Make Selection:</Label>
-              <Tabs 
-                value={retrieveMode} 
-                onValueChange={(value: 'new' | 'retrieve') => setRetrieveMode(value)}
-                className="flex-1"
-              >
-                <TabsList className="w-full bg-blue-50">
-                  <TabsTrigger 
-                    value="new" 
-                    className="flex-1 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-                  >
-                    New Application
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="retrieve" 
-                    className="flex-1 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-                  >
-                    Retrieve Application
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-
-            <div className="space-y-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <div className="flex items-center gap-2">
-                <Label className="min-w-[150px]">Location:</Label>
-                <Select value={location} onValueChange={setLocation} className="flex-1">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {locations.map((loc) => (
-                      <SelectItem key={loc} value={loc}>{loc}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <Label className="min-w-[150px] mt-2">Security Details:</Label>
-                <div className="flex-1 flex gap-4">
-                  <Select value={secretQuestion} onValueChange={setSecretQuestion} className="w-[70%]">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a security question" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {securityQuestions.map((q) => (
-                        <SelectItem key={q} value={q}>{q}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Input 
-                    value={secretAnswer} 
-                    onChange={(e) => setSecretAnswer(e.target.value)}
-                    placeholder="Enter Answer"
-                    className="w-[30%]"
-                  />
-                </div>
-              </div>
-
-              {retrieveMode === 'retrieve' && (
-                <div className="flex items-center gap-2">
-                  <Label className="min-w-[150px]">Retrieve Details:</Label>
-                  <div className="flex-1 grid grid-cols-3 gap-4">
-                    <Input 
-                      value={applicationId} 
-                      onChange={(e) => setApplicationId(e.target.value)}
-                      placeholder="Application ID"
-                    />
-                    <Input 
-                      value={surname} 
-                      onChange={(e) => setSurname(e.target.value.slice(0, 5).toUpperCase())}
-                      placeholder="Surname (5 chars)"
-                      maxLength={5}
-                    />
-                    <Input 
-                      value={birthYear} 
-                      onChange={(e) => setBirthYear(e.target.value)}
-                      placeholder="Birth Year"
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
+          {/* Fix the layout of the "Continue to Upload" section */}
           <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
             <div className="flex items-center justify-between">
-              <Label className="text-lg font-semibold">After filling all pages below, upload to DS160 website:</Label>
+              <div>
+                <Label className="text-lg font-semibold">Ready to upload to the DS160 website?</Label>
+                <p className="text-sm text-gray-500">Fill all fields below to proceed</p>
+              </div>
               <Button 
-                onClick={handleRunDS160}
-                disabled={isRunningDS160}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-2 rounded-lg flex items-center gap-2 text-lg"
+                onClick={validateAndShowUploadModal}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
               >
-                {isRunningDS160 ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                    <span>Processing...</span>
-                  </>
-                ) : (
-                  <span>Upload to DS160</span>
-                )}
+                Continue to Upload
               </Button>
             </div>
+            
+            {/* Show incomplete forms if validation failed */}
+            {incompletePages.length > 0 && (
+              <div className="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded-md">
+                <p className="font-medium text-yellow-800 mb-2">
+                  Please complete the following sections before uploading:
+                </p>
+                <ul className="list-disc pl-5 text-yellow-700 text-sm">
+                  {incompletePages.map((page, index) => (
+                    <li key={index}>{page}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
@@ -1865,6 +2176,9 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Upload Configuration Modal */}
+      <UploadConfigModal />
     </div>
   )
 }
