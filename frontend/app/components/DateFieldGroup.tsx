@@ -86,7 +86,7 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
       const monthAbbr = REVERSE_MONTH_MAP[month] || "";
       
       // Update all fields with properly formatted values
-      onChange(dayField.name, day.replace(/^0/, '')); // Remove leading zero for day
+      onChange(dayField.name, day); // Remove leading zero for day
       onChange(monthField.name, monthAbbr);
       onChange(yearField.name, year);
     } catch (error) {

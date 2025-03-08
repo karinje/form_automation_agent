@@ -53,11 +53,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         autoComplete="off"
         style={{ colorScheme: "light" }}
       />
-      {!formattedValue && (
-        <span className="absolute left-3 text-gray-400 pointer-events-none">
-          {placeholder}
-        </span>
-      )}
       <Calendar
         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
         size={18}
