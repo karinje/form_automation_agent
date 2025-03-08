@@ -1,15 +1,21 @@
 start_page:
   language: "English"
   location: "ENGLAND, LONDON"
-  button_clicks: [1]
+  button_clicks: [0]
 
 retrieve_page:
-  application_id: "AA00ECQH1B"
+  application_id: ""
   surname: "KARIN"
-  year: "1985"
+  year: "1987"
   security_question: "What is the name of your favorite childhood friend?"
-  security_answer: "John Doe"
+  security_answer: "Joh"
   button_clicks: [0, 1]
+
+security_page:
+  privacy_agreement: true
+  security_question: "What is the name of your favorite childhood friend?"
+  security_answer: "Joh"
+  button_clicks: [0]
 
 personal_page1:
   surname: "KARINJE"
@@ -22,9 +28,9 @@ personal_page1:
   telecode_given: ""
   sex: "MALE"
   marital_status: "MARRIED"
-  birth_date_mm: "MAY"
-  birth_date_dd: "08"
-  birth_date_yyyy: "1985"
+  birth_date_mm: "APR"
+  birth_date_dd: "10"
+  birth_date_yyyy: "1987"
   birth_city: "BANGALORE"
   birth_state_province: "KARNATAKA"
   birth_state_province_na: "false"
@@ -460,9 +466,9 @@ security_background5_page:
   button_clicks: [1, 2]
 
 spouse_page:
-  spouse_birth_month: "MAY"
-  spouse_birth_day: "08"
-  spouse_birth_year: "1985"
+  spouse_birth_month: "APR"
+  spouse_birth_day: "10"
+  spouse_birth_year: "1987"
   spouse_surname: "KAUSHIK"
   spouse_given_name: "RAMYA"
   spouse_nationality: "INDIA"
