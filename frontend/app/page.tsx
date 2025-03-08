@@ -32,7 +32,7 @@ import p14_securityandbackground2_definition from "../form_definitions/p14_secur
 import p15_securityandbackground3_definition from "../form_definitions/p15_securityandbackground3_definition.json"
 import p16_securityandbackground4_definition from "../form_definitions/p16_securityandbackground4_definition.json"
 import p17_securityandbackground5_definition from "../form_definitions/p17_securityandbackground5_definition.json"
-import p18_spouse_definition from "../form_definitions/p18_spouse_definition.json"
+import p18_spouse_definition from "../form_definitions/p18_spouse_definition_fe.json"
 import p1_personal1_definition from "../form_definitions/p1_personal1_definition.json"
 import p2_personal2_definition from "../form_definitions/p2_personal2_definition.json"
 import p3_travelinfo_definition from "../form_definitions/p3_travel_definition.json"
@@ -743,7 +743,14 @@ export default function Home() {
   };
 
   // Modify the start of handleRunDS160
-  const handleRunDS160 = async () => {
+  const handleRunDS160WithLocalValues = async (localValues?: {
+    secretQuestion: string;
+    secretAnswer: string;
+    applicationId: string;
+    surname: string;
+    birthYear: string;
+    location: string;
+  }) => {
     if (isRunningDS160) return; // Prevent multiple concurrent requests
     
     try {
@@ -754,7 +761,12 @@ export default function Home() {
       resetDS160State();
       
       if (retrieveMode === 'retrieve') {
-        if (!applicationId || !surname || !birthYear || !secretQuestion || !secretAnswer) {
+        const activeValues = localValues || {
+          secretQuestion, secretAnswer, applicationId, surname, birthYear, location
+        };
+        
+        if (!activeValues.applicationId || !activeValues.surname || !activeValues.birthYear || 
+            !activeValues.secretQuestion || !activeValues.secretAnswer) {
           setErrorMessage("Please fill in all retrieve fields");
           return;
         }
@@ -764,13 +776,13 @@ export default function Home() {
       setDS160Status('processing');
       
       const finalYamlData = generateFormYamlData({
-        location,
+        location: localValues?.location || location,
         retrieveMode,
-        applicationId,
-        surname,
-        birthYear,
-        secretQuestion,
-        secretAnswer,
+        applicationId: localValues?.applicationId || applicationId,
+        surname: localValues?.surname || surname,
+        birthYear: localValues?.birthYear || birthYear,
+        secretQuestion: localValues?.secretQuestion || secretQuestion,
+        secretAnswer: localValues?.secretAnswer || secretAnswer,
         currentArrayGroups: arrayGroups
       });
 
@@ -909,6 +921,12 @@ export default function Home() {
     } finally {
       setIsRunningDS160(false);
     }
+  };
+
+  // Now modify the existing handleRunDS160 function to call our new function
+  const handleRunDS160 = async () => {
+    // Simply call the new function with no arguments to use current state values
+    handleRunDS160WithLocalValues();
   };
 
   const renderFormSection = (forms: typeof formCategories.personal, category: string) => (
@@ -1365,8 +1383,8 @@ export default function Home() {
       setBirthYear(localValues.birthYear);
       setLocation(localValues.location);
       
-      // Then run the DS-160 upload
-      handleRunDS160();
+      // Instead of calling handleRunDS160 directly, call it with the local values
+      handleRunDS160WithLocalValues(localValues);
       setShowUploadModal(false); // Close the modal
     };
     

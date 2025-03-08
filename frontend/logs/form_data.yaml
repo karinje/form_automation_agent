@@ -1,21 +1,15 @@
 start_page:
   language: "English"
   location: "ENGLAND, LONDON"
-  button_clicks: [0]
+  button_clicks: [1]
 
 retrieve_page:
-  application_id: ""
+  application_id: "AA00ECQH1B"
   surname: "KARIN"
-  year: "1987"
+  year: "1984"
   security_question: "What is the name of your favorite childhood friend?"
-  security_answer: "Joh"
+  security_answer: "John Doe"
   button_clicks: [0, 1]
-
-security_page:
-  privacy_agreement: true
-  security_question: "What is the name of your favorite childhood friend?"
-  security_answer: "Joh"
-  button_clicks: [0]
 
 personal_page1:
   surname: "KARINJE"
@@ -28,9 +22,9 @@ personal_page1:
   telecode_given: ""
   sex: "MALE"
   marital_status: "MARRIED"
-  birth_date_mm: "APR"
-  birth_date_dd: "10"
-  birth_date_yyyy: "1987"
+  birth_date_mm: "AUG"
+  birth_date_dd: "17"
+  birth_date_yyyy: "1984"
   birth_city: "BANGALORE"
   birth_state_province: "KARNATAKA"
   birth_state_province_na: "false"
@@ -64,8 +58,6 @@ travel_page:
     given_name: "RAMYA"
     petition_number: "LIN2134351459"
     company: ""
-  ev_surname: ""
-  ev_given_name: ""
   non_specific_travel_plans_details:
     arrival:
       month: "JAN"
@@ -85,7 +77,6 @@ travel_page:
 travel_companions_page:
   traveling_with_others: "Y"
   group_travel: "N"
-  group_name: ""
   travel_companions:
     - surname: "KARINJE"
       given_name: "KABIR"
@@ -110,11 +101,8 @@ previous_travel_page:
   visa_lost: "N"
   same_country: "Y"
   visa_cancelled: "N"
-  visa_cancelled_explanation: ""
   visa_refused: "N"
-  visa_refused_explanation: ""
   vwp_denial: "N"
-  vwp_denial_explanation: ""
   iv_petition: "Y"
   iv_petition_explanation: "GREEN CARD PROCESS INITIATED -  I140 APPROVED (A209 365 505)"
   previous_travel_details:
@@ -233,7 +221,6 @@ relatives_page:
   father_birth_year: "1952"
   father_birth_na: "false"
   father_in_us: "N"
-  father_us_status: ""
   mother_surname: "UDUPI"
   mother_surname_na: "false"
   mother_given_name: "BHARATHI"
@@ -243,9 +230,7 @@ relatives_page:
   mother_birth_year: "1958"
   mother_birth_na: "false"
   mother_in_us: "N"
-  mother_us_status: ""
   has_immediate_relatives: "Y"
-  has_other_relatives: "N"
   immediate_relative_details:
     - type: "SIBLING"
       status: "NONIMMIGRANT"
@@ -264,9 +249,6 @@ relatives_page:
 workeducation1_page:
   present_occupation: "NOT EMPLOYED"
   other_occupation_explanation: "WORKED AS SR. DATA SCIENTIST AT INSTACART UNTIL SEPT 2022 (ON H1B). TAKING TIME OFF TO FOCUS ON MACHINE LEARNING & AI EDUCATION."
-  monthly_salary: "N/A"
-  monthly_salary_na: "true"
-  duties: ""
   button_clicks: [1, 2]
 
 workeducation2_page:
@@ -364,15 +346,11 @@ workeducation2_page:
 
 workeducation3_page:
   clan_tribe_ind: "N"
-  clan_tribe_name: ""
   countries_visited_ind: "Y"
   organization_ind: "N"
-  organization_name: ""
   specialized_skills_ind: "N"
-  specialized_skills_explanation: ""
   military_service_ind: "N"
   insurgent_org_ind: "N"
-  insurgent_org_explanation: ""
   language_name:
     - language: "ENGLISH"
     - language: "KANNADA"
@@ -466,20 +444,13 @@ security_background5_page:
   button_clicks: [1, 2]
 
 spouse_page:
-  spouse_birth_month: "APR"
-  spouse_birth_day: "10"
-  spouse_birth_year: "1987"
   spouse_surname: "KAUSHIK"
   spouse_given_name: "RAMYA"
+  spouse_birth_month: "MAY"
+  spouse_birth_day: "08"
+  spouse_birth_year: "1985"
   spouse_nationality: "INDIA"
   spouse_birth_city: "HYDERABAD"
   spouse_birth_country: "INDIA"
   spouse_address_type: "Same as Home Address"
-  spouse_address_line1: ""
-  spouse_address_line2: ""
-  spouse_address_city: ""
-  spouse_address_postal_code: ""
-  spouse_address_postal_code_na: "false"
-  spouse_address_state: ""
-  spouse_address_country: ""
   button_clicks: [1, 2]
