@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect, useRef } from "react"
+import { useState, useCallback, useEffect, useRef, useMemo } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import DynamicForm from "@/components/DynamicForm"
@@ -68,7 +68,7 @@ type ProgressMessage = {
 
 export default function Home() {
   const [formData, setFormData] = useState<Record<string, string>>({})
-  const [yamlData, setYamlData] = useState<Record<string, any>>({})
+  const [yamlData, setYamlData] = useState<YamlData>({})
   const [completionStatus, setCompletionStatus] = useState<Record<string, { completed: number; total: number }>>({})
   const [isProcessing, setIsProcessing] = useState(false)
   const [extractedText, setExtractedText] = useState<string>("");
@@ -97,6 +97,29 @@ export default function Home() {
     f => f.name === 'ctl00_SiteContentPlaceHolder_ucLocation_ddlLocation'
   )?.value || []
 
+  // Add this function near the top of your component function
+  const shouldShowSpousePage = (formData: Record<string, string>): boolean => {
+    const maritalStatus = formData['ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_MARITAL_STATUS'];
+    return [
+      'MARRIED', 
+      'COMMON LAW MARRIAGE', 
+      'CIVIL UNION/DOMESTIC PARTNERSHIP',
+      'LEGALLY SEPARATED'
+    ].includes(maritalStatus);
+  }
+
+  // Add similar functions for other conditional pages
+  const shouldShowFormerSpousePage = (formData: Record<string, string>): boolean => {
+    const maritalStatus = formData['ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_MARITAL_STATUS'];
+    return maritalStatus === 'DIVORCED';
+  }
+
+  const shouldShowDeceasedSpousePage = (formData: Record<string, string>): boolean => {
+    const maritalStatus = formData['ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_MARITAL_STATUS'];
+    return maritalStatus === 'WIDOWED';
+  }
+
+  // Then modify your formCategories object
   const formCategories: FormCategories = {
     personal: [
       { title: "Personal Information 1", definition: p1_personal1_definition, pageName: "personal_page1" },
@@ -104,7 +127,20 @@ export default function Home() {
       { title: "Address & Phone", definition: p6_addressphone_definition, pageName: "address_phone_page" },
       { title: "Passport", definition: p7_pptvisa_definition, pageName: "pptvisa_page" },
       { title: "Relatives", definition: p9_relatives_definition, pageName: "relatives_page" },
-      { title: "Spouse Information", definition: p18_spouse_definition, pageName: "spouse_page" },
+      { title: "Spouse Information", definition: p18_spouse_definition, pageName: "spouse_page",isVisible: shouldShowSpousePage },
+      // You could add these additional pages when you have them
+      // { 
+      //   title: "Former Spouse Information", 
+      //   definition: p19_former_spouse_definition, 
+      //   pageName: "former_spouse_page",
+      //   isVisible: shouldShowFormerSpousePage
+      // },
+      // { 
+      //   title: "Deceased Spouse Information", 
+      //   definition: p20_deceased_spouse_definition, 
+      //   pageName: "deceased_spouse_page",
+      //   isVisible: shouldShowDeceasedSpousePage
+      // },
     ],
     travel: [
       { title: "Travel Information", definition: p3_travelinfo_definition, pageName: "travel_page" },
@@ -517,7 +553,33 @@ export default function Home() {
 
     // First get all the form data converted to YAML format
     const formYamlData: Record<string, any> = {}
+    
+    // Get list of pages that should be included
+    const visiblePages: string[] = [];
+    
+    // Determine visible pages based on form data
+    Object.values(formCategories).forEach(categoryForms => {
+      categoryForms.forEach(form => {
+        let isVisible = true;
+        if (typeof form.isVisible === 'function') {
+          isVisible = form.isVisible(formData);
+        } else if (form.isVisible === false) {
+          isVisible = false;
+        }
+        
+        if (isVisible) {
+          visiblePages.push(form.pageName);
+        }
+      });
+    });
+    
+    // Only process visible pages
     Object.keys(formMappings).forEach(pageName => {
+      // Skip pages that should be hidden based on conditions
+      if (!visiblePages.includes(pageName)) {
+        return;
+      }
+      
       const pageFormData: Record<string, string> = {}
       Object.entries(formData).forEach(([formFieldId, value]) => {
         const yamlField = getYamlField(pageName, formFieldId)
@@ -590,7 +652,7 @@ export default function Home() {
       ...(securityPage && { security_page: securityPage }),
       ...formYamlData
     }
-  }, [formData, arrayGroups])
+  }, [formData, arrayGroups, formCategories])
 
   // Then modify both handlers to use this function
   const handleDownloadYaml = useCallback(() => {
@@ -701,17 +763,28 @@ export default function Home() {
         currentArrayGroups: arrayGroups
       })
       
-      console.log('Complete yaml data:', yamlData)
-      
-      // Return only requested pages
+      // Return only requested pages that are visible based on current form data
       const filteredData: Record<string, any> = {}
       pageFilter.forEach(page => {
-        if (yamlData[page]) {
+        // Find the form category this page belongs to
+        let isVisible = true;
+        
+        // Check all categories for this page
+        Object.values(formCategories).forEach(categoryForms => {
+          const form = categoryForms.find(f => f.pageName === page);
+          if (form && typeof form.isVisible === 'function') {
+            isVisible = form.isVisible(formData);
+          } else if (form && form.isVisible === false) {
+            isVisible = false;
+          }
+        });
+        
+        // Only include visible pages
+        if (yamlData[page] && isVisible) {
           filteredData[page] = yamlData[page]
         }
       })
       
-      console.log('Filtered yaml data:', filteredData)
       return filteredData
     } catch (error) {
       console.error('Error filtering YAML data:', error)
@@ -929,114 +1002,125 @@ export default function Home() {
     handleRunDS160WithLocalValues();
   };
 
-  const renderFormSection = (forms: typeof formCategories.personal, category: string) => (
-    <Accordion 
-      type="single" 
-      collapsible 
-      className="space-y-4"
-      value={accordionValues[category] || ""}
-      onValueChange={(val) => setAccordionValues(prev => ({ ...prev, [category]: val }))}
-    >
-      {forms.map((form, index) => {
-        const formId = `${category}-${index}`
-        const onCompletionMemo = useCallback((completed: number, total: number) => {
+  // 1. First, we'll create memoized callbacks for all potential forms before any filtering
+  const renderFormSection = (forms: typeof formCategories.personal, category: string) => {
+    // Create all potential completion callbacks up front
+    const completionCallbacks = useMemo(() => {
+      return forms.map((_, index) => {
+        const formId = `${category}-${index}`;
+        return (completed: number, total: number) => {
           setCompletionStatus(prev => ({
             ...prev,
             [formId]: { completed, total }
-          }))
-        }, [formId])
-        
-        const groupsForPage = form.pageName ? arrayGroups[form.pageName] || {} : {};
-        
-        // Add debug logging for workeducation3_page
-        // if (form.pageName === 'workeducation3_page') {
-        //   debugLog('workeducation3_page', `Rendering form with arrayGroups:`, {
-        //     pageName: form.pageName,
-        //     groupsForPage,
-        //     hasArrayGroups: Object.keys(groupsForPage).length > 0
-        //   });
-        // }
-        
-        return (
-          <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
-            <AccordionTrigger className="w-full hover:no-underline [&>svg]:h-8 [&>svg]:w-8 [&>svg]:shrink-0 [&>svg]:text-gray-500 p-0">
-              <div className="flex justify-between items-center py-2 px-4 bg-gray-50 w-full">
-                <h2 className="text-lg font-semibold leading-none">
-                  {form.title}
-                </h2>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center">
-                    <span className="mr-2 text-sm text-gray-600">
-                      {(completionStatus[formId]?.completed || 0)}/
-                      {(completionStatus[formId]?.total || 0)} completed
-                    </span>
+          }));
+        };
+      });
+    }, [category, forms.length]); // Only depend on category and length, not content
+
+    return (
+      <Accordion 
+        type="single" 
+        collapsible 
+        className="space-y-4"
+        value={accordionValues[category] || ""}
+        onValueChange={(val) => setAccordionValues(prev => ({ ...prev, [category]: val }))}
+      >
+        {forms
+          // Filter forms based on visibility condition
+          .filter(form => {
+            if (typeof form.isVisible === 'function') {
+              return form.isVisible(formData);
+            }
+            return form.isVisible !== false; // Show by default if not specified
+          })
+          .map((form, index) => {
+            const formId = `${category}-${index}`;
+            // Use the pre-created callback
+            const onCompletionMemo = completionCallbacks[index];
+            
+            const groupsForPage = form.pageName ? arrayGroups[form.pageName] || {} : {};
+            
+            return (
+              <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
+                <AccordionTrigger className="w-full hover:no-underline [&>svg]:h-8 [&>svg]:w-8 [&>svg]:shrink-0 [&>svg]:text-gray-500 p-0">
+                  <div className="flex justify-between items-center py-2 px-4 bg-gray-50 w-full">
+                    <h2 className="text-lg font-semibold leading-none">
+                      {form.title}
+                    </h2>
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center">
+                        <span className="mr-2 text-sm text-gray-600">
+                          {(completionStatus[formId]?.completed || 0)}/
+                          {(completionStatus[formId]?.total || 0)} completed
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent className="p-4">
-              <DynamicForm
-                key={`${formId}-${refreshKey}`}
-                formDefinition={form.definition}
-                formData={formData}
-                arrayGroups={groupsForPage}
-                onInputChange={(name, value) => {
-                  setFormData(prev => ({ ...prev, [name]: value }))
-                }}
-                onCompletionUpdate={onCompletionMemo}
-                formCategories={formCategories}
-                currentCategory={category}
-                currentIndex={index}
-                onNavigate={(category, index) => {
-                  setCurrentTab(category)
-                  setAccordionValues(prev => ({ ...prev, [category]: `item-${index}` }))
-                }}
-                onArrayGroupsChange={(pageName, groupKey, groupData) => {
-                  // Only do detailed logging for workeducation3_page
-                  if (pageName === 'workeducation3_page') {
-                    debugLog('workeducation3_page', `onArrayGroupsChange called from DynamicForm:`, {
-                      pageName,
-                      groupKey,
-                      groupData
-                    });
-                  }
-                  
-                  setArrayGroups(prev => {
-                    const updated = { ...prev };
-                    
-                    // Initialize the page object if it doesn't exist
-                    if (!updated[pageName]) {
-                      updated[pageName] = {};
-                    }
-                    if (pageName === 'workeducation3_page') {
-                      console.log('updated before groupdata', updated)
-                    }
-                    // Update the group data
-                    updated[pageName][groupKey] = [...groupData];
-                    
-                    // Log the updated state for debugging
-                    if (pageName === 'workeducation3_page') {
-                      debugLog('workeducation3_page', `Updated arrayGroups state:`, {
-                        updated,
-                        groupData,
-                        pageName,
-                        groupKey
+                </AccordionTrigger>
+                <AccordionContent className="p-4">
+                  <DynamicForm
+                    key={`${formId}-${refreshKey}`}
+                    formDefinition={form.definition}
+                    formData={formData}
+                    arrayGroups={groupsForPage}
+                    onInputChange={(name, value) => {
+                      setFormData(prev => ({ ...prev, [name]: value }))
+                    }}
+                    onCompletionUpdate={onCompletionMemo}
+                    formCategories={formCategories}
+                    currentCategory={category}
+                    currentIndex={index}
+                    onNavigate={(category, index) => {
+                      setCurrentTab(category)
+                      setAccordionValues(prev => ({ ...prev, [category]: `item-${index}` }))
+                    }}
+                    onArrayGroupsChange={(pageName, groupKey, groupData) => {
+                      // Only do detailed logging for workeducation3_page
+                      if (pageName === 'workeducation3_page') {
+                        debugLog('workeducation3_page', `onArrayGroupsChange called from DynamicForm:`, {
+                          pageName,
+                          groupKey,
+                          groupData
+                        });
+                      }
+                      
+                      setArrayGroups(prev => {
+                        const updated = { ...prev };
+                        
+                        // Initialize the page object if it doesn't exist
+                        if (!updated[pageName]) {
+                          updated[pageName] = {};
+                        }
+                        if (pageName === 'workeducation3_page') {
+                          console.log('updated before groupdata', updated)
+                        }
+                        // Update the group data
+                        updated[pageName][groupKey] = [...groupData];
+                        
+                        // Log the updated state for debugging
+                        if (pageName === 'workeducation3_page') {
+                          debugLog('workeducation3_page', `Updated arrayGroups state:`, {
+                            updated,
+                            groupData,
+                            pageName,
+                            groupKey
+                          });
+                        }
+                        
+                        return updated;
                       });
-                    }
-                    
-                    return updated;
-                  });
-                  if (pageName === 'workeducation3_page') {
-                    console.log('arrayGroups finally', arrayGroups)
-                  }
-                }}
-              />
-            </AccordionContent>
-          </AccordionItem>
-        )
-      })}
-    </Accordion>
-  )
+                      if (pageName === 'workeducation3_page') {
+                        console.log('arrayGroups finally', arrayGroups)
+                      }
+                    }}
+                  />
+                </AccordionContent>
+              </AccordionItem>
+            )
+          })}
+      </Accordion>
+    );
+  };
 
   // Handler for document extraction
   const handleDocumentExtraction = (extractedData: any) => {
@@ -1541,6 +1625,84 @@ export default function Home() {
       });
     });
   };
+
+  // Replace the problematic effect with this more stable version
+  useEffect(() => {
+    // Skip if no form data yet
+    if (Object.keys(formData).length === 0) return;
+    
+    // First, determine which forms should be visible
+    const visibleFormIds = new Set<string>();
+    
+    Object.entries(formCategories).forEach(([category, forms]) => {
+      forms.forEach((form, index) => {
+        const formId = `${category}-${index}`;
+        let isVisible = true;
+        if (typeof form.isVisible === 'function') {
+          isVisible = form.isVisible(formData);
+        } else if (form.isVisible === false) {
+          isVisible = false;
+        }
+        
+        if (isVisible) {
+          visibleFormIds.add(formId);
+        }
+      });
+    });
+    
+    // Check if visibility has actually changed to avoid unnecessary updates
+    const currentVisibleIds = new Set(
+      Object.keys(completionStatus).filter(id => completionStatus[id]?.total > 0)
+    );
+    
+    // Get formIds to add and remove
+    const toAdd: string[] = [];
+    const toRemove: string[] = [];
+    
+    // Find forms to add (visible but not in status)
+    visibleFormIds.forEach(id => {
+      if (!currentVisibleIds.has(id)) {
+        toAdd.push(id);
+      }
+    });
+    
+    // Find forms to remove (in status but not visible)
+    currentVisibleIds.forEach(id => {
+      if (!visibleFormIds.has(id)) {
+        toRemove.push(id);
+      }
+    });
+    
+    // Only update if there are actual changes
+    if (toAdd.length > 0 || toRemove.length > 0) {
+      setCompletionStatus(prev => {
+        const updated = { ...prev };
+        
+        // Add new visible forms
+        toAdd.forEach(formId => {
+          const [category, indexStr] = formId.split('-');
+          const index = parseInt(indexStr, 10);
+          const form = formCategories[category]?.[index];
+          
+          if (form) {
+            updated[formId] = { 
+              completed: 0, 
+              total: form.definition.fields.length 
+            };
+          }
+        });
+        
+        // Remove forms that are now hidden
+        toRemove.forEach(formId => {
+          delete updated[formId];
+        });
+        
+        return updated;
+      });
+    }
+    
+  // Add formCategories to dependencies since we use it in the effect
+  }, [formData, formCategories, completionStatus]);
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">

@@ -33,7 +33,7 @@ interface DynamicFormProps {
   currentCategory: string
   currentIndex: number
   onNavigate: (category: string, index: number) => void
-  onArrayGroupsChange?: (pageName: string, groupKey: string, groupData: Record<string, string>) => void
+  onArrayGroupsChange?: (pageName: string, groupKey: string, groupData: Array<Record<string, string>>) => void
 }
 
 // Add interface to track dependency hierarchy

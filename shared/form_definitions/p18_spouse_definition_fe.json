@@ -4,8 +4,8 @@
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSpouseSurname",
       "type": "text",
       "value": "",
-      "text_phrase": "Spouse's Surnames",
-      "parent_text_phrase": "Spouse's Surnames",
+      "text_phrase": "Spouse/Partner's Surnames",
+      "parent_text_phrase": "Spouse/Partner's Surnames",
       "maxlength": "33",
       "has_na_checkbox": false
     },
@@ -13,8 +13,8 @@
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSpouseGivenName",
       "type": "text",
       "value": "",
-      "text_phrase": "Spouse's Given Names",
-      "parent_text_phrase": "Spouse's Given Names",
+      "text_phrase": "Spouse/Partner's Given Names",
+      "parent_text_phrase": "Spouse/Partner's Given Names",
       "maxlength": "33",
       "has_na_checkbox": false
     },
@@ -55,8 +55,8 @@
         "30",
         "31"
       ],
-      "text_phrase": "Spouse Date of Birth - Day",
-      "parent_text_phrase": "Spouse's Date of Birth"
+      "text_phrase": "Spouse/Partner's Date of Birth - Day",
+      "parent_text_phrase": "Spouse/Partner's Date of Birth"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseDOBMonth",
@@ -76,15 +76,15 @@
         "NOV",
         "DEC"
       ],
-      "text_phrase": "Spouse Date of Birth - Month",
-      "parent_text_phrase": "Spouse's Date of Birth"
+      "text_phrase": "Spouse/Partner's Date of Birth - Month",
+      "parent_text_phrase": "Spouse/Partner's Date of Birth"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSpouseDOBYear",
       "type": "text",
       "value": "",
-      "text_phrase": "Spouse Date of Birth - Year",
-      "parent_text_phrase": "Spouse's Date of Birth",
+      "text_phrase": "Spouse/Partner's Date of Birth - Year",
+      "parent_text_phrase": "Spouse/Partner's Date of Birth",
       "maxlength": "4",
       "has_na_checkbox": false
     },
@@ -305,15 +305,15 @@
         "ZAMBIA",
         "ZIMBABWE"
       ],
-      "text_phrase": "Spouse's Country/Region of Origin (Nationality)",
-      "parent_text_phrase": "Spouse's Country/Region of Origin (Nationality)"
+      "text_phrase": "Spouse/Partner's Country/Region of Origin (Nationality)",
+      "parent_text_phrase": "Spouse/Partner's Country/Region of Origin (Nationality)"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxSpousePOBCity",
       "type": "text",
       "value": "",
       "text_phrase": "City",
-        "parent_text_phrase": "Spouse Place of Birth",
+      "parent_text_phrase": "Spouse/Partner Place of Birth",
       "maxlength": "20",
       "has_na_checkbox": true,
       "na_checkbox_text": "Do not know",
@@ -605,7 +605,7 @@
         "ZIMBABWE"
       ],
       "text_phrase": "Country/Region",
-      "parent_text_phrase": "Spouse Place of Birth"
+      "parent_text_phrase": "Spouse/Partner Place of Birth"
     },
     {
       "name": "ctl00_SiteContentPlaceHolder_FormView1_ddlSpouseAddressType",
@@ -617,8 +617,8 @@
         "Do Not Know",
         "Other (Specify Address)"
       ],
-      "text_phrase": "Spouse's Address",
-      "parent_text_phrase": "Spouse's Address"
+      "text_phrase": "Spouse/Partner's Address",
+      "parent_text_phrase": "Spouse/Partner's Address"
     }
   ],
   "dependencies": {
@@ -649,7 +649,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Street Address (Line 1)",
-          "parent_text_phrase": "Spouse's Address",
+          "parent_text_phrase": "Spouse/Partner's Address",
           "maxlength": "40",
           "has_na_checkbox": false
         },
@@ -658,7 +658,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Street Address (Line 2)",
-          "parent_text_phrase": "Spouse's Address",
+          "parent_text_phrase": "Spouse/Partner's Address",
           "maxlength": "40",
           "has_na_checkbox": false,
           "optional": true
@@ -668,7 +668,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "Postal Zone/ZIP Code",
-          "parent_text_phrase": "Spouse's Address",
+          "parent_text_phrase": "Spouse/Partner's Address",
           "maxlength": "10",
           "has_na_checkbox": true,
           "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexSPOUSE_ADDR_POSTAL_CD_NA"
@@ -678,7 +678,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "City",
-          "parent_text_phrase": "Spouse's Address",
+          "parent_text_phrase": "Spouse/Partner's Address",
           "maxlength": "20",
           "has_na_checkbox": false
         },
@@ -687,7 +687,7 @@
           "type": "text",
           "value": "",
           "text_phrase": "State/Province",
-          "parent_text_phrase": "Spouse's Address",
+          "parent_text_phrase": "Spouse/Partner's Address",
           "maxlength": "20",
           "has_na_checkbox": true,
           "na_checkbox_id": "ctl00_SiteContentPlaceHolder_FormView1_cbexSPOUSE_ADDR_STATE_NA"
@@ -950,7 +950,7 @@
             "ZIMBABWE"
           ],
           "text_phrase": "Country/Region",
-          "parent_text_phrase": "Spouse's Address"
+          "parent_text_phrase": "Spouse/Partner's Address"
         }
       ],
       "hides": [],

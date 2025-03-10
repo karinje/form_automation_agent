@@ -46,7 +46,7 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
   // State to track the last valid date
   const [lastValidDate, setLastValidDate] = useState<string>("");
 
-  // Add effect to handle NA state changes from YAML
+  // Update effect to handle NA state changes from YAML
   useEffect(() => {
     const naCheckboxValue = dayField.na_checkbox_id ? values[dayField.na_checkbox_id] : undefined;
     if (naCheckboxValue === "true" && !isNAChecked) {
@@ -59,8 +59,8 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
       };
       Object.entries(updates).forEach(([name, value]) => onChange(name, value));
     }
-  }, [values[dayField.na_checkbox_id]]); // Only depend on the checkbox value
-
+  }, [values[dayField.na_checkbox_id], dayField.na_checkbox_id, dayField.name, monthField.name, yearField.name, isNAChecked, onChange]); // Fixed dependency array with proper types
+  
   if (!visible) return null;
 
   // Improved date conversion from DatePicker to individual fields

@@ -1,11 +1,11 @@
-export type FormFieldType = "dropdown" | "text" | "textarea" | "radio" | "date";
+export type FormFieldType = 'text' | 'textarea' | 'radio' | 'dropdown' | 'date';
 
 export interface FormField {
   name: string;
   type: FormFieldType;
   value: string | string[];
-  text_phrase?: string;
-  parent_text_phrase?: string;
+  text_phrase: string;
+  parent_text_phrase: string;
   maxlength?: string;
   has_na_checkbox?: boolean;
   na_checkbox_id?: string;
@@ -13,8 +13,10 @@ export interface FormField {
   labels?: string[];
   button_ids?: Record<string, string>;
   help_text?: string;
+  help_text_phrase?: string;
   optional?: boolean;
   add_group?: boolean;
+  add_group_button_id?: string;
 }
 
 export interface Dependency {
@@ -52,12 +54,39 @@ export interface FormState {
 }
 
 // Add type for form categories
-export type FormCategory = {
+export interface FormCategory {
   title: string;
   definition: FormDefinition;
   pageName: string;
+  isVisible?: boolean | ((formData: Record<string, string>) => boolean);
 }
 
-export type FormCategories = {
-  [key: string]: FormCategory[];
+export interface FormCategories {
+  personal: FormCategory[];
+  travel: FormCategory[];
+  education: FormCategory[];
+  security: FormCategory[];
+}
+
+export interface YamlData {
+  [key: string]: any;
+  security_page?: {
+    privacy_agreement: boolean;
+    security_question: string;
+    security_answer: string;
+    button_clicks: number[];
+  };
+  start_page: {
+    language: string;
+    location: string;
+    button_clicks: number[];
+  };
+  retrieve_page: {
+    application_id?: string;
+    surname: string;
+    year: string;
+    security_question: string;
+    security_answer: string;
+    button_clicks: number[];
+  };
 } 
