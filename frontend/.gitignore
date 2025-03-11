@@ -47,3 +47,6 @@ logs/*.json
 # generated mappings
 /generated_mappings
 !form_definitions  # Allow the symlink
+
+# clerk configuration (can include secrets)
+/.clerk/

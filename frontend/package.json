@@ -11,6 +11,7 @@
     "prebuild": "npm run generate-mappings"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.12.4",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.5",

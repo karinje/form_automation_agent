@@ -4,46 +4,46 @@ import { useState, useCallback, useEffect, useRef, useMemo } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import DynamicForm from "@/components/DynamicForm"
-import { flattenYamlData, unflattenFormData, flattenRepeatedGroups } from './utils/yaml-helpers'
-import { getFormFieldId, getYamlField, formMappings } from './utils/mappings'
+import { flattenYamlData, unflattenFormData, flattenRepeatedGroups } from '../utils/yaml-helpers'
+import { getFormFieldId, getYamlField, formMappings } from '../utils/mappings'
 import yaml from 'js-yaml'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { createFormMapping } from './utils/yaml-mapping'
-import { debugLog } from './utils/consoleLogger'
+import { createFormMapping } from '../utils/yaml-mapping'
+import { debugLog } from '../utils/consoleLogger'
 import { Button } from "@/components/ui/button"
 import { LinkedInImport } from "@/components/LinkedInImport"
 import type { FormCategory, FormCategories, FormDefinition } from "@/types/form-definition"
-import { processWithOpenAI, processLinkedIn, runDS160 } from './utils/api'
+import { processWithOpenAI, processLinkedIn, runDS160 } from '../utils/api'
 import { I94Import } from "@/components/I94Import"
 import { DocumentUpload } from "@/components/DocumentUpload"
 import { PassportUpload } from "@/components/PassportUpload"
-import { countFieldsByPage } from './utils/field-counter'
-import { StopwatchTimer } from './components/StopwatchTimer'
+import { countFieldsByPage } from '../utils/field-counter'
+import { StopwatchTimer } from '../components/StopwatchTimer'
 import { Upload } from "lucide-react"
 
 // Import all form definitions in alphabetical order
-import p10_workeducation1_definition from "../form_definitions/p10_workeducation1_definition.json"
-import p11_workeducation2_definition from "../form_definitions/p11_workeducation2_definition.json"
-import p12_workeducation3_definition from "../form_definitions/p12_workeducation3_definition.json"
-import p13_securityandbackground1_definition from "../form_definitions/p13_securityandbackground1_definition.json"
-import p14_securityandbackground2_definition from "../form_definitions/p14_securityandbackground2_definition.json"
-import p15_securityandbackground3_definition from "../form_definitions/p15_securityandbackground3_definition.json"
-import p16_securityandbackground4_definition from "../form_definitions/p16_securityandbackground4_definition.json"
-import p17_securityandbackground5_definition from "../form_definitions/p17_securityandbackground5_definition.json"
-import p18_spouse_definition from "../form_definitions/p18_spouse_definition_fe.json"
-import p1_personal1_definition from "../form_definitions/p1_personal1_definition.json"
-import p2_personal2_definition from "../form_definitions/p2_personal2_definition.json"
-import p3_travelinfo_definition from "../form_definitions/p3_travel_definition.json"
-import p4_travelcompanions_definition from "../form_definitions/p4_travelcompanions_definition.json"
-import p5_previoustravel_definition from "../form_definitions/p5_previousustravel_definition.json"
-import p6_addressphone_definition from "../form_definitions/p6_addressphone_definition.json"
-import p7_pptvisa_definition from "../form_definitions/p7_pptvisa_definition.json"
-import p8_uscontact_definition from "../form_definitions/p8_uscontact_definition.json"
-import p9_relatives_definition from "../form_definitions/p9_relatives_definition.json"
-import startPageDefinition from "../form_definitions/p0_start_page_definition.json"
-import securityPageDefinition from "../form_definitions/p0_security_page_definition.json"
+import p10_workeducation1_definition from "../../form_definitions/p10_workeducation1_definition.json"
+import p11_workeducation2_definition from "../../form_definitions/p11_workeducation2_definition.json"
+import p12_workeducation3_definition from "../../form_definitions/p12_workeducation3_definition.json"
+import p13_securityandbackground1_definition from "../../form_definitions/p13_securityandbackground1_definition.json"
+import p14_securityandbackground2_definition from "../../form_definitions/p14_securityandbackground2_definition.json"
+import p15_securityandbackground3_definition from "../../form_definitions/p15_securityandbackground3_definition.json"
+import p16_securityandbackground4_definition from "../../form_definitions/p16_securityandbackground4_definition.json"
+import p17_securityandbackground5_definition from "../../form_definitions/p17_securityandbackground5_definition.json"
+import p18_spouse_definition from "../../form_definitions/p18_spouse_definition_fe.json"
+import p1_personal1_definition from "../../form_definitions/p1_personal1_definition.json"
+import p2_personal2_definition from "../../form_definitions/p2_personal2_definition.json"
+import p3_travelinfo_definition from "../../form_definitions/p3_travel_definition.json"
+import p4_travelcompanions_definition from "../../form_definitions/p4_travelcompanions_definition.json"
+import p5_previoustravel_definition from "../../form_definitions/p5_previousustravel_definition.json"
+import p6_addressphone_definition from "../../form_definitions/p6_addressphone_definition.json"
+import p7_pptvisa_definition from "../../form_definitions/p7_pptvisa_definition.json"
+import p8_uscontact_definition from "../../form_definitions/p8_uscontact_definition.json"
+import p9_relatives_definition from "../../form_definitions/p9_relatives_definition.json"
+import startPageDefinition from "../../form_definitions/p0_start_page_definition.json"
+import securityPageDefinition from "../../form_definitions/p0_security_page_definition.json"
 
 declare global {
   interface Window {
