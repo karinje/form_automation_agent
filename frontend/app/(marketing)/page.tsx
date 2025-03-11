@@ -1,42 +1,91 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, Clock, CloudUpload, FileText, Link as LinkIcon, Shield } from "lucide-react";
+import { ArrowRight, Check, Clock, CloudUpload, FileText, Link as LinkIcon, Shield, Upload, ArrowUpRight } from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Hero Section */}
-      <header className="pt-20 pb-16 px-4 md:px-6 text-center">
-        <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">
-            DS-160 Form Filling Made <span className="text-blue-600">Simple</span>
-          </h1>
-          <p className="mt-6 text-xl text-gray-600 max-w-3xl mx-auto">
-            Say goodbye to timeouts, data loss, and frustration with the official DS-160 form. 
-            Our smart agent helps you complete your US visa application with ease.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/sign-in">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-xl">
-                Try Tool <ArrowRight className="ml-2 h-5 w-5" />
+    <div className="min-h-screen bg-white">
+      {/* Hero Section - More modern with gradient */}
+      <header className="relative pt-24 pb-20 px-4 md:px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 z-0"></div>
+        <div className="max-w-5xl mx-auto relative z-10">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 mb-6">
+              DS-160 Form Filling Made Simple
+            </h1>
+            <p className="mt-6 text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Say goodbye to timeouts, data loss, and frustration.
+              Complete your US visa application with ease.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/auth/sign-in">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-xl flex items-center gap-2 shadow-lg hover:shadow-xl transition-all">
+                  Try Tool <ArrowRight className="ml-1 h-5 w-5" />
+                </Button>
+              </Link>
+              <Button variant="outline" className="px-8 py-6 text-lg rounded-xl border-2 border-gray-300 hover:border-gray-400 flex items-center gap-2">
+                Watch Demo <ArrowUpRight className="h-5 w-5" />
               </Button>
-            </Link>
-            <Button variant="outline" className="px-8 py-6 text-lg rounded-xl border-2">
-              Watch Demo
-            </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Video Demo Section */}
-      <section className="py-16 px-4 md:px-6">
+      {/* Key Benefits Section - Large bold fonts, SaaS style */}
+      <section className="py-20 px-4 md:px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="aspect-video bg-gray-200 rounded-2xl overflow-hidden border-8 border-white shadow-2xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Why DS-160 Agent?
+            </h2>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-12">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-20 h-20 flex items-center justify-center bg-blue-100 rounded-full mb-6">
+                <Clock className="h-10 w-10 text-blue-600" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-3">Save 90% of Time</h3>
+              <p className="text-gray-600 text-lg">Complete your form in minutes instead of hours with smart data imports</p>
+            </div>
+            
+            <div className="flex flex-col items-center text-center">
+              <div className="w-20 h-20 flex items-center justify-center bg-green-100 rounded-full mb-6">
+                <Shield className="h-10 w-10 text-green-600" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-3">Never Lose Data</h3>
+              <p className="text-gray-600 text-lg">Automatic saving prevents frustrating timeouts and data loss</p>
+            </div>
+            
+            <div className="flex flex-col items-center text-center">
+              <div className="w-20 h-20 flex items-center justify-center bg-purple-100 rounded-full mb-6">
+                <Upload className="h-10 w-10 text-purple-600" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-3">Smart Imports</h3>
+              <p className="text-gray-600 text-lg">Import from LinkedIn, passport, and travel records automatically</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Demo Section - Now with more style */}
+      <section className="py-16 px-4 md:px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              See How It Works
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Watch our demo and see how easy DS-160 form filling can be
+            </p>
+          </div>
+          
+          <div className="aspect-video bg-white rounded-2xl overflow-hidden border-8 border-white shadow-2xl">
             {/* Replace with actual video embed */}
             <div className="w-full h-full flex items-center justify-center bg-gray-100">
               <div className="text-center">
-                <div className="mb-4 w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto">
+                <div className="mb-4 w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto cursor-pointer hover:bg-blue-700 transition-colors">
                   <svg 
                     className="w-10 h-10 text-white" 
                     fill="none" 
@@ -65,93 +114,19 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Problems & Solutions Section */}
-      <section className="py-16 px-4 md:px-6 bg-gray-50">
+      {/* Features Section - Streamlined */}
+      <section className="py-20 px-4 md:px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Common DS-160 Problems & Our Solutions
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Powerful Features
             </h2>
-            <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
-              The official DS-160 form is notoriously frustrating. Here's how we solve the most common issues.
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Every tool you need for a seamless visa application
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            {/* Problems Column */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg">
-              <div className="inline-flex items-center justify-center p-3 bg-red-100 rounded-xl mb-6">
-                <FileText className="h-8 w-8 text-red-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Common DS-160 Problems</h3>
-              
-              <ul className="space-y-4">
-                {[
-                  "Timeouts causing data loss during long sessions",
-                  "Sections failing to save properly",
-                  "No ability to edit after submission",
-                  "Technical glitches and crashes",
-                  "Repetitive data entry for each application",
-                  "Cannot import data from LinkedIn or travel history",
-                  "Browser compatibility limitations",
-                  "Photo upload failures",
-                  "Lost confirmation page requiring reprints"
-                ].map((problem, index) => (
-                  <li key={index} className="flex items-start">
-                    <div className="flex-shrink-0 h-6 w-6 rounded-full bg-red-100 flex items-center justify-center mr-3 mt-0.5">
-                      <span className="text-red-600 text-sm font-medium">✕</span>
-                    </div>
-                    <span className="text-gray-700">{problem}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Solutions Column */}
-            <div className="bg-blue-600 p-8 rounded-2xl shadow-lg text-white">
-              <div className="inline-flex items-center justify-center p-3 bg-white rounded-xl mb-6">
-                <Shield className="h-8 w-8 text-blue-600" />
-              </div>
-              <h3 className="text-2xl font-bold mb-6">Our Solutions</h3>
-              
-              <ul className="space-y-4">
-                {[
-                  "Real-time data saving prevents any loss of progress",
-                  "Secure storage of all form data for future access",
-                  "Review and edit everything before final submission",
-                  "Stable, reliable platform without technical issues",
-                  "Import from LinkedIn, passport OCR, and I94 records",
-                  "Works with all modern browsers",
-                  "Seamless photo upload handling",
-                  "Digital copies of all documents securely stored",
-                  "Agent-assisted form completion for accuracy"
-                ].map((solution, index) => (
-                  <li key={index} className="flex items-start">
-                    <div className="flex-shrink-0 h-6 w-6 rounded-full bg-white flex items-center justify-center mr-3 mt-0.5">
-                      <Check className="h-3.5 w-3.5 text-blue-600" />
-                    </div>
-                    <span>{solution}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Key Features
-            </h2>
-            <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
-              Our platform is designed to make DS-160 form filling painless and efficient.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
                 icon: <Clock className="h-10 w-10 text-blue-600" />,
@@ -184,8 +159,8 @@ export default function LandingPage() {
                 description: "Affordable one-time payment with no subscriptions or hidden fees."
               }
             ].map((feature, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className="mb-4">{feature.icon}</div>
+              <div key={index} className="bg-white p-8 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-blue-50 p-3 rounded-lg inline-block mb-4">{feature.icon}</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>
               </div>
@@ -194,24 +169,24 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 md:px-6 bg-gray-900 text-white">
+      {/* CTA Section - More modern */}
+      <section className="py-20 px-4 md:px-6 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
             Ready to simplify your DS-160 application?
           </h2>
-          <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
             Try our DS-160 Agent for just $4.99 per use and experience a hassle-free visa application process.
           </p>
           <Link href="/auth/sign-in">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-xl">
+            <Button className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-6 text-lg rounded-xl shadow-lg">
               Get Started Now <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer - Simplified */}
       <footer className="py-10 px-4 md:px-6 bg-gray-900 border-t border-gray-800 text-gray-400">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
