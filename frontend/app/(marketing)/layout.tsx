@@ -1,4 +1,6 @@
 import { Inter } from "next/font/google";
+import { UserButton, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,9 +25,27 @@ export default function MarketingLayout({
               </a>
             </div>
             <div className="md:flex items-center justify-end md:flex-1 lg:w-0">
-              <a href="/auth/sign-in" className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700">
-                Sign in
-              </a>
+              <SignedOut>
+                <Link href="/auth/sign-in" className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700">
+                  Sign in
+                </Link>
+              </SignedOut>
+              <SignedIn>
+                <Link 
+                  href="/app" 
+                  className="ml-8 whitespace-nowrap px-4 py-2 border border-transparent rounded-md text-base font-medium text-blue-600 hover:text-blue-800"
+                >
+                  Go to App
+                </Link>
+                <UserButton 
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      userButtonAvatarBox: "w-10 h-10 ml-4"
+                    }
+                  }} 
+                />
+              </SignedIn>
             </div>
           </div>
         </div>

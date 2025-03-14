@@ -102,12 +102,12 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
   }
 
   return (
-    <div className="mb-6 p-4 bg-blue-50 border-l-4 border-l-blue-500 border border-gray-200 rounded-lg">
+    <div className="mb-6 p-4 bg-gray-50 border-l-4 border-l-gray-500 border border-gray-200 rounded-lg">
       <div className="flex flex-col">
         <div className="flex items-center justify-between mb-2">
           <div>
-            <h3 className="text-lg font-semibold">Provide LinkedIn profile URL to automatically fill Work/Education pages</h3>
-            <p className="text-sm text-gray-500">Work and education history will be imported</p>
+            <h3 className="text-lg font-semibold">Fill Manually or Provide LinkedIn Profile URL to Import Work/Education</h3>
+            <p className="text-sm text-gray-500">Work and education 1/2 pages will be automatically filled after import</p>
           </div>
         </div>
         

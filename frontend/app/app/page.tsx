@@ -22,6 +22,9 @@ import { PassportUpload } from "@/components/PassportUpload"
 import { countFieldsByPage } from '../utils/field-counter'
 import { StopwatchTimer } from '../components/StopwatchTimer'
 import { Upload } from "lucide-react"
+import { useFormPersistence } from '../../lib/hooks/useFormPersistence'
+import { useUser } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../../form_definitions/p10_workeducation1_definition.json"
@@ -97,6 +100,18 @@ export default function Home() {
     f => f.name === 'ctl00_SiteContentPlaceHolder_ucLocation_ddlLocation'
   )?.value || []
 
+  // Add at the top of your component
+  const { 
+    persistData, 
+    saveAllFormData, 
+    saveFormDataToDb, // Use the new function
+    isInitialized, 
+    formState 
+  } = useFormPersistence();
+
+  // Add at the top of your component, with other state declarations
+  const [debugMode, setDebugMode] = useState(false); // Default to false
+
   // Add this function near the top of your component function
   const shouldShowSpousePage = (formData: Record<string, string>): boolean => {
     const maritalStatus = formData['ctl00_SiteContentPlaceHolder_FormView1_ddlAPP_MARITAL_STATUS'];
@@ -128,19 +143,8 @@ export default function Home() {
       { title: "Passport", definition: p7_pptvisa_definition, pageName: "pptvisa_page" },
       { title: "Relatives", definition: p9_relatives_definition, pageName: "relatives_page" },
       { title: "Spouse Information", definition: p18_spouse_definition, pageName: "spouse_page",isVisible: shouldShowSpousePage },
-      // You could add these additional pages when you have them
-      // { 
-      //   title: "Former Spouse Information", 
-      //   definition: p19_former_spouse_definition, 
-      //   pageName: "former_spouse_page",
-      //   isVisible: shouldShowFormerSpousePage
-      // },
-      // { 
-      //   title: "Deceased Spouse Information", 
-      //   definition: p20_deceased_spouse_definition, 
-      //   pageName: "deceased_spouse_page",
-      //   isVisible: shouldShowDeceasedSpousePage
-      // },
+      //{ title: "Former Spouse Information", definition: p19_former_spouse_definition, pageName: "former_spouse_page", isVisible: shouldShowFormerSpousePage},
+      // {  title: "Deceased Spouse Information", definition: p20_deceased_spouse_definition, pageName: "deceased_spouse_page", isVisible: shouldShowDeceasedSpousePage},
     ],
     travel: [
       { title: "Travel Information", definition: p3_travelinfo_definition, pageName: "travel_page" },
@@ -162,11 +166,7 @@ export default function Home() {
     ],
   }
 
-  // Generate years for dropdown (e.g., 1940 to current year)
-  const years = Array.from({ length: new Date().getFullYear() - 1940 + 1 }, (_, i) => 
-    (1940 + i).toString()
-  ).reverse()
-
+  
   // On mount, initialize each form's counter based on its definition
   useEffect(() => {
     const initialStatus: Record<string, { completed: number, total: number }> = {}
@@ -226,51 +226,8 @@ export default function Home() {
     return fullText;
   };
 
-  // Replace the existing countFieldsInYaml function with this more thorough version
-  const countFieldsInYaml = (yamlData: any): Record<string, number> => {
-    const counts: Record<string, number> = {};
-    
-    if (!yamlData) return counts;
-    
-    // Helper function to count fields recursively
-    const countRecursive = (obj: any): number => {
-      if (!obj || typeof obj !== 'object') return 0;
-      
-      let fieldCount = 0;
-      
-      // Count all properties and their nested fields
-      Object.entries(obj).forEach(([key, value]) => {
-        // Count this field
-        fieldCount++;
-        
-        // If it's an array, count fields in each array item
-        if (Array.isArray(value)) {
-          value.forEach(item => {
-            if (typeof item === 'object' && item !== null) {
-              fieldCount += countRecursive(item);
-            }
-          });
-        } 
-        // If it's an object, recursively count its fields
-        else if (typeof value === 'object' && value !== null) {
-          fieldCount += countRecursive(value);
-        }
-      });
-      
-      return fieldCount;
-    };
-    
-    // Count fields for each top-level page section
-    Object.entries(yamlData).forEach(([pageKey, pageData]) => {
-      if (pageData && typeof pageData === 'object') {
-        counts[pageKey] = countRecursive(pageData);
-      }
-    });
-    
-    return counts;
-  };
-
-  // Update the handleFormDataLoad function to properly fill the form data
+  
+  // Update the handleFormDataLoad function to properly merge YAML data
   const handleFormDataLoad = (
     uploadedYamlData: Record<string, any>, 
     showSuccess = true,
@@ -280,17 +237,74 @@ export default function Home() {
       setIsProcessing(true);
       setProcessingProgress(['Processing form data...']);
       
-      // IMPORTANT: Add the actual form filling logic
-      debugLog('all_pages', '[Mapping Creation] Processing YAML data');
+      // Filter out button_clicks from the YAML data
+      const filteredYamlData = JSON.parse(JSON.stringify(uploadedYamlData)); // Deep clone
       
-      setYamlData(uploadedYamlData);
-      const yamlString = yaml.dump(uploadedYamlData);
-      const { formData: arrayAwareFormData, arrayGroups } = createFormMapping(yamlString);
+      // Remove button_clicks from each page in the YAML data
+      Object.keys(filteredYamlData).forEach(pageName => {
+        if (filteredYamlData[pageName] && typeof filteredYamlData[pageName] === 'object') {
+          // Delete button_clicks if it exists directly on the page
+          if ('button_clicks' in filteredYamlData[pageName]) {
+            delete filteredYamlData[pageName].button_clicks;
+          }
+          
+          // Also check for nested button_clicks in sub-objects
+          Object.keys(filteredYamlData[pageName]).forEach(key => {
+            const value = filteredYamlData[pageName][key];
+            if (value && typeof value === 'object' && 'button_clicks' in value) {
+              delete filteredYamlData[pageName][key].button_clicks;
+            }
+          });
+        }
+      });
       
-      setArrayGroups(arrayGroups);
+      console.log('filteredYamlData inside handleFormDataLoad after page and button clicks filters:', filteredYamlData)
+      console.log('filteredYamlData[pageName] before assignment', filteredYamlData['previous_travel_page'])
+      console.log('filteredYamlData keys before assignment', Object.keys(filteredYamlData))
+
+      // IMPORTANT CHANGE: Merge the filtered YAML with existing YAML instead of replacing it
+      const mergedYamlData = { ...yamlData };
       
+      // Only update pages that are in the uploadedYamlData
+      Object.keys(filteredYamlData).forEach(pageName => {
+        // Skip if pagesFilter is provided and this page isn't in it
+        if (pagesFilter && !pagesFilter.includes(pageName)) {
+          return;
+        }
+        console.log('pageName inside handleFormDataLoad', pageName)
+        console.log('filteredYamlData[pageName] inside handleFormDataLoad', filteredYamlData[pageName])
+        // Update or add this page to the merged YAML
+        mergedYamlData[pageName] = filteredYamlData[pageName];
+        console.log('mergedYamlData[pageName] inside handleFormDataLoad', mergedYamlData[pageName])
+      });
+      console.log('mergedYamlData inside handleFormDataLoad', mergedYamlData)
+      // Now set the merged YAML data
+      setYamlData(mergedYamlData);
+      
+      // Convert the merged YAML to string and create form mapping
+      const yamlString = yaml.dump(mergedYamlData);
+      const { formData: arrayAwareFormData, arrayGroups: newArrayGroups } = createFormMapping(yamlString);
+      
+      // Merge array groups instead of replacing them completely
+      const mergedArrayGroups = { ...arrayGroups };
+      
+      // Only update array groups for pages that are in the filteredYamlData
+      Object.keys(newArrayGroups).forEach(pageName => {
+        // Skip if pagesFilter is provided and this page isn't in it
+        if (pagesFilter && !pagesFilter.includes(pageName)) {
+          return;
+        }
+        
+        // Update or add array groups for this page
+        mergedArrayGroups[pageName] = newArrayGroups[pageName];
+      });
+      
+      // Set the merged array groups
+      setArrayGroups(mergedArrayGroups);
+      
+      // Continue with the rest of the function as before...
       const allFormFields: Record<string, string> = {};
-      Object.entries(uploadedYamlData).forEach(([pageName, pageData]) => {
+      Object.entries(filteredYamlData).forEach(([pageName, pageData]) => {
         // Skip if pagesFilter is provided and this page isn't in it
         if (pagesFilter && !pagesFilter.includes(pageName)) {
           return;
@@ -316,7 +330,7 @@ export default function Home() {
       setRefreshKey(prev => prev + 1);
       
       // After processing, count and display the field stats
-      const fieldCounts = countFieldsByPage(uploadedYamlData);
+      const fieldCounts = countFieldsByPage(filteredYamlData);
       
       // Display field counts in progress
       const countMessages = Object.entries(fieldCounts)
@@ -998,7 +1012,21 @@ export default function Home() {
 
   // Now modify the existing handleRunDS160 function to call our new function
   const handleRunDS160 = async () => {
-    // Simply call the new function with no arguments to use current state values
+    // Save current state before processing
+    await saveAllFormData({
+      yamlData,
+      currentTab,
+      accordionValues,
+      retrieveMode,
+      location,
+      secretQuestion,
+      secretAnswer,
+      applicationId,
+      surname,
+      birthYear
+    });
+    
+    // Continue with existing logic...
     handleRunDS160WithLocalValues();
   };
 
@@ -1040,16 +1068,58 @@ export default function Home() {
             
             const groupsForPage = form.pageName ? arrayGroups[form.pageName] || {} : {};
             
+            // Check if all fields are completed for this form
+            const status = completionStatus[formId] || { completed: 0, total: 0 };
+            const isComplete = status.total > 0 && status.completed === status.total;
+            
             return (
               <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
                 <AccordionTrigger className="w-full hover:no-underline [&>svg]:h-8 [&>svg]:w-8 [&>svg]:shrink-0 [&>svg]:text-gray-500 p-0">
                   <div className="flex justify-between items-center py-2 px-4 bg-gray-50 w-full">
-                    <h2 className="text-lg font-semibold leading-none">
-                      {form.title}
-                    </h2>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center">
-                        <span className="mr-2 text-sm text-gray-600">
+                    <div className="flex items-center">
+                      <h2 className="text-lg font-semibold leading-none">
+                        {form.title}
+                      </h2>
+                    </div>
+                    <div className="flex items-center">
+                      {/* Create a fixed-width container with flex layout for perfect alignment */}
+                      <div className="w-[180px] flex items-center justify-end">
+                        {/* Icon with fixed position */}
+                        <div className="w-[24px] flex justify-center mr-2">
+                          {status.total > 0 && (
+                            isComplete ? (
+                              <svg
+                                className="w-5 h-5 text-green-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={3}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                            ) : (
+                              <svg
+                                className="w-5 h-5 text-red-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={3}
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            )
+                          )}
+                        </div>
+                        {/* Counter text with fixed width */}
+                        <span className="text-sm text-gray-600 w-[120px] text-right">
                           {(completionStatus[formId]?.completed || 0)}/
                           {(completionStatus[formId]?.total || 0)} completed
                         </span>
@@ -1064,7 +1134,12 @@ export default function Home() {
                     formData={formData}
                     arrayGroups={groupsForPage}
                     onInputChange={(name, value) => {
-                      setFormData(prev => ({ ...prev, [name]: value }))
+                      // Update form data state
+                      const updatedFormData = { ...formData, [name]: value };
+                      setFormData(updatedFormData);
+                      
+                      // Save directly to database
+                      saveFormDataToDb(updatedFormData);
                     }}
                     onCompletionUpdate={onCompletionMemo}
                     formCategories={formCategories}
@@ -1113,6 +1188,7 @@ export default function Home() {
                         console.log('arrayGroups finally', arrayGroups)
                       }
                     }}
+                    onSave={saveYamlToBackend} // Add this new prop
                   />
                 </AccordionContent>
               </AccordionItem>
@@ -1150,7 +1226,7 @@ export default function Home() {
           button_clicks: [1, 2]
         }
       };
-      
+      console.log('mergedYaml after document extraction is applied:', mergedYaml)
       // Update form with merged data
       handleFormDataLoad(
         mergedYaml,
@@ -1229,169 +1305,197 @@ export default function Home() {
     }
   };
 
-  // Change the useEffect that loads data to use sessionStorage
+  // Load data from backend when formState is available or changes
   useEffect(() => {
-    try {
-      // First check if we have saved YAML data
-      const savedYamlData = sessionStorage.getItem('ds160_yaml_data');
-      
-      if (savedYamlData) {
-        // Parse the saved YAML data
-        const parsedYaml = JSON.parse(savedYamlData);
-        
-        // Use handleFormDataLoad to properly reconstruct the form
-        // This will rebuild dependencies, visible fields, etc.
-        handleFormDataLoad(parsedYaml, false); // false = don't show success message
+    if (isInitialized && formState) {
+      try {
+        // Always use yamlData if available
+        if (formState.yamlData) {
+          console.log('Loading YAML data from database');
+          const parsedYaml = formState.yamlData;
+          
+          // Skip certain pages in the YAML data
+          const filteredYaml = { ...parsedYaml };
+          const pagesToSkip = ['start_page', 'retrieve_page', 'security_page'];
+          
+          pagesToSkip.forEach(page => {
+            delete filteredYaml[page];
+          });
+          
+          // Also filter out button_clicks from all pages
+          Object.keys(filteredYaml).forEach(pageName => {
+            if (filteredYaml[pageName] && typeof filteredYaml[pageName] === 'object') {
+              // Delete button_clicks if it exists directly on the page
+              if ('button_clicks' in filteredYaml[pageName]) {
+                delete filteredYaml[pageName].button_clicks;
+              }
+              
+              // Also check for nested button_clicks in sub-objects
+              Object.keys(filteredYaml[pageName]).forEach(key => {
+                const value = filteredYaml[pageName][key];
+                if (value && typeof value === 'object' && 'button_clicks' in value) {
+                  delete filteredYaml[pageName][key].button_clicks;
+                }
+              });
+            }
+          });
+          
+          // Use the existing handleFormDataLoad function to load the filtered YAML
+          handleFormDataLoad(filteredYaml, false); // false = don't show success message
+        } else {
+          console.log('No YAML data found in database');
+        }
         
         // Load UI state
-        const savedCurrentTab = sessionStorage.getItem('ds160_current_tab');
-        if (savedCurrentTab) {
-          setCurrentTab(savedCurrentTab);
+        if (formState.currentTab) {
+          setCurrentTab(formState.currentTab);
         }
         
-        const savedAccordionValues = sessionStorage.getItem('ds160_accordion_values');
-        if (savedAccordionValues) {
-          setAccordionValues(JSON.parse(savedAccordionValues));
+        // Load other UI state from formState
+        if (formState.accordionValues) {
+          setAccordionValues(formState.accordionValues);
         }
         
-        // Load other state values
-        const savedRetrieveMode = sessionStorage.getItem('ds160_retrieve_mode');
-        if (savedRetrieveMode === 'new' || savedRetrieveMode === 'retrieve') {
-          setRetrieveMode(savedRetrieveMode);
+        if (formState.retrieveMode) {
+          setRetrieveMode(formState.retrieveMode as 'new' | 'retrieve');
         }
         
-        const savedLocation = sessionStorage.getItem('ds160_location');
-        if (savedLocation) {
-          setLocation(savedLocation);
+        if (formState.location) {
+          setLocation(formState.location);
         }
         
-        const savedSecretQuestion = sessionStorage.getItem('ds160_secret_question');
-        if (savedSecretQuestion) {
-          setSecretQuestion(savedSecretQuestion);
+        if (formState.secretQuestion) {
+          setSecretQuestion(formState.secretQuestion);
         }
         
-        const savedSecretAnswer = sessionStorage.getItem('ds160_secret_answer');
-        if (savedSecretAnswer) {
-          setSecretAnswer(savedSecretAnswer);
+        if (formState.secretAnswer) {
+          setSecretAnswer(formState.secretAnswer);
         }
         
-        const savedApplicationId = sessionStorage.getItem('ds160_application_id');
-        if (savedApplicationId) {
-          setApplicationId(savedApplicationId);
+        if (formState.applicationId) {
+          setApplicationId(formState.applicationId);
         }
         
-        const savedSurname = sessionStorage.getItem('ds160_surname');
-        if (savedSurname) {
-          setSurname(savedSurname);
+        if (formState.surname) {
+          setSurname(formState.surname);
         }
         
-        const savedBirthYear = sessionStorage.getItem('ds160_birth_year');
-        if (savedBirthYear) {
-          setBirthYear(savedBirthYear);
+        if (formState.birthYear) {
+          setBirthYear(formState.birthYear);
         }
+        
+      } catch (error) {
+        console.error('Error loading saved form data:', error);
       }
-    } catch (error) {
-      console.error('Error loading saved form data:', error);
     }
-  }, []);
+  }, [formState, isInitialized]);
 
-  // Change all the save useEffects to use sessionStorage
+  // Replace the existing useEffect hooks to only use backend persistence
   useEffect(() => {
     if (Object.keys(yamlData).length > 0) {
-      sessionStorage.setItem('ds160_yaml_data', JSON.stringify(yamlData));
+      console.log('yamlData savings to backend is:', yamlData)
+      persistData('ds160_yaml_data', yamlData);
     }
-  }, [yamlData]);
+  }, [yamlData, persistData]);
 
   useEffect(() => {
-    sessionStorage.setItem('ds160_current_tab', currentTab);
-  }, [currentTab]);
+    persistData('ds160_current_tab', currentTab);
+  }, [currentTab, persistData]);
 
   useEffect(() => {
     if (Object.keys(accordionValues).length > 0) {
-      sessionStorage.setItem('ds160_accordion_values', JSON.stringify(accordionValues));
+      persistData('ds160_accordion_values', accordionValues);
     }
-  }, [accordionValues]);
+  }, [accordionValues, persistData]);
 
   useEffect(() => {
-    sessionStorage.setItem('ds160_retrieve_mode', retrieveMode);
-  }, [retrieveMode]);
+    persistData('ds160_retrieve_mode', retrieveMode);
+  }, [retrieveMode, persistData]);
 
   useEffect(() => {
-    sessionStorage.setItem('ds160_location', location);
-  }, [location]);
+    persistData('ds160_location', location);
+  }, [location, persistData]);
 
   useEffect(() => {
     if (secretQuestion) {
-      sessionStorage.setItem('ds160_secret_question', secretQuestion);
+      persistData('ds160_secret_question', secretQuestion);
     }
-  }, [secretQuestion]);
+  }, [secretQuestion, persistData]);
 
   useEffect(() => {
     if (secretAnswer) {
-      sessionStorage.setItem('ds160_secret_answer', secretAnswer);
+      persistData('ds160_secret_answer', secretAnswer);
     }
-  }, [secretAnswer]);
+  }, [secretAnswer, persistData]);
 
   useEffect(() => {
     if (applicationId) {
-      sessionStorage.setItem('ds160_application_id', applicationId);
+      persistData('ds160_application_id', applicationId);
     }
-  }, [applicationId]);
+  }, [applicationId, persistData]);
 
   useEffect(() => {
     if (surname) {
-      sessionStorage.setItem('ds160_surname', surname);
+      persistData('ds160_surname', surname);
     }
-  }, [surname]);
+  }, [surname, persistData]);
 
   useEffect(() => {
     if (birthYear) {
-      sessionStorage.setItem('ds160_birth_year', birthYear);
+      persistData('ds160_birth_year', birthYear);
     }
-  }, [birthYear]);
+  }, [birthYear, persistData]);
 
-  // Update the clearSavedData function to clear from sessionStorage
-  const clearSavedData = () => {
-    // Clear sessionStorage
-    sessionStorage.removeItem('ds160_yaml_data');
-    sessionStorage.removeItem('ds160_current_tab');
-    sessionStorage.removeItem('ds160_accordion_values');
-    sessionStorage.removeItem('ds160_retrieve_mode');
-    sessionStorage.removeItem('ds160_location');
-    sessionStorage.removeItem('ds160_secret_question');
-    sessionStorage.removeItem('ds160_secret_answer');
-    sessionStorage.removeItem('ds160_application_id');
-    sessionStorage.removeItem('ds160_surname');
-    sessionStorage.removeItem('ds160_birth_year');
-    
-    // Reset state
-    setFormData({});
-    setArrayGroups({});
-    setYamlData({});
-    setCurrentTab('personal');
-    setAccordionValues({});
-    setRetrieveMode('new');
-    setLocation('ENGLAND, LONDON');
-    setSecretQuestion('');
-    setSecretAnswer('');
-    setApplicationId('');
-    setSurname('');
-    setBirthYear('');
-    
-    // Reset form completion status
-    const initialStatus: Record<string, { completed: number, total: number }> = {};
-    Object.entries(formCategories).forEach(([category, forms]) => {
-      forms.forEach((form, index) => {
-        const formId = `${category}-${index}`;
-        const total = form.definition.fields.length;
-        initialStatus[formId] = { completed: 0, total };
+  // Update the clearSavedData function:
+  const clearSavedData = async () => {
+    try {
+      // Clear form data from the database by saving minimal values
+      await saveAllFormData({
+        yamlData: {},
+        currentTab: 'personal',
+        accordionValues: {},
+        retrieveMode: 'new',
+        location: 'ENGLAND, LONDON',
+        secretQuestion: '',
+        secretAnswer: '',
+        applicationId: '',
+        surname: '',
+        birthYear: '',
       });
-    });
-    setCompletionStatus(initialStatus);
-    
-    // Force a refresh
-    setRefreshKey(prev => prev + 1);
-  }
+      
+      // Reset local state
+      setFormData({});
+      setArrayGroups({});
+      setYamlData({});
+      setCurrentTab('personal');
+      setAccordionValues({});
+      setRetrieveMode('new');
+      setLocation('ENGLAND, LONDON');
+      setSecretQuestion('');
+      setSecretAnswer('');
+      setApplicationId('');
+      setSurname('');
+      setBirthYear('');
+      
+      // Reset form completion status
+      const initialStatus: Record<string, { completed: number, total: number }> = {};
+      Object.entries(formCategories).forEach(([category, forms]) => {
+        forms.forEach((form, index) => {
+          const formId = `${category}-${index}`;
+          const total = form.definition.fields.length;
+          initialStatus[formId] = { completed: 0, total };
+        });
+      });
+      setCompletionStatus(initialStatus);
+      
+      // Force a refresh
+      setRefreshKey(prev => prev + 1);
+      
+      console.log('Form data cleared successfully');
+    } catch (error) {
+      console.error('Error clearing form data:', error);
+    }
+  };
 
   // First, let's add a state for the new upload modal
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -1703,7 +1807,133 @@ export default function Home() {
     
   // Add formCategories to dependencies since we use it in the effect
   }, [formData, formCategories, completionStatus]);
+  
+  // Add a reference for the periodic backup timer (keep this)
+  const yamlBackupInterval = useRef<NodeJS.Timeout | null>(null);
 
+  // Move this function ABOVE the useEffect that uses it
+  // Add this function to save YAML to backend - can be called manually or by interval
+  const saveYamlToBackend = useCallback(() => {
+    // Skip if no form data
+    if (Object.keys(formData).length === 0) return Promise.resolve({ success: false });
+    
+    console.log('Saving YAML to backend');
+    
+    // Generate YAML using the existing function
+    const yamlData = generateFormYamlData({
+      location: location,
+      retrieveMode: retrieveMode,
+      applicationId: applicationId,
+      surname: surname,
+      birthYear: birthYear,
+      secretQuestion: secretQuestion,
+      secretAnswer: secretAnswer,
+      currentArrayGroups: arrayGroups
+    });
+    
+    // Save to database
+    return saveAllFormData({ yamlData })
+      .then(() => {
+        console.log('YAML saved to backend successfully');
+        return { success: true };
+      })
+      .catch(err => {
+        console.error('Failed to save YAML to backend:', err);
+        return { success: false, error: err };
+      });
+  }, [
+    formData,
+    generateFormYamlData,
+    location,
+    retrieveMode,
+    applicationId,
+    surname,
+    birthYear,
+    secretQuestion,
+    secretAnswer,
+    arrayGroups,
+    saveAllFormData
+  ]);
+
+  // AFTER defining saveYamlToBackend, now use it in the useEffect
+  // Simplified useEffect for periodic YAML backup
+  useEffect(() => {
+    // Clear any existing interval
+    if (yamlBackupInterval.current) {
+      clearInterval(yamlBackupInterval.current);
+    }
+    
+    // Set up a new interval to backup YAML every 3 minutes
+    yamlBackupInterval.current = setInterval(() => {
+      saveYamlToBackend();
+    }, 180000); // 3 minutes
+    
+    // Clean up on unmount
+    return () => {
+      if (yamlBackupInterval.current) {
+        clearInterval(yamlBackupInterval.current);
+      }
+    };
+  }, [saveYamlToBackend]);
+  
+  // Add this function where other event handlers are defined (near handleDownloadYaml)
+  const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const content = event.target?.result as string;
+          const data = yaml.load(content) as Record<string, any>;
+          handleFormDataLoad(data);
+        } catch (error) {
+          console.error('Error parsing YAML:', error);
+          setErrorMessage('Error parsing YAML file');
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+  
+  // Add this new state for the reset confirmation modal
+  const [showResetConfirmation, setShowResetConfirmation] = useState(false);
+
+  // Add this new modal component inside the Home component
+  const ResetConfirmationModal = () => {
+    if (!showResetConfirmation) return null;
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+          <h2 className="text-xl font-bold mb-4">Caution: This will delete all form data</h2>
+          <p className="text-gray-600 mb-6">
+            All your form entries and progress will be permanently deleted. This action cannot be undone.
+          </p>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={() => setShowResetConfirmation(false)}
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                clearSavedData().then(() => {
+                  setShowResetConfirmation(false);
+                });
+              }}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+            >
+              Proceed
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const { user } = useUser();
+  
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {(isProcessing || isProcessingLLM) && (
@@ -1711,7 +1941,7 @@ export default function Home() {
           <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center max-w-md w-full">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
             <p className="text-lg font-semibold">
-              {isProcessing ? 'Processing PDF...' : 'Processing with AI...'}
+              {isProcessing ? 'Loading saved data...' : 'Processing with AI...'}
             </p>
             
             {/* Add StopwatchTimer to start whenever processing begins */}
@@ -1728,32 +1958,43 @@ export default function Home() {
       )}
       
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-4">
+        <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">
             DS-160 Agent
           </h1>
+          
+          {/* Show user info when signed in */}
+          {user && (
+            <div className="flex items-center bg-blue-50 px-4 py-2 rounded-md">
+              <span className="text-sm text-gray-600 mr-3">
+                Signed in as: <span className="font-semibold">{user.fullName || user.emailAddresses[0]?.emailAddress}</span>
+              </span>
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          )}
         </div>
         
-        <div className="bg-white shadow-lg rounded-lg p-8">
-          <div className="mb-4 flex flex-col bg-blue-50 border-l-4 border-l-blue-500 border border-gray-200 rounded-lg p-4">
+        <div className="bg-white shadow-lg rounded-lg p-4">
+          {/* Keep blue theme instead of indigo and make the dropzone wider */}
+          <div className="mb-10 p-6 bg-blue-50 border-2 border-blue-400 rounded-lg shadow-md">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold whitespace-nowrap">Import Data From Previous DS160 form</h2>
-                <p className="text-sm text-gray-500">Below fields will be automatically filled after import</p>
+                <h2 className="text-lg font-bold text-blue-800">Fill Manually or Import Data From Previous DS160</h2>
+                <p className="text-sm text-gray-600 mt-1">Below fields will be automatically filled after import</p>
               </div>
-              <div className="flex-1 flex justify-end">
+              <div className="flex-1 flex justify-end ml-2"> 
                 <div className="flex items-center">
                   <label 
                     htmlFor="dropzone-file" 
-                    className={`flex items-center justify-center h-12 w-96 
+                    className={`flex items-center justify-center h-14 w-94 
                               border-2 border-blue-500 border-dashed rounded-lg 
-                              ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-100'} 
-                              bg-gray-50 relative`}
+                              ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-blue-50'} 
+                              bg-white relative shadow-sm`}
                   >
-                    <div className="flex items-center gap-2 text-center">
+                    <div className="flex items-center gap-1 text-center">
                       <Upload className="h-6 w-6 text-blue-500" />
-                      <span className="text-gray-600">
-                        Click to upload or drag & drop DS160 PDF
+                      <span className="text-gray-700 font-medium">
+                        Click or Drag Drop Previous DS160 PDF
                       </span>
                     </div>
                     <input 
@@ -1771,13 +2012,11 @@ export default function Home() {
                       accept=".pdf"
                     />
                   </label>
-                  
-                  
                 </div>
               </div>
             </div>
             
-            {(extractedText || yamlOutput) && (
+            {((extractedText || yamlOutput) && debugMode) && (
               <div className="flex justify-between mt-4 text-sm">
                 <button
                   onClick={() => {
@@ -1803,19 +2042,275 @@ export default function Home() {
             )}
           </div>
 
-          {/* Fix the layout of the "Continue to Upload" section */}
-          <div className="mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          {/* Increase margin-bottom to create more space between import section and tabs */}
+          <div className="mb-10">
+            <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-4 h-20 bg-gray-100">
+                {Object.entries(formCategories).map(([category, forms]) => {
+                  let categoryCompleted = 0, categoryTotal = 0
+                  forms.forEach((_, index) => {
+                    const formId = `${category}-${index}`
+                    if (completionStatus[formId]) {
+                      categoryCompleted += completionStatus[formId].completed
+                      categoryTotal += completionStatus[formId].total
+                    }
+                  })
+                  const isComplete = categoryTotal > 0 && categoryCompleted === categoryTotal
+
+                  return (
+                    <TabsTrigger 
+                      key={category} 
+                      value={category} 
+                      className="relative flex flex-col items-center justify-center gap-2 py-2 data-[state=active]:bg-gray-200 data-[state=inactive]:bg-white"
+                    >
+                      <span className="text-xl font-bold">
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </span>
+                      <div className="flex items-center gap-1 text-sm text-gray-600">
+                        <span>
+                          {categoryCompleted}/{categoryTotal} completed
+                        </span>
+                        {categoryTotal > 0 && (
+                          isComplete ? (
+                            <svg
+                              className="w-5 h-5 text-green-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={3}
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              className="w-5 h-5 text-red-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={3}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          )
+                        )}
+                      </div>
+                    </TabsTrigger>
+                  )
+                })}
+              </TabsList>
+              <TabsContent value="personal">
+                <div className="mb-6">
+                  <PassportUpload 
+                    formData={formData}
+                    onExtractData={(passportData) => {
+                      if (passportData) {
+                        // Get current YAML for personal pages
+                        const currentPageData = getFilteredYamlData([
+                          'personal_page1', 
+                          'personal_page2',
+                          'address_phone_page',
+                          'pptvisa_page', 
+                          'relatives_page',
+                          'spouse_page'
+                        ]);
+                        
+                        // Create merged YAML with both existing and new data
+                        const mergedYaml = {
+                          personal_page1: {
+                            ...currentPageData?.personal_page1,
+                            ...passportData.personal_page1
+                          },
+                          personal_page2: {
+                            ...currentPageData?.personal_page2,
+                            ...passportData.personal_page2
+                          },
+                          address_phone_page: {
+                            ...currentPageData?.address_phone_page,
+                            ...passportData.address_phone_page
+                          },
+                          pptvisa_page: {
+                            ...currentPageData?.pptvisa_page,
+                            ...passportData.pptvisa_page
+                          },
+                          relatives_page: {
+                            ...currentPageData?.relatives_page,
+                            ...passportData.relatives_page
+                          },
+                          spouse_page: {
+                            ...currentPageData?.spouse_page,
+                            ...passportData.spouse_page
+                          }
+                        };
+                        
+                        // Update form with merged data
+                        handleFormDataLoad(
+                          mergedYaml,
+                          true,
+                          [
+                            'personal_page1', 
+                            'personal_page2',
+                            'address_phone_page',
+                            'pptvisa_page', 
+                            'relatives_page',
+                            'spouse_page'
+                          ]
+                        );
+                      }
+                    }} 
+                  />
+                </div>
+                {renderFormSection(formCategories.personal, 'personal')}
+              </TabsContent>
+              <TabsContent value="travel">
+                {/* Reduce space-y-6 to space-y-2 to bring components closer together */}
+              <I94Import 
+                  formData={formData} 
+                  onDataImported={(i94Data) => {
+                    if (i94Data) {
+                      // Use the function with appropriate filter
+                      const currentPageData = getFilteredYamlData([
+                        'previous_travel_page'
+                      ]);
+                      
+                      // Create merged YAML with both existing and new data
+                      const mergedYaml = {
+                        previous_travel_page: {
+                          ...currentPageData?.previous_travel_page,
+                          ...i94Data.previous_travel_page
+                        }
+                      }
+                      console.log('mergedYaml inside travel tab for i94 import', mergedYaml)
+                      // Update form with merged data
+                      handleFormDataLoad(
+                        mergedYaml,
+                        true,
+                        ['previous_travel_page']
+                      );
+                      
+                    }
+                  }}
+                />
+                <DocumentUpload 
+                  onExtractData={(docData) => {
+                    // Handle document data
+                    if (docData) {
+                      //handleFormDataLoad(docData, true);
+                      handleDocumentExtraction(docData);
+                    }
+                  }}
+                  formData={formData}
+                />
+                {renderFormSection(formCategories.travel, 'travel')}
+              
+              </TabsContent>
+              <TabsContent value="education">
+                <LinkedInImport onDataImported={(linkedInData) => {
+                  if (linkedInData) {
+                    // Debug: Log the pages found in the LinkedIn data
+                    console.log("LinkedIn data pages:", Object.keys(linkedInData));
+                    
+                    // Create a subset of the form data with only work/education pages
+                    const workEducationYaml = {
+                      workeducation1_page: linkedInData.workeducation1_page,
+                      workeducation2_page: linkedInData.workeducation2_page
+                    };
+                    
+                    // Use existing handleFormDataLoad with pages filter
+                    handleFormDataLoad(
+                      workEducationYaml, 
+                      true, // Show default success message
+                      ['workeducation1_page', 'workeducation2_page']
+                    );
+                    
+                    // Navigate to all education accordion items
+                    const updatedAccordionValues = { ...accordionValues };
+                    
+                    // Open all education items
+                    formCategories.education.forEach((_, index) => {
+                      updatedAccordionValues.education = `item-${index}`;
+                    });
+                    
+                    setAccordionValues(updatedAccordionValues);
+                  }
+                }} />
+                {renderFormSection(formCategories.education, 'education')}
+              </TabsContent>
+              <TabsContent value="security">
+                <div className="mb-6 p-4 bg-gray-50 border-l-4 border-l-gray-500 border border-gray-200 rounded-lg">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-lg font-semibold">Select Default Reponse For All Security Questions </p>
+                      <p className="text-sm text-gray-500">You can change individual responses later</p>
+                    </div>
+                    <div className="min-w-[200px]">
+                      <Tabs
+                        defaultValue=""
+                        onValueChange={(value) => {
+                          const newFormData = { ...formData };
+                          formCategories.security.forEach(form => {
+                            form.definition.fields.forEach((field: FormField) => {
+                              if (field.type === 'radio') {
+                                newFormData[field.name] = value;
+                              }
+                            });
+                          });
+                          setFormData(newFormData);
+                          
+                          formCategories.security.forEach((_, index) => {
+                            setTimeout(() => {
+                              setAccordionValues(prev => ({ ...prev, security: `item-${index}` }));
+                              setTimeout(() => {
+                                setAccordionValues(prev => ({ ...prev, security: "" }));
+                              }, 100);
+                            }, index * 200);
+                          });
+                        }}
+                        className="w-full"
+                      >
+                        <TabsList className="grid w-full grid-cols-2">
+                          <TabsTrigger
+                            value="Y"
+                            className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
+                          >
+                            Yes
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="N"
+                            className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
+                          >
+                            No
+                          </TabsTrigger>
+                        </TabsList>
+                      </Tabs>
+                    </div>
+                  </div>
+                </div>
+                {renderFormSection(formCategories.security, 'security')}
+              </TabsContent>
+            </Tabs>
+          </div>
+
+          {/* Change "Continue to Upload" button color back to green */}
+          <div className="mt-12 p-6 bg-blue-50 border-2 border-blue-400 rounded-lg shadow-md">
             <div className="flex items-center justify-between">
               <div>
-                <Label className="text-lg font-semibold">Ready to upload to the DS160 website?</Label>
-                <p className="text-sm text-gray-500">Fill all fields below to proceed</p>
+                <Label className="text-xl font-bold text-blue-800">Ready to upload to the DS160 website?</Label>
+                <p className="text-sm text-gray-600 mt-1">Fill all fields above to proceed</p>
               </div>
               <Button 
                 onClick={validateAndShowUploadModal}
                 disabled={!areAllFormsComplete()}
                 className={`${!areAllFormsComplete() 
                   ? 'bg-gray-400 hover:bg-gray-400 cursor-not-allowed' 
-                  : 'bg-green-600 hover:bg-green-700'} text-white px-6 py-2 rounded-lg`}
+                  : 'bg-green-600 hover:bg-green-700'} text-white px-8 py-3 rounded-lg font-medium text-lg shadow-sm`}
               >
                 Continue to Upload
               </Button>
@@ -1835,298 +2330,38 @@ export default function Home() {
               </div>
             )}
           </div>
-
-          <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 h-20">
-              {Object.entries(formCategories).map(([category, forms]) => {
-                let categoryCompleted = 0, categoryTotal = 0
-                forms.forEach((_, index) => {
-                  const formId = `${category}-${index}`
-                  if (completionStatus[formId]) {
-                    categoryCompleted += completionStatus[formId].completed
-                    categoryTotal += completionStatus[formId].total
-                  }
-                })
-                const isComplete = categoryTotal > 0 && categoryCompleted === categoryTotal
-
-                return (
-                  <TabsTrigger 
-                    key={category} 
-                    value={category} 
-                    className="relative flex flex-col items-center justify-center gap-2 py-2"
-                  >
-                    <span className="text-xl font-bold">
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
-                    </span>
-                    <div className="flex items-center gap-1 text-sm text-gray-600">
-                      <span>
-                        {categoryCompleted}/{categoryTotal} completed
-                      </span>
-                      {categoryTotal > 0 && (
-                        isComplete ? (
-                          <svg
-                            className="w-5 h-5 text-green-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={3}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        ) : (
-                          <svg
-                            className="w-5 h-5 text-red-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={3}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        )
-                      )}
-                    </div>
-                  </TabsTrigger>
-                )
-              })}
-            </TabsList>
-            <TabsContent value="personal">
-              <div className="mb-6">
-                <PassportUpload 
-                  formData={formData}
-                  onExtractData={(passportData) => {
-                    if (passportData) {
-                      // Get current YAML for personal pages
-                      const currentPageData = getFilteredYamlData([
-                        'personal_page1', 
-                        'personal_page2',
-                        'address_phone_page',
-                        'pptvisa_page', 
-                        'relatives_page',
-                        'spouse_page'
-                      ]);
-                      
-                      // Create merged YAML with both existing and new data
-                      const mergedYaml = {
-                        personal_page1: {
-                          ...currentPageData?.personal_page1,
-                          ...passportData.personal_page1
-                        },
-                        personal_page2: {
-                          ...currentPageData?.personal_page2,
-                          ...passportData.personal_page2
-                        },
-                        address_phone_page: {
-                          ...currentPageData?.address_phone_page,
-                          ...passportData.address_phone_page
-                        },
-                        pptvisa_page: {
-                          ...currentPageData?.pptvisa_page,
-                          ...passportData.pptvisa_page
-                        },
-                        relatives_page: {
-                          ...currentPageData?.relatives_page,
-                          ...passportData.relatives_page
-                        },
-                        spouse_page: {
-                          ...currentPageData?.spouse_page,
-                          ...passportData.spouse_page
-                        }
-                      };
-                      
-                      // Update form with merged data
-                      handleFormDataLoad(
-                        mergedYaml,
-                        true,
-                        [
-                          'personal_page1', 
-                          'personal_page2',
-                          'address_phone_page',
-                          'pptvisa_page', 
-                          'relatives_page',
-                          'spouse_page'
-                        ]
-                      );
-                    }
-                  }} 
-                />
-              </div>
-              {renderFormSection(formCategories.personal, 'personal')}
-            </TabsContent>
-            <TabsContent value="travel">
-              {/* Remove extra margin/padding here if it exists */}
-              <div className="space-y-6"> {/* Use a consistent container with consistent spacing */}
-                <I94Import 
-                  formData={formData} 
-                  onDataImported={(i94Data) => {
-                    if (i94Data) {
-                      // Use the function with appropriate filter
-                      handleFormDataLoad(
-                        i94Data,
-                        true,
-                        ['previous_travel_page']
-                      );
-                      
-                      // Navigate to the travel tab and open appropriate accordions
-                      setCurrentTab('travel');
-                      const updatedAccordionValues = { ...accordionValues };
-                      
-                      // Find the index of the previous_travel form
-                      const previousTravelIndex = formCategories.travel.findIndex(
-                        form => form.pageName === 'previous_travel_page'
-                      );
-                      
-                      if (previousTravelIndex >= 0) {
-                        updatedAccordionValues.travel = `item-${previousTravelIndex}`;
-                        setAccordionValues(updatedAccordionValues);
-                      }
-                    }
-                  }}
-                />
-                <DocumentUpload 
-                  onExtractData={(docData) => {
-                    // Handle document data
-                    if (docData) {
-                      handleFormDataLoad(docData, true);
-                    }
-                  }}
-                  formData={formData}
-                />
-                {renderFormSection(formCategories.travel, 'travel')}
-              </div>
-            </TabsContent>
-            <TabsContent value="education">
-              <LinkedInImport onDataImported={(linkedInData) => {
-                if (linkedInData) {
-                  // Debug: Log the pages found in the LinkedIn data
-                  console.log("LinkedIn data pages:", Object.keys(linkedInData));
-                  
-                  // Create a subset of the form data with only work/education pages
-                  const workEducationYaml = {
-                    workeducation1_page: linkedInData.workeducation1_page,
-                    workeducation2_page: linkedInData.workeducation2_page
-                  };
-                  
-                  // Use existing handleFormDataLoad with pages filter
-                  handleFormDataLoad(
-                    workEducationYaml, 
-                    true, // Show default success message
-                    ['workeducation1_page', 'workeducation2_page']
-                  );
-                  
-                  // Navigate to all education accordion items
-                  const updatedAccordionValues = { ...accordionValues };
-                  
-                  // Open all education items
-                  formCategories.education.forEach((_, index) => {
-                    updatedAccordionValues.education = `item-${index}`;
-                  });
-                  
-                  setAccordionValues(updatedAccordionValues);
-                }
-              }} />
-              {renderFormSection(formCategories.education, 'education')}
-            </TabsContent>
-            <TabsContent value="security">
-              <div className="mb-6 p-4 bg-blue-50 border-l-4 border-l-blue-500 border border-gray-200 rounded-lg">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-lg font-semibold">Select default answer for all Security and Background Questions</p>
-                    <p className="text-sm text-gray-500">All questions will be updated at once</p>
-                  </div>
-                  <div className="min-w-[200px]">
-                    <Tabs
-                      defaultValue=""
-                      onValueChange={(value) => {
-                        const newFormData = { ...formData };
-                        formCategories.security.forEach(form => {
-                          form.definition.fields.forEach((field: FormField) => {
-                            if (field.type === 'radio') {
-                              newFormData[field.name] = value;
-                            }
-                          });
-                        });
-                        setFormData(newFormData);
-                        
-                        formCategories.security.forEach((_, index) => {
-                          setTimeout(() => {
-                            setAccordionValues(prev => ({ ...prev, security: `item-${index}` }));
-                            setTimeout(() => {
-                              setAccordionValues(prev => ({ ...prev, security: "" }));
-                            }, 100);
-                          }, index * 200);
-                        });
-                      }}
-                      className="w-full"
-                    >
-                      <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger
-                          value="Y"
-                          className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
-                        >
-                          Yes
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="N"
-                          className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
-                        >
-                          No
-                        </TabsTrigger>
-                      </TabsList>
-                    </Tabs>
-                  </div>
-                </div>
-              </div>
-              {renderFormSection(formCategories.security, 'security')}
-            </TabsContent>
-          </Tabs>
         </div>
 
-        <div className="mt-8 flex justify-end">
-          <div className="flex space-x-4">
-            <input
-              type="file"
-              accept=".yaml,.yml"
-              onChange={(e) => {
-                const file = e.target.files?.[0]
-                if (file) {
-                  const reader = new FileReader()
-                  reader.onload = (event) => {
-                    try {
-                      const content = event.target?.result as string
-                      const data = yaml.load(content) as Record<string, any>
-                      handleFormDataLoad(data)
-                    } catch (error) {
-                      console.error('Error parsing YAML:', error)
-                    }
-                  }
-                  reader.readAsText(file)
-                }
-              }}
-              className="hidden"
-              id="yaml-upload"
-            />
-            <label 
-              htmlFor="yaml-upload"
-              className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
-            >
-              Upload YAML
-            </label>
+        {/* Only show debug buttons when debugMode is true */}
+        {debugMode && (
+          <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handleDownloadYaml}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg"
             >
               Download YAML
             </button>
+            
+            <label className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-center cursor-pointer">
+              Upload YAML
+              <input
+                type="file"
+                className="hidden"
+                onChange={handleUploadFile}
+                accept=".yaml,.yml"
+              />
+            </label>
           </div>
+        )}
+        
+        {/* Add the Reset Form button */}
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={() => setShowResetConfirmation(true)}
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg"
+          >
+            Reset Form
+          </button>
         </div>
       </div>
 
@@ -2370,6 +2605,9 @@ export default function Home() {
 
       {/* Upload Configuration Modal */}
       <UploadConfigModal />
+
+      {/* Add the reset confirmation modal here */}
+      <ResetConfirmationModal />
     </div>
   )
 }

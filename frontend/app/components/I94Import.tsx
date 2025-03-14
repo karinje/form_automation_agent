@@ -30,6 +30,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
   const [extractionStatus, setExtractionStatus] = useState<'idle' | 'extracting' | 'filling' | 'complete'>('idle')
   const [fieldCounts, setFieldCounts] = useState<Record<string, number>>({})
   const [processingComplete, setProcessingComplete] = useState(false)
+  const [isInteracting, setIsInteracting] = useState(false)
 
   // Initialize form data from personal page and passport info
   useEffect(() => {
@@ -196,19 +197,27 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
   };
 
   return (
-    <div className="mb-6">
+    <div className="mb-2">
       <Accordion 
         type="single" 
         collapsible 
         value={isExpanded ? "item-0" : ""} 
         onValueChange={(val) => setIsExpanded(val === "item-0")}
-        className="border border-gray-200 border-l-4 border-l-blue-500 bg-blue-50 rounded-lg overflow-hidden shadow-sm"
+        className="border border-gray-200 border-l-4 border-l-gray-500 bg-gray-50 rounded-lg overflow-hidden shadow-sm"
+        onMouseLeave={() => {
+          if (!isInteracting) {
+            setIsExpanded(false);
+          }
+        }}
       >
         <AccordionItem value="item-0" className="border-0">
-          <div className="flex items-center justify-between bg-blue-50 px-6 py-4">
-            <div className="flex-1 flex items-center cursor-pointer" onClick={handleToggle}>
+          <div 
+            className="flex items-center justify-between bg-gray-50 px-6 py-4"
+            onMouseEnter={() => setIsExpanded(true)}
+          >
+            <div className="flex-1 flex items-center">
               <div>
-                <h3 className="text-lg font-semibold">Import previous 5 US visits info from I94 website</h3>
+                <h3 className="text-lg font-semibold">Fill Manually or Import Previous US Visits From I94 website</h3>
                 <p className="text-sm text-gray-500">Travel history will be automatically filled</p>
               </div>
             </div>
@@ -216,7 +225,10 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
             <Button 
               onClick={(e) => {
                 e.stopPropagation();
-                handleImport();
+                setIsInteracting(true);
+                handleImport().finally(() => {
+                  setIsInteracting(false);
+                });
               }}
               disabled={isLoading || !givenName || !surname || !birthDate || !documentNumber || !documentCountry}
               className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-6 py-2 text-base"
@@ -229,7 +241,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
               ) : 'Import Data & Fill Form'}
             </Button>
             
-            <div className="ml-6 cursor-pointer" onClick={handleToggle}>
+            <div className="ml-6">
               <ChevronDown 
                 className={`h-8 w-8 shrink-0 text-gray-500 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
               />
@@ -241,7 +253,13 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
                 <Label className="text-base font-medium mb-2 block">Given Name</Label>
                 <Input
                   value={givenName}
-                  onChange={(e) => setGivenName(e.target.value)}
+                  onChange={(e) => {
+                    setIsInteracting(true);
+                    setGivenName(e.target.value);
+                    setTimeout(() => setIsInteracting(false), 500);
+                  }}
+                  onFocus={() => setIsInteracting(true)}
+                  onBlur={() => setTimeout(() => setIsInteracting(false), 500)}
                   placeholder="Given Name"
                   className="py-2 text-base"
                 />
@@ -250,7 +268,13 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
                 <Label className="text-base font-medium mb-2 block">Surname</Label>
                 <Input
                   value={surname}
-                  onChange={(e) => setSurname(e.target.value)}
+                  onChange={(e) => {
+                    setIsInteracting(true);
+                    setSurname(e.target.value);
+                    setTimeout(() => setIsInteracting(false), 500);
+                  }}
+                  onFocus={() => setIsInteracting(true)}
+                  onBlur={() => setTimeout(() => setIsInteracting(false), 500)}
                   placeholder="Surname"
                   className="py-2 text-base"
                 />
@@ -259,7 +283,13 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
                 <Label className="text-base font-medium mb-2 block">Birth Date (MM/DD/YYYY)</Label>
                 <Input
                   value={birthDate}
-                  onChange={(e) => setBirthDate(e.target.value)}
+                  onChange={(e) => {
+                    setIsInteracting(true);
+                    setBirthDate(e.target.value);
+                    setTimeout(() => setIsInteracting(false), 500);
+                  }}
+                  onFocus={() => setIsInteracting(true)}
+                  onBlur={() => setTimeout(() => setIsInteracting(false), 500)}
                   placeholder="MM/DD/YYYY"
                   className="py-2 text-base"
                 />
@@ -268,7 +298,13 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
                 <Label className="text-base font-medium mb-2 block">Document Number</Label>
                 <Input
                   value={documentNumber}
-                  onChange={(e) => setDocumentNumber(e.target.value)}
+                  onChange={(e) => {
+                    setIsInteracting(true);
+                    setDocumentNumber(e.target.value);
+                    setTimeout(() => setIsInteracting(false), 500);
+                  }}
+                  onFocus={() => setIsInteracting(true)}
+                  onBlur={() => setTimeout(() => setIsInteracting(false), 500)}
                   placeholder="Document Number"
                   className="py-2 text-base"
                 />
@@ -294,7 +330,46 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
       </Accordion>
 
       {extractionStatus !== 'idle' && (
-        {/* Existing modal code */}
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <div className="flex flex-col items-center">
+              {(extractionStatus !== 'complete' || !processingComplete) && (
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+              )}
+              
+              <h3 className="text-lg font-semibold mb-4">
+                {extractionStatus === 'extracting' ? 'Retrieving I-94 Data' : 
+                 extractionStatus === 'filling' && !processingComplete ? 'Filling Form Fields' : 
+                 extractionStatus === 'complete' && processingComplete ? 'I-94 Processing Complete' :
+                 'Processing...'}
+              </h3>
+              
+              {extractionStatus !== 'complete' && (
+                <StopwatchTimer 
+                  isRunning={extractionStatus !== 'idle' && !processingComplete} 
+                  estimatedTime="up to 1 minute"
+                />
+              )}
+              
+              <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
+                {extractionProgress.map((msg, idx) => (
+                  <div key={idx} className="text-sm">
+                    {msg}
+                  </div>
+                ))}
+              </div>
+              
+              {extractionStatus === 'complete' && processingComplete && (
+                <Button 
+                  onClick={() => setExtractionStatus('idle')}
+                  className="mt-4"
+                >
+                  Done
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

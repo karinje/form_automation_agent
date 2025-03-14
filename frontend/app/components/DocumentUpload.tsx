@@ -192,6 +192,9 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
   // Add a new state for tracking form fill completion
   const [processingComplete, setProcessingComplete] = useState(false);
 
+  // Add a state variable to track active interaction
+  const [isInteracting, setIsInteracting] = useState(false);
+
   // Update the handleExtractData function
   const handleExtractData = async () => {
     try {
@@ -463,7 +466,12 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                 type="file"
                 accept=".pdf,.jpg,.jpeg,.png"
                 className="hidden"
-                onChange={(e) => handleFileChange(e, setFile)}
+                onChange={(e) => {
+                  setIsInteracting(true);
+                  handleFileChange(e, setFile);
+                  setTimeout(() => setIsInteracting(false), 1000);
+                }}
+                onClick={() => setIsInteracting(true)}
                 disabled={isDisabled}
               />
             </div>
@@ -487,13 +495,22 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
         collapsible 
         value={isExpanded ? "item-0" : ""} 
         onValueChange={(val) => setIsExpanded(val === "item-0")}
-        className="border border-gray-200 border-l-4 border-l-blue-500 bg-blue-50 rounded-lg overflow-hidden shadow-sm"
+        className="border border-gray-200 border-l-4 border-l-gray-500 bg-gray-50 rounded-lg overflow-hidden shadow-sm"
+        onMouseLeave={() => {
+          // Only collapse if not interacting with a form element
+          if (!isInteracting) {
+            setIsExpanded(false);
+          }
+        }}
       >
         <AccordionItem value="item-0" className="border-0">
-          <div className="flex items-center justify-between bg-blue-50 px-6 py-4">
-            <div className="flex-1 flex items-center cursor-pointer" onClick={handleToggle}>
+          <div 
+            className="flex items-center justify-between bg-gray-50 px-6 py-4"
+            onMouseEnter={() => setIsExpanded(true)}
+          >
+            <div className="flex-1 flex items-center">
               <div>
-                <h3 className="text-lg font-semibold">Upload documents to import data</h3>
+                <h3 className="text-lg font-semibold">Fill Manually or Upload documents to import data</h3>
                 <p className="text-sm text-gray-500">Travel information will be automatically filled</p>
               </div>
             </div>
@@ -501,7 +518,10 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
             <Button 
               onClick={(e) => {
                 e.stopPropagation();
-                handleExtractData();
+                setIsInteracting(true);
+                handleExtractData().finally(() => {
+                  setIsInteracting(false);
+                });
               }}
               disabled={isLoading || (
                 !licenseFile && !visaFile && !travelTicketFile && 
@@ -517,7 +537,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
               ) : 'Extract Data & Fill Form'}
             </Button>
             
-            <div className="ml-6 cursor-pointer" onClick={handleToggle}>
+            <div className="ml-6">
               <ChevronDown 
                 className={`h-8 w-8 shrink-0 text-gray-500 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
               />

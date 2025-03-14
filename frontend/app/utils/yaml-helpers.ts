@@ -84,7 +84,10 @@ export const flattenYamlData = (
   return flattened;
 };
 
-// Helper to convert flattened form data back to nested YAML structure
+// Helper to convert flattened yaml data back to nested YAML structure for instance "issuance_location.country": "UNITED STATES OF AMERICA" to 
+// "issuance_location": {
+//   "country": "UNITED STATES OF AMERICA"
+// }
 export const unflattenFormData = (data: Record<string, string>): Record<string, any> => {
   const result: Record<string, any> = {};
   const arrays: Record<string, any> = {}; // temporary store for array groups

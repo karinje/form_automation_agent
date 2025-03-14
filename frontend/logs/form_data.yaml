@@ -1,6 +1,6 @@
 start_page:
   language: "English"
-  location: "ENGLAND, LONDON"
+  location: "INDIA, HYDERABAD"
   button_clicks: [0]
 
 retrieve_page:
@@ -8,13 +8,13 @@ retrieve_page:
   surname: "KARIN"
   year: "1984"
   security_question: ""
-  security_answer: ""
+  security_answer: "John Doe"
   button_clicks: [0, 1]
 
 security_page:
   privacy_agreement: true
   security_question: ""
-  security_answer: ""
+  security_answer: "John Doe"
   button_clicks: [0]
 
 personal_page1:
@@ -27,7 +27,7 @@ personal_page1:
   telecode_surname: ""
   telecode_given: ""
   sex: "MALE"
-  marital_status: "SINGLE"
+  marital_status: "MARRIED"
   birth_date_mm: "AUG"
   birth_date_dd: "17"
   birth_date_yyyy: "1984"
@@ -163,7 +163,7 @@ previous_travel_page:
   vwp_denial: "N"
   vwp_denial_explanation: ""
   iv_petition: "Y"
-  iv_petition_explanation: "GREEN CARD PROCESS INITIATED - I140 APPROVED (A209 365 505)"
+  iv_petition_explanation: "GREEN CARD PROCESS INITIATED -  I140 APPROVED (A209 365 505)"
   previous_travel_details:
     - arrival:
         month: "OCT"
@@ -303,6 +303,7 @@ relatives_page:
   mother_in_us: "N"
   mother_us_status: ""
   has_immediate_relatives: "Y"
+  has_other_relatives: ""
   immediate_relative_details:
     - type: "SIBLING"
       status: "NONIMMIGRANT"
@@ -320,7 +321,7 @@ relatives_page:
 
 workeducation1_page:
   present_occupation: "NOT EMPLOYED"
-  other_occupation_explanation: "WORKED AS SR. DATA SCIENTIST AT INSTACART UNTIL SEPT 2022 (ON H1B). TAKING TIME OFF TO FOCUS ON MACHINE LEARNING & AI EDUCATION."
+  other_occupation_explanation: "WORKED AS SR. DATA SCIENTIST A  T INSTACART UNTIL SEPT 2022 (O  N H1B). TAKING TIME OFF TO FOC\0US ON MACHINE LEARNING & AI ED  UCATION.  "
   employer:
     name: ""
     address:
@@ -335,8 +336,8 @@ workeducation1_page:
     month: ""
     day: ""
     year: ""
-  monthly_salary: "N/A"
-  monthly_salary_na: "true"
+  monthly_salary: ""
+  monthly_salary_na: "false"
   duties: ""
   button_clicks: [1, 2]
 
@@ -345,55 +346,45 @@ workeducation2_page:
   other_education: "Y"
   employment_information:
     - employer: "INSTACART"
-      job_title: "SR DATA SCIENTIST II"
       address:
-        street1: "50 BEALE ST #600"
-        street2: ""
+        street1: "50  BEALE  ST  #600"
         city: "SAN FRANCISCO"
         state: "CA"
-        state_na: "false"
         postal_code: "94105"
-        postal_code_na: "false"
         country: "UNITED STATES OF AMERICA"
       phone: "8882467822"
+      job_title: "SR DATA SCIENTIST II"
       supervisor:
         surname: "CHEN"
         given_name: "CLAIRE"
-        surname_na: "false"
-        given_name_na: "false"
       start_date:
-        month: "JUN"
         day: "01"
+        month: "JUN"
         year: "2021"
       end_date:
-        month: "SEP"
         day: "02"
+        month: "SEP"
         year: "2022"
-      duties: "DESIGN & ANALYSIS OF EXPERIMENTS BY APPLYING STATISTICAL METHODS AND MACHINE LEARNING TO SUPPORT INSTACART'S SUBSCRIPTION PRODUCT. DECISION SUPPORT IN CRITICAL AREAS RELATED TO PRICING, PRODUCT FEATURES AND CHURN ANALYSIS. DEVELOPMENT OF METRICS & DASHBOARDS TO TRACK PROGRESS TOWARDS GOALS."
+      duties: "DESIGN & ANALYSIS OF EXPERIMEN  TS BY APPLYING STATISTICAL METHODS AND MACHINE LEARNING TO SUPPORT INSTACART'S SUBSCRIPTION PRODUCT. DECISION SUPPORT IN CRITICAL AREAS RELATED TO PRICING, PRODUCT FEATURES AND CHURN ANALYSIS. DEVELOPMENT OF METRICS & DASHBOARDS TO TRACK PROGRESS TOWARDS GOALS."
     - employer: "AMAZON"
-      job_title: "DATA SCIENTIST"
       address:
-        street1: "410 TERRY AVE N"
-        street2: ""
+        street1: "410  TERRY  AVE N"
         city: "SEATTLE"
         state: "WA"
-        state_na: "false"
         postal_code: "98109"
-        postal_code_na: "false"
         country: "UNITED STATES OF AMERICA"
       phone: "2062661000"
+      job_title: "DATA SCIENTIST"
       supervisor:
         surname: "DU"
         given_name: "ZHENG"
-        surname_na: "false"
-        given_name_na: "false"
       start_date:
-        month: "SEP"
         day: "01"
+        month: "SEP"
         year: "2019"
       end_date:
-        month: "MAY"
         day: "29"
+        month: "MAY"
         year: "2021"
       duties: "DEVELOP NOVEL ML MODELS TO ASSESS & IMPROVE THE QUALITY OF HUMAN GENERATED LABELS FOR TRANSCRIPTION AND ANNOTATION TASKS. DESIGN & ANALYZE EXPERIMENTS. DEVELOP METRIC AND DASHBOARDS."
   education:
@@ -404,7 +395,7 @@ workeducation2_page:
         street2: ""
         city: "GAINESVILLE"
         state: "FL"
-        postal_code: "32611"
+        postal_code: ""
         country: "UNITED STATES OF AMERICA"
       start_date:
         month: "APR"
@@ -432,6 +423,19 @@ workeducation2_page:
         day: "01"
         year: "2006"
   button_clicks: [1, 2]
+  education_institutions_attended:
+    - education:
+        name: "UNIVERSITY OF FLORIDA"
+        address: "[object Object]"
+        course: "MBA"
+        start_date: "[object Object]"
+        end_date: "[object Object]"
+    - education:
+        name: "PES UNIVERSITY"
+        address: "[object Object]"
+        course: "BACHELOR OF TECHNOLOGY"
+        start_date: "[object Object]"
+        end_date: "[object Object]"
 
 workeducation3_page:
   clan_tribe_ind: "N"
@@ -547,4 +551,23 @@ security_background5_page:
   school_reimbursement_explanation: ""
   exchange_visitor: "N"
   exchange_visitor_explanation: ""
+  button_clicks: [1, 2]
+
+spouse_page:
+  spouse_surname: "KAUSHIK"
+  spouse_given_name: "RAMYA"
+  spouse_birth_month: "MAY"
+  spouse_birth_day: "08"
+  spouse_birth_year: "1985"
+  spouse_nationality: "INDIA"
+  spouse_birth_city: "HYDERABAD"
+  spouse_birth_country: "INDIA"
+  spouse_address_type: "Same as Home Address"
+  spouse_address_line1: ""
+  spouse_address_line2: ""
+  spouse_address_city: ""
+  spouse_address_postal_code: ""
+  spouse_address_postal_code_na: "false"
+  spouse_address_state: ""
+  spouse_address_country: ""
   button_clicks: [1, 2]

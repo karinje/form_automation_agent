@@ -34,6 +34,7 @@ interface DynamicFormProps {
   currentIndex: number
   onNavigate: (category: string, index: number) => void
   onArrayGroupsChange?: (pageName: string, groupKey: string, groupData: Array<Record<string, string>>) => void
+  onSave?: () => Promise<{ success: boolean, error?: any }>
 }
 
 // Add interface to track dependency hierarchy
@@ -376,7 +377,7 @@ const getEffectiveFieldCount = (fields: FormFieldType[]) => {
   return effectiveCount;
 };
 
-export default function DynamicForm({ formDefinition, formData, arrayGroups, onInputChange, onCompletionUpdate, formCategories, currentCategory, currentIndex, onNavigate, onArrayGroupsChange }: DynamicFormProps) {
+export default function DynamicForm({ formDefinition, formData, arrayGroups, onInputChange, onCompletionUpdate, formCategories, currentCategory, currentIndex, onNavigate, onArrayGroupsChange, onSave }: DynamicFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -1172,7 +1173,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
         [groupKey]: [...(prev[groupKey] || []), newClonedFields]
       };
       
-      // Only update parent's arrayGroups if NOT in initial load, but use setTimeout
+      // UNCOMMENT THIS SECTION to propagate changes to parent component
       if (!isInitialArrayGroupsLoad && onArrayGroupsChange) {
         setTimeout(() => {
           const pageName = Object.values(formCategories)
@@ -1334,54 +1335,54 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
           [groupKey]: updatedGroups
         };
         
-        // // Only update parent's arrayGroups if NOT in initial load
-        // if (!isInitialArrayGroupsLoad && onArrayGroupsChange) {
-        //   setTimeout(() => {
-        //     const pageName = Object.values(formCategories)
-        //       .flat()
-        //       .find(form => form.definition === formDefinition)?.pageName;
+        // UNCOMMENT THIS SECTION to propagate changes to parent component
+        if (!isInitialArrayGroupsLoad && onArrayGroupsChange) {
+          setTimeout(() => {
+            const pageName = Object.values(formCategories)
+              .flat()
+              .find(form => form.definition === formDefinition)?.pageName;
             
-        //     if (pageName) {
-        //       // Create array data for remaining groups (same as before)
-        //       const allGroupsData: Record<string, string>[] = [];
+            if (pageName) {
+              // Create array data for remaining groups
+              const allGroupsData: Record<string, string>[] = [];
               
-        //       // Original fields (first group)
-        //       const originalFields = phraseGroup.fields.reduce((acc, field) => {
-        //         const yamlField = getYamlField(pageName, field.name);
-        //         if (yamlField && formData[field.name]) {
-        //           acc[yamlField] = formData[field.name];
-        //         }
-        //         return acc;
-        //       }, {} as Record<string, string>);
+              // Original fields (first group)
+              const originalFields = phraseGroup.fields.reduce((acc, field) => {
+                const yamlField = getYamlField(pageName, field.name);
+                if (yamlField && formData[field.name]) {
+                  acc[yamlField] = formData[field.name];
+                }
+                return acc;
+              }, {} as Record<string, string>);
               
-        //       // Add original fields if they exist
-        //       if (Object.keys(originalFields).length > 0) {
-        //         allGroupsData.push(originalFields);
-        //       }
+              // Add original fields if they exist
+              if (Object.keys(originalFields).length > 0) {
+                allGroupsData.push(originalFields);
+              }
               
-        //       // Add all remaining repeated groups with their values
-        //       updatedGroups.forEach(fields => {
-        //         const groupData = {} as Record<string, string>;
+              // Add all remaining repeated groups with their values
+              updatedGroups.forEach(fields => {
+                const groupData = {} as Record<string, string>;
                 
-        //         fields.forEach(field => {
-        //           const baseFieldName = field.name.replace(/_ctl\d+/, '_ctl00');
-        //           const yamlField = getYamlField(pageName, baseFieldName);
-        //           const fieldValue = formData[field.name];
+                fields.forEach(field => {
+                  const baseFieldName = field.name.replace(/_ctl\d+/, '_ctl00');
+                  const yamlField = getYamlField(pageName, baseFieldName);
+                  const fieldValue = formData[field.name];
                   
-        //           if (yamlField && fieldValue) {
-        //             groupData[yamlField] = fieldValue;
-        //           }
-        //         });
+                  if (yamlField && fieldValue) {
+                    groupData[yamlField] = fieldValue;
+                  }
+                });
                 
-        //         if (Object.keys(groupData).length > 0) {
-        //           allGroupsData.push(groupData);
-        //         }
-        //       });
+                if (Object.keys(groupData).length > 0) {
+                  allGroupsData.push(groupData);
+                }
+              });
               
-        //       onArrayGroupsChange(pageName, groupKey, allGroupsData);
-        //     }
-        //   }, 0);
-        // }
+              onArrayGroupsChange(pageName, groupKey, allGroupsData);
+            }
+          }, 0);
+        }
         
         return result;
       });
@@ -1405,26 +1406,48 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
       <div className="flex justify-between mt-6">
         {prevForm && (
           <Button
-            type="button"
             onClick={() => onNavigate(prevForm.category, prevForm.index)}
+            variant="outline"
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium"
           >
             ← {getPageTitle(formCategories, prevForm.category, prevForm.index)}
           </Button>
         )}
         
-        <Button
-          type="button"
-          onClick={() => {/* Save logic here */}}
-          className="bg-green-600 hover:bg-green-700 text-white font-medium px-8"
+        {/* Save button */}
+        <Button 
+          onClick={() => {
+            // Call the onSave function if provided
+            if (onSave) {
+              onSave().then(result => {
+                if (result.success) {
+                  // Optionally show a success message
+                  console.log('Form saved successfully');
+                } else {
+                  console.error('Failed to save form:', result.error);
+                }
+              });
+            }
+          }}
+          variant="outline"
+          className="bg-green-600 hover:bg-green-700 text-white font-medium"
         >
           Save
         </Button>
 
         {nextForm && (
           <Button
-            type="button"
-            onClick={() => onNavigate(nextForm.category, nextForm.index)}
+            onClick={() => {
+              // Call onSave before navigating to next form
+              if (onSave) {
+                onSave().then(() => {
+                  onNavigate(nextForm.category, nextForm.index);
+                });
+              } else {
+                onNavigate(nextForm.category, nextForm.index);
+              }
+            }}
+            variant="outline"
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium"
           >
             {getPageTitle(formCategories, nextForm.category, nextForm.index)} →
