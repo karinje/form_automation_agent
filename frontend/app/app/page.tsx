@@ -102,11 +102,11 @@ export default function Home() {
 
   // Add at the top of your component
   const { 
-    persistData, 
-    saveAllFormData, 
-    saveFormDataToDb, // Use the new function
+    saveFieldWithDebounce, 
+    saveDataImmediately, 
     isInitialized, 
-    formState 
+    formState,
+    isSignedIn 
   } = useFormPersistence();
 
   // Add at the top of your component, with other state declarations
@@ -1139,7 +1139,7 @@ export default function Home() {
                       setFormData(updatedFormData);
                       
                       // Save directly to database
-                      saveFormDataToDb(updatedFormData);
+                      saveFieldWithDebounce('formFields', updatedFormData);
                     }}
                     onCompletionUpdate={onCompletionMemo}
                     formCategories={formCategories}
@@ -1394,28 +1394,28 @@ export default function Home() {
   useEffect(() => {
     if (Object.keys(yamlData).length > 0) {
       console.log('yamlData savings to backend is:', yamlData)
-      persistData('ds160_yaml_data', yamlData);
+      saveDataImmediately({ yamlData });
     }
-  }, [yamlData, persistData]);
+  }, [yamlData, saveDataImmediately]);
 
   useEffect(() => {
-    persistData('ds160_current_tab', currentTab);
-  }, [currentTab, persistData]);
+    saveDataImmediately({ currentTab });
+  }, [currentTab, saveDataImmediately]);
 
   useEffect(() => {
     if (Object.keys(accordionValues).length > 0) {
-      persistData('ds160_accordion_values', accordionValues);
+      saveDataImmediately({ accordionValues });
     }
-  }, [accordionValues, persistData]);
+  }, [accordionValues, saveDataImmediately]);
 
   useEffect(() => {
-    persistData('ds160_location', location);
-  }, [location, persistData]);
+    saveDataImmediately({ location });
+  }, [location, saveDataImmediately]);
 
   useEffect(() => {
     // Only save if we have at least one value
     if (retrieveMode || secretQuestion || secretAnswer || applicationId || surname || birthYear || location) {
-      saveAllFormData({
+      saveDataImmediately({
         retrieveMode,
         secretQuestion,
         secretAnswer,
@@ -1425,13 +1425,13 @@ export default function Home() {
         location
       });
     }
-  }, [secretQuestion, secretAnswer, applicationId, surname, birthYear, location, saveAllFormData]);
+  }, [secretQuestion, secretAnswer, applicationId, surname, birthYear, location, saveDataImmediately]);
 
   // Update the clearSavedData function:
   const clearSavedData = async () => {
     try {
       // Clear form data from the database by saving minimal values
-      await saveAllFormData({
+      await saveDataImmediately({
         yamlData: {},
         currentTab: 'personal',
         accordionValues: {},
@@ -1565,7 +1565,7 @@ export default function Home() {
       setLocation(localValues.location);
       
       // Force a direct save of all form data to ensure correct field names
-      saveAllFormData({
+      saveDataImmediately({
         retrieveMode: localValues.retrieveMode,
         secretQuestion: localValues.secretQuestion,
         secretAnswer: localValues.secretAnswer,
@@ -1886,7 +1886,7 @@ export default function Home() {
     });
     
     // Save to database
-    return saveAllFormData({ yamlData })
+    return saveDataImmediately({ yamlData })
       .then(() => {
         console.log('YAML saved to backend successfully');
         return { success: true };
@@ -1906,7 +1906,7 @@ export default function Home() {
     secretQuestion,
     secretAnswer,
     arrayGroups,
-    saveAllFormData
+    saveDataImmediately
   ]);
 
   // AFTER defining saveYamlToBackend, now use it in the useEffect
