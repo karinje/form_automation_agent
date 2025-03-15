@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/components/ui/textarea"
 import type { FormField as FormFieldType } from "@/types/form-definition"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DateField } from "./DateField"
@@ -27,6 +27,9 @@ interface FormFieldProps {
 }
 
 export function FormField({ field, value, onChange, visible, dependencies, onDependencyChange }: FormFieldProps) {
+  const [hasFocus, setHasFocus] = useState(false)
+  const valuesRef = useRef<string[]>([])
+
   // Initialize NA checkbox state based on value
   const [isNAChecked, setIsNAChecked] = useState(() => {
     const initialState = value === "N/A";
@@ -74,21 +77,21 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     }
   }, [value])  // run on mount and when value changes
 
+  useEffect(() => {
+    // Initialize values for radio or dropdown fields
+    if ((field.type === 'radio' || field.type === 'dropdown') && field.value) {
+      // Ensure value is an array
+      valuesRef.current = Array.isArray(field.value) ? field.value : [field.value]
+    }
+  }, [field])
+
   if (!visible) return null
 
-  const handleRadioChange = (value: string) => {
-    onChange(field.name, value)
-    if (onDependencyChange) {
-      const buttonId = field.button_ids?.[value]
-      if (buttonId) {
-        //console.log('Radio change - Button ID:', buttonId)
-        const key = `${buttonId}.${value}`
-        //console.log('Radio change - Constructed key:', key)
-        onDependencyChange(key, field)
-      }
-    }
-  }
+  // Determine field status for styling
+  const isEmpty = value === undefined || value === null || value === ""
+  const fieldStatusClass = hasFocus ? "focus" : isEmpty ? "empty" : "filled"
 
+  // Handle NA checkbox
   const handleNACheckboxChange = (checked: boolean) => {
     debugLog('all_pages', `NA Checkbox changed for ${field.name}:`, {
       checked,
@@ -118,6 +121,24 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     }
   };
 
+  // Handle regular field change
+  const handleFieldChange = (newValue: string) => {
+    onChange(field.name, newValue)
+    
+    // For radio and dropdown, trigger dependency logic
+    if (onDependencyChange && (field.type === 'radio' || field.type === 'dropdown')) {
+      const key = field.type === 'radio' 
+        ? `${field.button_ids?.[newValue]}.${newValue}`
+        : `${field.name}.${newValue.trim()}`;
+      
+      onDependencyChange(key, field)
+    }
+  }
+
+  // Shared focus handling
+  const handleFocus = () => setHasFocus(true)
+  const handleBlur = () => setHasFocus(false)
+
   const renderRadioButton = () => {
     if (!Array.isArray(field.value) || !field.labels) return null;
     
@@ -129,7 +150,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
         <div className="min-w-[200px]">
           <Tabs
             value={value}
-            onValueChange={(value) => handleRadioChange(value)}
+            onValueChange={(value) => handleFieldChange(value)}
             className="w-full"
           >
             <TabsList className="grid w-full grid-cols-2">
@@ -138,7 +159,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
                   key={option}
                   value={option}
                   id={field.button_ids?.[option]}
-                  className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
+                  className={`font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50 ${field.optional ? '' : isEmpty ? 'border-red-300' : 'border-green-300'}`}
                 >
                   {field.labels?.[index]}
                 </TabsTrigger>
@@ -157,9 +178,12 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
           <Input
             type="text"
             id={field.name}
-            value={value}
-            onChange={(e) => onChange(field.name, e.target.value)}
+            value={value || ""}
+            onChange={(e) => handleFieldChange(e.target.value)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             maxLength={field.maxlength ? parseInt(field.maxlength) : undefined}
+            className={`form-field-${fieldStatusClass} ${field.optional ? '' : isEmpty ? 'border-red-300' : 'border-green-300'}`}
             disabled={isNAChecked}
           />
         )
@@ -168,11 +192,13 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
         return (
           <Textarea
             id={field.name}
-            value={value}
-            onChange={(e) => onChange(field.name, e.target.value)}
+            value={value || ""}
+            onChange={(e) => handleFieldChange(e.target.value)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             maxLength={field.maxlength ? parseInt(field.maxlength) : undefined}
+            className={`form-field-${fieldStatusClass} ${field.optional ? '' : isEmpty ? 'border-red-300' : 'border-green-300'} min-h-[100px]`}
             disabled={isNAChecked}
-            className="min-h-[100px]"
           />
         )
 
@@ -185,15 +211,16 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
           <Select 
             value={value || ""}
             onValueChange={(value) => {
-              onChange(field.name, value)
-              if (onDependencyChange) {
-                const key = `${field.name}.${value}`
-                //console.log('Dropdown change - Constructed key:', key)
-                onDependencyChange(key, field)
-              }
+              handleFieldChange(value)
+            }}
+            onOpenChange={(open) => {
+              if (open) handleFocus();
+              else handleBlur();
             }}
           >
-            <SelectTrigger>
+            <SelectTrigger 
+              className={`w-full ${field.optional ? '' : isEmpty ? 'border-red-300' : 'border-green-300'}`}
+            >
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
             <SelectContent>
@@ -214,9 +241,10 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
             <DatePicker
               name={field.name}
               value={value}
-              onChange={(newValue) => onChange(field.name, newValue)}
+              onChange={(newValue) => handleFieldChange(newValue)}
               disabled={isNAChecked}
               placeholder={field.text_phrase}
+              className={field.optional ? '' : undefined}
             />
           </div>
         )
@@ -239,7 +267,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
           id={field.na_checkbox_id}
           checked={isNAChecked}
           onCheckedChange={handleNACheckboxChange}
-          className={isStandalone ? 'h-6 w-6' : 'h-4 w-4'}
+          className={`${isEmpty ? 'border-red-300' : 'border-green-300'} ${isStandalone ? 'h-6 w-6' : 'h-4 w-4'}`}
         />
         <Label 
           htmlFor={field.na_checkbox_id}

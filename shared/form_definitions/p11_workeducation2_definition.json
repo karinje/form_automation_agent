@@ -615,7 +615,7 @@
           "name": "ctl00_SiteContentPlaceHolder_FormView1_dtlPrevEduc_ctl00_tbxSchoolAddr2",
           "type": "text",
           "value": "",
-          "text_phrase": "Street Address (Line 2)",
+          "text_phrase": "Street Address (Line 2) (optional)",
           "parent_text_phrase": "Education Institutions Attended",
           "maxlength": "40",
           "has_na_checkbox": false,

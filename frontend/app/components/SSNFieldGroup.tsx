@@ -26,6 +26,13 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
            values[ssnGroup.number3Field.name] === "N/A";
   });
 
+  // Add focus state tracking
+  const [focusState, setFocusState] = useState({
+    part1: false,
+    part2: false,
+    part3: false
+  });
+
   const handleNACheckboxChange = (checked: boolean) => {
     setIsNAChecked(checked);
     const value = checked ? "N/A" : "";
@@ -41,7 +48,27 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
     }
   };
 
-  if (!visible) return null
+  // Handle focus state
+  const handleFocus = (part: 'part1' | 'part2' | 'part3') => {
+    setFocusState(prev => ({
+      ...prev,
+      [part]: true
+    }));
+  };
+
+  const handleBlur = (part: 'part1' | 'part2' | 'part3') => {
+    setFocusState(prev => ({
+      ...prev,
+      [part]: false
+    }));
+  };
+
+  if (!visible) return null;
+
+  // Check if fields are empty for styling
+  const isPart1Empty = !values[ssnGroup.number1Field.name] || values[ssnGroup.number1Field.name] === "";
+  const isPart2Empty = !values[ssnGroup.number2Field.name] || values[ssnGroup.number2Field.name] === "";
+  const isPart3Empty = !values[ssnGroup.number3Field.name] || values[ssnGroup.number3Field.name] === "";
 
   return (
     <div className="space-y-2">
@@ -53,8 +80,11 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
             maxLength={3}
             value={values[ssnGroup.number1Field.name] || ''}
             onChange={(e) => onChange(ssnGroup.number1Field.name, e.target.value)}
+            onFocus={() => handleFocus('part1')}
+            onBlur={() => handleBlur('part1')}
             disabled={isNAChecked}
-            className="w-20"
+            className={`w-20 ${isPart1Empty ? 'border-red-300' : 'border-green-300'} 
+                        ${focusState.part1 ? 'form-field-focus' : ''}`}
           />
           <span>-</span>
           <Input
@@ -62,8 +92,11 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
             maxLength={2}
             value={values[ssnGroup.number2Field.name] || ''}
             onChange={(e) => onChange(ssnGroup.number2Field.name, e.target.value)}
+            onFocus={() => handleFocus('part2')}
+            onBlur={() => handleBlur('part2')}
             disabled={isNAChecked}
-            className="w-16"
+            className={`w-16 ${isPart2Empty ? 'border-red-300' : 'border-green-300'} 
+                        ${focusState.part2 ? 'form-field-focus' : ''}`}
           />
           <span>-</span>
           <Input
@@ -71,8 +104,11 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
             maxLength={4}
             value={values[ssnGroup.number3Field.name] || ''}
             onChange={(e) => onChange(ssnGroup.number3Field.name, e.target.value)}
+            onFocus={() => handleFocus('part3')}
+            onBlur={() => handleBlur('part3')}
             disabled={isNAChecked}
-            className="w-24"
+            className={`w-24 ${isPart3Empty ? 'border-red-300' : 'border-green-300'} 
+                        ${focusState.part3 ? 'form-field-focus' : ''}`}
           />
         </div>
         {ssnGroup.number1Field.has_na_checkbox && ssnGroup.number1Field.na_checkbox_id && (

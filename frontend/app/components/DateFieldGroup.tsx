@@ -87,6 +87,13 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
     year: false
   });
 
+  // Add focus state for each field
+  const [focusState, setFocusState] = useState({
+    day: false,
+    month: false,
+    year: false
+  });
+
   // Create a memoized function to update all date parts at once
   const updateAllDateFields = useCallback((day: string, month: string, year: string) => {
     // Create a batch of updates to apply together
@@ -135,6 +142,11 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
 
   if (!visible) return null;
 
+  // Check if fields are empty for styling
+  const isDayEmpty = !values[dayField.name] || values[dayField.name] === "";
+  const isMonthEmpty = !values[monthField.name] || values[monthField.name] === "";
+  const isYearEmpty = !values[yearField.name] || values[yearField.name] === "";
+
   // Handle manual field changes
   const handleManualFieldChange = (field: 'day' | 'month' | 'year', value: string) => {
     // Mark this field as touched
@@ -172,6 +184,21 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
     }
   };
 
+  // Handle focus state
+  const handleFocus = (field: 'day' | 'month' | 'year') => {
+    setFocusState(prev => ({
+      ...prev,
+      [field]: true
+    }));
+  };
+
+  const handleBlur = (field: 'day' | 'month' | 'year') => {
+    setFocusState(prev => ({
+      ...prev,
+      [field]: false
+    }));
+  };
+
   return (
     <div className="flex flex-col space-y-2">
       <Label>{dateGroup.basePhrase}</Label>
@@ -184,8 +211,11 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
               <Input
                 value={values[dayField.name] || ""}
                 onChange={(e) => handleManualFieldChange('day', e.target.value)}
+                onFocus={() => handleFocus('day')}
+                onBlur={() => handleBlur('day')}
                 placeholder="Day"
-                className={isInvalidDate ? 'border-red-500' : ''}
+                className={`${isInvalidDate ? 'border-red-500' : isDayEmpty ? 'border-red-300' : 'border-green-300'} 
+                            ${focusState.day ? 'form-field-focus' : ''}`}
                 disabled={isNAChecked}
               />
             </div>
@@ -194,9 +224,14 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
               <Select 
                 value={values[monthField.name] || ""}
                 onValueChange={(value) => handleManualFieldChange('month', value)}
+                onOpenChange={(open) => {
+                  if (open) handleFocus('month');
+                  else handleBlur('month');
+                }}
                 disabled={isNAChecked}
               >
-                <SelectTrigger className={isInvalidDate ? 'border-red-500' : ''}>
+                <SelectTrigger className={`${isInvalidDate ? 'border-red-500' : isMonthEmpty ? 'border-red-300' : 'border-green-300'} 
+                                          ${focusState.month ? 'form-field-focus' : ''}`}>
                   <SelectValue placeholder="Month" />
                 </SelectTrigger>
                 <SelectContent>
@@ -211,8 +246,11 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
               <Input
                 value={values[yearField.name] || ""}
                 onChange={(e) => handleManualFieldChange('year', e.target.value)}
+                onFocus={() => handleFocus('year')}
+                onBlur={() => handleBlur('year')}
                 placeholder="Year"
-                className={isInvalidDate ? 'border-red-500' : ''}
+                className={`${isInvalidDate ? 'border-red-500' : isYearEmpty ? 'border-red-300' : 'border-green-300'} 
+                            ${focusState.year ? 'form-field-focus' : ''}`}
                 disabled={isNAChecked}
               />
             </div>

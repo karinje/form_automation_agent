@@ -74,3 +74,29 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Subtle border styles for field state */
+.border-red-300 {
+  border-color: rgba(252, 165, 165, 0.6) !important;
+  transition: border-color 0.2s ease;
+}
+
+.border-green-300 {
+  border-color: rgba(134, 239, 172, 0.6) !important;
+  transition: border-color 0.2s ease;
+}
+
+/* Style for radio button groups */
+.radio-group-empty [data-state="unchecked"] {
+  border-color: rgba(252, 165, 165, 0.6);
+}
+
+.radio-group-filled [data-state="checked"] {
+  border-color: rgba(134, 239, 172, 0.6);
+  background-color: rgba(134, 239, 172, 0.6);
+}
+
+/* Make the border more noticeable on focus but keep the field state color */
+.form-field-focus {
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
