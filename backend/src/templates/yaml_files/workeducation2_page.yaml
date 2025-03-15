@@ -30,7 +30,7 @@ workeducation2_page:
   # Add more yaml array elements if more than one Employment details provided or Employer Name (x) is present
   # Add as many yaml array elements as the number of employers present in input
   other_education: ""  # Have you attended any educational institutions? "Y" or "N"
-  education: # Add this yaml array element only if other_education is "Y" 
+  education_institutions_attended: # Add this yaml array element only if other_education is "Y" 
     - name: ""  # Details from Name of Institution (1) for this yaml array. Name of educational institution
       course: ""  # Details from Field of Study for this yaml array. Field of study
       address:

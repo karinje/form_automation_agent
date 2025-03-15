@@ -110,7 +110,7 @@ export default function Home() {
   } = useFormPersistence();
 
   // Add at the top of your component, with other state declarations
-  const [debugMode, setDebugMode] = useState(false); // Default to false
+  const [debugMode, setDebugMode] = useState(true); // Default to false
 
   // Add this function near the top of your component function
   const shouldShowSpousePage = (formData: Record<string, string>): boolean => {
@@ -1151,8 +1151,8 @@ export default function Home() {
                     }}
                     onArrayGroupsChange={(pageName, groupKey, groupData) => {
                       // Only do detailed logging for workeducation3_page
-                      if (pageName === 'workeducation3_page') {
-                        debugLog('workeducation3_page', `onArrayGroupsChange called from DynamicForm:`, {
+                      if (pageName === 'workeducation2_page') {
+                        debugLog('workeducation2_page', `onArrayGroupsChange called from DynamicForm:`, {
                           pageName,
                           groupKey,
                           groupData
@@ -1166,15 +1166,15 @@ export default function Home() {
                         if (!updated[pageName]) {
                           updated[pageName] = {};
                         }
-                        if (pageName === 'workeducation3_page') {
+                        if (pageName === 'workeducation2_page') {
                           console.log('updated before groupdata', updated)
                         }
                         // Update the group data
                         updated[pageName][groupKey] = [...groupData];
                         
                         // Log the updated state for debugging
-                        if (pageName === 'workeducation3_page') {
-                          debugLog('workeducation3_page', `Updated arrayGroups state:`, {
+                        if (pageName === 'workeducation2_page') {
+                          debugLog('workeducation2_page', `Updated arrayGroups state:`, {
                             updated,
                             groupData,
                             pageName,
@@ -1184,7 +1184,7 @@ export default function Home() {
                         
                         return updated;
                       });
-                      if (pageName === 'workeducation3_page') {
+                      if (pageName === 'workeducation2_page') {
                         console.log('arrayGroups finally', arrayGroups)
                       }
                     }}

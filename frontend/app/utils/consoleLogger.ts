@@ -103,7 +103,7 @@ export class ConsoleLogger {
 }
 
 export const debugLog = (pageName: string, message: string, data?: any) => {
-  if (pageName === 'field_counts') {
+  if (pageName === 'workeducation2_page') {
     if (data) {
       console.log(`[${pageName}] ${message}`, data);
     } else {

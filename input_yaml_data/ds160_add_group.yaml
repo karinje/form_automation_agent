@@ -401,7 +401,7 @@ workeducation2_page:
         year: "2020"  # End year of employment
       duties: "FINANCIAL ANALYSIS AND REPORTING"  # Job duties description
   other_education: "Y"  # Have you attended any educational institutions?
-  education:
+  education_institutions_attended:
     - name: "UNIVERSITY OF FLORIDA"  # Name of educational institution
       course: "MBA"  # Field of study
       address:
