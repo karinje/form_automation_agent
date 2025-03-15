@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { Calendar } from "lucide-react"
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 
 interface DatePickerProps {
   value: string | undefined
@@ -20,20 +20,36 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   name,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Format value to ensure it's in YYYY-MM-DD format expected by input[type=date]
-  const formattedValue = value && value.match(/^\d{4}-\d{2}-\d{2}$/) ? value : "";
+  
+  // Add a ref to prevent processing the same value multiple times
+  const lastValueRef = useRef(value);
+  
+  // Update input ref current value when prop changes
+  useEffect(() => {
+    if (inputRef.current && value !== lastValueRef.current) {
+      inputRef.current.value = value;
+      lastValueRef.current = value;
+    }
+  }, [value]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value)
-  }
+    const newValue = event.target.value;
+    // Only trigger onChange if the value actually changed
+    if (newValue !== lastValueRef.current) {
+      lastValueRef.current = newValue;
+      onChange(newValue);
+    }
+  };
 
   const handleWrapperClick = () => {
     if (inputRef.current && !disabled) {
       inputRef.current.focus();
       inputRef.current.click();
     }
-  }
+  };
+
+  // Format the value to ensure it's valid
+  const formattedValue = value && value.match(/^\d{4}-\d{2}-\d{2}$/) ? value : "";
 
   return (
     <div 
@@ -43,7 +59,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       <input
         ref={inputRef}
         type="date"
-        value={formattedValue}
+        defaultValue={formattedValue}
         onChange={handleChange}
         name={name}
         className="w-full px-3 py-2 pr-10 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 cursor-pointer"
@@ -58,5 +74,5 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         size={18}
       />
     </div>
-  )
-} 
+  );
+}; 

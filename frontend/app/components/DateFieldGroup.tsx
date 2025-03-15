@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { FormField as FormFieldType } from "@/types/form-definition"
-import { DatePicker } from "./DatePicker"
 
 interface DateFieldGroup {
   basePhrase: string
@@ -33,6 +32,41 @@ const REVERSE_MONTH_MAP: Record<string, string> = {
   "7": "JUL", "8": "AUG", "9": "SEP"
 };
 
+// Helper function to validate a date string
+const isValidDate = (year: string, month: string, day: string): boolean => {
+  try {
+    // Skip validation if any field is empty
+    if (!year || !month || !day) return true;
+    
+    // Convert month abbreviation to number if needed
+    const monthNum = MONTH_MAP[month.toUpperCase()] || month;
+    
+    // Try to create a numeric date
+    const numericDay = parseInt(day, 10);
+    const numericMonth = parseInt(monthNum, 10);
+    const numericYear = parseInt(year, 10);
+    
+    // Basic range validation
+    if (isNaN(numericDay) || isNaN(numericMonth) || isNaN(numericYear)) return false;
+    if (numericDay < 1 || numericDay > 31) return false;
+    if (numericMonth < 1 || numericMonth > 12) return false;
+    if (numericYear < 1900 || numericYear > 2100) return false;
+    
+    // Create Date object to check validity (Feb 30, etc.)
+    const date = new Date(numericYear, numericMonth - 1, numericDay);
+    
+    // Verify that the date wasn't silently adjusted
+    return (
+      date.getFullYear() === numericYear &&
+      date.getMonth() === numericMonth - 1 &&
+      date.getDate() === numericDay
+    );
+  } catch (e) {
+    console.error("Date validation error:", e);
+    return false;
+  }
+};
+
 const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroupProps) => {
   const { dayField, monthField, yearField } = dateGroup;
   
@@ -42,150 +76,176 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
            values[monthField.name] === "N/A" ||
            values[yearField.name] === "N/A";
   });
+  
+  // Add state to track if the date is invalid
+  const [isInvalidDate, setIsInvalidDate] = useState(false);
+  
+  // Add state to track which fields have been touched
+  const [touchedFields, setTouchedFields] = useState({
+    day: false,
+    month: false,
+    year: false
+  });
 
-  // State to track the last valid date
-  const [lastValidDate, setLastValidDate] = useState<string>("");
+  // Create a memoized function to update all date parts at once
+  const updateAllDateFields = useCallback((day: string, month: string, year: string) => {
+    // Create a batch of updates to apply together
+    const updates: Record<string, string> = {
+      [dayField.name]: day,
+      [monthField.name]: month,
+      [yearField.name]: year
+    };
+    
+    // Apply all updates at once
+    Object.entries(updates).forEach(([name, value]) => {
+      onChange(name, value);
+    });
+  }, [dayField.name, monthField.name, yearField.name, onChange]);
 
   // Update effect to handle NA state changes from YAML
   useEffect(() => {
     const naCheckboxValue = dayField.na_checkbox_id ? values[dayField.na_checkbox_id] : undefined;
     if (naCheckboxValue === "true" && !isNAChecked) {
       setIsNAChecked(true);
-      // Batch these updates together to avoid multiple re-renders
-      const updates = {
-        [dayField.name]: "N/A",
-        [monthField.name]: "N/A",
-        [yearField.name]: "N/A"
-      };
-      Object.entries(updates).forEach(([name, value]) => onChange(name, value));
+      updateAllDateFields("N/A", "N/A", "N/A");
     }
-  }, [values[dayField.na_checkbox_id], dayField.na_checkbox_id, dayField.name, monthField.name, yearField.name, isNAChecked, onChange]); // Fixed dependency array with proper types
+  }, [values, dayField.na_checkbox_id, isNAChecked, updateAllDateFields]);
   
+  // Add validation effect when date parts change manually
+  useEffect(() => {
+    if (isNAChecked) {
+      setIsInvalidDate(false);
+      return;
+    }
+    
+    const day = values[dayField.name] || "";
+    const month = values[monthField.name] || "";
+    const year = values[yearField.name] || "";
+    
+    // Only validate if all fields have values and at least one was touched
+    const allFieldsFilled = day && month && year;
+    const anyFieldTouched = touchedFields.day || touchedFields.month || touchedFields.year;
+    
+    if (allFieldsFilled && anyFieldTouched) {
+      setIsInvalidDate(!isValidDate(year, month, day));
+    } else {
+      setIsInvalidDate(false);
+    }
+  }, [values, dayField.name, monthField.name, yearField.name, touchedFields, isNAChecked]);
+
   if (!visible) return null;
 
-  // Improved date conversion from DatePicker to individual fields
-  const handleDateChange = (value: string) => {
-    if (!value) {
-      onChange(dayField.name, "")
-      onChange(monthField.name, "")
-      onChange(yearField.name, "")
-      return
-    }
-
-    try {
-      // Split the date into parts
-      const [year, month, day] = value.split('-');
-      
-      // Ensure we have valid parts
-      if (!year || !month || !day) return;
-      
-      // Store as a valid date for future reference
-      setLastValidDate(value);
-      
-      // Get month abbreviation from the numeric month
-      const monthAbbr = REVERSE_MONTH_MAP[month] || "";
-      
-      // Update all fields with properly formatted values
-      onChange(dayField.name, day); // Remove leading zero for day
-      onChange(monthField.name, monthAbbr);
-      onChange(yearField.name, year);
-    } catch (error) {
-      console.error('Error parsing date:', error);
-    }
-  }
-
-  // Improved conversion from individual fields to DatePicker value
-  const getDateValue = () => {
-    if (isNAChecked) return "";
+  // Handle manual field changes
+  const handleManualFieldChange = (field: 'day' | 'month' | 'year', value: string) => {
+    // Mark this field as touched
+    setTouchedFields(prev => ({
+      ...prev,
+      [field]: true
+    }));
     
-    // If any field is empty or N/A, don't try to create a date
-    if (!values[yearField.name] || 
-        !values[monthField.name] || 
-        !values[dayField.name] ||
-        values[yearField.name] === "N/A" ||
-        values[monthField.name] === "N/A" ||
-        values[dayField.name] === "N/A") {
-      return "";
-    }
-
-    try {
-      const year = values[yearField.name].trim();
-      const monthStr = values[monthField.name].trim().toUpperCase();
-      const day = values[dayField.name].trim();
-      
-      // Convert from month abbreviation to number
-      const monthNum = MONTH_MAP[monthStr] || monthStr;
-      
-      // Ensure day has 2 digits
-      const dayPadded = day.padStart(2, '0');
-      
-      // Return in YYYY-MM-DD format
-      const dateStr = `${year}-${monthNum}-${dayPadded}`;
-      
-      // Validate the date is correct (e.g., not 2023-02-31)
-      const date = new Date(`${year}-${monthNum}-${dayPadded}T00:00:00`);
-      if (isNaN(date.getTime())) {
-        // If invalid, return last valid date or empty string
-        return lastValidDate;
-      }
-      
-      return dateStr;
-    } catch (error) {
-      console.error('Error converting date values:', error);
-      return lastValidDate;
-    }
-  }
+    // Update the field value
+    onChange(
+      field === 'day' ? dayField.name : 
+      field === 'month' ? monthField.name : 
+      yearField.name, 
+      value
+    );
+  };
 
   // Handle NA checkbox
   const handleNACheckboxChange = (checked: boolean) => {
     setIsNAChecked(checked);
-    const value = checked ? "N/A" : "";
     
-    // Batch these updates together
-    const updates = {
-      [dayField.name]: value,
-      [monthField.name]: value,
-      [yearField.name]: value
-    };
-    
-    if (dayField.na_checkbox_id) {
-      updates[dayField.na_checkbox_id] = checked ? "true" : "false";
+    if (checked) {
+      updateAllDateFields("N/A", "N/A", "N/A");
+      setIsInvalidDate(false);
+      
+      if (dayField.na_checkbox_id) {
+        onChange(dayField.na_checkbox_id, "true");
+      }
+    } else {
+      updateAllDateFields("", "", "");
+      
+      if (dayField.na_checkbox_id) {
+        onChange(dayField.na_checkbox_id, "false");
+      }
     }
-
-    // Apply all updates at once
-    Object.entries(updates).forEach(([name, value]) => onChange(name, value));
   };
 
   return (
     <div className="flex flex-col space-y-2">
       <Label>{dateGroup.basePhrase}</Label>
-      <div className="flex items-center gap-4">
-        <DatePicker
-          name={dayField.name}
-          value={getDateValue()}
-          onChange={handleDateChange}
-          placeholder="Select date"
-          disabled={isNAChecked}
-        />
-        {dayField.has_na_checkbox && dayField.na_checkbox_id && (
-          <div className="flex items-center">
-            <Checkbox
-              id={dayField.na_checkbox_id}
-              checked={isNAChecked}
-              onCheckedChange={handleNACheckboxChange}
-              className="w-6 h-6"
-            />
-            <Label 
-              htmlFor={dayField.na_checkbox_id}
-              className="text-sm text-gray-500 ml-2"
-            >
-              {dayField.na_checkbox_text || "Does Not Apply"}
-            </Label>
+      
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          {/* Manual entry fields */}
+          <div className={`flex gap-2 items-center flex-1 ${isInvalidDate ? 'border border-red-500 rounded-md p-2' : ''}`}>
+            <div className="w-20">
+              <Input
+                value={values[dayField.name] || ""}
+                onChange={(e) => handleManualFieldChange('day', e.target.value)}
+                placeholder="Day"
+                className={isInvalidDate ? 'border-red-500' : ''}
+                disabled={isNAChecked}
+              />
+            </div>
+            <span>/</span>
+            <div className="w-28">
+              <Select 
+                value={values[monthField.name] || ""}
+                onValueChange={(value) => handleManualFieldChange('month', value)}
+                disabled={isNAChecked}
+              >
+                <SelectTrigger className={isInvalidDate ? 'border-red-500' : ''}>
+                  <SelectValue placeholder="Month" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(MONTH_MAP).map(([abbr]) => (
+                    <SelectItem key={abbr} value={abbr}>{abbr}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <span>/</span>
+            <div className="w-24">
+              <Input
+                value={values[yearField.name] || ""}
+                onChange={(e) => handleManualFieldChange('year', e.target.value)}
+                placeholder="Year"
+                className={isInvalidDate ? 'border-red-500' : ''}
+                disabled={isNAChecked}
+              />
+            </div>
           </div>
+          
+          {/* N/A checkbox */}
+          {dayField.has_na_checkbox && dayField.na_checkbox_id && (
+            <div className="flex items-center ml-4">
+              <Checkbox
+                id={dayField.na_checkbox_id}
+                checked={isNAChecked}
+                onCheckedChange={handleNACheckboxChange}
+                className="w-6 h-6"
+              />
+              <Label 
+                htmlFor={dayField.na_checkbox_id}
+                className="text-sm text-gray-500 ml-2"
+              >
+                {dayField.na_checkbox_text || "Does Not Apply"}
+              </Label>
+            </div>
+          )}
+        </div>
+        
+        {/* Error message */}
+        {isInvalidDate && (
+          <p className="text-red-500 text-sm mt-1">
+            Please enter a valid date combination
+          </p>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DateFieldGroup
+export default DateFieldGroup;
