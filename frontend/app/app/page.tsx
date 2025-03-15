@@ -110,7 +110,7 @@ export default function Home() {
   } = useFormPersistence();
 
   // Add at the top of your component, with other state declarations
-  const [debugMode, setDebugMode] = useState(true); // Default to false
+  const [debugMode, setDebugMode] = useState(false); // Default to false
 
   // Add this function near the top of your component function
   const shouldShowSpousePage = (formData: Record<string, string>): boolean => {
@@ -1409,42 +1409,23 @@ export default function Home() {
   }, [accordionValues, persistData]);
 
   useEffect(() => {
-    persistData('ds160_retrieve_mode', retrieveMode);
-  }, [retrieveMode, persistData]);
-
-  useEffect(() => {
     persistData('ds160_location', location);
   }, [location, persistData]);
 
   useEffect(() => {
-    if (secretQuestion) {
-      persistData('ds160_secret_question', secretQuestion);
+    // Only save if we have at least one value
+    if (retrieveMode || secretQuestion || secretAnswer || applicationId || surname || birthYear || location) {
+      saveAllFormData({
+        retrieveMode,
+        secretQuestion,
+        secretAnswer,
+        applicationId,
+        surname,
+        birthYear,
+        location
+      });
     }
-  }, [secretQuestion, persistData]);
-
-  useEffect(() => {
-    if (secretAnswer) {
-      persistData('ds160_secret_answer', secretAnswer);
-    }
-  }, [secretAnswer, persistData]);
-
-  useEffect(() => {
-    if (applicationId) {
-      persistData('ds160_application_id', applicationId);
-    }
-  }, [applicationId, persistData]);
-
-  useEffect(() => {
-    if (surname) {
-      persistData('ds160_surname', surname);
-    }
-  }, [surname, persistData]);
-
-  useEffect(() => {
-    if (birthYear) {
-      persistData('ds160_birth_year', birthYear);
-    }
-  }, [birthYear, persistData]);
+  }, [secretQuestion, secretAnswer, applicationId, surname, birthYear, location, saveAllFormData]);
 
   // Update the clearSavedData function:
   const clearSavedData = async () => {
@@ -1536,6 +1517,7 @@ export default function Home() {
     
     // Add local state to prevent focus loss when typing
     const [localValues, setLocalValues] = useState({
+      retrieveMode: retrieveMode,
       secretQuestion: secretQuestion,
       secretAnswer: secretAnswer,
       applicationId: applicationId,
@@ -1546,24 +1528,35 @@ export default function Home() {
 
     // Effect to sync parent state to local state when modal opens
     useEffect(() => {
-      setLocalValues({
-        secretQuestion: secretQuestion,
-        secretAnswer: secretAnswer,
-        applicationId: applicationId,
-        surname: surname,
-        birthYear: birthYear,
-        location: location
-      });
-    }, [showUploadModal]);
+      // Only sync from parent to local state when modal initially opens
+      // This prevents overwriting local state when we're typing
+      if (showUploadModal) {
+        setLocalValues({
+          retrieveMode: retrieveMode,
+          secretQuestion: secretQuestion,
+          secretAnswer: secretAnswer,
+          applicationId: applicationId,
+          surname: surname,
+          birthYear: birthYear,
+          location: location
+        });
+      }
+    }, [showUploadModal]); // Only depend on showUploadModal to prevent re-syncing
     
     // Use one handler for all inputs to update local state
     const handleInputChange = (field: string, value: string) => {
+      // Update local state immediately - this keeps the input value current
       setLocalValues(prev => ({ ...prev, [field]: value }));
+      
+      // We won't update parent state on every keystroke as it causes focus loss
+      // Instead, we'll rely on saveModalValues on close/submit to update parent state
     };
     
-    // Handle the final upload and commit all values to parent state
-    const handleUploadClick = () => {
-      // First update the parent state with local values
+    // Add a helper function to update parent state and persist to backend
+    const saveModalValues = () => {
+      // Update parent state
+      console.log('Saving modal values to parent state:', localValues);
+      setRetrieveMode(localValues.retrieveMode);
       setSecretQuestion(localValues.secretQuestion);
       setSecretAnswer(localValues.secretAnswer);
       setApplicationId(localValues.applicationId);
@@ -1571,9 +1564,54 @@ export default function Home() {
       setBirthYear(localValues.birthYear);
       setLocation(localValues.location);
       
-      // Instead of calling handleRunDS160 directly, call it with the local values
+      // Force a direct save of all form data to ensure correct field names
+      saveAllFormData({
+        retrieveMode: localValues.retrieveMode,
+        secretQuestion: localValues.secretQuestion,
+        secretAnswer: localValues.secretAnswer,
+        applicationId: localValues.applicationId,
+        surname: localValues.surname,
+        birthYear: localValues.birthYear,
+        location: localValues.location
+      });
+    };
+    
+    // Handle the final upload and commit all values to parent state
+    const handleUploadClick = () => {
+      // Save values to parent state and backend
+      saveModalValues();
+      
+      // Then continue with the DS160 upload
       handleRunDS160WithLocalValues(localValues);
       setShowUploadModal(false); // Close the modal
+    };
+    
+    // Add a new saveFieldValue function in the UploadConfigModal component
+    const saveFieldValue = (field: string, value: string) => {
+      // Update parent state for just this field
+      switch (field) {
+        case 'retrieveMode':
+          setRetrieveMode(value as 'new' | 'retrieve');
+          break;
+        case 'secretQuestion':
+          setSecretQuestion(value);
+          break;
+        case 'secretAnswer':
+          setSecretAnswer(value);
+          break;
+        case 'applicationId':
+          setApplicationId(value);
+          break;
+        case 'surname':
+          setSurname(value);
+          break;
+        case 'birthYear':
+          setBirthYear(value);
+          break;
+        case 'location':
+          setLocation(value);
+          break;
+      }
     };
     
     return (
@@ -1583,7 +1621,11 @@ export default function Home() {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">DS-160 Upload Configuration</h2>
             <button
-              onClick={() => setShowUploadModal(false)}
+              onClick={() => {
+                // Save values when closing modal
+                saveModalValues();
+                setShowUploadModal(false);
+              }}
               className="text-gray-500 hover:text-gray-700"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1624,6 +1666,10 @@ export default function Home() {
               <Select 
                 value={localValues.location} 
                 onValueChange={(value) => handleInputChange('location', value)}
+                onOpenChange={(open) => {
+                  // When dropdown closes, save the value
+                  if (!open) saveFieldValue('location', localValues.location);
+                }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select location" />
@@ -1644,6 +1690,10 @@ export default function Home() {
                   <Select 
                     value={localValues.secretQuestion} 
                     onValueChange={(value) => handleInputChange('secretQuestion', value)}
+                    onOpenChange={(open) => {
+                      // When dropdown closes, save the value
+                      if (!open) saveFieldValue('secretQuestion', localValues.secretQuestion);
+                    }}
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a security question" />
@@ -1660,6 +1710,7 @@ export default function Home() {
                 <Input 
                   value={localValues.secretAnswer}
                   onChange={(e) => handleInputChange('secretAnswer', e.target.value)}
+                  onBlur={() => saveFieldValue('secretAnswer', localValues.secretAnswer)}
                   placeholder="Enter your answer"
                   className="w-full"
                 />
@@ -1674,6 +1725,7 @@ export default function Home() {
                   <Input 
                     value={localValues.applicationId}
                     onChange={(e) => handleInputChange('applicationId', e.target.value)}
+                    onBlur={() => saveFieldValue('applicationId', localValues.applicationId)}
                     placeholder="Application ID"
                     className="w-full"
                   />
@@ -1683,6 +1735,7 @@ export default function Home() {
                       const upperValue = e.target.value.slice(0, 5).toUpperCase();
                       handleInputChange('surname', upperValue);
                     }}
+                    onBlur={() => saveFieldValue('surname', localValues.surname)}
                     placeholder="Surname (5 chars)"
                     maxLength={5}
                     className="w-full"
@@ -1690,6 +1743,7 @@ export default function Home() {
                   <Input 
                     value={localValues.birthYear}
                     onChange={(e) => handleInputChange('birthYear', e.target.value)}
+                    onBlur={() => saveFieldValue('birthYear', localValues.birthYear)}
                     placeholder="Birth Year"
                     className="w-full"
                   />

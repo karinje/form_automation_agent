@@ -92,7 +92,7 @@ export const unflattenFormData = (data: Record<string, string>): Record<string, 
   const result: Record<string, any> = {};
   const arrays: Record<string, any> = {}; // temporary store for array groups
 
-  console.log("Starting unflattenFormData with data:", data);
+  //console.log("Starting unflattenFormData with data:", data);
 
   // First pass: Process each field
   Object.entries(data).forEach(([key, value]) => {
