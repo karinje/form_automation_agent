@@ -24,5 +24,7 @@ export const formVersions = pgTable('form_versions', {
   userId: text('user_id').notNull(),
   yamlData: jsonb('yaml_data'),
   versionName: text('version_name'),
+  applicationId: text('application_id'),
   createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at'),
 }); 

@@ -42,15 +42,32 @@ async function main() {
       )
     `;
     
-    // Create form_versions table
+    // Create form_versions table with application_id column
     await sql`
       CREATE TABLE IF NOT EXISTS form_versions (
         id TEXT PRIMARY KEY,
         user_id TEXT NOT NULL,
         yaml_data JSONB,
         version_name TEXT,
-        created_at TIMESTAMP DEFAULT NOW()
+        application_id TEXT,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
       )
+    `;  
+    
+    // Add application_id column to form_versions if it doesn't exist
+    // This handles the case where the table already exists but without this column
+    await sql`
+      DO $$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns 
+          WHERE table_name = 'form_versions' AND column_name = 'application_id'
+        ) THEN
+          ALTER TABLE form_versions ADD COLUMN application_id TEXT;
+        END IF;
+      END
+      $$;
     `;
     
     console.log('✅ Database schema pushed successfully!');

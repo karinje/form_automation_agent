@@ -25,6 +25,8 @@ import { Upload } from "lucide-react"
 import { useFormPersistence } from '../../lib/hooks/useFormPersistence'
 import { useUser } from "@clerk/nextjs";
 import { UserButton } from "@clerk/nextjs";
+import { saveSuccessfulApplication, loadApplicationById, getSuccessfulApplications } from '../../lib/actions/formData'
+import { desc, eq, sql } from 'drizzle-orm'
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../../form_definitions/p10_workeducation1_definition.json"
@@ -111,6 +113,10 @@ export default function Home() {
 
   // Add at the top of your component, with other state declarations
   const [debugMode, setDebugMode] = useState(false); // Default to false
+
+  // Add this variable at the component level
+  const [tempApplicationId, setTempApplicationId] = useState('');
+  const applicationIdRef = useRef('');  // Add this ref to store the ID persistently
 
   // Add this function near the top of your component function
   const shouldShowSpousePage = (formData: Record<string, string>): boolean => {
@@ -359,10 +365,7 @@ export default function Home() {
         updateFormCountersSilently(pagesFilter);
         
         if (showSuccess) {
-          setConsoleErrors([
-            'Form data loaded successfully!',
-            ...consoleErrors
-          ]);
+         // setConsoleErrors(['Form data loaded successfully!', ...consoleErrors])
         }
       }, 2000);
       
@@ -496,7 +499,7 @@ export default function Home() {
           
           // Update form data using handleFormDataLoad instead of formManageRef
           handleFormDataLoad(parsedYaml);
-          
+          saveYamlToBackend();
           // Add count information to progress messages
           Object.entries(fieldCounts).forEach(([page, count]) => {
             const pageName = page.replace('_page', '').replace(/_/g, ' ');
@@ -831,6 +834,7 @@ export default function Home() {
 
   // Modify the start of handleRunDS160
   const handleRunDS160WithLocalValues = async (localValues?: {
+    retrieveMode: string;
     secretQuestion: string;
     secretAnswer: string;
     applicationId: string;
@@ -842,19 +846,23 @@ export default function Home() {
     
     try {
       setIsRunningDS160(true);
-      // Call the reset function at the beginning
       setProgressMessages([]);
       console.log("Inside handleRunDS160 progressMessages reset to", progressMessages);
       resetDS160State();
       
+      const activeValues = localValues || {
+        retrieveMode, secretQuestion, secretAnswer, applicationId, surname, birthYear, location
+      };
       if (retrieveMode === 'retrieve') {
-        const activeValues = localValues || {
-          secretQuestion, secretAnswer, applicationId, surname, birthYear, location
-        };
-        
         if (!activeValues.applicationId || !activeValues.surname || !activeValues.birthYear || 
             !activeValues.secretQuestion || !activeValues.secretAnswer) {
           setErrorMessage("Please fill in all retrieve fields");
+          return;
+        }
+      }
+      else {
+        if (!activeValues.secretQuestion || !activeValues.secretAnswer) {
+          setErrorMessage("Please fill in all security fields");
           return;
         }
       }
@@ -864,7 +872,7 @@ export default function Home() {
       
       const finalYamlData = generateFormYamlData({
         location: localValues?.location || location,
-        retrieveMode,
+        retrieveMode, 
         applicationId: localValues?.applicationId || applicationId,
         surname: localValues?.surname || surname,
         birthYear: localValues?.birthYear || birthYear,
@@ -909,7 +917,7 @@ export default function Home() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        console.log("Inside handleRunDS160 value", new TextDecoder().decode(value))
+        console.log("Inside handleRunDS160 value", new TextDecoder().decode(value), applicationId)
         // Convert the chunk to string
         const chunk = new TextDecoder().decode(value);
         
@@ -968,15 +976,40 @@ export default function Home() {
             
             // Handle message as before
             if (message.status === 'application_id' && 'application_id' in message) {
-              setApplicationId(message.application_id);
+              const newAppId = message.application_id;
+              
+              // Update both the state and the ref
+              setTempApplicationId(newAppId);
+              setApplicationId(newAppId);
+              applicationIdRef.current = newAppId;  // Store in ref for immediate access
+              
+              console.log('SETTING NEW APP ID:', newAppId);
               message.status = 'info';
-              message.message = `Retrieved application ID: ${message.application_id}`;
+              message.message = `Retrieved application ID: ${newAppId}`;
             }
             
             setProgressMessages(prev => [...prev, message]);
             
             if (message.status === 'complete') {
               setDS160Status('success');
+              
+              // Use ref as primary source, fall back to state values
+              const currentId = applicationIdRef.current || (retrieveMode === 'new' ? tempApplicationId : applicationId);
+              console.log('inside complete set success application_id', currentId);
+              
+              if (currentId) {
+                try {
+                  await saveSuccessfulApplication(finalYamlData, currentId);
+                  saveDataImmediately({applicationId: currentId});
+                  console.log('Saved successful application with ID:', currentId);
+                  
+                  // Add these lines to refresh the applications list
+                  const apps = await getSuccessfulApplications();
+                  setPreviousApplications(apps);
+                } catch (error) {
+                  console.error('Failed to save successful application:', error);
+                }
+              }
             } else if (message.status === 'error') {
               setDS160Status('error');
             }
@@ -1010,25 +1043,6 @@ export default function Home() {
     }
   };
 
-  // Now modify the existing handleRunDS160 function to call our new function
-  const handleRunDS160 = async () => {
-    // Save current state before processing
-    await saveAllFormData({
-      yamlData,
-      currentTab,
-      accordionValues,
-      retrieveMode,
-      location,
-      secretQuestion,
-      secretAnswer,
-      applicationId,
-      surname,
-      birthYear
-    });
-    
-    // Continue with existing logic...
-    handleRunDS160WithLocalValues();
-  };
 
   // 1. First, we'll create memoized callbacks for all potential forms before any filtering
   const renderFormSection = (forms: typeof formCategories.personal, category: string) => {
@@ -1357,22 +1371,27 @@ export default function Home() {
         }
         
         if (formState.retrieveMode) {
+          console.log('retrieveMode from formState is:', formState.retrieveMode)
           setRetrieveMode(formState.retrieveMode as 'new' | 'retrieve');
         }
         
         if (formState.location) {
+          console.log('location from formState is:', formState.location)
           setLocation(formState.location);
         }
         
         if (formState.secretQuestion) {
+          console.log('secretQuestion from formState is:', formState.secretQuestion)
           setSecretQuestion(formState.secretQuestion);
         }
         
         if (formState.secretAnswer) {
+          console.log('secretAnswer from formState is:', formState.secretAnswer)
           setSecretAnswer(formState.secretAnswer);
         }
         
         if (formState.applicationId) {
+          console.log('applicationId from formState is:', formState.applicationId)
           setApplicationId(formState.applicationId);
         }
         
@@ -1391,41 +1410,41 @@ export default function Home() {
   }, [formState, isInitialized]);
 
   // Replace the existing useEffect hooks to only use backend persistence
-  useEffect(() => {
-    if (Object.keys(yamlData).length > 0) {
-      console.log('yamlData savings to backend is:', yamlData)
-      saveDataImmediately({ yamlData });
-    }
-  }, [yamlData, saveDataImmediately]);
+  // useEffect(() => {
+  //   if (Object.keys(yamlData).length > 0) {
+  //     console.log('yamlData savings to backend is:', yamlData)
+  //     saveDataImmediately({ yamlData });
+  //   }
+  // }, [yamlData, saveDataImmediately]);
 
-  useEffect(() => {
-    saveDataImmediately({ currentTab });
-  }, [currentTab, saveDataImmediately]);
+  // useEffect(() => {
+  //   saveDataImmediately({ currentTab });
+  // }, [currentTab, saveDataImmediately]);
 
-  useEffect(() => {
-    if (Object.keys(accordionValues).length > 0) {
-      saveDataImmediately({ accordionValues });
-    }
-  }, [accordionValues, saveDataImmediately]);
+  // useEffect(() => {
+  //   if (Object.keys(accordionValues).length > 0) {
+  //     saveDataImmediately({ accordionValues });
+  //   }
+  // }, [accordionValues, saveDataImmediately]);
 
-  useEffect(() => {
-    saveDataImmediately({ location });
-  }, [location, saveDataImmediately]);
+  // useEffect(() => {
+  //   saveDataImmediately({ location });
+  // }, [location, saveDataImmediately]);
 
-  useEffect(() => {
-    // Only save if we have at least one value
-    if (retrieveMode || secretQuestion || secretAnswer || applicationId || surname || birthYear || location) {
-      saveDataImmediately({
-        retrieveMode,
-        secretQuestion,
-        secretAnswer,
-        applicationId,
-        surname,
-        birthYear,
-        location
-      });
-    }
-  }, [secretQuestion, secretAnswer, applicationId, surname, birthYear, location, saveDataImmediately]);
+  // useEffect(() => {
+  //   // Only save if we have at least one value
+  //   if (retrieveMode || secretQuestion || secretAnswer || applicationId || surname || birthYear || location) {
+  //     saveDataImmediately({
+  //       retrieveMode,
+  //       secretQuestion,
+  //       secretAnswer,
+  //       applicationId,
+  //       surname,
+  //       birthYear,
+  //       location
+  //     });
+  //   }
+  // }, [secretQuestion, secretAnswer, applicationId, surname, birthYear, location, saveDataImmediately]);
 
   // Update the clearSavedData function:
   const clearSavedData = async () => {
@@ -1988,17 +2007,148 @@ export default function Home() {
 
   const { user } = useUser();
   
+  // Add these state variables
+  const [previousApplications, setPreviousApplications] = useState<{ applicationId: string; updatedAt: Date }[]>([]);
+  const [isLoadingPreviousApps, setIsLoadingPreviousApps] = useState(false);
+  const [showLoadAppModal, setShowLoadAppModal] = useState(false);
+  const [selectedApplicationId, setSelectedApplicationId] = useState('');
+
+  // Add this effect to load previous applications on component mount
+  useEffect(() => {
+    const loadPreviousApplications = async () => {
+      if (isInitialized && isSignedIn) {
+        setIsLoadingPreviousApps(true);
+        try {
+          const apps = await getSuccessfulApplications();
+          setPreviousApplications(apps);
+        } catch (error) {
+          console.error('Error loading previous applications:', error);
+        } finally {
+          setIsLoadingPreviousApps(false);
+        }
+      }
+    };
+
+    loadPreviousApplications();
+  }, [isInitialized, isSignedIn]);
+
+  // Add this function to handle loading a previous application
+  const handleLoadApplication = async (applicationId: string) => {
+    setSelectedApplicationId(applicationId);
+    setShowLoadAppModal(true);
+  };
+
+  // Add this function to confirm and load the selected application
+  const confirmLoadApplication = async () => {
+    try {
+      const application = await loadApplicationById(selectedApplicationId);
+      if (application?.yamlData) {
+        // Clear current form data first
+        await clearSavedData();
+        
+        // Then load the application data
+        handleFormDataLoad(application.yamlData);
+        
+        // Update application ID
+        setApplicationId(selectedApplicationId);
+        
+        // Close the modal
+        setShowLoadAppModal(false);
+        
+        // Show success message
+        setConsoleErrors([
+          `Successfully loaded application ${selectedApplicationId}`,
+          ...consoleErrors
+        ]);
+      } else {
+        setConsoleErrors([
+          `Failed to load application ${selectedApplicationId}: Application not found`,
+          ...consoleErrors
+        ]);
+      }
+    } catch (error) {
+      console.error('Error loading application:', error);
+      setConsoleErrors([
+        `Error loading application: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        ...consoleErrors
+      ]);
+    }
+  };
+
+  // Add this component to render previous applications
+  const PreviousApplicationsSection = () => {
+    if (previousApplications.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="mt-8 p-6 bg-blue-50 border-2 border-blue-400 rounded-lg shadow-md">
+        <h3 className="text-xl font-bold text-blue-800 mb-4">Previously Submitted Applications</h3>
+        {isLoadingPreviousApps ? (
+          <div className="flex justify-center">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {previousApplications.map((app) => (
+              <div 
+                key={app.applicationId} 
+                className="p-4 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 cursor-pointer transition-colors"
+                onClick={() => handleLoadApplication(app.applicationId)}
+              >
+                <div className="font-medium text-blue-600">Application ID: {app.applicationId}</div>
+                <div className="text-sm text-gray-500">
+                  Submitted: {new Date(app.updatedAt).toLocaleString()}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Add this modal component
+  const LoadApplicationModal = () => {
+    if (!showLoadAppModal) return null;
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+          <h2 className="text-xl font-bold mb-4">Load Previous Application</h2>
+          <p className="text-gray-600 mb-6">
+            Loading data from application ID <span className="font-medium">{selectedApplicationId}</span> will overwrite your current form data. Do you want to proceed?
+          </p>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={() => setShowLoadAppModal(false)}
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={confirmLoadApplication}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Load Application
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {(isProcessing || isProcessingLLM) && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          {/* Keep the existing processing overlay */}
           <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center max-w-md w-full">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
             <p className="text-lg font-semibold">
               {isProcessing ? 'Loading saved data...' : 'Processing with AI...'}
             </p>
             
-            {/* Add StopwatchTimer to start whenever processing begins */}
             <StopwatchTimer 
               isRunning={isProcessing || isProcessingLLM} 
               estimatedTime="up to 2 minutes"
@@ -2011,428 +2161,334 @@ export default function Home() {
         </div>
       )}
       
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">
-            DS-160 Agent
-          </h1>
-          
-          {/* Show user info when signed in */}
-          {user && (
-            <div className="flex items-center bg-blue-50 px-4 py-2 rounded-md">
-              <span className="text-sm text-gray-600 mr-3">
-                Signed in as: <span className="font-semibold">{user.fullName || user.emailAddresses[0]?.emailAddress}</span>
-              </span>
-              <UserButton afterSignOutUrl="/" />
-            </div>
-          )}
-        </div>
-        
-        <div className="bg-white shadow-lg rounded-lg p-4">
-          {/* Keep blue theme instead of indigo and make the dropzone wider */}
-          <div className="mb-10 p-6 bg-blue-50 border-2 border-blue-400 rounded-lg shadow-md">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-bold text-blue-800">Fill Manually or Import Data From Previous DS160</h2>
-                <p className="text-sm text-gray-600 mt-1">Below fields will be automatically filled after import</p>
-              </div>
-              <div className="flex-1 flex justify-end ml-2"> 
-                <div className="flex items-center">
-                  <label 
-                    htmlFor="dropzone-file" 
-                    className={`flex items-center justify-center h-14 w-94 
-                              border-2 border-blue-500 border-dashed rounded-lg 
-                              ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-blue-50'} 
-                              bg-white relative shadow-sm`}
-                  >
-                    <div className="flex items-center gap-1 text-center">
-                      <Upload className="h-6 w-6 text-blue-500" />
-                      <span className="text-gray-700 font-medium">
-                        Click or Drag Drop Previous DS160 PDF
-                      </span>
-                    </div>
-                    <input 
-                      id="dropzone-file" 
-                      type="file" 
-                      className="hidden" 
-                      key={fileInputKey}
-                      ref={fileInputRef}
-                      onChange={(e) => {
-                        if (isProcessing || isProcessingLLM) return;
-                        const file = e.target.files?.[0];
-                        if (file) handleFileUpload(file);
-                      }}
-                      disabled={isProcessing || isProcessingLLM}
-                      accept=".pdf"
-                    />
-                  </label>
-                </div>
-              </div>
-            </div>
+      {/* New flex container for sidebar and main content */}
+      <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
+        {/* Sidebar on the LEFT for Previously Submitted Applications */}
+        {/* <div className="lg:w-64 flex-shrink-0">
+          <div className="bg-white shadow-lg rounded-lg p-4 sticky top-6 w-full">
+            <h3 className="text-lg font-bold text-blue-800 mb-4 border-b pb-2">
+              Previous Applications
+            </h3>
             
-            {((extractedText || yamlOutput) && debugMode) && (
-              <div className="flex justify-between mt-4 text-sm">
-                <button
-                  onClick={() => {
-                    const blob = new Blob([extractedText], { type: 'text/plain' });
-                    const url = URL.createObjectURL(blob);
-                    window.open(url, '_blank');
-                  }}
-                  className="text-blue-600 hover:text-blue-800 underline"
-                >
-                  DS160 text
-                </button>
-                <button
-                  onClick={() => {
-                    const blob = new Blob([yamlOutput], { type: 'text/yaml' });
-                    const url = URL.createObjectURL(blob);
-                    window.open(url, '_blank');
-                  }}
-                  className="text-blue-600 hover:text-blue-800 underline"
-                >
-                  DS160 yaml
-                </button>
+            {isLoadingPreviousApps ? (
+              <div className="flex justify-center p-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+              </div>
+            ) : previousApplications.length > 0 ? (
+              <div className="space-y-1 max-h-[70vh] overflow-y-auto">
+                {previousApplications.map((app) => (
+                  <button 
+                    key={app.applicationId} 
+                    className="w-full p-3 text-left transition-colors rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    onClick={() => handleLoadApplication(app.applicationId)}
+                  >
+                    <div className="font-medium text-blue-600 truncate">
+                      ID: {app.applicationId}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {new Date(app.updatedAt).toLocaleString()}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="p-3 text-center text-gray-500 italic text-sm">
+                No previous applications
               </div>
             )}
           </div>
-
-          {/* Increase margin-bottom to create more space between import section and tabs */}
-          <div className="mb-10">
-            <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-4 h-20 bg-gray-100">
-                {Object.entries(formCategories).map(([category, forms]) => {
-                  let categoryCompleted = 0, categoryTotal = 0
-                  forms.forEach((_, index) => {
-                    const formId = `${category}-${index}`
-                    if (completionStatus[formId]) {
-                      categoryCompleted += completionStatus[formId].completed
-                      categoryTotal += completionStatus[formId].total
-                    }
-                  })
-                  const isComplete = categoryTotal > 0 && categoryCompleted === categoryTotal
-
-                  return (
-                    <TabsTrigger 
-                      key={category} 
-                      value={category} 
-                      className="relative flex flex-col items-center justify-center gap-2 py-2 data-[state=active]:bg-gray-200 data-[state=inactive]:bg-white"
-                    >
-                      <span className="text-xl font-bold">
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
-                      </span>
-                      <div className="flex items-center gap-1 text-sm text-gray-600">
-                        <span>
-                          {categoryCompleted}/{categoryTotal} completed
-                        </span>
-                        {categoryTotal > 0 && (
-                          isComplete ? (
-                            <svg
-                              className="w-5 h-5 text-green-500"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={3}
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                          ) : (
-                            <svg
-                              className="w-5 h-5 text-red-500"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={3}
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                          )
-                        )}
-                      </div>
-                    </TabsTrigger>
-                  )
-                })}
-              </TabsList>
-              <TabsContent value="personal">
-                <div className="mb-6">
-                  <PassportUpload 
-                    formData={formData}
-                    onExtractData={(passportData) => {
-                      if (passportData) {
-                        // Get current YAML for personal pages
-                        const currentPageData = getFilteredYamlData([
-                          'personal_page1', 
-                          'personal_page2',
-                          'address_phone_page',
-                          'pptvisa_page', 
-                          'relatives_page',
-                          'spouse_page'
-                        ]);
-                        
-                        // Create merged YAML with both existing and new data
-                        const mergedYaml = {
-                          personal_page1: {
-                            ...currentPageData?.personal_page1,
-                            ...passportData.personal_page1
-                          },
-                          personal_page2: {
-                            ...currentPageData?.personal_page2,
-                            ...passportData.personal_page2
-                          },
-                          address_phone_page: {
-                            ...currentPageData?.address_phone_page,
-                            ...passportData.address_phone_page
-                          },
-                          pptvisa_page: {
-                            ...currentPageData?.pptvisa_page,
-                            ...passportData.pptvisa_page
-                          },
-                          relatives_page: {
-                            ...currentPageData?.relatives_page,
-                            ...passportData.relatives_page
-                          },
-                          spouse_page: {
-                            ...currentPageData?.spouse_page,
-                            ...passportData.spouse_page
-                          }
-                        };
-                        
-                        // Update form with merged data
-                        handleFormDataLoad(
-                          mergedYaml,
-                          true,
-                          [
-                            'personal_page1', 
-                            'personal_page2',
-                            'address_phone_page',
-                            'pptvisa_page', 
-                            'relatives_page',
-                            'spouse_page'
-                          ]
-                        );
-                      }
-                    }} 
-                  />
+        </div> */}
+        
+        {/* Main content - keep all the existing structure */}
+        <div className="flex-1">
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">
+              DS-160 Agent
+            </h1>
+            
+            {/* Show user info when signed in */}
+            {user && (
+              <div className="flex items-center bg-blue-50 px-4 py-2 rounded-md">
+                <span className="text-sm text-gray-600 mr-3">
+                  Signed in as: <span className="font-semibold">{user.fullName || user.emailAddresses[0]?.emailAddress}</span>
+                </span>
+                <UserButton afterSignOutUrl="/" />
+              </div>
+            )}
+          </div>
+          
+          <div className="bg-white shadow-lg rounded-lg p-4">
+            {/* Keep the blue theme instead of indigo and make the dropzone wider */}
+            <div className="mb-10 p-6 bg-blue-50 border-2 border-blue-400 rounded-lg shadow-md">
+              {/* Original file upload area */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-blue-800">Fill Manually or Import Data From Previous DS160</h2>
+                  <p className="text-sm text-gray-600 mt-1">Below fields will be automatically filled after import</p>
                 </div>
-                {renderFormSection(formCategories.personal, 'personal')}
-              </TabsContent>
-              <TabsContent value="travel">
-                {/* Reduce space-y-6 to space-y-2 to bring components closer together */}
-              <I94Import 
-                  formData={formData} 
-                  onDataImported={(i94Data) => {
-                    if (i94Data) {
-                      // Use the function with appropriate filter
-                      const currentPageData = getFilteredYamlData([
-                        'previous_travel_page'
-                      ]);
-                      
-                      // Create merged YAML with both existing and new data
-                      const mergedYaml = {
-                        previous_travel_page: {
-                          ...currentPageData?.previous_travel_page,
-                          ...i94Data.previous_travel_page
-                        }
-                      }
-                      console.log('mergedYaml inside travel tab for i94 import', mergedYaml)
-                      // Update form with merged data
-                      handleFormDataLoad(
-                        mergedYaml,
-                        true,
-                        ['previous_travel_page']
-                      );
-                      
-                    }
-                  }}
-                />
-                <DocumentUpload 
-                  onExtractData={(docData) => {
-                    // Handle document data
-                    if (docData) {
-                      //handleFormDataLoad(docData, true);
-                      handleDocumentExtraction(docData);
-                    }
-                  }}
-                  formData={formData}
-                />
-                {renderFormSection(formCategories.travel, 'travel')}
-              
-              </TabsContent>
-              <TabsContent value="education">
-                <LinkedInImport onDataImported={(linkedInData) => {
-                  if (linkedInData) {
-                    // Debug: Log the pages found in the LinkedIn data
-                    console.log("LinkedIn data pages:", Object.keys(linkedInData));
-                    
-                    // Create a subset of the form data with only work/education pages
-                    const workEducationYaml = {
-                      workeducation1_page: linkedInData.workeducation1_page,
-                      workeducation2_page: linkedInData.workeducation2_page
-                    };
-                    
-                    // Use existing handleFormDataLoad with pages filter
-                    handleFormDataLoad(
-                      workEducationYaml, 
-                      true, // Show default success message
-                      ['workeducation1_page', 'workeducation2_page']
-                    );
-                    
-                    // Navigate to all education accordion items
-                    const updatedAccordionValues = { ...accordionValues };
-                    
-                    // Open all education items
-                    formCategories.education.forEach((_, index) => {
-                      updatedAccordionValues.education = `item-${index}`;
-                    });
-                    
-                    setAccordionValues(updatedAccordionValues);
-                  }
-                }} />
-                {renderFormSection(formCategories.education, 'education')}
-              </TabsContent>
-              <TabsContent value="security">
-                <div className="mb-6 p-4 bg-gray-50 border-l-4 border-l-gray-500 border border-gray-200 rounded-lg">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-lg font-semibold">Select Default Reponse For All Security Questions </p>
-                      <p className="text-sm text-gray-500">You can change individual responses later</p>
-                    </div>
-                    <div className="min-w-[200px]">
-                      <Tabs
-                        defaultValue=""
-                        onValueChange={(value) => {
-                          const newFormData = { ...formData };
-                          formCategories.security.forEach(form => {
-                            form.definition.fields.forEach((field: FormField) => {
-                              if (field.type === 'radio') {
-                                newFormData[field.name] = value;
-                              }
-                            });
-                          });
-                          setFormData(newFormData);
-                          
-                          formCategories.security.forEach((_, index) => {
-                            setTimeout(() => {
-                              setAccordionValues(prev => ({ ...prev, security: `item-${index}` }));
-                              setTimeout(() => {
-                                setAccordionValues(prev => ({ ...prev, security: "" }));
-                              }, 100);
-                            }, index * 200);
-                          });
+                <div className="flex-1 flex justify-end ml-2"> 
+                  <div className="flex items-center">
+                    <label 
+                      htmlFor="dropzone-file" 
+                      className={`flex items-center justify-center h-14 w-94 
+                                border-2 border-blue-500 border-dashed rounded-lg 
+                                ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-blue-50'} 
+                                bg-white relative shadow-sm`}
+                    >
+                      <div className="flex items-center gap-1 text-center">
+                        <Upload className="h-6 w-6 text-blue-500" />
+                        <span className="text-gray-700 font-medium">
+                          Click or Drag Drop Previous DS160 PDF
+                        </span>
+                      </div>
+                      <input 
+                        id="dropzone-file" 
+                        type="file" 
+                        className="hidden" 
+                        key={fileInputKey}
+                        ref={fileInputRef}
+                        onChange={(e) => {
+                          if (isProcessing || isProcessingLLM) return;
+                          const file = e.target.files?.[0];
+                          if (file) handleFileUpload(file);
                         }}
-                        className="w-full"
-                      >
-                        <TabsList className="grid w-full grid-cols-2">
-                          <TabsTrigger
-                            value="Y"
-                            className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
-                          >
-                            Yes
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="N"
-                            className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
-                          >
-                            No
-                          </TabsTrigger>
-                        </TabsList>
-                      </Tabs>
-                    </div>
+                        disabled={isProcessing || isProcessingLLM}
+                        accept=".pdf"
+                      />
+                    </label>
                   </div>
                 </div>
-                {renderFormSection(formCategories.security, 'security')}
-              </TabsContent>
-            </Tabs>
-          </div>
-
-          {/* Change "Continue to Upload" button color back to green */}
-          <div className="mt-12 p-6 bg-blue-50 border-2 border-blue-400 rounded-lg shadow-md">
-            <div className="flex items-center justify-between">
-              <div>
-                <Label className="text-xl font-bold text-blue-800">Ready to upload to the DS160 website?</Label>
-                <p className="text-sm text-gray-600 mt-1">Fill all fields above to proceed</p>
               </div>
-              <Button 
-                onClick={validateAndShowUploadModal}
-                disabled={!areAllFormsComplete()}
-                className={`${!areAllFormsComplete() 
-                  ? 'bg-gray-400 hover:bg-gray-400 cursor-not-allowed' 
-                  : 'bg-green-600 hover:bg-green-700'} text-white px-8 py-3 rounded-lg font-medium text-lg shadow-sm`}
-              >
-                Continue to Upload
-              </Button>
+              
+              {((extractedText || yamlOutput) && debugMode) && (
+                <div className="flex justify-between mt-4 text-sm">
+                  <button
+                    onClick={() => {
+                      const blob = new Blob([extractedText], { type: 'text/plain' });
+                      const url = URL.createObjectURL(blob);
+                      window.open(url, '_blank');
+                    }}
+                    className="text-blue-600 hover:text-blue-800 underline"
+                  >
+                    DS160 text
+                  </button>
+                  <button
+                    onClick={() => {
+                      const blob = new Blob([yamlOutput], { type: 'text/yaml' });
+                      const url = URL.createObjectURL(blob);
+                      window.open(url, '_blank');
+                    }}
+                    className="text-blue-600 hover:text-blue-800 underline"
+                  >
+                    DS160 yaml
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Increase margin-bottom to create more space between import section and tabs */}
+            <div className="mb-10">
+              <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
+                {/* Include all the existing Tabs content */}
+                {/* TabsList */}
+                <TabsList className="grid w-full grid-cols-4 h-20 bg-gray-100">
+                  {Object.entries(formCategories).map(([category, forms]) => {
+                    let categoryCompleted = 0, categoryTotal = 0
+                    forms.forEach((_, index) => {
+                      const formId = `${category}-${index}`
+                      if (completionStatus[formId]) {
+                        categoryCompleted += completionStatus[formId].completed
+                        categoryTotal += completionStatus[formId].total
+                      }
+                    })
+                    const isComplete = categoryTotal > 0 && categoryCompleted === categoryTotal
+
+                    return (
+                      <TabsTrigger 
+                        key={category} 
+                        value={category} 
+                        className="relative flex flex-col items-center justify-center gap-2 py-2 data-[state=active]:bg-gray-200 data-[state=inactive]:bg-white"
+                      >
+                        <span className="text-xl font-bold">
+                          {category.charAt(0).toUpperCase() + category.slice(1)}
+                        </span>
+                        <div className="flex items-center gap-1 text-sm text-gray-600">
+                          <span>
+                            {categoryCompleted}/{categoryTotal} completed
+                          </span>
+                          {categoryTotal > 0 && (
+                            isComplete ? (
+                              <svg
+                                className="w-5 h-5 text-green-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={3}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                            ) : (
+                              <svg
+                                className="w-5 h-5 text-red-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={3}
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            )
+                          )}
+                        </div>
+                      </TabsTrigger>
+                    )
+                  })}
+                </TabsList>
+                
+                {/* TabsContent - Include all the tab content sections */}
+                <TabsContent value="personal">
+                  {/* Personal tab content */}
+                  <div className="mb-6">
+                    <PassportUpload 
+                      formData={formData}
+                      onExtractData={(passportData) => {
+                        /* Passport upload handler */
+                      }} 
+                    />
+                  </div>
+                  {renderFormSection(formCategories.personal, 'personal')}
+                </TabsContent>
+                
+                <TabsContent value="travel">
+                  {/* Travel tab content */}
+                  <I94Import 
+                    formData={formData} 
+                    onDataImported={(i94Data) => {
+                      /* I94 import handler */
+                    }}
+                  />
+                  <DocumentUpload 
+                    onExtractData={(docData) => {
+                      /* Document upload handler */
+                    }}
+                    formData={formData}
+                  />
+                  {renderFormSection(formCategories.travel, 'travel')}
+                </TabsContent>
+                
+                <TabsContent value="education">
+                  {/* Education tab content */}
+                  <LinkedInImport onDataImported={(linkedInData) => {
+                    /* LinkedIn import handler */
+                  }} />
+                  {renderFormSection(formCategories.education, 'education')}
+                </TabsContent>
+                
+                <TabsContent value="security">
+                  {/* Security tab content */}
+                  <div className="mb-6 p-4 bg-gray-50 border-l-4 border-l-gray-500 border border-gray-200 rounded-lg">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-lg font-semibold">Select Default Reponse For All Security Questions </p>
+                        <p className="text-sm text-gray-500">You can change individual responses later</p>
+                      </div>
+                      <div className="min-w-[200px]">
+                        <Tabs
+                          defaultValue=""
+                          onValueChange={(value) => {
+                            /* Security tab value change handler */
+                          }}
+                          className="w-full"
+                        >
+                          <TabsList className="grid w-full grid-cols-2">
+                            <TabsTrigger
+                              value="Y"
+                              className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
+                            >
+                              Yes
+                            </TabsTrigger>
+                            <TabsTrigger
+                              value="N"
+                              className="font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50"
+                            >
+                              No
+                            </TabsTrigger>
+                          </TabsList>
+                        </Tabs>
+                      </div>
+                    </div>
+                  </div>
+                  {renderFormSection(formCategories.security, 'security')}
+                </TabsContent>
+              </Tabs>
+            </div>
+
+            {/* Change "Continue to Upload" button color back to green */}
+            <div className="mt-12 p-6 bg-blue-50 border-2 border-blue-400 rounded-lg shadow-md">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label className="text-xl font-bold text-blue-800">Ready to upload to the DS160 website?</Label>
+                  <p className="text-sm text-gray-600 mt-1">Fill all fields above to proceed</p>
+                </div>
+                <Button 
+                  onClick={validateAndShowUploadModal}
+                  disabled={!areAllFormsComplete()}
+                  className={`${!areAllFormsComplete() 
+                    ? 'bg-gray-400 hover:bg-gray-400 cursor-not-allowed' 
+                    : 'bg-green-600 hover:bg-green-700'} text-white px-8 py-3 rounded-lg font-medium text-lg shadow-sm`}
+                >
+                  Continue to Upload
+                </Button>
+              </div>
+              
+              {/* Show incomplete forms if validation failed */}
+              {incompletePages.length > 0 && (
+                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded-md">
+                  <p className="font-medium text-yellow-800 mb-2">
+                    Please complete the following sections before uploading:
+                  </p>
+                  <ul className="list-disc pl-5 text-yellow-700 text-sm">
+                    {incompletePages.map((page, index) => (
+                      <li key={index}>{page}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
             
-            {/* Show incomplete forms if validation failed */}
-            {incompletePages.length > 0 && (
-              <div className="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded-md">
-                <p className="font-medium text-yellow-800 mb-2">
-                  Please complete the following sections before uploading:
-                </p>
-                <ul className="list-disc pl-5 text-yellow-700 text-sm">
-                  {incompletePages.map((page, index) => (
-                    <li key={index}>{page}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            {/* Add the Reset Form button */}
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={() => setShowResetConfirmation(true)}
+                className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg"
+              >
+                Reset Form
+              </button>
+            </div>
           </div>
-        </div>
-
-        {/* Only show debug buttons when debugMode is true */}
-        {debugMode && (
-          <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={handleDownloadYaml}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg"
-            >
-              Download YAML
-            </button>
-            
-            <label className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-center cursor-pointer">
-              Upload YAML
-              <input
-                type="file"
-                className="hidden"
-                onChange={handleUploadFile}
-                accept=".yaml,.yml"
-              />
-            </label>
-          </div>
-        )}
-        
-        {/* Add the Reset Form button */}
-        <div className="mt-6 flex justify-center">
-          <button
-            onClick={() => setShowResetConfirmation(true)}
-            className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg"
-          >
-            Reset Form
-          </button>
         </div>
       </div>
 
-      {/* Full-screen DS-160 progress overlay */}
+      {/* DS-160 progress overlay */}
       {ds160Status === 'processing' && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center max-w-2xl w-full max-h-[90vh]">
             <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500 mb-6"></div>
             <h2 className="text-2xl font-bold mb-4">Processing DS-160 Form</h2>
             
-            {/* Add StopwatchTimer */}
             <StopwatchTimer 
               isRunning={ds160Status === 'processing'} 
               estimatedTime="up to 3 minutes"
             />
             
-            {/* Progress messages container with scrolling */}
             <div className="w-full border border-gray-200 rounded-lg bg-gray-50 p-4 max-h-[60vh] overflow-y-auto mb-4">
               {progressMessages.length === 0 ? (
                 <p className="text-gray-500 italic text-center">Waiting for updates...</p>
@@ -2460,7 +2516,6 @@ export default function Home() {
               )}
             </div>
             
-            {/* Action buttons */}
             <div className="flex justify-end space-x-4">
               <button
                 onClick={resetDS160State}
@@ -2501,7 +2556,6 @@ export default function Home() {
               </h2>
             </div>
             
-            {/* Show application ID for new applications */}
             {ds160Status === 'success' && applicationId && (
               <div className="bg-blue-50 border border-blue-300 p-4 rounded-lg mb-4">
                 <div className="flex items-center">
@@ -2518,74 +2572,20 @@ export default function Home() {
                 </div>
               </div>
             )}
-            
-            {/* Process summary from backend, if available */}
-            {progressMessages.find(msg => msg.summary)?.summary && (
-              <div className={`p-3 rounded-lg mb-4 ${
-                progressMessages.find(msg => msg.summary)?.summary?.errors ?? 0 <= 2 
-                  ? 'bg-green-50 border border-green-200' 
-                  : 'bg-yellow-50 border border-yellow-200'
-              }`}>
-                <h3 className="font-medium mb-1">Form Completion Summary</h3>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div>Pages completed:</div>
-                  <div className="font-medium">{progressMessages.find(msg => msg.summary)?.summary?.completed}</div>
-                  <div>Pages with errors:</div>
-                  <div className="font-medium">{progressMessages.find(msg => msg.summary)?.summary?.errors}</div>
-                  <div>Pages skipped:</div>
-                  <div className="font-medium">{progressMessages.find(msg => msg.summary)?.summary?.skipped}</div>
-                  <div>Total pages:</div>
-                  <div className="font-medium">{progressMessages.find(msg => msg.summary)?.summary?.total}</div>
-                </div>
-              </div>
-            )}
-            
-            {/* Show progress messages - with scrolling preserved */}
-            <div className="border border-gray-200 rounded-lg bg-gray-50 p-4 overflow-y-auto flex-1 mb-4">
-              <div className="space-y-2">
-                {progressMessages.map((msg, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`p-2 rounded text-sm ${
-                      msg.status === 'error' ? 'bg-red-100 text-red-800' :
-                      msg.status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
-                      msg.status === 'success' ? 'bg-green-100 text-green-800' :
-                      msg.status === 'complete' ? 'bg-blue-100 text-blue-800 font-bold' :
-                      'bg-gray-100 text-gray-800'
-                    }`}
-                  >
-                    <div className="flex items-start">
-                      <span className="text-xs text-gray-500 mr-2">[{msg.timestamp}]</span>
-                      <span>{msg.message}</span>
-                    </div>
-                  </div>
-                ))}
-                <div ref={progressEndRef} />
-              </div>
-            </div>
-            
-            {/* Action buttons */}
-            <div className="flex justify-end space-x-4">
+
+            <div className="flex justify-end space-x-4 mt-4">
               <button
                 onClick={resetDS160State}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
               >
                 Close
               </button>
-              
-              {ds160Status === 'success' && (
-                <button
-                  onClick={handleDownloadYaml}
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg"
-                >
-                  Download YAML
-                </button>
-              )}
             </div>
           </div>
         </div>
       )}
-      
+
+      {/* Console errors component */}
       {consoleErrors.length > 0 && (
         <div className="fixed bottom-0 right-0 p-4 m-4 bg-black bg-opacity-75 text-white rounded-lg max-w-lg">
           <div className="flex justify-between items-center mb-2">
@@ -2660,8 +2660,47 @@ export default function Home() {
       {/* Upload Configuration Modal */}
       <UploadConfigModal />
 
-      {/* Add the reset confirmation modal here */}
+      {/* Reset confirmation modal */}
       <ResetConfirmationModal />
+
+      {/* Load application modal */}
+      <LoadApplicationModal />
+
+      {/* Add the Previous Applications section at the bottom */}
+      <div className="mt-8 max-w-7xl mx-auto">
+        <div className="bg-white shadow-lg rounded-lg p-4">
+          <h3 className="text-lg font-bold text-blue-800 mb-4 border-b pb-2">
+            Previous Applications
+          </h3>
+          
+          {isLoadingPreviousApps ? (
+            <div className="flex justify-center p-4">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+            </div>
+          ) : previousApplications.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {previousApplications.map((app) => (
+                <button 
+                  key={app.applicationId} 
+                  className="p-3 text-left transition-colors rounded-md border border-gray-200 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  onClick={() => handleLoadApplication(app.applicationId)}
+                >
+                  <div className="font-medium text-blue-600 truncate">
+                    ID: {app.applicationId}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {new Date(app.updatedAt).toLocaleString()}
+                  </div>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="p-3 text-center text-gray-500 italic text-sm">
+              No previous applications
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

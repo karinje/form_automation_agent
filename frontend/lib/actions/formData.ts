@@ -3,9 +3,10 @@
 import { currentUser } from '@clerk/nextjs/server';
 import { getDb } from '../db';
 import { formData, formVersions } from '../db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, sql, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { createId } from '@paralleldrive/cuid2';
+import { auth } from '@clerk/nextjs';
 
 export type FormDataUpdate = {
   yamlData?: any;
@@ -139,4 +140,109 @@ export async function loadFormVersions() {
     .orderBy(formVersions.createdAt);
   
   return versions;
+}
+
+// Add this function to save a successful application
+export async function saveSuccessfulApplication(
+  yamlData: any, 
+  applicationId: string
+) {
+  try {
+    const user = await currentUser();
+    if (!user?.id) throw new Error('Not authenticated');
+    const userId = user.id;
+    
+    const db = getDb();
+    
+    // First check if this application already exists for this user
+    const existingApplication = await db
+      .select()
+      .from(formVersions)
+      .where(eq(formVersions.userId, userId))
+      .where(eq(formVersions.applicationId, applicationId))
+      .limit(1);
+    console.log('inside saveSuccessfulApplication existingApplication', existingApplication);
+    console.log('inside saveSuccessfulApplication applicationId', applicationId);
+    console.log('inside saveSuccessfulApplication userId', userId);
+    if (existingApplication && existingApplication.length > 0) {
+      // Application exists, update it
+      console.log(`Updating existing application with ID: ${applicationId}`);
+      
+      await db
+        .update(formVersions)
+        .set({
+          yamlData: yamlData,
+          updatedAt: new Date()
+        })
+        .where(eq(formVersions.userId, userId))
+        .where(eq(formVersions.applicationId, applicationId));
+        
+      return { success: true, message: "Application updated successfully" };
+    } else {
+      // Application doesn't exist, insert a new one
+      console.log(`Creating new application with ID: ${applicationId}`);
+      
+      await db.insert(formVersions).values({
+        id: createId(),
+        userId,
+        yamlData: yamlData,
+        applicationId: applicationId,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      
+      return { success: true, message: "Application saved successfully" };
+    }
+  } catch (error) {
+    console.error("Error saving successful application:", error);
+    throw error;
+  }
+}
+
+// Add this function to load a specific application by ID
+export async function loadApplicationById(applicationId: string) {
+  try {
+    const user = await currentUser();
+    if (!user?.id) return null;
+    const userId = user.id;
+    
+    const db = getDb();
+    
+    const application = await db.select()
+      .from(formVersions)
+      .where(eq(formVersions.userId, userId))
+      .where(eq(formVersions.applicationId, applicationId))
+      .limit(1);
+    
+    return application[0] || null;
+  } catch (error) {
+    console.error('Error loading application by ID:', error);
+    return null;
+  }
+}
+
+// Add this function to get all successful applications
+export async function getSuccessfulApplications() {
+  try {
+    const user = await currentUser();
+    if (!user?.id) return [];
+    const userId = user.id;
+    
+    const db = getDb();
+    
+    const applications = await db.select({
+      id: formVersions.id,
+      applicationId: formVersions.applicationId,
+      updatedAt: formVersions.updatedAt
+    })
+      .from(formVersions)
+      .where(eq(formVersions.userId, userId))
+      .where(sql`${formVersions.applicationId} IS NOT NULL`)
+      .orderBy(desc(formVersions.updatedAt));
+    
+    return applications;
+  } catch (error) {
+    console.error('Error getting successful applications:', error);
+    return [];
+  }
 } 
