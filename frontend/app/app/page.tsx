@@ -1189,7 +1189,7 @@ export default function Home() {
                           updated[pageName] = {};
                         }
                         if (pageName === 'workeducation2_page') {
-                          console.log('updated before groupdata', updated)
+                          debugLog('workeducation2_page', 'updated before groupdata', updated)
                         }
                         // Update the group data
                         updated[pageName][groupKey] = [...groupData];
@@ -1207,7 +1207,7 @@ export default function Home() {
                         return updated;
                       });
                       if (pageName === 'workeducation2_page') {
-                        console.log('arrayGroups finally', arrayGroups)
+                        debugLog('workeducation2_page', 'arrayGroups finally', arrayGroups)
                       }
                     }}
                     onSave={saveYamlToBackend} // Add this new prop

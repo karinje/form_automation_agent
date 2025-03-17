@@ -22,6 +22,7 @@ import { transformFieldName } from '@/utils/yaml-helpers'
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { getYamlField } from '@/utils/mappings'
+import debounce from 'lodash/debounce';
 
 interface DynamicFormProps {
   formDefinition: FormDefinition
@@ -1558,6 +1559,8 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
             allGroupsData
           });
         }
+        //debounce this 
+        
         onArrayGroupsChange(pageName, groupKey, allGroupsData);
       }
     });
