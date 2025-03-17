@@ -112,7 +112,7 @@ export default function Home() {
   } = useFormPersistence();
 
   // Add at the top of your component, with other state declarations
-  const [debugMode, setDebugMode] = useState(true); // Default to false
+  const [debugMode, setDebugMode] = useState(false); // Default to false
 
   // Add this variable at the component level
   const [tempApplicationId, setTempApplicationId] = useState('');
@@ -1104,7 +1104,7 @@ export default function Home() {
                     </div>
                     <div className="flex items-center">
                       {/* Create a fixed-width container with flex layout for perfect alignment */}
-                      <div className="w-[180px] flex items-center justify-end">
+                      <div className="w-[200px] flex items-center justify-end">
                         {/* Icon with fixed position */}
                         <div className="w-[24px] flex justify-center mr-2">
                           {status.total > 0 && (
@@ -2383,12 +2383,36 @@ export default function Home() {
                   <I94Import 
                     formData={formData} 
                     onDataImported={(i94Data) => {
-                      /* I94 import handler */
+                      if (i94Data) {
+                        // Use the function with appropriate filter
+                        handleFormDataLoad(
+                          i94Data,
+                          true,
+                          ['previous_travel_page']
+                        );
+                        
+                        // Navigate to the travel tab and open appropriate accordions
+                        setCurrentTab('travel');
+                        const updatedAccordionValues = { ...accordionValues };
+                        
+                        // Find the index of the previous_travel form
+                        const previousTravelIndex = formCategories.travel.findIndex(
+                          form => form.pageName === 'previous_travel_page'
+                        );
+                        
+                        if (previousTravelIndex >= 0) {
+                          updatedAccordionValues.travel = `item-${previousTravelIndex}`;
+                          setAccordionValues(updatedAccordionValues);
+                        }
+                      }
                     }}
                   />
                   <DocumentUpload 
                     onExtractData={(docData) => {
-                      /* Document upload handler */
+                       // Handle document data
+                      if (docData) {
+                        handleFormDataLoad(docData, true);
+                      }
                     }}
                     formData={formData}
                   />
@@ -2398,7 +2422,33 @@ export default function Home() {
                 <TabsContent value="education">
                   {/* Education tab content */}
                   <LinkedInImport onDataImported={(linkedInData) => {
-                    /* LinkedIn import handler */
+                    if (linkedInData) {
+                      // Debug: Log the pages found in the LinkedIn data
+                      console.log("LinkedIn data pages:", Object.keys(linkedInData));
+                      
+                      // Create a subset of the form data with only work/education pages
+                      const workEducationYaml = {
+                        workeducation1_page: linkedInData.workeducation1_page,
+                        workeducation2_page: linkedInData.workeducation2_page
+                      };
+                      
+                      // Use existing handleFormDataLoad with pages filter
+                      handleFormDataLoad(
+                        workEducationYaml, 
+                        true, // Show default success message
+                        ['workeducation1_page', 'workeducation2_page']
+                      );
+                      
+                      // Navigate to all education accordion items
+                      const updatedAccordionValues = { ...accordionValues };
+                      
+                      // Open all education items
+                      formCategories.education.forEach((_, index) => {
+                        updatedAccordionValues.education = `item-${index}`;
+                      });
+                      
+                      setAccordionValues(updatedAccordionValues);
+                    }
                   }} />
                   {renderFormSection(formCategories.education, 'education')}
                 </TabsContent>

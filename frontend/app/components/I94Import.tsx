@@ -12,6 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ChevronDown } from "lucide-react"
 import { countFieldsByPage } from '../utils/field-counter'
 import { StopwatchTimer } from './StopwatchTimer'
+import { CheckCircle2 } from "lucide-react"
 
 interface I94ImportProps {
   formData: Record<string, string>
@@ -31,6 +32,8 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
   const [fieldCounts, setFieldCounts] = useState<Record<string, number>>({})
   const [processingComplete, setProcessingComplete] = useState(false)
   const [isInteracting, setIsInteracting] = useState(false)
+  const [completionSummary, setCompletionSummary] = useState<Record<string, number>>({})
+  const [hasImportedData, setHasImportedData] = useState(false)
 
   // Initialize form data from personal page and passport info
   useEffect(() => {
@@ -166,6 +169,10 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
         const counts = countFieldsByPage(result.data)
         setFieldCounts(counts)
         
+        // Store counts for display after modal is closed
+        setCompletionSummary(counts)
+        setHasImportedData(true)
+        
         // Add field counts to progress messages
         const countMessages = Object.entries(counts).map(([page, count]) => {
           const readablePage = page.replace('_page', '').replace(/_/g, ' ')
@@ -219,6 +226,20 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
               <div>
                 <h3 className="text-xl font-semibold">Fill Manually or Import Previous US Visits From I94 website</h3>
                 <p className="text-base text-gray-500">Travel history will be automatically filled</p>
+                
+                {hasImportedData && Object.keys(completionSummary).length > 0 && (
+                  <div className="mt-2 text-sm text-green-600 font-medium">
+                    <div className="flex items-center">
+                      <CheckCircle2 className="h-4 w-4 mr-1" />
+                      <span>Data imported: {Object.entries(completionSummary).map(([page, count]) => (
+                        <span key={page} className="mr-2">
+                          {page.replace('_page', '').replace(/_/g, ' ')} ({count} fields)
+                        </span>
+                      ))}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             

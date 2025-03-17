@@ -195,6 +195,10 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
   // Add a state variable to track active interaction
   const [isInteracting, setIsInteracting] = useState(false);
 
+  // Add a new state for persisting completion summary
+  const [completionSummary, setCompletionSummary] = useState<Record<string, number>>({});
+  const [hasImportedData, setHasImportedData] = useState(false);
+
   // Update the handleExtractData function
   const handleExtractData = async () => {
     try {
@@ -312,6 +316,10 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
         // Use the shared utility function
         const counts = countFieldsByPage(response.data);
         setFieldCounts(counts)
+        
+        // Save counts for display after modal is closed
+        setCompletionSummary(counts);
+        setHasImportedData(true);
         
         // Add field counts to progress messages
         const countMessages = Object.entries(counts).map(([page, count]) => {
@@ -512,6 +520,20 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
               <div>
                 <h3 className="text-xl font-semibold">Fill Manually or Upload documents to import data</h3>
                 <p className="text-base text-gray-500">Travel information will be automatically filled</p>
+                
+                {/* Add the completion summary here */}
+                {hasImportedData && Object.keys(completionSummary).length > 0 && (
+                  <div className="mt-2 text-sm text-green-600 font-medium">
+                    <div className="flex items-center">
+                      <CheckCircle2 className="h-4 w-4 mr-1" />
+                      <span>Data imported: {Object.entries(completionSummary).map(([page, count]) => (
+                        <span key={page} className="mr-2">
+                          {page.replace('_page', '').replace(/_/g, ' ')} ({count} fields)
+                        </span>
+                      ))}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             

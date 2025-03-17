@@ -46,6 +46,10 @@ export function PassportUpload({ onExtractData, formData }: PassportUploadProps)
   // Add isInteracting state
   const [isInteracting, setIsInteracting] = useState(false);
 
+  // Add a new state for persisting completion summary
+  const [completionSummary, setCompletionSummary] = useState<Record<string, number>>({});
+  const [hasImportedData, setHasImportedData] = useState(false);
+
   const handleExtractData = async () => {
     try {
       setIsLoading(true)
@@ -95,6 +99,10 @@ export function PassportUpload({ onExtractData, formData }: PassportUploadProps)
             setProcessingComplete(true)
           }, 2000)
         }
+        
+        // Store the counts for display after modal is closed
+        setCompletionSummary(counts);
+        setHasImportedData(true);
       }
     } catch (error) {
       console.error('Error extracting passport data:', error)
@@ -267,6 +275,21 @@ export function PassportUpload({ onExtractData, formData }: PassportUploadProps)
               <div>
                 <h3 className="text-xl font-semibold">Fill Manually or Upload Passport Pages to Import Data</h3>
                 <p className="text-base text-gray-500">Personal details will be automatically extracted</p>
+                
+                {/* Add the completion summary here */}
+                {hasImportedData && Object.keys(completionSummary).length > 0 && (
+                  <div className="mt-2 text-sm text-green-600 font-medium">
+                    <div className="flex items-center">
+                      <CheckCircle2 className="h-4 w-4 mr-1" />
+                      <span>Data imported: {Object.entries(completionSummary).map(([page, count]) => (
+                        <span key={page} className="mr-2">
+                          {page.replace('_page', '').replace(/_/g, ' ')} ({count} fields)
+                        </span>
+                      ))}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             
