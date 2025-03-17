@@ -27,6 +27,7 @@ wheels/
 
 # Environment variables
 .env
+.env.local
 
 # IDE
 .idea/
