@@ -264,9 +264,9 @@ export default function Home() {
         }
       });
       
-      console.log('filteredYamlData inside handleFormDataLoad after page and button clicks filters:', filteredYamlData)
-      console.log('filteredYamlData[pageName] before assignment', filteredYamlData['previous_travel_page'])
-      console.log('filteredYamlData keys before assignment', Object.keys(filteredYamlData))
+      //console.log('filteredYamlData inside handleFormDataLoad after page and button clicks filters:', filteredYamlData)
+      //console.log('filteredYamlData[pageName] before assignment', filteredYamlData['previous_travel_page'])
+      //console.log('filteredYamlData keys before assignment', Object.keys(filteredYamlData))
 
       // IMPORTANT CHANGE: Merge the filtered YAML with existing YAML instead of replacing it
       const mergedYamlData = { ...yamlData };
@@ -277,16 +277,17 @@ export default function Home() {
         if (pagesFilter && !pagesFilter.includes(pageName)) {
           return;
         }
-        console.log('pageName inside handleFormDataLoad', pageName)
-        console.log('filteredYamlData[pageName] inside handleFormDataLoad', filteredYamlData[pageName])
+        //console.log('pageName inside handleFormDataLoad', pageName)
+        //console.log('filteredYamlData[pageName] inside handleFormDataLoad', filteredYamlData[pageName])
         // Update or add this page to the merged YAML
         mergedYamlData[pageName] = filteredYamlData[pageName];
-        console.log('mergedYamlData[pageName] inside handleFormDataLoad', mergedYamlData[pageName])
+        //console.log('mergedYamlData[pageName] inside handleFormDataLoad', mergedYamlData[pageName])
       });
-      console.log('mergedYamlData inside handleFormDataLoad', mergedYamlData)
+      //console.log('mergedYamlData inside handleFormDataLoad', mergedYamlData)
       // Now set the merged YAML data
       setYamlData(mergedYamlData);
-      
+      console.log('saving yaml to backend inside handleFormDataLoad')
+      //saveYamlToBackend();
       // Convert the merged YAML to string and create form mapping
       const yamlString = yaml.dump(mergedYamlData);
       const { formData: arrayAwareFormData, arrayGroups: newArrayGroups } = createFormMapping(yamlString);
@@ -332,6 +333,7 @@ export default function Home() {
       
       setFormData(mergedFormData);
       
+      
       // Increment refreshKey to force a complete re-render of all DynamicForm components
       setRefreshKey(prev => prev + 1);
       
@@ -363,7 +365,7 @@ export default function Home() {
         setIsProcessing(false);
         setProcessingProgress([]);
         updateFormCountersSilently(pagesFilter);
-        
+        saveYamlToBackend();
         if (showSuccess) {
          // setConsoleErrors(['Form data loaded successfully!', ...consoleErrors])
         }
@@ -376,6 +378,11 @@ export default function Home() {
       setProcessingProgress([]);
     } finally {
       setIsProcessingLLM(false);
+      // Wait a bit before trying to save again to ensure state is updated
+      // setTimeout(() => {
+      //   console.log('saving yaml to backend inside handleFormDataLoad finally');
+      //   saveYamlToBackend();
+      // }, 100);
     }
   };
 
@@ -499,7 +506,7 @@ export default function Home() {
           
           // Update form data using handleFormDataLoad instead of formManageRef
           handleFormDataLoad(parsedYaml);
-          saveYamlToBackend();
+          
           // Add count information to progress messages
           Object.entries(fieldCounts).forEach(([page, count]) => {
             const pageName = page.replace('_page', '').replace(/_/g, ' ');
@@ -1089,9 +1096,9 @@ export default function Home() {
             return (
               <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
                 <AccordionTrigger className="w-full hover:no-underline [&>svg]:h-8 [&>svg]:w-8 [&>svg]:shrink-0 [&>svg]:text-gray-500 p-0">
-                  <div className="flex justify-between items-center py-2 px-4 bg-gray-50 w-full">
+                  <div className="flex justify-between items-center py-3 px-4 bg-gray-50 w-full">
                     <div className="flex items-center">
-                      <h2 className="text-lg font-semibold leading-none">
+                      <h2 className="text-2xl font-semibold leading-none">
                         {form.title}
                       </h2>
                     </div>
@@ -1133,7 +1140,7 @@ export default function Home() {
                           )}
                         </div>
                         {/* Counter text with fixed width */}
-                        <span className="text-sm text-gray-600 w-[120px] text-right">
+                        <span className="text-lg text-gray-600 w-[140px] text-right">
                           {(completionStatus[formId]?.completed || 0)}/
                           {(completionStatus[formId]?.total || 0)} completed
                         </span>
@@ -1884,38 +1891,42 @@ export default function Home() {
   // Add a reference for the periodic backup timer (keep this)
   const yamlBackupInterval = useRef<NodeJS.Timeout | null>(null);
 
-  // Move this function ABOVE the useEffect that uses it
-  // Add this function to save YAML to backend - can be called manually or by interval
-  const saveYamlToBackend = useCallback(() => {
-    // Skip if no form data
-    if (Object.keys(formData).length === 0) return Promise.resolve({ success: false });
-    
-    console.log('Saving YAML to backend');
-    
-    // Generate YAML using the existing function
-    const yamlData = generateFormYamlData({
-      location: location,
-      retrieveMode: retrieveMode,
-      applicationId: applicationId,
-      surname: surname,
-      birthYear: birthYear,
-      secretQuestion: secretQuestion,
-      secretAnswer: secretAnswer,
-      currentArrayGroups: arrayGroups
-    });
-    
-    // Save to database
-    return saveDataImmediately({ yamlData })
-      .then(() => {
-        console.log('YAML saved to backend successfully');
-        return { success: true };
-      })
-      .catch(err => {
-        console.error('Failed to save YAML to backend:', err);
-        return { success: false, error: err };
+  // Update the saveYamlToBackend function to always use generateFormYamlData
+  const saveYamlToBackend = useCallback(async () => {
+    try {
+      // Generate YAML using the existing function first
+      const yamlToSave = generateFormYamlData({
+        location,
+        retrieveMode,
+        applicationId,
+        surname,
+        birthYear,
+        secretQuestion,
+        secretAnswer,
+        currentArrayGroups: arrayGroups
       });
+
+      // Skip if no YAML data
+      if (!yamlToSave || Object.keys(yamlToSave).length === 0) {
+        console.log('No YAML data to save');
+        return;
+      }
+
+      console.log('Saving YAML to backend...');
+      const response = await saveDataImmediately({ yamlData: yamlToSave });
+
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to save YAML data');
+      }
+
+      console.log('YAML saved to backend successfully');
+      return { success: true };
+    } catch (error) {
+      console.error('Error saving YAML data:', error);
+      setErrorMessage(`Error saving form data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      return { success: false, error };
+    }
   }, [
-    formData,
     generateFormYamlData,
     location,
     retrieveMode,
@@ -2202,7 +2213,7 @@ export default function Home() {
         {/* Main content - keep all the existing structure */}
         <div className="flex-1">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">
+            <h1 className="text-4xl font-bold text-gray-800 sm:text-5xl">
               DS-160 Agent
             </h1>
             
@@ -2223,21 +2234,21 @@ export default function Home() {
               {/* Original file upload area */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-lg font-bold text-blue-800">Fill Manually or Import Data From Previous DS160</h2>
-                  <p className="text-sm text-gray-600 mt-1">Below fields will be automatically filled after import</p>
+                  <h2 className="text-xl font-bold text-blue-800">Fill Manually or Import Data From Previous DS160</h2>
+                  <p className="text-lg text-gray-600 mt-1">Below fields will be automatically filled after import</p>
                 </div>
                 <div className="flex-1 flex justify-end ml-2"> 
                   <div className="flex items-center">
                     <label 
                       htmlFor="dropzone-file" 
-                      className={`flex items-center justify-center h-14 w-94 
+                      className={`flex items-center justify-center h-14 w-[500px]
                                 border-2 border-blue-500 border-dashed rounded-lg 
                                 ${isProcessing || isProcessingLLM ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-blue-50'} 
                                 bg-white relative shadow-sm`}
                     >
                       <div className="flex items-center gap-1 text-center">
                         <Upload className="h-6 w-6 text-blue-500" />
-                        <span className="text-gray-700 font-medium">
+                        <span className="text-gray-700 font-large">
                           Click or Drag Drop Previous DS160 PDF
                         </span>
                       </div>
@@ -2291,7 +2302,7 @@ export default function Home() {
               <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
                 {/* Include all the existing Tabs content */}
                 {/* TabsList */}
-                <TabsList className="grid w-full grid-cols-4 h-20 bg-gray-100">
+                <TabsList className="grid w-full grid-cols-4 h-28 bg-gray-100">
                   {Object.entries(formCategories).map(([category, forms]) => {
                     let categoryCompleted = 0, categoryTotal = 0
                     forms.forEach((_, index) => {
@@ -2309,10 +2320,10 @@ export default function Home() {
                         value={category} 
                         className="relative flex flex-col items-center justify-center gap-2 py-2 data-[state=active]:bg-gray-200 data-[state=inactive]:bg-white"
                       >
-                        <span className="text-xl font-bold">
+                        <span className="text-3xl font-bold">
                           {category.charAt(0).toUpperCase() + category.slice(1)}
                         </span>
-                        <div className="flex items-center gap-1 text-sm text-gray-600">
+                        <div className="flex items-center gap-1 text-lg text-gray-600">
                           <span>
                             {categoryCompleted}/{categoryTotal} completed
                           </span>
@@ -2397,14 +2408,31 @@ export default function Home() {
                   <div className="mb-6 p-4 bg-gray-50 border-l-4 border-l-gray-500 border border-gray-200 rounded-lg">
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <p className="text-lg font-semibold">Select Default Reponse For All Security Questions </p>
-                        <p className="text-sm text-gray-500">You can change individual responses later</p>
+                        <p className="text-xl font-semibold">Select Default Reponse For All Security Questions </p>
+                        <p className="text-lg text-gray-500">You can change individual responses later</p>
                       </div>
                       <div className="min-w-[200px]">
                         <Tabs
                           defaultValue=""
                           onValueChange={(value) => {
-                            /* Security tab value change handler */
+                            const newFormData = { ...formData };
+                            formCategories.security.forEach(form => {
+                             form.definition.fields.forEach((field: FormField) => {
+                              if (field.type === 'radio') {
+                              newFormData[field.name] = value;
+                            }
+                          });
+                        });
+                        setFormData(newFormData);
+                        
+                        formCategories.security.forEach((_, index) => {
+                          setTimeout(() => {
+                            setAccordionValues(prev => ({ ...prev, security: `item-${index}` }));
+                            setTimeout(() => {
+                              setAccordionValues(prev => ({ ...prev, security: "" }));
+                            }, 100);
+                           }, index * 200);
+                          });
                           }}
                           className="w-full"
                         >
@@ -2436,7 +2464,7 @@ export default function Home() {
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-xl font-bold text-blue-800">Ready to upload to the DS160 website?</Label>
-                  <p className="text-sm text-gray-600 mt-1">Fill all fields above to proceed</p>
+                  <p className="text-lg text-gray-600 mt-1">Fill all fields above to proceed</p>
                 </div>
                 <Button 
                   onClick={validateAndShowUploadModal}

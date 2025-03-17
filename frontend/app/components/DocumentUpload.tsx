@@ -417,7 +417,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
     
     return (
       <div className="flex items-center justify-between">
-        <Label className="text-base font-medium flex-shrink-0 min-w-[230px]">{label}</Label>
+        <Label className="text-lg font-medium flex-shrink-0 min-w-[230px]">{label}</Label>
         <div className="flex-1 flex justify-end">
           <div className="w-[400px]">
             <div 
@@ -438,7 +438,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                     <svg className="w-5 h-5 flex-shrink-0 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="font-medium truncate">{file.name}</span>
+                    <span className="text-base font-medium truncate">{file.name}</span>
                   </div>
                   <Button 
                     variant="ghost" 
@@ -458,7 +458,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
               ) : (
                 <div className="flex items-center gap-3 text-gray-500">
                   <Upload className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                  <span className="text-sm font-medium whitespace-nowrap">Click to upload or drag and drop</span>
+                  <span className="text-base font-medium whitespace-nowrap">Click to upload or drag and drop</span>
                 </div>
               )}
               <input
@@ -510,8 +510,8 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
           >
             <div className="flex-1 flex items-center">
               <div>
-                <h3 className="text-lg font-semibold">Fill Manually or Upload documents to import data</h3>
-                <p className="text-sm text-gray-500">Travel information will be automatically filled</p>
+                <h3 className="text-xl font-semibold">Fill Manually or Upload documents to import data</h3>
+                <p className="text-base text-gray-500">Travel information will be automatically filled</p>
               </div>
             </div>
             
@@ -527,7 +527,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                 !licenseFile && !visaFile && !travelTicketFile && 
                 !selectedAddress && selectedCompanions.length === 0
               )}
-              className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-6 py-2 text-base"
+              className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-6 py-3 text-lg"
             >
               {isLoading ? (
                 <>
@@ -584,7 +584,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
               {/* US Address Selection - only show if either home or mailing address is in the US */}
               {showAddressSelection && (
                 <div className="flex items-center justify-between">
-                  <Label className="text-base font-medium flex-shrink-0 min-w-[230px]">Address where you'll stay in the US:</Label>
+                  <Label className="text-lg font-medium flex-shrink-0 min-w-[230px]">Address where you'll stay in the US:</Label>
                   <div className="flex-1 flex justify-end">
                     <div className="w-[400px] flex gap-4">
                       {homeAddressInUS && (
@@ -593,7 +593,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                           variant="outline"
                           size="sm"
                           onClick={() => handleAddressSelect('home')}
-                          className={`flex items-center gap-2 ${
+                          className={`flex items-center gap-2 text-base py-2 px-4 ${
                             selectedAddress === 'home' 
                               ? 'border-green-500 bg-green-50 text-green-700' 
                               : 'border-gray-300 text-gray-700'
@@ -611,7 +611,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                           variant="outline"
                           size="sm"
                           onClick={() => handleAddressSelect('mailing')}
-                          className={`flex items-center gap-2 ${
+                          className={`flex items-center gap-2 text-base py-2 px-4 ${
                             selectedAddress === 'mailing' 
                               ? 'border-green-500 bg-green-50 text-green-700' 
                               : 'border-gray-300 text-gray-700'
@@ -630,7 +630,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
               
               {/* Travel Companions Selection - ALWAYS show */}
               <div className="flex items-center justify-between">
-                <Label className="text-base font-medium flex-shrink-0 min-w-[230px]">Travel companions:</Label>
+                <Label className="text-lg font-medium flex-shrink-0 min-w-[230px]">Travel companions:</Label>
                 <div className="flex-1 flex justify-end">
                   <div className="w-[400px] flex flex-wrap gap-2">
                     {/* Add None button first */}
@@ -639,7 +639,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                       variant="outline"
                       size="sm"
                       onClick={handleNoneSelection}
-                      className={`flex items-center gap-2 ${
+                      className={`flex items-center gap-2 text-base py-2 px-4 ${
                         noCompanions
                           ? 'border-red-500 bg-red-50 text-red-700' 
                           : 'border-gray-300 text-gray-700'
@@ -660,7 +660,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                         variant="outline"
                         size="sm"
                         onClick={() => handleCompanionToggle(relative.id)}
-                        className={`flex items-center gap-2 ${
+                        className={`flex items-center gap-2 text-base py-2 px-4 ${
                           selectedCompanions.includes(relative.id)
                             ? 'border-green-500 bg-green-50 text-green-700' 
                             : 'border-gray-300 text-gray-700'
@@ -698,7 +698,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
               )}
               
-              <h3 className="text-lg font-semibold mb-4">
+              <h3 className="text-xl font-semibold mb-4">
                 {extractionStatus === 'extracting' ? 'Extracting Document Data' : 
                  extractionStatus === 'filling' && !processingComplete ? 'Filling Form Fields' : 
                  extractionStatus === 'complete' && processingComplete ? 'Document Processing Complete' :
@@ -715,7 +715,7 @@ export function DocumentUpload({ onExtractData, formData }: DocumentUploadProps)
               
               <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
                 {extractionProgress.map((msg, idx) => (
-                  <div key={idx} className="text-sm">
+                  <div key={idx} className="text-base">
                     {msg}
                   </div>
                 ))}

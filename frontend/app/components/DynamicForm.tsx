@@ -295,7 +295,7 @@ const renderPhraseGroup = (
   return (
     <div className="relative border border-gray-200 rounded-lg p-4 mb-4">
       {phraseGroup.parentTextPhrase && (
-        <span className="absolute -top-3 left-3 bg-white px-2 text-sm text-gray-600">
+        <span className="absolute -top-3 left-3 bg-white px-2 text-lg text-gray-600 font-medium">
           {phraseGroup.parentTextPhrase}
         </span>
       )}
@@ -1348,9 +1348,12 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
               
               // Original fields (first group)
               const originalFields = phraseGroup.fields.reduce((acc, field) => {
-                const yamlField = getYamlField(pageName, field.name);
-                if (yamlField && formData[field.name]) {
-                  acc[yamlField] = formData[field.name];
+                const baseValue = formData[field.name] || '';
+                if (baseValue) {
+                  const yamlField = getYamlField(pageName, field.name);
+                  if (yamlField) {
+                    acc[yamlField] = baseValue;
+                  }
                 }
                 return acc;
               }, {} as Record<string, string>);
@@ -1422,9 +1425,9 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
               onSave().then(result => {
                 if (result.success) {
                   // Optionally show a success message
-                  console.log('Form saved successfully');
+                  //console.log('Form saved successfully');
                 } else {
-                  console.error('Failed to save form:', result.error);
+                  //console.error('Failed to save form:', result.error);
                 }
               });
             }
@@ -1460,11 +1463,11 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
   // Simplified useEffect to update arrayGroups when field values change
   useEffect(() => {
     if (currentPageName === 'workeducation3_page') {
-      console.log('useEffect formData investigation', currentPageName, isInitialArrayGroupsLoad, onArrayGroupsChange, repeatedGroups);
+      //console.log('useEffect formData investigation', currentPageName, isInitialArrayGroupsLoad, onArrayGroupsChange, repeatedGroups);
     }
     if (isInitialArrayGroupsLoad || !onArrayGroupsChange) {
       if (currentPageName === 'workeducation3_page') {
-        console.log('useEffect formData investigation', 'returning early');
+        //console.log('useEffect formData investigation', 'returning early');
       }
       return;
     }
@@ -1472,7 +1475,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     // Only proceed if we have some repeatedGroups
     if (Object.keys(repeatedGroups).length === 0) {
       if (currentPageName === 'workeducation3_page') {
-        console.log('useEffect formData investigation', 'returning early because no repeatedGroups');
+        //console.log('useEffect formData investigation', 'returning early because no repeatedGroups');
       }
       return;
     }
@@ -1484,19 +1487,19 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
       
     if (!pageName) {
       if (currentPageName === 'workeducation3_page') {
-        console.log('useEffect formData investigation', 'returning early because no pageName', pageName);
+        //console.log('useEffect formData investigation', 'returning early because no pageName', pageName);
       }
       return;
     }
     
     if (currentPageName === 'workeducation3_page') {
-      console.log('useEffect formData investigation repeatedGroups & fieldGroups', repeatedGroups, fieldGroups);
+      //console.log('useEffect formData investigation repeatedGroups & fieldGroups', repeatedGroups, fieldGroups);
     }
 
     // Update all groups with current values from formData
     Object.keys(repeatedGroups).forEach(groupKey => {
       if (currentPageName === 'workeducation3_page') {
-        console.log('useEffect formData processing groupKey:', groupKey);
+        //console.log('useEffect formData processing groupKey:', groupKey);
       }
       
       // Get all the fields in this group directly from repeatedGroups
@@ -1514,7 +1517,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
       const baseFieldsArray = Array.from(uniqueBaseFields);
       
       if (currentPageName === 'workeducation3_page') {
-        console.log('useEffect formData unique base fields:', baseFieldsArray);
+        //console.log('useEffect formData unique base fields:', baseFieldsArray);
       }
       
       // Get all array group data with current values
@@ -1561,7 +1564,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
       });
       
       if (currentPageName === 'workeducation3_page') {
-        console.log('allGroupsData pageName, groupKey, allGroupsData', pageName, groupKey, allGroupsData);
+        //console.log('allGroupsData pageName, groupKey, allGroupsData', pageName, groupKey, allGroupsData);
       }
       
       // Only update if we have some data
@@ -1649,7 +1652,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                     <div className={`relative ${getEffectiveFieldCount(phraseGroup.fields) > 1 ? 
                       'border border-gray-400 rounded-lg p-12 mb-8 mt-12' : ''}`}>
                       {getEffectiveFieldCount(phraseGroup.fields) > 1 && phraseGroup.parentTextPhrase && (
-                        <span className="absolute -top-3 left-3 bg-white px-2 text-sm font-bold text-gray-1000">
+                        <span className="absolute -top-3 left-3 bg-white px-2 text-lg font-bold text-gray-1000">
                           {phraseGroup.parentTextPhrase}
                         </span>
                       )}

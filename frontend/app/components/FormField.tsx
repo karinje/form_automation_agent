@@ -26,6 +26,11 @@ interface FormFieldProps {
   onDependencyChange?: (key: string, field: FormFieldType) => void
 }
 
+// Add this helper function at the top of the component
+const isValidDropdownValue = (value: string, options: string[]) => {
+  return options.some(option => option.trim() === value.trim());
+};
+
 export function FormField({ field, value, onChange, visible, dependencies, onDependencyChange }: FormFieldProps) {
   const [hasFocus, setHasFocus] = useState(false)
   const valuesRef = useRef<string[]>([])
@@ -145,7 +150,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     return (
       <div className="flex items-start justify-between gap-4">
         <div className="flex-grow">
-          <p className="text-sm font-medium text-gray-800 my-auto">{field.text_phrase}</p>
+          <p className="text-xl font-medium text-gray-800 my-auto">{field.text_phrase}</p>
         </div>
         <div className="min-w-[200px]">
           <Tabs
@@ -159,7 +164,9 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
                   key={option}
                   value={option}
                   id={field.button_ids?.[option]}
-                  className={`font-medium border border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50 ${field.optional ? '' : isEmpty ? 'border-red-300' : 'border-green-300'}`}
+                  className={`font-medium text-xl py-2 border-2 border-gray-300 data-[state=active]:bg-gray-200 data-[state=active]:border-gray-400 data-[state=inactive]:bg-white data-[state=inactive]:hover:bg-gray-50 ${
+                    field.optional ? '' : isEmpty ? 'border-2 border-red-600' : 'border-2 border-green-500'
+                  }`}
                 >
                   {field.labels?.[index]}
                 </TabsTrigger>
@@ -183,8 +190,11 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
             onFocus={handleFocus}
             onBlur={handleBlur}
             maxLength={field.maxlength ? parseInt(field.maxlength) : undefined}
-            className={`form-field-${fieldStatusClass} ${field.optional ? '' : isEmpty ? 'border-red-300' : 'border-green-300'}`}
+            className={`form-field-${fieldStatusClass} text-xl leading-relaxed ${
+              field.optional ? '' : isEmpty ? 'border-2 border-red-600' : 'border-2 border-green-500'
+            }`}
             disabled={isNAChecked}
+            style={{ fontSize: '1.25rem', padding: '0.75rem' }}
           />
         )
 
@@ -197,8 +207,11 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
             onFocus={handleFocus}
             onBlur={handleBlur}
             maxLength={field.maxlength ? parseInt(field.maxlength) : undefined}
-            className={`form-field-${fieldStatusClass} ${field.optional ? '' : isEmpty ? 'border-red-300' : 'border-green-300'} min-h-[100px]`}
+            className={`form-field-${fieldStatusClass} text-xl leading-relaxed ${
+              field.optional ? '' : isEmpty ? 'border-2 border-red-600' : 'border-2 border-green-500'
+            } min-h-[100px]`}
             disabled={isNAChecked}
+            style={{ fontSize: '1.25rem', padding: '0.75rem', lineHeight: '1.5' }}
           />
         )
 
@@ -206,10 +219,15 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
         return renderRadioButton()
 
       case "dropdown":
-        if (!Array.isArray(field.value) || field.value.length === 0) return null
+        if (!Array.isArray(field.value) || field.value.length === 0) return null;
+        
+        // Check if the current value is valid
+        const isValidValue = isValidDropdownValue(value || '', field.value);
+        const isEmptyOrInvalid = isEmpty || !isValidValue;
+        
         return (
           <Select 
-            value={value || ""}
+            value={isValidValue ? value : ""}
             onValueChange={(value) => {
               handleFieldChange(value)
             }}
@@ -219,7 +237,9 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
             }}
           >
             <SelectTrigger 
-              className={`w-full ${field.optional ? '' : isEmpty ? 'border-red-300' : 'border-green-300'}`}
+              className={`w-full text-xl py-3 ${
+                field.optional ? '' : isEmptyOrInvalid ? 'border-2 border-red-600' : 'border-2 border-green-500'
+              }`}
             >
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
@@ -227,7 +247,11 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
               {field.value
                 .filter(option => option.trim() !== "")
                 .map((option: string) => (
-                  <SelectItem key={option} value={option}>
+                  <SelectItem 
+                    key={option} 
+                    value={option} 
+                    className="text-xl py-2"
+                  >
                     {option}
                   </SelectItem>
                 ))}
@@ -271,7 +295,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
         />
         <Label 
           htmlFor={field.na_checkbox_id}
-          className={`text-sm text-gray-500 ${isStandalone ? 'ml-3' : 'ml-2'} whitespace-nowrap`}
+          className={`text-base text-gray-500 ${isStandalone ? 'ml-3' : 'ml-2'} whitespace-nowrap`}
         >
           {field.na_checkbox_text || "Does Not Apply"}
         </Label>
@@ -283,7 +307,7 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
     <div className={`w-full ${!visible ? 'hidden' : ''}`}>
       <div className="space-y-2">
         {field.type !== 'radio' && field.text_phrase && (
-          <Label htmlFor={field.name}>{field.text_phrase}</Label>
+          <Label htmlFor={field.name} className="text-lg font-medium">{field.text_phrase}</Label>
         )}
         {field.has_na_checkbox && (field.type === "text" || field.type === "textarea") ? (
           <div className="flex items-center justify-between gap-4">

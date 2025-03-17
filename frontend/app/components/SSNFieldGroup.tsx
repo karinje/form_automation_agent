@@ -83,8 +83,9 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
             onFocus={() => handleFocus('part1')}
             onBlur={() => handleBlur('part1')}
             disabled={isNAChecked}
-            className={`w-20 ${isPart1Empty ? 'border-red-300' : 'border-green-300'} 
-                        ${focusState.part1 ? 'form-field-focus' : ''}`}
+            className={`w-20 ${
+              isPart1Empty ? 'border-2 border-red-600' : 'border-2 border-green-500'
+            } ${focusState.part1 ? 'form-field-focus' : ''}`}
           />
           <span>-</span>
           <Input
@@ -95,8 +96,9 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
             onFocus={() => handleFocus('part2')}
             onBlur={() => handleBlur('part2')}
             disabled={isNAChecked}
-            className={`w-16 ${isPart2Empty ? 'border-red-300' : 'border-green-300'} 
-                        ${focusState.part2 ? 'form-field-focus' : ''}`}
+            className={`w-16 ${
+              isPart2Empty ? 'border-2 border-red-600' : 'border-2 border-green-500'
+            } ${focusState.part2 ? 'form-field-focus' : ''}`}
           />
           <span>-</span>
           <Input
@@ -107,8 +109,9 @@ export default function SSNFieldGroup({ ssnGroup, values, onChange, visible }: S
             onFocus={() => handleFocus('part3')}
             onBlur={() => handleBlur('part3')}
             disabled={isNAChecked}
-            className={`w-24 ${isPart3Empty ? 'border-red-300' : 'border-green-300'} 
-                        ${focusState.part3 ? 'form-field-focus' : ''}`}
+            className={`w-24 ${
+              isPart3Empty ? 'border-2 border-red-600' : 'border-2 border-green-500'
+            } ${focusState.part3 ? 'form-field-focus' : ''}`}
           />
         </div>
         {ssnGroup.number1Field.has_na_checkbox && ssnGroup.number1Field.na_checkbox_id && (

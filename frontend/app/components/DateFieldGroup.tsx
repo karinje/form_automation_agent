@@ -206,7 +206,7 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           {/* Manual entry fields */}
-          <div className={`flex gap-2 items-center flex-1 ${isInvalidDate ? 'border border-red-500 rounded-md p-2' : ''}`}>
+          <div className={`flex gap-2 items-center flex-1 ${isInvalidDate ? 'border-2 border-red-500 rounded-md p-2' : ''}`}>
             <div className="w-20">
               <Input
                 value={values[dayField.name] || ""}
@@ -214,12 +214,14 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
                 onFocus={() => handleFocus('day')}
                 onBlur={() => handleBlur('day')}
                 placeholder="Day"
-                className={`${isInvalidDate ? 'border-red-500' : isDayEmpty ? 'border-red-300' : 'border-green-300'} 
-                            ${focusState.day ? 'form-field-focus' : ''}`}
+                className={`${
+                  isInvalidDate ? 'border-2 border-red-600' : isDayEmpty ? 'border-2 border-red-600' : 'border-2 border-green-500'
+                } ${focusState.day ? 'form-field-focus' : ''} text-xl`}
                 disabled={isNAChecked}
+                style={{ fontSize: '1.25rem', padding: '0.75rem' }}
               />
             </div>
-            <span>/</span>
+            <span className="text-xl">/</span>
             <div className="w-28">
               <Select 
                 value={values[monthField.name] || ""}
@@ -230,18 +232,27 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
                 }}
                 disabled={isNAChecked}
               >
-                <SelectTrigger className={`${isInvalidDate ? 'border-red-500' : isMonthEmpty ? 'border-red-300' : 'border-green-300'} 
-                                          ${focusState.month ? 'form-field-focus' : ''}`}>
+                <SelectTrigger className={`${
+                  isInvalidDate ? 'border-2 border-red-600' : isMonthEmpty ? 'border-2 border-red-600' : 'border-2 border-green-500'
+                } ${focusState.month ? 'form-field-focus' : ''} text-xl`}
+                style={{ fontSize: '1.25rem', padding: '0.75rem' }}
+                >
                   <SelectValue placeholder="Month" />
                 </SelectTrigger>
                 <SelectContent>
                   {Object.entries(MONTH_MAP).map(([abbr]) => (
-                    <SelectItem key={abbr} value={abbr}>{abbr}</SelectItem>
+                    <SelectItem 
+                      key={abbr} 
+                      value={abbr}
+                      className="text-xl py-2"
+                    >
+                      {abbr}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            <span>/</span>
+            <span className="text-xl">/</span>
             <div className="w-24">
               <Input
                 value={values[yearField.name] || ""}
@@ -249,9 +260,11 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
                 onFocus={() => handleFocus('year')}
                 onBlur={() => handleBlur('year')}
                 placeholder="Year"
-                className={`${isInvalidDate ? 'border-red-500' : isYearEmpty ? 'border-red-300' : 'border-green-300'} 
-                            ${focusState.year ? 'form-field-focus' : ''}`}
+                className={`${
+                  isInvalidDate ? 'border-2 border-red-600' : isYearEmpty ? 'border-2 border-red-600' : 'border-2 border-green-500'
+                } ${focusState.year ? 'form-field-focus' : ''} text-xl`}
                 disabled={isNAChecked}
+                style={{ fontSize: '1.25rem', padding: '0.75rem' }}
               />
             </div>
           </div>

@@ -106,8 +106,8 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
       <div className="flex flex-col">
         <div className="flex items-center justify-between mb-2">
           <div>
-            <h3 className="text-lg font-semibold">Fill Manually or Provide LinkedIn Profile URL to Import Work/Education</h3>
-            <p className="text-sm text-gray-500">Work and education 1/2 pages will be automatically filled after import</p>
+            <h3 className="text-xl font-semibold">Fill Manually or Provide LinkedIn Profile URL to Import Work/Education</h3>
+            <p className="text-base text-gray-500">Work and education 1/2 pages will be automatically filled after import</p>
           </div>
         </div>
         
@@ -117,12 +117,12 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
             value={linkedinUrl}
             onChange={(e) => setLinkedinUrl(e.target.value)}
             placeholder="https://www.linkedin.com/in/username"
-            className="flex-1"
+            className="flex-1 text-lg py-3"
           />
           <Button 
             onClick={handleImport}
             disabled={isLoading || !linkedinUrl}
-            className={`bg-blue-600 hover:bg-blue-700 ${isLoading ? 'opacity-70' : ''}`}
+            className={`bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-6 py-3 text-lg`}
           >
             {isLoading ? (
               <>
@@ -134,13 +134,13 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
         </div>
         
         {error && (
-          <div className="mt-2 text-sm text-red-600">
+          <div className="mt-2 text-base text-red-600">
             {error}
           </div>
         )}
         
         {success && (
-          <div className="mt-2 text-sm text-green-600">
+          <div className="mt-2 text-base text-green-600">
             LinkedIn data successfully imported and form updated!
           </div>
         )}
@@ -153,7 +153,7 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
                 )}
                 
-                <h3 className="text-lg font-semibold mb-4">
+                <h3 className="text-xl font-semibold mb-4">
                   {extractionStatus === 'extracting' ? 'Extracting LinkedIn Data' : 
                    extractionStatus === 'filling' ? 'Filling Form with LinkedIn Data' : 
                    'Data Extraction Complete'}
@@ -166,7 +166,7 @@ export function LinkedInImport({ onDataImported }: LinkedInImportProps) {
                 
                 <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
                   {extractionProgress.map((msg, idx) => (
-                    <div key={idx} className="text-sm">
+                    <div key={idx} className="text-base">
                       {msg}
                     </div>
                   ))}

@@ -46,7 +46,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
       const month = formData['ctl00_SiteContentPlaceHolder_FormView1_ddlDOBMonth'] || ''
       const day = formData['ctl00_SiteContentPlaceHolder_FormView1_ddlDOBDay'] || ''
       
-      console.log('Birth date components:', { year, month, day })
+      //console.log('Birth date components:', { year, month, day })
       
       let formattedDate = ''
       let monthNum = ''
@@ -55,7 +55,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
         monthNum = String(new Date(`${month} 1`).getMonth() + 1).padStart(2, '0')
         formattedDate = `${monthNum}/${day.padStart(2, '0')}/${year}`
         setBirthDate(formattedDate)
-        console.log('Formatted birth date:', formattedDate)
+        //console.log('Formatted birth date:', formattedDate)
       }
       
       // Get passport info
@@ -68,19 +68,19 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
       setDocumentCountry(matchingCountry)
       
       // Log all relevant form fields for debugging
-      console.log('Form Data Debug:', {
-        givenName: given,
-        surname: sur,
-        birthDate: {
-          year,
-          month,
-          day,
-          formatted: formattedDate
-        },
-        documentNumber: docNum,
-        originalCountry: ds160Country,
-        matchedCountry: matchingCountry
-      })
+      // console.log('Form Data Debug:', {
+      //   givenName: given,
+      //   surname: sur,
+      //   birthDate: {
+      //     year,
+      //     month,
+      //     day,
+      //     formatted: formattedDate
+      //   },
+      //   documentNumber: docNum,
+      //   originalCountry: ds160Country,
+      //   matchedCountry: matchingCountry
+      // })
     }
   }, [formData])
 
@@ -132,13 +132,13 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
       }
     })
     
-    console.log(`Best country match for "${ds160Country}": "${bestMatch}" (score: ${bestScore})`)
+    //console.log(`Best country match for "${ds160Country}": "${bestMatch}" (score: ${bestScore})`)
     return bestMatch
   }
 
   const handleImport = async () => {
     if (!givenName || !surname || !birthDate || !documentNumber || !documentCountry) {
-      console.error('All fields are required')
+      //console.error('All fields are required')
       return
     }
 
@@ -155,7 +155,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
         documentCountry
       })
       
-      console.log('I94 import result:', result)
+      //console.log('I94 import result:', result)
       
       if (result.status === 'success' && result.data) {
         setExtractionStatus('complete')
@@ -183,7 +183,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
       }
       
     } catch (error) {
-      console.error('I94 import error:', error)
+      //console.error('I94 import error:', error)
       setExtractionProgress(prev => [...prev, `Error: ${error.message || 'Unknown error'}`])
       setExtractionStatus('idle')
     } finally {
@@ -217,8 +217,8 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
           >
             <div className="flex-1 flex items-center">
               <div>
-                <h3 className="text-lg font-semibold">Fill Manually or Import Previous US Visits From I94 website</h3>
-                <p className="text-sm text-gray-500">Travel history will be automatically filled</p>
+                <h3 className="text-xl font-semibold">Fill Manually or Import Previous US Visits From I94 website</h3>
+                <p className="text-base text-gray-500">Travel history will be automatically filled</p>
               </div>
             </div>
             
@@ -231,7 +231,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
                 });
               }}
               disabled={isLoading || !givenName || !surname || !birthDate || !documentNumber || !documentCountry}
-              className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-6 py-2 text-base"
+              className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-6 py-3 text-lg"
             >
               {isLoading ? (
                 <>
@@ -337,7 +337,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
               )}
               
-              <h3 className="text-lg font-semibold mb-4">
+              <h3 className="text-xl font-semibold mb-4">
                 {extractionStatus === 'extracting' ? 'Retrieving I-94 Data' : 
                  extractionStatus === 'filling' && !processingComplete ? 'Filling Form Fields' : 
                  extractionStatus === 'complete' && processingComplete ? 'I-94 Processing Complete' :
@@ -353,7 +353,7 @@ export function I94Import({ formData, onDataImported }: I94ImportProps) {
               
               <div className="w-full space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
                 {extractionProgress.map((msg, idx) => (
-                  <div key={idx} className="text-sm">
+                  <div key={idx} className="text-base">
                     {msg}
                   </div>
                 ))}

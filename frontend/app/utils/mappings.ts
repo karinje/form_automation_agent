@@ -68,7 +68,7 @@ export function getFormFieldId(pageName: string, yamlField: string): string | nu
   const mapping = formMappings[pageName]?.[yamlField];
   
   if (!mapping) {
-    console.log(`No mapping found for ${pageName}.${yamlField}`);
+    //console.log(`No mapping found for ${pageName}.${yamlField}`);
     return null;
   }
   
