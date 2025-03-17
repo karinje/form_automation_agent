@@ -245,4 +245,35 @@ export async function getSuccessfulApplications() {
     console.error('Error getting successful applications:', error);
     return [];
   }
+}
+
+// Update the deleteAllUserData function to not require userId
+export async function deleteAllUserData() {
+  "use server";
+  
+  try {
+    // Get the current user directly within the server action
+    const user = await currentUser();
+    if (!user?.id) {
+      return { success: false, error: "Not authenticated" };
+    }
+    
+    const userId = user.id;
+    console.log('inside deleteAllUserData userId', userId);
+
+    const db = getDb();
+    
+    // Delete from form_data table
+    await db.delete(formData)
+      .where(eq(formData.userId, userId));
+    
+    // Delete from formVersions table
+    await db.delete(formVersions)
+      .where(eq(formVersions.userId, userId));
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting user data:", error);
+    return { success: false, error: String(error) };
+  }
 } 

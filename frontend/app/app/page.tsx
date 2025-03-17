@@ -27,6 +27,7 @@ import { useUser } from "@clerk/nextjs";
 import { UserButton } from "@clerk/nextjs";
 import { saveSuccessfulApplication, loadApplicationById, getSuccessfulApplications } from '../../lib/actions/formData'
 import { desc, eq, sql } from 'drizzle-orm'
+import { deleteAllUserData as deleteAllUserDataAction } from '../../lib/actions/formData'
 
 // Import all form definitions in alphabetical order
 import p10_workeducation1_definition from "../../form_definitions/p10_workeducation1_definition.json"
@@ -2149,6 +2150,83 @@ export default function Home() {
     );
   };
 
+  // Add a new state variable for the delete confirmation modal
+  const [showDeleteAllConfirmation, setShowDeleteAllConfirmation] = useState(false);
+
+  // Add this function to handle deleting all user data
+  const deleteAllUserData = async () => {
+    try {
+      setIsProcessing(true);
+      
+      // Call the server action directly instead of using the API route
+      const result = await deleteAllUserDataAction();
+      
+      if (result.success) {
+        // Clear local state (reusing the existing clearSavedData logic)
+        await clearSavedData();
+        
+        // Clear the previous applications list
+        setPreviousApplications([]);
+        
+        // Show success message
+        setConsoleErrors([
+          "All user data has been successfully deleted",
+          ...consoleErrors
+        ]);
+        
+        console.log('All user data deleted successfully');
+      } else {
+        throw new Error(result.error || "Unknown error");
+      }
+    } catch (error) {
+      console.error('Error deleting user data:', error);
+      setConsoleErrors([
+        `Error deleting user data: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        ...consoleErrors
+      ]);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Add a confirmation modal component for the delete all action
+  const DeleteAllConfirmationModal = () => {
+    if (!showDeleteAllConfirmation) return null;
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+          <h2 className="text-xl font-bold mb-4 text-red-600">WARNING: Delete All Your Data</h2>
+          <p className="text-gray-700 mb-4">
+            This will permanently delete ALL your applications and form data from our database. 
+          </p>
+          <p className="text-gray-700 mb-6 font-semibold">
+            This action cannot be undone.
+          </p>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={() => setShowDeleteAllConfirmation(false)}
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                deleteAllUserData().then(() => {
+                  setShowDeleteAllConfirmation(false);
+                });
+              }}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+            >
+              Delete Everything
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Then modify the Previous Applications section to include the delete button and modal
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {(isProcessing || isProcessingLLM) && (
@@ -2799,9 +2877,23 @@ export default function Home() {
       {/* Add the Previous Applications section at the bottom */}
       <div className="mt-8 max-w-7xl mx-auto">
         <div className="bg-white shadow-lg rounded-lg p-4">
-          <h3 className="text-lg font-bold text-blue-800 mb-4 border-b pb-2">
-            Previous Applications
-          </h3>
+          <div className="flex justify-between items-center mb-4 border-b pb-2">
+            <h3 className="text-lg font-bold text-blue-800">
+              Previous Applications
+            </h3>
+            
+            {previousApplications.length > 0 && (
+              <button
+                onClick={() => setShowDeleteAllConfirmation(true)}
+                className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm flex items-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                Delete All Data
+              </button>
+            )}
+          </div>
           
           {isLoadingPreviousApps ? (
             <div className="flex justify-center p-4">
@@ -2831,6 +2923,11 @@ export default function Home() {
           )}
         </div>
       </div>
+
+      {/* Include both modals */}
+      <LoadApplicationModal />
+      <DeleteAllConfirmationModal />
+      <ResetConfirmationModal />
     </div>
   )
 }
