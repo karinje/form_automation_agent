@@ -24,6 +24,7 @@ interface FormFieldProps {
   visible: boolean
   dependencies?: Record<string, any>
   onDependencyChange?: (key: string, field: FormFieldType) => void
+  formData: Record<string, string>
 }
 
 // Add this helper function at the top of the component
@@ -31,31 +32,30 @@ const isValidDropdownValue = (value: string, options: string[]) => {
   return options.some(option => option.trim() === value.trim());
 };
 
-export function FormField({ field, value, onChange, visible, dependencies, onDependencyChange }: FormFieldProps) {
+export function FormField({ field, value, onChange, visible, dependencies, onDependencyChange, formData }: FormFieldProps) {
   const [hasFocus, setHasFocus] = useState(false)
   const valuesRef = useRef<string[]>([])
 
-  // Initialize NA checkbox state based on value
+  // The issue is that the useEffect is overriding manual state changes
+  // Let's add a ref to track if the change was manual
+  const manualChangeRef = useRef(false);
+
+  // Initialize NA checkbox state
   const [isNAChecked, setIsNAChecked] = useState(() => {
-    const initialState = value === "N/A";
-    debugLog('all_pages', `Initializing NA checkbox for ${field.name}:`, {
-      value,
-      isNA: initialState,
-      naCheckboxId: field.na_checkbox_id
-    });
-    return initialState;
+    return value === "N/A" || (field.na_checkbox_id && formData[field.na_checkbox_id] === "true");
   });
 
-  // Update NA state when value changes from outside
+  // Modify the useEffect to respect manual changes
   useEffect(() => {
-    const newState = value === "N/A";
-    debugLog('all_pages', `Updating NA checkbox for ${field.name}:`, {
-      value,
-      newState,
-      naCheckboxId: field.na_checkbox_id
-    });
+    // Skip if the change was manual - this is key to fix the issue
+    if (manualChangeRef.current) {
+      manualChangeRef.current = false;
+      return;
+    }
+
+    const newState = value === "N/A" || (field.na_checkbox_id && formData[field.na_checkbox_id] === "true");
     setIsNAChecked(newState);
-  }, [value]);
+  }, [value, field.na_checkbox_id, formData]);
 
   // Check if this is part of a date group
   const isDateComponent = field.text_phrase ? /^(.*?)\s*-\s*(Day|Month|Year)$/i.test(field.text_phrase) : false;
@@ -96,31 +96,30 @@ export function FormField({ field, value, onChange, visible, dependencies, onDep
   const isEmpty = value === undefined || value === null || value === ""
   const fieldStatusClass = hasFocus ? "focus" : isEmpty ? "empty" : "filled"
 
-  // Handle NA checkbox
+  // Handle NA checkbox with better debugging
   const handleNACheckboxChange = (checked: boolean) => {
-    debugLog('all_pages', `NA Checkbox changed for ${field.name}:`, {
+    console.log(`NA Checkbox MANUAL change for ${field.name}:`, {
       checked,
+      prevState: isNAChecked,
       field_id: field.name,
       na_checkbox_id: field.na_checkbox_id
     });
     
+    // Mark this as a manual change to prevent the useEffect from overriding it
+    manualChangeRef.current = true;
+    
     setIsNAChecked(checked);
+    
     if (checked) {
+      // When checking NA, set the field value and checkbox state
       onChange(field.name, "N/A");
       if (field.na_checkbox_id) {
-        debugLog('all_pages', `Updating NA checkbox state:`, {
-          id: field.na_checkbox_id,
-          value: "true"
-        });
         onChange(field.na_checkbox_id, "true");
       }
     } else {
+      // When unchecking NA, forcefully clear both field value and checkbox state
       onChange(field.name, "");
       if (field.na_checkbox_id) {
-        debugLog('all_pages', `Updating NA checkbox state:`, {
-          id: field.na_checkbox_id,
-          value: "false"
-        });
         onChange(field.na_checkbox_id, "false");
       }
     }

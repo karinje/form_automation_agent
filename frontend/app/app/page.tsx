@@ -112,7 +112,7 @@ export default function Home() {
   } = useFormPersistence();
 
   // Add at the top of your component, with other state declarations
-  const [debugMode, setDebugMode] = useState(false); // Default to false
+  const [debugMode, setDebugMode] = useState(true); // Default to false
 
   // Add this variable at the component level
   const [tempApplicationId, setTempApplicationId] = useState('');
@@ -1140,7 +1140,7 @@ export default function Home() {
                           )}
                         </div>
                         {/* Counter text with fixed width */}
-                        <span className="text-lg text-gray-600 w-[140px] text-right">
+                        <span className="text-lg text-gray-600 w-[160px] text-right">
                           {(completionStatus[formId]?.completed || 0)}/
                           {(completionStatus[formId]?.total || 0)} completed
                         </span>

@@ -286,6 +286,7 @@ const renderPhraseGroup = (
           onChange={onInputChange}
           visible={visibleFields.has(phraseGroup.fields[0].name)}
           onDependencyChange={(key) => handleDependencyChange(key, phraseGroup.fields[0])}
+          formData={formData}
         />
       </div>
     );
@@ -308,6 +309,7 @@ const renderPhraseGroup = (
             onChange={onInputChange}
             visible={visibleFields.has(field.name) || true}
             onDependencyChange={(key) => handleDependencyChange(key, field)}
+            formData={formData}
           />
         ))}
       </div>
@@ -771,25 +773,27 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     onInputChange(name, value);
   }
 
-  // Now the useLayoutEffect that references these variables
+  // Update the useLayoutEffect that handles form completion calculation
   useLayoutEffect(() => {
     const visibleFieldNames = Array.from(visibleFields);
     
     // Track all field names that should be excluded from completion requirements
     const excludedFieldNames = new Set<string>();
     
-    // Track date groups with NA checked (these should count as completed)
-    const naCheckedDateFields = new Set<string>();
+    // Track fields marked as NA (these should count as completed)
+    const naCheckedFields = new Set<string>();
     
-    // Exclude optional fields from the main form definition and check for NA checkboxes
+    // First pass: collect all NA fields
     orderedFields.forEach(field => {
       if (field.optional) {
         excludedFieldNames.add(field.name);
       }
       
-      // Check if this is a date field with NA checked
+      // Check if this field has NA checked
       if (field.na_checkbox_id && formData[field.na_checkbox_id] === "true") {
-        // Find if this field is part of a date group
+        naCheckedFields.add(field.name);
+        
+        // For date groups, add all related fields
         const dateGroup = dateGroups.find(dg => 
           dg.dayField.name === field.name || 
           dg.monthField.name === field.name || 
@@ -797,10 +801,9 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
         );
         
         if (dateGroup) {
-          // Add all fields in this date group to the naCheckedDateFields set
-          naCheckedDateFields.add(dateGroup.dayField.name);
-          naCheckedDateFields.add(dateGroup.monthField.name);
-          naCheckedDateFields.add(dateGroup.yearField.name);
+          naCheckedFields.add(dateGroup.dayField.name);
+          naCheckedFields.add(dateGroup.monthField.name);
+          naCheckedFields.add(dateGroup.yearField.name);
         }
       }
     });
@@ -813,19 +816,18 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
             excludedFieldNames.add(field.name);
           }
           
-          // Check for NA checkbox in repeated groups
           if (field.na_checkbox_id && formData[field.na_checkbox_id] === "true") {
-            // Find if this field is part of a date group within the repeating group
+            naCheckedFields.add(field.name);
+            
+            // Handle date groups in repeated sections
             const isDateField = dateFieldNames.has(field.name.replace(/\d+$/, ''));
             if (isDateField) {
-              // Since we don't have direct access to dateGroups for repeating groups,
-              // we need to infer the related fields by naming pattern
               const baseFieldName = field.name.replace(/_(day|month|year)(_\d+)?$/, '');
               const groupSuffix = field.name.match(/(_\d+)$/)?.[1] || '';
               
-              naCheckedDateFields.add(`${baseFieldName}_day${groupSuffix}`);
-              naCheckedDateFields.add(`${baseFieldName}_month${groupSuffix}`);
-              naCheckedDateFields.add(`${baseFieldName}_year${groupSuffix}`);
+              naCheckedFields.add(`${baseFieldName}_day${groupSuffix}`);
+              naCheckedFields.add(`${baseFieldName}_month${groupSuffix}`);
+              naCheckedFields.add(`${baseFieldName}_year${groupSuffix}`);
             }
           }
         });
@@ -834,59 +836,41 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
     
     // Calculate total excluding optional fields
     const total = visibleFieldNames.filter(name => {
-      // Skip any field names that contain dots (nested fields)
       if (name.includes('.')) return false;
-      
-      // Skip excluded (optional) fields
       return !excludedFieldNames.has(name);
     }).length;
     
     // Calculate completed fields
     const completed = visibleFieldNames.filter(name => {
-      // Skip any field names that contain dots (nested fields)
       if (name.includes('.')) return false;
-      
-      // Skip excluded (optional) fields
       if (excludedFieldNames.has(name)) return false;
       
-      // If this is a date field part of a group marked as N/A, count it as completed
-      if (naCheckedDateFields.has(name)) {
+      // If field is marked as NA, count it as completed
+      if (naCheckedFields.has(name)) {
         return true;
       }
       
       const value = formData[name];
-      
-      // If no value or empty, not completed
       if (!value || value.toString().trim() === "") return false;
       
-      // For dropdown fields, check if the value is a valid option
+      // For dropdown fields, check if the value is valid
       const fieldDef = findFieldDefinition(name);
-      
       if (fieldDef && fieldDef.type === 'dropdown') {
-        // Check if the value exists in the field's options
         return Array.isArray(fieldDef.value) && fieldDef.value.includes(value);
       }
       
-      // For non-dropdown fields, any non-empty value is valid
       return true;
     }).length;
     
-    const hasPrevTravelFields = visibleFieldNames.some(name => isPrevTravelPage(formDefinition));
-    if (hasPrevTravelFields) {
-      debugLog('previous_travel_page', 'Form completion update:', { completed, total });
-    }
-
     if (onCompletionUpdate) {
       onCompletionUpdate(completed, total);
     }
     
     // Helper function to find a field's definition
     function findFieldDefinition(fieldName: string) {
-      // Check main form fields
       let field = orderedFields.find(f => f.name === fieldName);
       if (field) return field;
       
-      // Check repeated groups
       for (const groupList of Object.values(repeatedGroups)) {
         for (const group of groupList) {
           field = group.find(f => f.name === fieldName);
@@ -1694,6 +1678,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                                 onChange={onInputChange}
                                 visible={visibleFields.has(item.field.name)}
                                 onDependencyChange={(key) => handleDependencyChange(key, item.field)}
+                                formData={formData}
                               />
                             )
                           }
@@ -1772,6 +1757,7 @@ export default function DynamicForm({ formDefinition, formData, arrayGroups, onI
                                   onChange={onInputChange}
                                   visible={visibleFields.has(item.field.name)}
                                   onDependencyChange={(key) => handleDependencyChange(key, item.field)}
+                                  formData={formData}
                                 />
                               )
                             })}
