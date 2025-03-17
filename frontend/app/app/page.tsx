@@ -286,7 +286,8 @@ export default function Home() {
       //console.log('mergedYamlData inside handleFormDataLoad', mergedYamlData)
       // Now set the merged YAML data
       setYamlData(mergedYamlData);
-      console.log('saving yaml to backend inside handleFormDataLoad')
+      saveDataImmediately({ yamlData: mergedYamlData });
+      console.log('saving yaml to backend inside handleFormDataLoad', mergedYamlData)
       //saveYamlToBackend();
       // Convert the merged YAML to string and create form mapping
       const yamlString = yaml.dump(mergedYamlData);
@@ -365,7 +366,7 @@ export default function Home() {
         setIsProcessing(false);
         setProcessingProgress([]);
         updateFormCountersSilently(pagesFilter);
-        saveYamlToBackend();
+        //saveYamlToBackend();
         if (showSuccess) {
          // setConsoleErrors(['Form data loaded successfully!', ...consoleErrors])
         }
@@ -378,9 +379,9 @@ export default function Home() {
       setProcessingProgress([]);
     } finally {
       setIsProcessingLLM(false);
-      // Wait a bit before trying to save again to ensure state is updated
+      //Wait a bit before trying to save again to ensure state is updated
       // setTimeout(() => {
-      //   console.log('saving yaml to backend inside handleFormDataLoad finally');
+      //   console.log('saving yaml to backend inside handleFormDataLoad finally', yamlData);
       //   saveYamlToBackend();
       // }, 100);
     }
@@ -2056,7 +2057,6 @@ export default function Home() {
       if (application?.yamlData) {
         // Clear current form data first
         await clearSavedData();
-        
         // Then load the application data
         handleFormDataLoad(application.yamlData);
         
@@ -2371,7 +2371,59 @@ export default function Home() {
                     <PassportUpload 
                       formData={formData}
                       onExtractData={(passportData) => {
-                        /* Passport upload handler */
+                        if (passportData) {
+                          // Get current YAML for personal pages
+                          const currentPageData = getFilteredYamlData([
+                            'personal_page1', 
+                            'personal_page2',
+                            'address_phone_page',
+                            'pptvisa_page', 
+                            'relatives_page',
+                            'spouse_page'
+                          ]);
+                          
+                          // Create merged YAML with both existing and new data
+                          const mergedYaml = {
+                            personal_page1: {
+                              ...currentPageData?.personal_page1,
+                              ...passportData.personal_page1
+                            },
+                            personal_page2: {
+                              ...currentPageData?.personal_page2,
+                              ...passportData.personal_page2
+                            },
+                            address_phone_page: {
+                              ...currentPageData?.address_phone_page,
+                              ...passportData.address_phone_page
+                            },
+                            pptvisa_page: {
+                              ...currentPageData?.pptvisa_page,
+                              ...passportData.pptvisa_page
+                            },
+                            relatives_page: {
+                              ...currentPageData?.relatives_page,
+                              ...passportData.relatives_page
+                            },
+                            spouse_page: {
+                              ...currentPageData?.spouse_page,
+                              ...passportData.spouse_page
+                            }
+                          };
+                          
+                          // Update form with merged data
+                          handleFormDataLoad(
+                            mergedYaml,
+                            true,
+                            [
+                              'personal_page1', 
+                              'personal_page2',
+                              'address_phone_page',
+                              'pptvisa_page', 
+                              'relatives_page',
+                              'spouse_page'
+                            ]
+                          );
+                        }
                       }} 
                     />
                   </div>
@@ -2411,7 +2463,7 @@ export default function Home() {
                     onExtractData={(docData) => {
                        // Handle document data
                       if (docData) {
-                        handleFormDataLoad(docData, true);
+                        handleDocumentExtraction(docData);
                       }
                     }}
                     formData={formData}
