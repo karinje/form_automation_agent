@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir PyYAML
 
@@ -33,7 +33,13 @@ RUN pip install --no-cache-dir PyYAML
 RUN python -m playwright install --with-deps chromium
 
 # Copy the application
-COPY . .
+COPY backend/ .
+
+# Copy the shared directory
+COPY shared/ /app/shared/
+
+# Create logs directory
+RUN mkdir -p /app/logs
 
 # Set environment variables
 ENV PYTHONPATH=/app
