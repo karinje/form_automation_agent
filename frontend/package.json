@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "next lint",
     "generate-mappings": "python ../scripts/generate_mappings.py",
-    "prebuild": "npm run generate-mappings",
     "db:push": "drizzle-kit push:pg",
     "db:studio": "drizzle-kit studio",
     "db:setup": "tsx lib/db/push-schema.ts"
