@@ -27,8 +27,6 @@ RUN mkdir -p /app/logs
 
 # Set environment variables
 ENV PYTHONPATH=/app
-ENV DS160_BASE_URL=https://ceac.state.gov/GenNIV/Default.aspx
-ENV OPENAI_API_KEY=${OPENAI_API_KEY}
 
 # Run the application
 CMD ["uvicorn", "src.api.server:app", "--host", "0.0.0.0", "--port", "8000"] 
