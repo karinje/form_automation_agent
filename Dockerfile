@@ -27,7 +27,8 @@ RUN mkdir -p /app/logs
 
 # Set environment variables
 ENV PYTHONPATH=/app
-
+ENV DS160_BASE_URL=""
+ENV OPENAI_API_KEY=""
 
 # Run the application
 CMD ["uvicorn", "src.api.server:app", "--host", "0.0.0.0", "--port", "8000"] 
