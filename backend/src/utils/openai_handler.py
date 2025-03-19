@@ -14,9 +14,10 @@ logger = logging.getLogger(__name__)
 
 class OpenAIHandler:
     def __init__(self):
+
         self.client = openai.AsyncOpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
         if not os.environ.get('OPENAI_API_KEY'):
-            raise ValueError("OPENAI_API_KEY not found in environment variables")
+            raise ValueError(f"OPENAI_API_KEY not found in environment variables {os.environ.get('OPENAI_API_KEY')}")
         self.templates_dir = Path(__file__).parent.parent / "templates" / "yaml_files"
         logger.info(f"Template directory path: {self.templates_dir}")
 
