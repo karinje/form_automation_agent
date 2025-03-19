@@ -20,6 +20,7 @@ RUN python -m playwright install --with-deps chromium
 
 # Copy the application
 COPY src/ /app/src/
+RUN mkdir -p /app/shared
 COPY ../shared/ /app/shared/
 
 # Create logs directory
