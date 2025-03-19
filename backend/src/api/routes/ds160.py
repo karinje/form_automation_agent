@@ -25,7 +25,7 @@ router = APIRouter()
 
 # Load form definitions
 page_definitions = {}
-form_definitions_dir = Path(__file__).parent.parent.parent.parent.parent / 'shared/form_definitions'
+form_definitions_dir = Path(__file__).parent.parent.parent.parent/'form_definitions'
 
 # Load all form definitions
 def load_form_definitions():
