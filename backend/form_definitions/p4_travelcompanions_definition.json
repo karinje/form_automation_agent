@@ -1,0 +1,170 @@
+{
+  "fields": [
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherPersonsTravelingWithYou",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherPersonsTravelingWithYou_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblOtherPersonsTravelingWithYou_1"
+      },
+      "text_phrase": "Are there other persons traveling with you?",
+      "parent_text_phrase": "Yes",
+      "help_text": "You should answer Yes to this question if you are traveling with family, as part of an organized tour, or as part of a performing group or athletic team. You do not need to list individuals who are traveling with you for the purposes of employment with the same employer."
+    }
+  ],
+  "dependencies": {
+    "ctl00_SiteContentPlaceHolder_FormView1_rblOtherPersonsTravelingWithYou_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_rblGroupTravel",
+          "type": "radio",
+          "value": [
+            "Y",
+            "N"
+          ],
+          "labels": [
+            "Yes",
+            "No"
+          ],
+          "button_ids": {
+            "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblGroupTravel_0",
+            "N": "ctl00_SiteContentPlaceHolder_FormView1_rblGroupTravel_1"
+          },
+          "text_phrase": "Are you traveling as part of a group or organization?"
+        }
+      ],
+      "hides": [],
+      "dependencies": {
+        "ctl00_SiteContentPlaceHolder_FormView1_rblGroupTravel_0.Y": {
+          "shows": [
+            {
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxGroupName",
+              "type": "text",
+              "value": "",
+              "text_phrase": "Group Name",
+              "parent_text_phrase": "Group Name",
+              "maxlength": "75",
+              "has_na_checkbox": false
+            }
+          ],
+          "hides": [],
+          "dependencies": null
+        },
+        "ctl00_SiteContentPlaceHolder_FormView1_rblGroupTravel_1.N": {
+          "shows": [
+            {
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_tbxSurname",
+              "type": "text",
+              "value": "",
+              "text_phrase": "Surnames of Person Traveling With You",
+              "parent_text_phrase": "Travel Companions",
+              "maxlength": "33",
+              "has_na_checkbox": false,
+              "add_group": true,
+              "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_InsertButtonPrincipalPOT"
+            },
+            {
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_tbxGivenName",
+              "type": "text",
+              "value": "",
+              "text_phrase": "Given Names of Person Traveling With You",
+              "parent_text_phrase": "Travel Companions",
+              "maxlength": "33",
+              "has_na_checkbox": false,
+              "add_group": true,
+              "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_InsertButtonPrincipalPOT"
+            },
+            {
+              "name": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_ddlTCRelationship",
+              "type": "dropdown",
+              "value": [
+                "PARENT",
+                "SPOUSE",
+                "CHILD",
+                "OTHER RELATIVE",
+                "FRIEND",
+                "BUSINESS ASSOCIATE",
+                "OTHER"
+              ],
+              "text_phrase": "Relationship with Person",
+              "parent_text_phrase": "Travel Companions",
+              "add_group": true,
+              "add_group_button_id": "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_InsertButtonPrincipalPOT"
+            }
+          ],
+          "hides": [],
+          "dependencies": {
+            "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_ddlTCRelationship.PARENT": {
+              "shows": [],
+              "hides": [],
+              "dependencies": null
+            },
+            "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_ddlTCRelationship.SPOUSE": {
+              "shows": [],
+              "hides": [],
+              "dependencies": null
+            },
+            "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_ddlTCRelationship.CHILD": {
+              "shows": [],
+              "hides": [],
+              "dependencies": null
+            },
+            "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_ddlTCRelationship.OTHER RELATIVE": {
+              "shows": [],
+              "hides": [],
+              "dependencies": null
+            },
+            "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_ddlTCRelationship.FRIEND": {
+              "shows": [],
+              "hides": [],
+              "dependencies": null
+            },
+            "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_ddlTCRelationship.BUSINESS ASSOCIATE": {
+              "shows": [],
+              "hides": [],
+              "dependencies": null
+            },
+            "ctl00_SiteContentPlaceHolder_FormView1_dlTravelCompanions_ctl00_ddlTCRelationship.OTHER": {
+              "shows": [],
+              "hides": [],
+              "dependencies": null
+            }
+          }
+        }
+      }
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblOtherPersonsTravelingWithYou_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    }
+  },
+  "buttons": [
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "type": "submit",
+      "value": "Back: Travel"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
+      "type": "submit",
+      "value": "Save"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
+      "type": "submit",
+      "value": "Next: Previous U.S. Travel"
+    }
+  ]
+}

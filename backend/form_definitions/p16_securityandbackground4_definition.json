@@ -1,0 +1,218 @@
+{
+  "fields": [
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblRemovalHearing",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblRemovalHearing_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblRemovalHearing_1"
+      },
+      "text_phrase": "Have you ever been the subject of a removal or deportation hearing?",
+      "parent_text_phrase": "Have you ever been the subject of a removal or deportation hearing?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblImmigrationFraud",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblImmigrationFraud_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblImmigrationFraud_1"
+      },
+      "text_phrase": "Have you ever sought to obtain or assist others to obtain a visa, entry into the United States, or any other United States immigration benefit by fraud or willful misrepresentation or other unlawful means?",
+      "parent_text_phrase": "Have you ever sought to obtain or assist others to obtain a visa, entry into the United States, or any other United States immigration benefit by fraud or willful misrepresentation or other unlawful means?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblFailToAttend",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblFailToAttend_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblFailToAttend_1"
+      },
+      "text_phrase": "Have you failed to attend a hearing on removability or inadmissibility within the last five years?",
+      "parent_text_phrase": "Have you failed to attend a hearing on removability or inadmissibility within the last five years?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblVisaViolation",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblVisaViolation_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblVisaViolation_1"
+      },
+      "text_phrase": "Have you ever been unlawfully present, overstayed the amount of time granted by an immigration official or otherwise violated the terms of a U.S. visa?",
+      "parent_text_phrase": "Have you ever been unlawfully present, overstayed the amount of time granted by an immigration official or otherwise violated the terms of a U.S. visa?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblDeport",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblDeport_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblDeport_1"
+      },
+      "text_phrase": "Have you ever been removed or deported from any country?",
+      "parent_text_phrase": "Have you ever been removed or deported from any country?"
+    }
+  ],
+  "dependencies": {
+    "ctl00_SiteContentPlaceHolder_FormView1_rblRemovalHearing_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxRemovalHearing",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblRemovalHearing_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblImmigrationFraud_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxImmigrationFraud",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblImmigrationFraud_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblFailToAttend_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxFailToAttend",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblFailToAttend_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblVisaViolation_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxVisaViolation",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblVisaViolation_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblDeport_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxDeport_EXPL",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblDeport_1.N": {
+      "shows": [],
+      "hides": [
+        "ctl00_SiteContentPlaceHolder_FormView1_tbxDeport_EXPL"
+      ],
+      "dependencies": null
+    }
+  },
+  "buttons": [
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "type": "submit",
+      "value": "Back: Security/Background Part 3"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
+      "type": "submit",
+      "value": "Save"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
+      "type": "submit",
+      "value": "Next: Security/Background Part 5"
+    }
+  ]
+}

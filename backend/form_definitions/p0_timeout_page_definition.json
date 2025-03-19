@@ -1,0 +1,10 @@
+{
+  "fields": [],
+  "buttons": [
+    {
+      "id": "ctl00_SiteContentPlaceHolder_ApplicationRecovery1_btnBarcodeCancel",
+      "type": "submit",
+      "value": "ok"
+    }
+  ]
+} 

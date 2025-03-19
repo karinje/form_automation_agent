@@ -1,0 +1,292 @@
+{
+  "fields": [
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblArrested",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblArrested_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblArrested_1"
+      },
+      "text_phrase": "Have you ever been arrested or convicted for any offense or crime, even though subject of a pardon, amnesty, or other similar action?",
+      "parent_text_phrase": "Have you ever been arrested or convicted for any offense or crime, even though subject of a pardon, amnesty, or other similar action?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblControlledSubstances",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblControlledSubstances_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblControlledSubstances_1"
+      },
+      "text_phrase": "Have you ever violated, or engaged in a conspiracy to violate, any law relating to controlled substances?",
+      "parent_text_phrase": "Have you ever violated, or engaged in a conspiracy to violate, any law relating to controlled substances?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblProstitution",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblProstitution_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblProstitution_1"
+      },
+      "text_phrase": "Are you coming to the United States to engage in prostitution or unlawful commercialized vice or have you been engaged in prostitution or procuring prostitutes within the past 10 years?",
+      "parent_text_phrase": "Are you coming to the United States to engage in prostitution or unlawful commercialized vice or have you been engaged in prostitution or procuring prostitutes within the past 10 years?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblMoneyLaundering",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblMoneyLaundering_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblMoneyLaundering_1"
+      },
+      "text_phrase": "Have you ever been involved in, or do you seek to engage in, money laundering?",
+      "parent_text_phrase": "Have you ever been involved in, or do you seek to engage in, money laundering?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTrafficking",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTrafficking_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTrafficking_1"
+      },
+      "text_phrase": "Have you ever committed or conspired to commit a human trafficking offense in the United States or outside the United States?",
+      "parent_text_phrase": "Have you ever committed or conspired to commit a human trafficking offense in the United States or outside the United States?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblAssistedSevereTrafficking",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblAssistedSevereTrafficking_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblAssistedSevereTrafficking_1"
+      },
+      "text_phrase": "Have you ever knowingly aided, abetted, assisted or colluded with an individual who has committed, or conspired to commit a severe human trafficking offense in the United States or outside the United States?",
+      "parent_text_phrase": "Have you ever knowingly aided, abetted, assisted or colluded with an individual who has committed, or conspired to commit a severe human trafficking offense in the United States or outside the United States?"
+    },
+    {
+      "name": "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTraffickingRelated",
+      "type": "radio",
+      "value": [
+        "Y",
+        "N"
+      ],
+      "labels": [
+        "Yes",
+        "No"
+      ],
+      "button_ids": {
+        "Y": "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTraffickingRelated_0",
+        "N": "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTraffickingRelated_1"
+      },
+      "text_phrase": "Are you the spouse, son, or daughter of an individual who has committed or conspired to commit a human trafficking offense in the United States or outside the United States and have you within the last five years, knowingly benefited from the trafficking activities?",
+      "parent_text_phrase": "Are you the spouse, son, or daughter of an individual who has committed or conspired to commit a human trafficking offense in the United States or outside the United States and have you within the last five years, knowingly benefited from the trafficking activities?"
+    }
+  ],
+  "dependencies": {
+    "ctl00_SiteContentPlaceHolder_FormView1_rblArrested_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxArrested",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblArrested_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblControlledSubstances_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxControlledSubstances",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblControlledSubstances_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblProstitution_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxProstitution",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblProstitution_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblMoneyLaundering_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxMoneyLaundering",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblMoneyLaundering_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTrafficking_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxHumanTrafficking",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTrafficking_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblAssistedSevereTrafficking_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxAssistedSevereTrafficking",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblAssistedSevereTrafficking_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTraffickingRelated_0.Y": {
+      "shows": [
+        {
+          "name": "ctl00_SiteContentPlaceHolder_FormView1_tbxHumanTraffickingRelated",
+          "type": "textarea",
+          "value": "",
+          "text_phrase": "Explain",
+          "parent_text_phrase": "",
+          "maxlength": "4000",
+          "has_na_checkbox": false
+        }
+      ],
+      "hides": [],
+      "dependencies": null
+    },
+    "ctl00_SiteContentPlaceHolder_FormView1_rblHumanTraffickingRelated_1.N": {
+      "shows": [],
+      "hides": [],
+      "dependencies": null
+    }
+  },
+  "buttons": [
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton1",
+      "type": "submit",
+      "value": "Back: Security/Background Part 1"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton2",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton2",
+      "type": "submit",
+      "value": "Save"
+    },
+    {
+      "id": "ctl00_SiteContentPlaceHolder_UpdateButton3",
+      "name": "ctl00_SiteContentPlaceHolder_UpdateButton3",
+      "type": "submit",
+      "value": "Next: Security/Background Part 3"
+    }
+  ]
+}
