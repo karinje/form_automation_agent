@@ -23,7 +23,7 @@ class LinkedInHandler:
         # If not found, try reading directly from .env file
         if not self.username or not self.password:
             logger.info("LinkedIn credentials not found in environment variables, trying to read from .env file")
-            self._load_credentials_from_dotenv()
+            #self._load_credentials_from_dotenv()
             
         self.openai_handler = OpenAIHandler()
         self.log_dir = Path(__file__).parent.parent / "logs"
