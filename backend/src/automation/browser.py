@@ -11,8 +11,10 @@ import io
 logger = logging.getLogger(__name__)
 
 class BrowserHandler:
-    def __init__(self, headless: bool = False):
-        self.headless = headless
+    def __init__(self):
+        # Check environment variable for headless mode setting
+        self.headless = os.environ.get("HEADLESS_BROWSER", "true").lower() == "true"
+        logger.info(f"Browser running in headless mode: {self.headless}")
         self.browser = None
         self.context = None
         self.page = None
@@ -27,9 +29,7 @@ class BrowserHandler:
     
     async def __aenter__(self):
         """Async context manager entry"""
-        self.playwright = await async_playwright().start()
-        self.browser = await self.playwright.chromium.launch(headless=self.headless)
-        self.context = await self.browser.new_context()
+        self.playwright, self.browser, self.context = await self.launch_browser()
         self.page = await self.context.new_page()
         # Set default timeout after page is initialized
         self.page.set_default_timeout(self.page_timeout)
@@ -42,6 +42,21 @@ class BrowserHandler:
         if self.playwright:
             await self.playwright.stop()
         
+    async def launch_browser(self):
+        playwright = await async_playwright().start()
+        browser = await playwright.chromium.launch(
+            headless=self.headless,
+            args=[
+                '--window-size=1920,1080',
+                '--disable-blink-features=AutomationControlled'
+            ]
+        )
+        context = await browser.new_context(
+            viewport={'width': 1920, 'height': 1080},
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+        )
+        return playwright, browser, context
+
     async def navigate(self, url: str):
         """Navigate to URL with error handling"""
         try:

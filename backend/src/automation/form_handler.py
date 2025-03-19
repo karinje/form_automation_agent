@@ -9,6 +9,7 @@ import time
 from mappings.page_mappings.personal_page1_mapping import form_mapping as personal_page1_mapping
 # Import other page mappings...
 import asyncio
+from playwright.async_api import async_playwright
 
 logger = logging.getLogger(__name__)
 
@@ -860,3 +861,13 @@ class FormHandler:
             await self.process_form_pages(test_data, page_definitions)
             await self.send_progress("DS-160 form processing completed", status="complete")
         return True
+
+    async def start(self):
+        # Check environment variable for headless mode setting
+        headless = os.environ.get("HEADLESS_BROWSER", "true").lower() == "true"
+        self.playwright = await async_playwright().start()
+        logger.info(f"Launching browser with headless={headless}")
+        self.browser = await self.playwright.chromium.launch(
+            headless=headless,
+            args=['--window-size=1280,720']
+        )

@@ -129,6 +129,10 @@ class LinkedInHandler:
     async def extract_linkedin_data(self, profile_url: str) -> Optional[str]:
         """Extract education and work experience data from LinkedIn profile using Playwright"""
         try:
+            # Check environment variable for headless mode setting
+            headless = os.environ.get("HEADLESS_BROWSER", "true").lower() == "true"
+            logger.info(f"Launching browser with headless={headless}")
+            
             # Check if credentials are available before even launching the browser
             if not self.username or not self.password:
                 logger.error(f"LinkedIn credentials not found in environment variables. Username exists: {'Yes' if self.username else 'No'}, Password exists: {'Yes' if self.password else 'No'}")
@@ -140,7 +144,13 @@ class LinkedInHandler:
             logger.info(f"Using LinkedIn credentials - Username: {self.username}, Password: {password_mask}")
             
             async with async_playwright() as p:
-                browser = await p.chromium.launch(headless=False)
+                browser = await p.chromium.launch(
+                    headless=headless,
+                    args=[
+                        '--window-size=1920,1080',
+                        '--disable-blink-features=AutomationControlled'
+                    ]
+                )
                 context = await browser.new_context(
                     viewport={"width": 1920, "height": 1080},
                     user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36"

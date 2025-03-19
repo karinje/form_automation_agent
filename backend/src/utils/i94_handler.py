@@ -196,10 +196,14 @@ class I94Handler:
             log_dir.mkdir(parents=True, exist_ok=True)
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
+            # Check environment variable for headless mode setting
+            headless = os.environ.get("HEADLESS_BROWSER", "true").lower() == "true"
+            logger.info(f"Launching browser with headless={headless}")
+
             async with async_playwright() as p:
                 # Launch browser with more human-like characteristics
                 browser = await p.chromium.launch(
-                    headless=False,
+                    headless=headless,
                     args=[
                         '--window-size=1920,1080',
                         '--disable-blink-features=AutomationControlled'
