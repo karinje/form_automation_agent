@@ -208,18 +208,37 @@ const DateFieldGroup = ({ dateGroup, values, onChange, visible }: DateFieldGroup
           {/* Manual entry fields */}
           <div className={`flex gap-2 items-center flex-1 ${isInvalidDate ? 'border-2 border-red-500 rounded-md p-2' : ''}`}>
             <div className="w-20">
-              <Input
+              <Select 
                 value={values[dayField.name] || ""}
-                onChange={(e) => handleManualFieldChange('day', e.target.value)}
-                onFocus={() => handleFocus('day')}
-                onBlur={() => handleBlur('day')}
-                placeholder="Day"
-                className={`${
+                onValueChange={(value) => handleManualFieldChange('day', value)}
+                onOpenChange={(open) => {
+                  if (open) handleFocus('day');
+                  else handleBlur('day');
+                }}
+                disabled={isNAChecked}
+              >
+                <SelectTrigger className={`${
                   isInvalidDate ? 'border-2 border-red-600' : isDayEmpty ? 'border-2 border-red-600' : 'border-2 border-green-500'
                 } ${focusState.day ? 'form-field-focus' : ''} text-xl`}
-                disabled={isNAChecked}
                 style={{ fontSize: '1.25rem', padding: '0.75rem' }}
-              />
+                >
+                  <SelectValue placeholder="Day" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 31 }, (_, i) => {
+                    const day = (i + 1).toString().padStart(2, '0');
+                    return (
+                      <SelectItem 
+                        key={day} 
+                        value={day}
+                        className="text-xl py-2"
+                      >
+                        {day}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
             </div>
             <span className="text-xl">/</span>
             <div className="w-28">
