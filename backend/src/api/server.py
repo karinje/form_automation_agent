@@ -36,14 +36,16 @@ logger.info(f"LinkedIn credentials available: Username: {'Yes' if os.environ.get
 
 app = FastAPI(title="DS-160 Automation API")
 
-# CORS middleware
+# Add CORS middleware
+origins = [
+    "http://localhost:3000",  # Local frontend
+    "https://form-automation-agent.vercel.app/",  # Example production domain
+    "*",  # For development, allow all origins (remove in production)
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://192.168.86.168:3000",  # Add your local IP
-        "*"  # For development only - remove in production!
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
