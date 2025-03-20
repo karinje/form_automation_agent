@@ -452,6 +452,7 @@ class LinkedInHandler:
                 f.write(prompt)
                 
             logger.info(f"Saved LinkedIn prompt to {prompt_file}")
+            logger.info(f"Prompt: {prompt}")
             
             # Call OpenAI API
             response = await self.openai_handler.client.chat.completions.create(
