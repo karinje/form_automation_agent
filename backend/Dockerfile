@@ -23,7 +23,7 @@ COPY src/ /app/src/
 COPY form_definitions/ /app/form_definitions/
 
 # Create logs directory
-RUN mkdir -p /app/logs
+RUN mkdir -p /app/src/logs
 
 # Set environment variables
 ENV PYTHONPATH=/app
