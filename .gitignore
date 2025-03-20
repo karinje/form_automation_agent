@@ -45,3 +45,6 @@ wheels/
 source_files/
 node_modules/
 backend/src/logs/
+
+*png
+*_html.txt

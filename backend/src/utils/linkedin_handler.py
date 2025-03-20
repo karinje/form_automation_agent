@@ -155,6 +155,7 @@ class LinkedInHandler:
                 # Log browser launch details
                 logger.info(f"Browser environment: Render={os.environ.get('IS_RENDER', 'false')}")
                 
+                # More advanced browser evasion techniques
                 browser = await p.chromium.launch(
                     headless=headless,
                     args=[
@@ -162,27 +163,45 @@ class LinkedInHandler:
                         '--disable-blink-features=AutomationControlled',
                         '--no-sandbox',
                         '--disable-setuid-sandbox',
-                        '--disable-dev-shm-usage'
+                        '--disable-dev-shm-usage',
+                        '--disable-infobars',
+                        '--ignore-certificate-errors',
+                        '--ignore-certificate-errors-spki-list',
+                        '--disable-web-security',
+                        '--disable-features=IsolateOrigins,site-per-process',
+                        '--disable-site-isolation-trials',
+                        # Disguise as regular Chrome
+                        '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
                     ]
                 )
                 
-                # More sophisticated browser fingerprinting
+                # Use more sophisticated fingerprint evasion
                 context = await browser.new_context(
                     viewport={"width": 1920, "height": 1080},
-                    user_agent=modern_user_agent,
+                    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
                     locale="en-US",
                     timezone_id="America/New_York",
-                    has_touch=False,  # Most real LinkedIn users aren't on touch devices
+                    has_touch=False, 
                     permissions=["geolocation"],
                     color_scheme="light",
                     java_script_enabled=True,
                     extra_http_headers={
                         "Accept-Language": "en-US,en;q=0.9",
-                        "Sec-CH-UA": '"Google Chrome";v="122", "Chromium";v="122", "Not=A?Brand";v="99"',
+                        "Sec-CH-UA": '"Google Chrome";v="123", "Chromium";v="123", "Not=A?Brand";v="99"',
                         "Sec-CH-UA-Mobile": "?0",
                         "Sec-CH-UA-Platform": '"Windows"'
                     }
                 )
+                
+                # Add cookie handling to persist session data if available
+                cookie_file = self.log_dir / "linkedin_cookies.json"
+                if cookie_file.exists():
+                    try:
+                        cookies = json.loads(cookie_file.read_text())
+                        await context.add_cookies(cookies)
+                        logger.info("Loaded cookies from previous session")
+                    except Exception as e:
+                        logger.error(f"Failed to load cookies: {e}")
                 
                 context.set_default_timeout(90000)
                 page = await context.new_page()
@@ -283,6 +302,14 @@ class LinkedInHandler:
                         *profile_data
                     ]
                     
+                    # Save cookies for future use
+                    try:
+                        cookies = await context.cookies()
+                        cookie_file.write_text(json.dumps(cookies))
+                        logger.info("Saved cookies for future sessions")
+                    except Exception as e:
+                        logger.error(f"Failed to save cookies: {e}")
+                    
                     return "\n".join(result)
                     
                 except Exception as e:
@@ -353,9 +380,9 @@ class LinkedInHandler:
                     f.write(page_content)
                 logger.info(f"Saved post-login HTML content")
                 
-                # Check for common security challenge elements
+                # Enhanced security check detection
                 has_captcha = await page.is_visible("text=Please complete this security check to access the site")
-                has_verification = await page.is_visible("text=Let's do a quick security check")
+                has_verification = await page.is_visible("text=Let's do a quick security check") or await page.is_visible("h1:has-text('Let's do a quick security check')")
                 has_unusual = await page.is_visible("text=We've detected something unusual")
                 
                 if has_captcha or has_verification or has_unusual:
@@ -364,9 +391,36 @@ class LinkedInHandler:
                     # Take detailed screenshot of the challenge
                     await page.screenshot(path=session_folder / "03_security_challenge.png")
                     
-                    # Use fallback method - return true but log the situation
-                    logger.info("Security challenge encountered - will attempt direct URL navigation instead")
-                    return False
+                    # SECURITY CHECK HANDLING - Try to wait for challenge completion
+                    logger.info("Waiting for security check to complete...")
+                    
+                    # Wait longer for security check to complete (can appear to be "working")
+                    await page.wait_for_timeout(20000)  # Wait 20 seconds to see if auto-check passes
+                    
+                    # Check if we're still on security check
+                    if await page.is_visible("h1:has-text('Let's do a quick security check')"):
+                        logger.warning("Still on security check page after waiting")
+                        
+                        # Try clicking any "Continue" button that might appear
+                        try:
+                            if await page.is_visible("button:has-text('Continue')"):
+                                logger.info("Found Continue button, clicking it")
+                                await page.click("button:has-text('Continue')")
+                                await page.wait_for_timeout(5000)
+                        except Exception as e:
+                            logger.error(f"Error clicking continue: {str(e)}")
+                        
+                        # Take another screenshot to see what happened
+                        await page.screenshot(path=session_folder / "04_after_security_wait.png")
+                        
+                        # At this point we're stuck - direct URL navigation is our fallback
+                        logger.info("Security challenge could not be resolved automatically")
+                        return False
+                        
+                    else:
+                        logger.info("Security check appears to be completed")
+                        await page.screenshot(path=session_folder / "04_after_security_check.png")
+                        return True
                 
                 # If we get here, login was successful
                 logger.info("LinkedIn login successful")
