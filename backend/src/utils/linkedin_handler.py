@@ -137,10 +137,24 @@ class LinkedInHandler:
                 logger.error(f"LinkedIn credentials not found")
                 return None
             
+            # Create dedicated LinkedIn logs directory
+            linkedin_logs_dir = self.log_dir / "linkedin"
+            linkedin_logs_dir.mkdir(exist_ok=True)
+            logger.info(f"LinkedIn logs will be saved to {linkedin_logs_dir}")
+            
             # Use more modern user agent that's less likely to trigger security
             modern_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
             
+            # Generate a unique session ID for this extraction
+            session_id = f"linkedin_session_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            session_log_dir = linkedin_logs_dir / session_id
+            session_log_dir.mkdir(exist_ok=True)
+            logger.info(f"Created session log directory: {session_log_dir}")
+            
             async with async_playwright() as p:
+                # Log browser launch details
+                logger.info(f"Browser environment: Render={os.environ.get('IS_RENDER', 'false')}")
+                
                 browser = await p.chromium.launch(
                     headless=headless,
                     args=[
@@ -218,6 +232,16 @@ class LinkedInHandler:
                     await page.goto(experience_url, wait_until="domcontentloaded", timeout=60000)
                     await page.wait_for_timeout(5000)  # Wait for dynamic content
                     
+                    # Take screenshot of experience page
+                    await page.screenshot(path=session_log_dir / "04_experience_page.png", full_page=True)
+                    logger.info(f"Saved experience page screenshot")
+                    
+                    # Save experience page HTML for debugging
+                    experience_html = await page.content()
+                    with open(session_log_dir / "04_experience_page_html.txt", "w") as f:
+                        f.write(experience_html)
+                    logger.info(f"Saved experience page HTML content")
+                    
                     experience_content = await page.evaluate("""
                         () => {
                             return document.body.innerText;
@@ -231,6 +255,16 @@ class LinkedInHandler:
                     logger.info(f"Navigating to education details: {education_url}")
                     await page.goto(education_url, wait_until="domcontentloaded", timeout=60000)
                     await page.wait_for_timeout(5000)  # Wait for dynamic content
+                    
+                    # Take screenshot of education page
+                    await page.screenshot(path=session_log_dir / "05_education_page.png", full_page=True)
+                    logger.info(f"Saved education page screenshot")
+                    
+                    # Save education page HTML for debugging
+                    education_html = await page.content()
+                    with open(session_log_dir / "05_education_page_html.txt", "w") as f:
+                        f.write(education_html)
+                    logger.info(f"Saved education page HTML content")
                     
                     education_content = await page.evaluate("""
                         () => {
@@ -265,30 +299,59 @@ class LinkedInHandler:
     async def _login_with_security_handling(self, page, log_dir, timestamp):
         """Enhanced login function that handles security challenges"""
         try:
+            # Create a dedicated session folder for this login
+            session_folder = log_dir / f"login_session_{timestamp}"
+            session_folder.mkdir(exist_ok=True)
+            logger.info(f"Created login session folder: {session_folder}")
+            
+            # Log browser details
+            browser_version = await page.evaluate("() => navigator.userAgent")
+            logger.info(f"Browser user agent: {browser_version}")
+            
             # Navigate to login page
+            logger.info("Navigating to LinkedIn login page")
             await page.goto("https://www.linkedin.com/login", wait_until="networkidle")
             
-            # Take screenshot before login
-            await page.screenshot(path=log_dir / f"linkedin_pre_login_{timestamp}.png")
-            logger.info(f"Saved pre-login screenshot")
+            # Take screenshot of login page
+            await page.screenshot(path=session_folder / "01_login_page.png", full_page=True)
+            logger.info(f"Saved login page screenshot to {session_folder}/01_login_page.png")
             
             # Fill in login details with delays between actions
+            logger.info(f"Filling username: {self.username[:3]}***")
             await page.fill("#username", self.username)
             await asyncio.sleep(random.uniform(0.5, 1.5))
+            
+            logger.info("Filling password")
             await page.fill("#password", self.password)
             await asyncio.sleep(random.uniform(0.5, 1.5))
             
+            # Take screenshot before clicking login
+            await page.screenshot(path=session_folder / "02_before_submit.png", full_page=True)
+            logger.info(f"Saved pre-submit screenshot")
+            
             # Click sign in with a small delay
+            logger.info("Clicking submit button")
             await page.click("button[type='submit']")
             
             # Wait for navigation and check for security challenges
             try:
                 # First check if we're on the challenge page
+                logger.info("Waiting for navigation after login...")
                 await page.wait_for_load_state("networkidle", timeout=10000)
                 
-                # Take screenshot of the possible challenge page
-                await page.screenshot(path=log_dir / f"linkedin_post_login_{timestamp}.png")
-                logger.info(f"Saved post-login screenshot to check for security challenges")
+                # Take screenshot of the page after login attempt
+                await page.screenshot(path=session_folder / "03_post_login.png", full_page=True)
+                logger.info(f"Saved post-login screenshot")
+                
+                # Capture current URL
+                current_url = page.url
+                logger.info(f"Current URL after login attempt: {current_url}")
+                
+                # Save page HTML for debugging
+                page_content = await page.content()
+                with open(session_folder / "03_post_login_html.txt", "w") as f:
+                    f.write(page_content)
+                logger.info(f"Saved post-login HTML content")
                 
                 # Check for common security challenge elements
                 has_captcha = await page.is_visible("text=Please complete this security check to access the site")
@@ -299,7 +362,7 @@ class LinkedInHandler:
                     logger.warning("LinkedIn security challenge detected")
                     
                     # Take detailed screenshot of the challenge
-                    await page.screenshot(path=log_dir / f"linkedin_security_challenge_{timestamp}.png")
+                    await page.screenshot(path=session_folder / "03_security_challenge.png")
                     
                     # Use fallback method - return true but log the situation
                     logger.info("Security challenge encountered - will attempt direct URL navigation instead")
@@ -311,7 +374,7 @@ class LinkedInHandler:
                 
             except Exception as e:
                 logger.error(f"Error during login navigation: {str(e)}")
-                await page.screenshot(path=log_dir / f"linkedin_login_error_{timestamp}.png")
+                await page.screenshot(path=session_folder / "03_login_error.png")
                 
                 # Try to continue anyway by direct navigation
                 logger.info("Attempting to continue despite login issues")
