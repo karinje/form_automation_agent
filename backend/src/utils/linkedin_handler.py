@@ -382,7 +382,7 @@ class LinkedInHandler:
                 
                 # Enhanced security check detection
                 has_captcha = await page.is_visible("text=Please complete this security check to access the site")
-                has_verification = await page.is_visible("text=Let's do a quick security check") or await page.is_visible("h1:has-text('Let's do a quick security check')")
+                has_verification = await page.is_visible("text=Let's do a quick security check") or await page.is_visible("h1:has-text('Let\\'s do a quick security check')")
                 has_unusual = await page.is_visible("text=We've detected something unusual")
                 
                 if has_captcha or has_verification or has_unusual:
@@ -398,7 +398,7 @@ class LinkedInHandler:
                     await page.wait_for_timeout(20000)  # Wait 20 seconds to see if auto-check passes
                     
                     # Check if we're still on security check
-                    if await page.is_visible("h1:has-text('Let's do a quick security check')"):
+                    if await page.is_visible("h1:has-text('Let\\'s do a quick security check')"):
                         logger.warning("Still on security check page after waiting")
                         
                         # Try clicking any "Continue" button that might appear
