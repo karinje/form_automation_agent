@@ -140,7 +140,7 @@ class LinkedInHandler:
                 return None
             
             # Log credentials being used (partial password for security)
-            password_mask = self.password[:4] + "*****" + self.password[-4:] if self.password else None
+            password_mask = self.password[:2] + "*****" + self.password[-2:] if self.password else None
             logger.info(f"Using LinkedIn credentials - Username: {self.username}, Password: {password_mask}")
             
             async with async_playwright() as p:
@@ -148,14 +148,17 @@ class LinkedInHandler:
                     headless=headless,
                     args=[
                         '--window-size=1920,1080',
-                        '--disable-blink-features=AutomationControlled'
+                        '--disable-blink-features=AutomationControlled',
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox',
+                        '--disable-dev-shm-usage'
                     ]
                 )
                 context = await browser.new_context(
                     viewport={"width": 1920, "height": 1080},
                     user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36"
                 )
-                context.set_default_timeout(60000)
+                context.set_default_timeout(90000)  # Increase to 90 seconds
                 page = await context.new_page()
                 
                 try:
