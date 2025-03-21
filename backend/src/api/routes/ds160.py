@@ -102,7 +102,7 @@ async def process_ds160_with_updates(content: bytes, queue: asyncio.Queue = None
         logger.info(f"Parsed YAML data with keys: {list(form_data.keys() if form_data else [])}")
         
         # Initialize handlers
-        browser_handler = BrowserHandler(headless=False)
+        browser_handler = BrowserHandler()
         form_handler = FormHandler(progress_queue)  # Pass the request-specific queue
         
         # Start processing in background task
