@@ -356,86 +356,63 @@ class LinkedInHandler:
             await page.screenshot(path=session_folder / "02_before_submit.png", full_page=True)
             logger.info(f"Saved pre-submit screenshot")
             
-            # Click sign in with a small delay
+            # Click the login button
             logger.info("Clicking submit button")
             await page.click("button[type='submit']")
             
-            # Wait for navigation and check for security challenges
-            try:
-                # First check if we're on the challenge page
-                logger.info("Waiting for navigation after login...")
-                await page.wait_for_load_state("networkidle", timeout=10000)
-                
-                # Take screenshot of the page after login attempt
-                await page.screenshot(path=session_folder / "03_post_login.png", full_page=True)
-                logger.info(f"Saved post-login screenshot")
-                
-                # Capture current URL
-                current_url = page.url
-                logger.info(f"Current URL after login attempt: {current_url}")
-                
-                # Save page HTML for debugging
-                page_content = await page.content()
-                with open(session_folder / "03_post_login_html.txt", "w") as f:
-                    f.write(page_content)
-                logger.info(f"Saved post-login HTML content")
-                
-                # Enhanced security check detection
-                has_captcha = await page.is_visible("text=Please complete this security check to access the site")
-                has_verification = await page.is_visible("text=Let's do a quick security check") or await page.is_visible("h1:has-text('Let\\'s do a quick security check')")
-                has_unusual = await page.is_visible("text=We've detected something unusual")
-                
-                if has_captcha or has_verification or has_unusual:
-                    logger.warning("LinkedIn security challenge detected")
-                    
-                    # Take detailed screenshot of the challenge
+            # Take screenshot immediately after clicking submit
+            await page.wait_for_timeout(2000)
+            await page.screenshot(path=session_folder / "02_after_submit.png")
+            
+            # First check for security verification screen
+            logger.info("Checking for security verification screens...")
+            security_screens = [
+                "text=Please verify your identity",
+                "text=Let's do a quick security check",
+                "text=We don't recognize your device",
+                "text=Enter the pin sent to your email",
+                "text=Verify it's you",
+                ".recaptcha-checkbox-border" # CAPTCHA element
+            ]
+            
+            # Wait for any security screen to appear
+            found_security = False
+            for selector in security_screens:
+                if await page.is_visible(selector, timeout=1000):
+                    logger.warning(f"Security challenge detected: {selector}")
                     await page.screenshot(path=session_folder / "03_security_challenge.png")
-                    
-                    # SECURITY CHECK HANDLING - Try to wait for challenge completion
-                    logger.info("Waiting for security check to complete...")
-                    
-                    # Wait longer for security check to complete (can appear to be "working")
-                    await page.wait_for_timeout(20000)  # Wait 20 seconds to see if auto-check passes
-                    
-                    # Check if we're still on security check
-                    if await page.is_visible("h1:has-text('Let\\'s do a quick security check')"):
-                        logger.warning("Still on security check page after waiting")
-                        
-                        # Try clicking any "Continue" button that might appear
-                        try:
-                            if await page.is_visible("button:has-text('Continue')"):
-                                logger.info("Found Continue button, clicking it")
-                                await page.click("button:has-text('Continue')")
-                                await page.wait_for_timeout(5000)
-                        except Exception as e:
-                            logger.error(f"Error clicking continue: {str(e)}")
-                        
-                        # Take another screenshot to see what happened
-                        await page.screenshot(path=session_folder / "04_after_security_wait.png")
-                        
-                        # At this point we're stuck - direct URL navigation is our fallback
-                        logger.info("Security challenge could not be resolved automatically")
-                        return False
-                        
-                    else:
-                        logger.info("Security check appears to be completed")
-                        await page.screenshot(path=session_folder / "04_after_security_check.png")
-                        return True
-                
-                # If we get here, login was successful
-                logger.info("LinkedIn login successful")
-                return True
-                
-            except Exception as e:
-                logger.error(f"Error during login navigation: {str(e)}")
-                await page.screenshot(path=session_folder / "03_login_error.png")
-                
-                # Try to continue anyway by direct navigation
-                logger.info("Attempting to continue despite login issues")
+                    found_security = True
+                    break
+            
+            # If security challenge found, we need manual intervention
+            if found_security:
+                logger.error("LinkedIn login requires manual security verification")
+                logger.info("You'll need to check the /logs/linkedin_debug directory for screenshots")
+                logger.info("and complete the verification manually in your LinkedIn account")
                 return False
+            
+            # If no security challenge, wait for feed page
+            try:
+                await page.wait_for_url("**/feed/**", timeout=15000)
+                logger.info("Successfully logged in to LinkedIn feed")
+                await page.screenshot(path=session_folder / "04_feed_page.png")
+                return True
+            except Exception as feed_error:
+                # Check current URL to see if we're logged in despite timeout
+                current_url = page.url
+                logger.info(f"Current URL after login: {current_url}")
                 
+                if "linkedin.com/feed" in current_url or "linkedin.com/in/" in current_url:
+                    logger.info("Appears to be logged in based on URL")
+                    return True
+                else:
+                    logger.error(f"Failed to reach feed page: {str(feed_error)}")
+                    await page.screenshot(path=session_folder / "03_login_error.png")
+                    return False
+
         except Exception as e:
-            logger.error(f"Error during LinkedIn login: {str(e)}")
+            logger.error(f"Error during login: {str(e)}")
+            await page.screenshot(path=session_folder / "03_login_error.png")
             return False
     
     def _load_education_work_templates(self) -> str:
